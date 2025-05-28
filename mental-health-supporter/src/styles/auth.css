@@ -1,0 +1,74 @@
+/* — Layout — */
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("https://cdn.vectorstock.com/i/500p/84/44/blue-gradient-background-abstract-backdrop-vector-56378444.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+  /* overlay */
+  .auth-page::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,128,0.4) 0%, rgba(0,0,0,0.6) 100%);
+    z-index: 0;
+  }
+  
+  /* — Card — */
+  .auth-card {
+    position: relative;
+    z-index: 1;
+    width: 320px;
+    padding: 2.5rem 2rem;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+  
+  .auth-title {
+    margin-bottom: 1rem;
+    color: #fff;
+    text-align: center;
+  }
+  
+  .auth-card input {
+    padding: 0.6rem 0.8rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+  }
+  
+  .auth-btn {
+    margin-top: 0.6rem;
+    padding: 0.7rem 1rem;
+    border: none;
+    border-radius: 8px;
+    background-color: #ffffff;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  
+  .auth-btn:hover {
+    opacity: 0.9;
+  }
+  
+  .auth-switch {
+    font-size: 0.85rem;
+    color: #eee;
+    text-align: center;
+  }
+  .auth-switch a {
+    color: #fff;
+    font-weight: 600;
+    text-decoration: underline;
+  }
+  
