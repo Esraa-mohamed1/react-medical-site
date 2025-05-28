@@ -4,7 +4,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: url("https://cdn.vectorstock.com/i/500p/84/44/blue-gradient-background-abstract-backdrop-vector-56378444.jpg");
+    background-image: url("https://www.pexels.com/photo/blue-northern-lights-10194241/");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -15,7 +15,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(0,0,128,0.4) 0%, rgba(0,0,0,0.6) 100%);
+    background: linear-gradient(180deg, rgba(24, 179, 226, 0.4) 0%, rgba(1, 18, 77, 0.6) 100%);
     z-index: 0;
   }
   
