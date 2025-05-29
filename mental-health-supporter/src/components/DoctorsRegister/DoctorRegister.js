@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { useNavigate } from 'react-router-dom'; // ✅ Add this
 import './DoctorRegister.css';
 
 const DoctorRegister = () => {
+    const navigate = useNavigate(); // ✅ Hook for navigation
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -18,6 +21,8 @@ const DoctorRegister = () => {
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -72,28 +77,33 @@ const DoctorRegister = () => {
     setIsSubmitting(true);
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      console.log('Doctor Registered:', formData);
-      alert('Doctor registered successfully!');
-      // Reset form after successful submission
-      setFormData({
-        firstName: '',
-        lastName: '',
-        specialization: '',
-        licenseNumber: '',
-        yearsOfExperience: '',
-        email: '',
-        phone: '',
-        password: '',
-        confirmPassword: '',
-        clinicAddress: '',
-        bio: ''
-      });
-    } catch (error) {
-      console.error('Registration error:', error);
-      alert('Registration failed. Please try again.');
-    } finally {
+  await new Promise(resolve => setTimeout(resolve, 1500));
+  console.log('Doctor Registered:', formData);
+  
+  setSuccessMessage('Doctor registered successfully!');
+
+  setFormData({
+    firstName: '',
+    lastName: '',
+    specialization: '',
+    licenseNumber: '',
+    yearsOfExperience: '',
+    email: '',
+    phone: '',
+    password: '',
+    confirmPassword: '',
+    clinicAddress: '',
+    bio: ''
+  });
+
+  setTimeout(() => navigate('/login'), 2000);
+
+} catch (error) {
+  console.error('Registration error:', error);
+  setSuccessMessage('Registration failed. Please try again.');
+}
+
+ finally {
       setIsSubmitting(false);
     }
   };
@@ -105,6 +115,13 @@ const DoctorRegister = () => {
           <h2>Doctor Registration</h2>
           <p>Become part of our community of mental health supporters</p>
         </div>
+
+        {successMessage && (
+  <div className="alert alert-success" role="alert">
+    {successMessage}
+  </div>
+)}
+
         
         <form onSubmit={handleSubmit} className="doctor-form">
           <div className="form-row">
