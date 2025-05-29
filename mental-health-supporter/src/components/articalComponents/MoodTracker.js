@@ -39,7 +39,7 @@ const MoodTracker = () => {
             ))}
           </div>
         </div>
-        <div className="mood-selector">
+        {/* <div className="mood-selector">
           <p>How are you feeling today?</p>
           <div className="mood-options">
             {moodOptions.map((mood, index) => (
@@ -55,7 +55,7 @@ const MoodTracker = () => {
         </div>
         <button className="tracker-button">
           + Add Today's Mood Entry
-        </button>
+        </button> */}
       </div>
     </div>
   );

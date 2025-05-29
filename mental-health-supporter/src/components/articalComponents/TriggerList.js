@@ -2,16 +2,15 @@ import React from 'react';
 import '../../styles/TriggerList.css';
 
 const getTriggerIcon = (trigger) => {
-  const triggerLower = trigger.toLowerCase();
-  
-  if (triggerLower.includes('stress') || triggerLower.includes('pressure')) return '🧨';
-  if (triggerLower.includes('misunderstood') || triggerLower.includes('ignored')) return '👥';
-  if (triggerLower.includes('change') || triggerLower.includes('unexpected')) return '🔄';
-  if (triggerLower.includes('sleep') || triggerLower.includes('tired')) return '😴';
-  if (triggerLower.includes('hunger') || triggerLower.includes('hungry')) return '🍔';
-  if (triggerLower.includes('noise') || triggerLower.includes('loud')) return '🔊';
-  if (triggerLower.includes('wait') || triggerLower.includes('line')) return '⏳';
-  if (triggerLower.includes('critic') || triggerLower.includes('judge')) return '👎';
+  const lower = trigger.toLowerCase();
+  if (lower.includes('stress')) return '🧨';
+  if (lower.includes('misunderstood')) return '👥';
+  if (lower.includes('change')) return '🔄';
+  if (lower.includes('sleep')) return '😴';
+  if (lower.includes('hunger')) return '🍔';
+  if (lower.includes('noise')) return '🔊';
+  if (lower.includes('wait')) return '⏳';
+  if (lower.includes('critic')) return '👎';
   return '⚠️';
 };
 
