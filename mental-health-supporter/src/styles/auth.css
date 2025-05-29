@@ -15,7 +15,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(24, 179, 226, 0.4) 0%, rgba(1, 18, 77, 0.6) 100%);
+    background: linear-gradient(180deg, rgba(5, 19, 83, 0.4) 0%, rgba(3, 19, 77, 0.6) 100%);
     z-index: 0;
   }
   
