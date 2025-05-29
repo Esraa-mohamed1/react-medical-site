@@ -4,6 +4,8 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ArticalPage from "./pages/ArticalPage";
 import DoctorsList from './components/DoctorsList/DoctorsList'; 
+import DoctorRegister from './components/DoctorsRegister/DoctorRegister';
+
 
 function App() {
   return (
@@ -14,6 +16,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/artical" element={<ArticalPage />} />
         <Route path="/doctors" element={<DoctorsList />} />
+        <Route path="/doctor-register" element={<DoctorRegister />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>
