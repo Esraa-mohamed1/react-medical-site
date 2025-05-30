@@ -91,7 +91,7 @@ body {
   right: 0;
   width: 100%;
   height: 100%;
-  background-image: url('F:\final_project_iti\front\my-app\public\images\1.jpeg');
+  background-image: url('/public/images/1.jpeg');
 
   background-size: 400px;
   opacity: 0.1;
