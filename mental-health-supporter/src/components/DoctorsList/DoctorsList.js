@@ -6,6 +6,9 @@ import FiltersPanel from './FiltersPanel/FiltersPanel';
 import MapView from './MapView/MapView';
 import Pagination from './Pagination/Pagination';
 import './DoctorsList.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css'; // Correct import
+
 
 import L from 'leaflet';
 delete L.Icon.Default.prototype._getIconUrl;
@@ -232,8 +235,20 @@ const DoctorsList = () => {
   return (
     <div className="doctors-list-container">
       <header className="page-header">
-        <h1>Find a Doctor</h1>
-        <p>Book appointments with top-rated specialists near you</p>
+
+<div className="mental-health-header text-center">
+  <h2 className="d-flex justify-content-center align-items-center gap-2">
+    <i className="bi bi-activity fs-3"></i> 
+    <span>Mental Health Supporter</span>
+  </h2>
+  <p className="text-muted mb-3">Book appointments with top-rated specialists near you</p>
+  
+      <button className="btn btn-primary">
+    <i className="bi bi-heart-pulse me-2"></i> 
+    Find Support
+  </button>
+  </div>
+
       </header>
 
       <SearchControls 
