@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 27 27 27;
+    --foreground: 225 225 225;
+    --muted: 115 115 115;
+    --accent: 254 254 91;
+    /* hex value of rgb(254,254,91) color is  #FEFE5B  */
+  }
+}
+
+@layer utilities {
+  .pause {
+    animation-play-state: paused;
+  }
+
+  .custom-bg {
+    @apply bg-background/20 border border-accent/30 border-solid backdrop-blur-[6px] shadow-glass-inset hover:shadow-glass-sm;
+  }
+}
+
+@keyframes move {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(100px, 100px);
+  }
+}
+
+.floating-3d {
+  animation: float 3s ease-in-out infinite;
+  filter: drop-shadow(0 8px 32px rgba(0,0,0,0.35));
+  perspective: 600px;
+  transform-style: preserve-3d;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotateY(0deg); }
+  50% { transform: translateY(-30px) rotateY(10deg); }
+}
