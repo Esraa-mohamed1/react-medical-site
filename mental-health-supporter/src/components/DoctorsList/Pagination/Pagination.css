@@ -1,0 +1,51 @@
+/* 🔷 Blue Gradient Background for Pagination Wrapper */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 30px;
+  padding: 20px 0;
+  background: linear-gradient(to right, #d0e7ff, #f0f8ff); /* Soft blue gradient */
+  border-radius: 8px;
+}
+
+/* 🔷 Pagination Buttons */
+.pagination-button {
+  padding: 8px 16px;
+  border: 1px solid #3498db;
+  background-color: white;
+  color: #3498db;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 40px;
+}
+
+/* 🔷 Hover Effect with Gradient */
+.pagination-button:hover:not(:disabled) {
+  background: linear-gradient(to right, #3498db, #2980b9);
+  color: white;
+  border-color: transparent;
+}
+
+/* Disabled Button */
+.pagination-button:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+  border-color: #eee;
+  background-color: #f9f9f9;
+}
+
+/* 🔷 Active Button with Gradient */
+.pagination-button.active {
+  background: linear-gradient(to right, #3498db, #2980b9);
+  color: white;
+  border-color: transparent;
+}
+
+/* Ellipsis */
+.pagination-ellipsis {
+  padding: 8px;
+  color: #777;
+}
