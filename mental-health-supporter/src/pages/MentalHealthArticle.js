@@ -29,6 +29,7 @@ const MentalHealthArticle = ({ clientData = {} }) => {
   } = clientData;
 
   return (
+    <div className='artical-page'>
     <div className="article-container">
       <header className="article-header">
         <div className="header-overlay"></div>
@@ -70,6 +71,7 @@ const MentalHealthArticle = ({ clientData = {} }) => {
           "Understanding your emotions is the first step toward managing them effectively."
         </p>
       </footer>
+    </div>
     </div>
   );
 };

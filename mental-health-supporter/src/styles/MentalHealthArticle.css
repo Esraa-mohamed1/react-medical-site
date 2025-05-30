@@ -172,3 +172,15 @@
     margin-bottom: 1rem;
   }
   
+
+  .artical-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTW1vFd2eLs1h6zK_q4WJIU2cFEEFGN8yBEmA&s");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
