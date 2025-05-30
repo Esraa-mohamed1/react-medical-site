@@ -34,7 +34,7 @@ const BreathingExercise = () => {
   <div className={`breathing-circle ${phase}`}>
     <div className="breathing-text">
       {!isActive ? (
-        <p className="pre-instruction">Try this guided breathing exercise</p>
+        <p className="pre-instruction">Try this guided <br />breathing exercise</p>
       ) : (
         <>
           <p className="instruction">

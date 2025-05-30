@@ -80,27 +80,30 @@ const CopingStrategies = () => {
   };
 
   return (
-    <section className="personalized-tips">
+    <section className="personalized-tips container">
       <h3>Recommended Coping Strategies</h3>
       <p className="section-description">Try these techniques when you feel anger building:</p>
-      <div className="tips-grid">
+      <div className="row">
         {copingStrategies.map((strategy, index) => (
-          <div className="tip-card" key={index}>
-            <div className="tip-number">{index + 1}</div>
-            <div className="tip-icon">
-              {index % 5 === 0 && '🧘'}
-              {index % 5 === 1 && '🚶'}
-              {index % 5 === 2 && '✍️'}
-              {index % 5 === 3 && '🎵'}
-              {index % 5 === 4 && '💪'}
+          <div className="col-sm-12 col-md-6 col-lg-4 mb-4" key={index}>
+            <div className="tip-card h-100 d-flex flex-column">
+              <div className="tip-icon text-center">
+                {index % 5 === 0 && '🧘'}
+                {index % 5 === 1 && '🚶'}
+                {index % 5 === 2 && '✍️'}
+                {index % 5 === 3 && '🎵'}
+                {index % 5 === 4 && '💪'}
+              </div>
+              <p className="flex-grow-1">{strategy}</p>
+              <div className="d-flex justify-content-center mt-auto">
+                <button 
+                  className="try-button"
+                  onClick={() => setActiveTip(strategy)}
+                >
+                  Try This
+                </button>
+              </div>
             </div>
-            <p>{strategy}</p>
-            <button 
-              className="try-button"
-              onClick={() => setActiveTip(strategy)}
-            >
-              Try This
-            </button>
           </div>
         ))}
       </div>
@@ -129,5 +132,3 @@ const CopingStrategies = () => {
 };
 
 export default CopingStrategies;
-
-

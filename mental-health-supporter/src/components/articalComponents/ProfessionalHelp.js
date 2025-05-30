@@ -14,7 +14,7 @@ const ProfessionalHelp = ({ angerLevel }) => {
     <section className="professional-help">
       <div className="help-content">
         <h3>Professional Support</h3>
-        <div className="recommendation">
+        {/* <div className="recommendation">
           {angerLevel > 70 ? (
             <>
               <div className="urgent-alert">❗ Important Recommendation</div>
@@ -22,8 +22,9 @@ const ProfessionalHelp = ({ angerLevel }) => {
             </>
           ) : (
             <p>Consider these resources for additional support:</p>
-          )}
-        </div>
+          )
+          }
+        </div> */}
         <div className="resource-buttons">
           <button className="resource-button therapist">
             <span className="icon">👩‍⚕️</span>
