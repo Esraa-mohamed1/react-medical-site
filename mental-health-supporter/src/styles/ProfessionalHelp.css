@@ -136,3 +136,8 @@
       max-width: 300px;
     }
   }
+
+  .resource-button.therapist:hover {
+    background: linear-gradient(135deg, #5a7df4, #9669e6);
+    cursor: pointer;
+  }

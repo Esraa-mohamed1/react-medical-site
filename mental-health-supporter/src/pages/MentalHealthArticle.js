@@ -32,7 +32,7 @@ const MentalHealthArticle = ({ clientData = {} }) => {
     <div className="article-container">
       <header className="article-header">
         <div className="header-overlay"></div>
-        <h1>MENTAL HEALTH SUPPORT</h1>
+        <h1>Pearla</h1>
         {/* <h2>Personalized Emotional Management Guide</h2> */}
         <div className="user-greeting">
           <span className="welcome">Welcome, </span>

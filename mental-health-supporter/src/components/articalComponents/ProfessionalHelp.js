@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import  '../../styles/ProfessionalHelp.css' ;
+import { useNavigate } from 'react-router-dom';
 
 const ProfessionalHelp = ({ angerLevel }) => {
   const [showBooks, setShowBooks] = useState(false);
@@ -9,6 +10,10 @@ const ProfessionalHelp = ({ angerLevel }) => {
     'Anger Management for Dummies by W. Doyle Gentry',
     'The Dance of Anger by Harriet Lerner'
   ];
+  const navigate = useNavigate();
+  const handleFindTherapist = () => {
+    navigate('/doctors');
+  };
 
   return (
     <section className="professional-help">
@@ -26,7 +31,7 @@ const ProfessionalHelp = ({ angerLevel }) => {
           }
         </div> */}
         <div className="resource-buttons">
-          <button className="resource-button therapist">
+          <button className="resource-button therapist"   onClick={handleFindTherapist}>
             <span className="icon">👩‍⚕️</span>
             Find a Therapist
           </button>
