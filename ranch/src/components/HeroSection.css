@@ -1,0 +1,80 @@
+ @import 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css';
+
+.hero-section {
+  position: relative;
+  background: linear-gradient(135deg, #b14ae5, #60065d);
+  padding: 120px 20px;
+  overflow: hidden;
+}
+
+.hero-content {
+  max-width: 700px;
+  margin: auto;
+  z-index: 2;
+  position: relative;
+}
+
+.hero-button {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 30px;
+  background: white;
+  color: #6a11cb;
+  font-weight: bold;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.hero-button:hover {
+  background: #ffffffcc;
+  transform: scale(1.05);
+}
+
+.hero-shape {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.2;
+  z-index: 1;
+}
+
+.shape1 {
+  width: 300px;
+  height: 300px;
+  top: -80px;
+  left: -100px;
+  background: #ffffff;
+}
+
+.shape2 {
+  width: 400px;
+  height: 400px;
+  bottom: -120px;
+  right: -150px;
+  background: #ffffff;
+} 
+
+.hero-banner {
+  /* background: url('F:\final_project_iti\front\my-app\public\images\1.jpeg') center center / cover no-repeat; */
+  background:#8e44ad;
+  padding: 60px 0;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(48, 14, 73, 0.6); /* semi-transparent purple overlay */
+  z-index: 1;
+}
+
+.hero-banner .container {
+  position: relative;
+  z-index: 2;
+}

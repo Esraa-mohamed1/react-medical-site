@@ -4,6 +4,10 @@ import {
   Palette,
   Phone,
   User,
+  Book,
+  Heart,
+  LogIn,
+  UserPlus,
 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
@@ -17,10 +21,20 @@ const getIcon = (icon) => {
       return <Home className="w-full h-auto" strokeWidth={1.5} />;
     case "about":
       return <User className="w-full h-auto" strokeWidth={1.5} />;
-    case "projects":
-      return <Palette className="w-full h-auto" strokeWidth={1.5} />;
+    case "doctors":
+      return <User className="w-full h-auto" strokeWidth={1.5} />;
+    case "articles":
+      return <Book className="w-full h-auto" strokeWidth={1.5} />;
+    case "mental-health":
+      return <Heart className="w-full h-auto" strokeWidth={1.5} />;
     case "contact":
       return <Phone className="w-full h-auto" strokeWidth={1.5} />;
+    case "log-in":
+      return <LogIn className="w-full h-auto" strokeWidth={1.5} />;
+    case "user-plus":
+      return <UserPlus className="w-full h-auto" strokeWidth={1.5} />;
+    case "projects":
+      return <Palette className="w-full h-auto" strokeWidth={1.5} />;
     case "catalog":
       return <NotebookText className="w-full h-auto" strokeWidth={1.5} />;
     default:

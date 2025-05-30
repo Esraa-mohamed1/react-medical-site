@@ -1,0 +1,931 @@
+:root {
+    --primary: #6e8efb;
+    --secondary: #a777e3;
+    --danger: #f44336;
+    --warning: #ffc107;
+    --success: #4caf50;
+    --light: #f8f9fa;
+    --dark: #343a40;
+    --text: #333;
+    --text-light: #6c757d;
+  }
+  
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text);
+    background-color: #f5f7fa;
+  }
+  
+  .article-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Enhanced Header */
+  .article-header {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .header-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+  }
+  
+  .article-header h1 {
+    margin: 0;
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    position: relative;
+  }
+  
+  .article-header h2 {
+    margin: 0.5rem 0 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 400;
+    opacity: 0.9;
+    position: relative;
+  }
+  
+  .user-greeting {
+    background: rgba(255, 255, 255, 0.2);
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    backdrop-filter: blur(5px);
+    position: relative;
+  }
+  
+  .welcome {
+    opacity: 0.8;
+    margin-right: 0.5rem;
+  }
+  
+  .username {
+    font-weight: 600;
+  }
+  
+  /* Breathing Exercise Section */
+  .breathing-exercise {
+    background-color: var(--light);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+  
+  .breathing-exercise.active {
+    background-color: #e3f2fd;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  }
+  
+  .breathing-visual {
+    margin: 1.5rem 0;
+  }
+  
+  .breathing-circle {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    position: relative;
+    transition: all 8s ease-in-out;
+  }
+  
+  .breathing-circle.inhale {
+    transform: scale(1.2);
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+  }
+  
+  .breathing-circle.hold {
+    transform: scale(1.2);
+    background: linear-gradient(135deg, #00f2fe, #4facfe);
+  }
+  
+  .breathing-circle.exhale {
+    transform: scale(0.8);
+    background: linear-gradient(135deg, #a6c1ee, #fbc2eb);
+  }
+  
+  .breathing-circle.rest {
+    transform: scale(1);
+  }
+  
+  .breathing-text {
+    color: white;
+    padding: 1rem;
+  }
+  
+  .breath-instruction {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  .breath-count {
+    font-size: 1rem;
+    opacity: 0.8;
+    margin-bottom: 1rem;
+  }
+  
+  .start-breathing, .stop-breathing {
+    background: white;
+    color: var(--primary);
+    border: none;
+    padding: 0.8rem 1.8rem;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  
+  .start-breathing:hover, .stop-breathing:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+  }
+  
+
+  
+  .breathing-instructions {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: var(--text-light);
+  }
+  
+  /* Anger Profile Section */
+  .anger-profile {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+  }
+  
+  .anger-metrics {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1.5rem;
+  }
+  
+  .metric {
+    flex: 1;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+  
+  .progress-container {
+    margin-top: 1rem;
+  }
+  
+  .progress-bar {
+    height: 12px;
+    background: #e9ecef;
+    border-radius: 6px;
+    margin: 0.5rem 0;
+    overflow: hidden;
+  }
+  
+  .progress-fill {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 0.5s ease, background-color 0.5s ease;
+  }
+  
+  .progress-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin-top: 0.3rem;
+  }
+  
+  .anger-value {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+    color: var(--text);
+  }
+  
+  .episode-display {
+    background: #f1f8fe;
+    padding: 0.5rem;
+    border-radius: 6px;
+    text-align: center;
+    margin: 0.5rem 0 1.5rem;
+    font-weight: 600;
+    color: var(--primary);
+  }
+  
+  .triggers-list {
+    list-style-type: none;
+    margin-top: 0.5rem;
+  }
+  
+  .triggers-list li {
+    background: #f8f9fa;
+    padding: 0.8rem;
+    margin: 0.5rem 0;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s ease;
+  }
+  
+  .triggers-list li:hover {
+    transform: translateX(5px);
+  }
+  
+  .trigger-icon {
+    margin-right: 0.8rem;
+    font-size: 1.2rem;
+  }
+  
+  /* Coping Strategies Section */
+  .personalized-tips {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem;
+  }
+  
+  .section-description {
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+  }
+  
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+  
+  .tip-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    position: relative;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+  }
+  
+  .tip-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  }
+  
+  .tip-number {
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    width: 40px;
+    height: 40px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  }
+  
+  .tip-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  
+  .tip-card p {
+    flex-grow: 1;
+    margin-bottom: 1.5rem;
+  }
+  
+  .try-button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    align-self: flex-start;
+  }
+  
+  .try-button:hover {
+    background: var(--secondary);
+  }
+  
+  /* Professional Help Section */
+  .professional-help {
+    background: linear-gradient(135deg, #f5f7fa, #e4e8eb);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem;
+  }
+  
+  .help-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .urgent-alert {
+    background: var(--danger);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  
+  .resource-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .resource-button {
+    background: white;
+    border: none;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    min-width: 200px;
+  }
+  
+  .resource-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  }
+  
+  .resource-button.therapist {
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    color: white;
+  }
+  
+  .resource-button.hotline {
+    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+    color: white;
+  }
+  
+  .resource-button.resources {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: white;
+  }
+  
+  .icon {
+    margin-right: 0.8rem;
+    font-size: 1.2rem;
+  }
+  
+  /* Mood Tracker Section */
+  .mood-tracker {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem;
+  }
+  
+  .tracker-container {
+    margin-top: 1.5rem;
+  }
+  
+  .mood-chart {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .chart-placeholder {
+    color: var(--text-light);
+    text-align: center;
+  }
+  
+  .tracker-button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .tracker-button:hover {
+    background: var(--secondary);
+    transform: translateY(-2px);
+  }
+  
+  /* Footer */
+  .article-footer {
+    background: var(--dark);
+    color: white;
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  .footer-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .encouragement {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+  }
+  
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .footer-links a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  
+  .footer-links a:hover {
+    color: white;
+  }
+  
+  .copyright {
+    font-size: 0.9rem;
+    opacity: 0.7;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .anger-metrics {
+      flex-direction: column;
+    }
+    
+    .resource-buttons {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .resource-button {
+      width: 100%;
+      max-width: 300px;
+    }
+    
+    .article-header h1 {
+      font-size: 1.8rem;
+    }
+    
+    .article-header h2 {
+      font-size: 1.3rem;
+    }
+  }
+
+
+  /* Add these new styles to your existing CSS */
+
+/* Updated stop breathing button color */
+.stop-breathing {
+    background: #6e8efb;
+    color: white;
+  }
+  
+  .stop-breathing:hover {
+    background: #5a7df4;
+  }
+  
+  /* Popup styles */
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+  }
+  
+  .popup-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .popup-content h3 {
+    color: #6e8efb;
+    margin-bottom: 1rem;
+  }
+  
+  .relaxation-steps {
+    margin: 1.5rem 0;
+    list-style-type: none;
+  }
+  
+  .relaxation-steps li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .book-list {
+    margin: 1.5rem 0;
+    list-style-type: none;
+  }
+  
+  .book-list li {
+    padding: 0.8rem 0;
+    font-size: 1.1rem;
+  }
+  
+  .popup-close {
+    background: #6e8efb;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .popup-close:hover {
+    background: #5a7df4;
+  }
+  
+  /* Mood chart styles */
+  .chart-bars {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    height: 200px;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+  }
+  
+  .chart-bar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 12%;
+  }
+  
+  .chart-bar {
+    width: 80%;
+    transition: height 0.5s ease;
+    border-radius: 5px 5px 0 0;
+  }
+  
+  .chart-day {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+  }
+  
+  .chart-value {
+    font-size: 0.7rem;
+    margin-top: 0.2rem;
+  }
+  
+  .mood-selector {
+    margin: 1.5rem 0;
+  }
+  
+  .mood-options {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  
+  .mood-option {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .mood-option.selected {
+    background: #6e8efb;
+    color: white;
+    border-color: #6e8efb;
+  }
+  
+  /* Footer animations */
+  .footer-animation {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+  
+  .peace-symbol {
+    font-size: 2rem;
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  /* Page background */
+  body {
+    background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+
+  /* Add these new styles to your existing CSS */
+
+/* Progress circles for mood tracker */
+.progress-circles {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+  }
+  
+  .circle-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 12%;
+  }
+  
+  .progress-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  
+  .circle-inner {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .mood-emoji {
+    font-size: 1.5rem;
+  }
+  
+  .circle-label {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  
+  .mood-percent {
+    font-size: 0.7rem;
+    color: #6c757d;
+    margin-top: 0.2rem;
+  }
+  
+  /* Footer with quote */
+  .article-footer {
+    background: #f8f9fa;
+    padding: 2rem;
+    text-align: center;
+    border-top: 1px solid #e9ecef;
+  }
+  
+  .footer-quote {
+    font-style: italic;
+    font-size: 1.1rem;
+    color: #6c757d;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  
+  /* Popup styles */
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255,255,255,0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .popup-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border: 1px solid #e9ecef;
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .popup-content h3 {
+    color: #6e8efb;
+    margin-bottom: 1rem;
+  }
+  
+  .strategy-steps {
+    margin: 1.5rem 0;
+    list-style-type: none;
+  }
+  
+  .strategy-steps li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .strategy-benefits {
+    background: #f1f8fe;
+    padding: 0.8rem;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .book-list {
+    margin: 1.5rem 0;
+    list-style-type: none;
+  }
+  
+  .book-list li {
+    padding: 0.8rem 0;
+    font-size: 1.1rem;
+  }
+  
+  .popup-close {
+    background: #6e8efb;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .popup-close:hover {
+    background: #5a7df4;
+  }
+  
+  /* Progress bar style */
+  .progress-bar {
+    height: 20px;
+    background: #e9ecef;
+    border-radius: 10px;
+    margin: 0.5rem 0;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .progress-fill {
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(to right, #6e8efb, #a777e3);
+    transition: width 0.5s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.3) 0%,
+      rgba(255,255,255,0) 50%,
+      rgba(0,0,0,0.1) 51%,
+      rgba(255,255,255,0) 100%
+    );
+    border-radius: 10px;
+  }
+
+  .triggers-list {
+    list-style-type: none;
+    margin-top: 0.5rem;
+  }
+  
+  .triggers-list li {
+    background: #f8f9fa;
+    padding: 0.8rem;
+    margin: 0.5rem 0;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s ease;
+  }
+  
+  .triggers-list li:hover {
+    transform: translateX(5px);
+    background: #e9ecef;
+  }
+  
+  .trigger-icon {
+    margin-right: 0.8rem;
+    font-size: 1.2rem;
+    min-width: 24px;
+    text-align: center;
+  }

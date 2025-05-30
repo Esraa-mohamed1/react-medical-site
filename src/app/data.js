@@ -96,14 +96,22 @@ export const projectsData = [
 export const BtnList = [
   { label: "Home", link: "/", icon: "home", newTab: false },
   { label: "About", link: "/about", icon: "about", newTab: false },
-  { label: "Collection", link: "/collection", icon: "projects", newTab: false },
+  { label: "Doctors", link: "/doctors", icon: "user", newTab: false },
+  { label: "Articles", link: "/articles", icon: "book", newTab: false },
+  { label: "Mental Health", link: "/mental-health", icon: "heart", newTab: false },
   { label: "Contact", link: "/contact", icon: "contact", newTab: false },
   {
-    label: "Catalog",
-    link: "/catalog.pdf",
-    icon: "catalog",
-    newTab: true,
+    label: "Login",
+    link: "/login",
+    icon: "log-in",
+    newTab: false,
   },
+  {
+    label: "Register",
+    link: "/register",
+    icon: "user-plus",
+    newTab: false,
+  }
 ];
 
 

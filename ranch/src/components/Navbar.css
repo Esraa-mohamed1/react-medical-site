@@ -1,0 +1,48 @@
+.custom-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: linear-gradient(90deg, #6a11cb, #8e44ad);
+  padding: 15px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.custom-navbar .logo {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.custom-navbar nav ul {
+  display: flex;
+  list-style: none;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
+}
+
+.custom-navbar nav ul li a {
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.custom-navbar nav ul li a::after {
+  content: '';
+  width: 0%;
+  height: 2px;
+  background: white;
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  transition: 0.3s ease;
+}
+
+.custom-navbar nav ul li a:hover::after {
+  width: 100%;
+}
