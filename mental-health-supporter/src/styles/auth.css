@@ -4,7 +4,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: url("https://www.pexels.com/photo/blue-northern-lights-10194241/");
+    background-image: url("/public/images/auth.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
