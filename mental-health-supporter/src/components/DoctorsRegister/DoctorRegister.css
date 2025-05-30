@@ -1,28 +1,3 @@
-:root {
-  --primary-blue: #5998eb;
-  --dark-blue: #477dcf;
-  --light-blue: #e8f0fe;
-  --error-red: #d32f2f;
-  --success-green: #388e3c;
-  --text-primary: #202124;
-  --text-secondary: #5f6368;
-  --border-color: #dadce0;
-  --shadow-color: rgba(60, 64, 67, 0.15);
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
-}
-
-body {
-  margin: 0;
-  background-color: #89bbcb; /* Your light blue color */
-  min-height: 100vh;
-}
-
 .doctor-register-wrapper {
   min-height: 100vh;
   display: flex;
@@ -36,94 +11,94 @@ body {
   max-width: 800px;
   background: white;
   border-radius: 12px;
-  box-shadow: 0 4px 20px var(--shadow-color);
+  box-shadow: 0 4px 20px rgba(60, 64, 67, 0.15);
   overflow: hidden;
 }
 
-.form-header {
-  background: linear-gradient(to right, var(--primary-blue), var(--dark-blue));
+.doctor-register-container .form-header {
+  background: linear-gradient(to right, #5998eb, #477dcf);
   color: white;
   padding: 2rem;
   text-align: center;
 }
 
-.form-header h2 {
+.doctor-register-container .form-header h2 {
   font-size: 2rem;
   font-weight: 500;
   margin-bottom: 0.5rem;
 }
 
-.form-header p {
+.doctor-register-container .form-header p {
   font-size: 1rem;
   opacity: 0.9;
 }
 
-.doctor-form {
+.doctor-register-container .doctor-form {
   padding: 2rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-.form-row {
+.doctor-register-container .form-row {
   display: flex;
   gap: 1.5rem;
 }
 
-.form-row .form-group {
+.doctor-register-container .form-row .form-group {
   flex: 1;
 }
 
-.form-group {
+.doctor-register-container .form-group {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.form-group label {
+.doctor-register-container .form-group label {
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--text-primary);
+  color: #202124;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
+.doctor-register-container .form-group input,
+.doctor-register-container .form-group select,
+.doctor-register-container .form-group textarea {
   padding: 0.75rem 1rem;
-  border: 1px solid var(--border-color);
+  border: 1px solid #dadce0;
   border-radius: 8px;
   font-size: 1rem;
   transition: all 0.2s ease;
 }
 
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  border-color: var(--primary-blue);
+.doctor-register-container .form-group input:focus,
+.doctor-register-container .form-group select:focus,
+.doctor-register-container .form-group textarea:focus {
+  border-color: #5998eb;
   outline: none;
   box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
 }
 
-.form-group input.error,
-.form-group select.error {
-  border-color: var(--error-red);
+.doctor-register-container .form-group input.error,
+.doctor-register-container .form-group select.error {
+  border-color: #d32f2f;
 }
 
-.error-message {
-  color: var(--error-red);
+.doctor-register-container .error-message {
+  color: #d32f2f;
   font-size: 0.75rem;
   margin-top: 0.25rem;
 }
 
-.form-footer {
+.doctor-register-container .form-footer {
   display: flex;
   flex-direction: column;
   gap: 1rem;
   margin-top: 1rem;
 }
 
-.form-footer button {
-  background: linear-gradient(to right, var(--primary-blue), var(--dark-blue));
+.doctor-register-container .form-footer button {
+  background: linear-gradient(to right, #5998eb, #477dcf);
   color: white;
   border: none;
   border-radius: 8px;
@@ -134,33 +109,33 @@ body {
   transition: all 0.2s ease;
 }
 
-.form-footer button:hover {
+.doctor-register-container .form-footer button:hover {
   opacity: 0.9;
   transform: translateY(-1px);
-  box-shadow: 0 2px 10px var(--shadow-color);
+  box-shadow: 0 2px 10px rgba(60, 64, 67, 0.15);
 }
 
-.form-footer button:disabled {
+.doctor-register-container .form-footer button:disabled {
   background: #cccccc;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
 }
 
-.disclaimer {
+.doctor-register-container .disclaimer {
   font-size: 0.75rem;
-  color: var(--text-secondary);
+  color: #5f6368;
   text-align: center;
   margin-top: 1rem;
 }
 
-textarea {
+.doctor-register-container textarea {
   resize: vertical;
   min-height: 100px;
 }
 
 @media (max-width: 768px) {
-  .form-row {
+  .doctor-register-container .form-row {
     flex-direction: column;
     gap: 1rem;
   }
@@ -169,11 +144,11 @@ textarea {
     margin: 1rem;
   }
   
-  .form-header {
+  .doctor-register-container .form-header {
     padding: 1.5rem;
   }
   
-  .doctor-form {
+  .doctor-register-container .doctor-form {
     padding: 1.5rem;
   }
 }

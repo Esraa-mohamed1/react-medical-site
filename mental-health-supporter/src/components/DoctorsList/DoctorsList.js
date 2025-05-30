@@ -233,6 +233,7 @@ const DoctorsList = () => {
   }
 
   return (
+      <div className="doctors-list-wrapper">
     <div className="doctors-list-container">
       <header className="page-header">
 
@@ -250,6 +251,7 @@ const DoctorsList = () => {
   </div>
 
       </header>
+    </div>
 
       <SearchControls 
         searchTerm={searchTerm}
