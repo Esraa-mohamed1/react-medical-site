@@ -1,8 +1,8 @@
 .professional-help {
     background: linear-gradient(135deg, #f5f7fa, #e4e8eb);
     border-radius: 12px;
-    padding: 2rem;
-    margin: 2rem 0;
+    padding: 1rem;
+    /* margin: 2rem 0; */
   }
   
   .help-content {
@@ -13,10 +13,10 @@
   .urgent-alert {
     background: #ff6b6b;
     color: white;
-    padding: 0.5rem 1rem;
+    /* padding: 0.5rem 1rem; */
     border-radius: 5px;
     display: inline-block;
-    margin-bottom: 1rem;
+    /* margin-bottom: 1rem; */
     font-weight: 600;
     animation: pulse 2s infinite;
   }
@@ -30,7 +30,7 @@
   .resource-buttons {
     display: flex;
     gap: 1rem;
-    margin-top: 1.5rem;
+    /* margin-top: 1.5rem; */
     flex-wrap: wrap;
     justify-content: center;
   }
@@ -38,7 +38,7 @@
   .resource-button {
     background: white;
     border: none;
-    padding: 1rem 1.5rem;
+    padding: 0.8rem 1rem;
     border-radius: 8px;
     font-size: 1rem;
     cursor: pointer;
@@ -70,7 +70,7 @@
   }
   
   .icon {
-    margin-right: 0.8rem;
+    margin-right: 0.5rem;
     font-size: 1.2rem;
   }
   
@@ -89,7 +89,7 @@
   
   .popup-content {
     background: white;
-    padding: 2rem;
+    padding: 0.5rem;
     border-radius: 15px;
     max-width: 600px;
     width: 90%;
@@ -101,12 +101,12 @@
   }
   
   .book-list {
-    margin: 1.5rem 0;
+    /* margin: 1.5rem 0; */
     list-style-type: none;
   }
   
   .book-list li {
-    padding: 0.8rem 0;
+    padding: 0.4rem 0;
     font-size: 1.1rem;
   }
   
@@ -114,9 +114,9 @@
     background: #6e8efb;
     color: white;
     border: none;
-    padding: 0.8rem 1.5rem;
+    padding: 0.2rem 0.6rem;
     border-radius: 8px;
-    margin-top: 1rem;
+    /* margin-top: 1rem; */
     cursor: pointer;
     transition: all 0.2s ease;
   }
@@ -135,4 +135,9 @@
       width: 100%;
       max-width: 300px;
     }
+  }
+
+  .resource-button.therapist:hover {
+    background: linear-gradient(135deg, #5a7df4, #9669e6);
+    cursor: pointer;
   }
