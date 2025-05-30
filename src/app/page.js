@@ -1,13 +1,6 @@
 import Image from "next/image";
 import bg from "../../public/background/home-background.png";
-import RenderModel from "@/components/RenderModel";
-// import Wizard from "@/components/models/Wizard";
 import Navigation from "@/components/navigation";
-
-import dynamic from "next/dynamic";
-const PearlaModel = dynamic(() => import("@/components/models/PearlaModel"), {
-  ssr: false,
-});
 
 export default function Home() {
   return (
@@ -23,9 +16,15 @@ export default function Home() {
 
       <div className="w-full h-screen">
         <Navigation />
-        <RenderModel>
-          <PearlaModel />
-        </RenderModel>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <Image
+            src="/pearla.png"
+            alt="Pearla"
+            width={400}
+            height={400}
+            className="object-contain"
+          />
+        </div>
       </div>
     </main>
   );

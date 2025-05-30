@@ -80,45 +80,39 @@ const AboutDetails = () => {
         <ItemLayout className={"col-span-full"}>
           <h3 className="text-lg md:text-xl mb-4">Your Journey Mirrored in Pearls</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="flex flex-col items-center">
-              <div className="w-full aspect-square relative">
-                <Image
-                  src="/images/closed-shell.png"
-                  alt="Delicate pearl"
-                  fill
-                  className="object-contain"
-                  priority={false}
-                />
-              </div>
-              <p className="text-sm mt-2 text-center">
+            <div>
+              <Image
+                src="/images/closed-shell.png"
+                alt="Delicate pearl"
+                width={300}
+                height={200}
+                priority={false}
+              />
+              <p className="text-sm mt-2">
                 <strong>Fragility:</strong> Like early pearls, we feel tender after hardship.
               </p>
             </div>
-            <div className="flex flex-col items-center">
-              <div className="w-full aspect-square relative">
-                <Image
-                  src="/images/semi-opened-pearl.png"
-                  alt="Pearl layers under microscope"
-                  fill
-                  className="object-contain"
-                  priority={false}
-                />
-              </div>
-              <p className="text-sm mt-2 text-center">
+            <div>
+              <Image
+                src="/images/semi-opened-pearl.png"
+                alt="Pearl layers under microscope"
+                width={300}
+                height={200}
+                priority={false}
+              />
+              <p className="text-sm mt-2">
                 <strong>Layers:</strong> Each struggle adds depth to your inner light.
               </p>
             </div>
-            <div className="flex flex-col items-center">
-              <div className="w-full aspect-square relative">
-                <Image
-                  src="/images/light.png"
-                  alt="Glowing pearl"
-                  fill
-                  className="object-contain"
-                  priority={false}
-                />
-              </div>
-              <p className="text-sm mt-2 text-center">
+            <div>
+              <Image
+                src="/images/light.png"
+                alt="Glowing pearl"
+                width={300}
+                height={200}
+                priority={false}
+              />
+              <p className="text-sm mt-2">
                 <strong>Radiance:</strong> The light was always there—waiting to shine again.
               </p>
             </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import TriggerList from './TriggerList';
 import MoodTracker from './MoodTracker';
-import '@/styles/MentalHealthArticle.css';
+import './MentalHealthArticle.css';
 
 const MentalHealthArticle = ({ clientData = {} }) => {
   // State and other logic remains similar
@@ -15,6 +15,14 @@ const MentalHealthArticle = ({ clientData = {} }) => {
     { day: 'Fri', mood: 55, emoji: '😐' },
     { day: 'Sat', mood: 40, emoji: '🙂' },
     { day: 'Sun', mood: 65, emoji: '😤' }
+  ];
+
+  const triggers = [
+    { id: 1, name: 'Work stress', checked: false },
+    { id: 2, name: 'Social situations', checked: false },
+    { id: 3, name: 'Family issues', checked: false },
+    { id: 4, name: 'Financial concerns', checked: false },
+    { id: 5, name: 'Health worries', checked: false }
   ];
 
   const handleMoodSelected = (mood) => {

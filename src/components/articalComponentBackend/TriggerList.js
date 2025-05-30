@@ -1,8 +1,8 @@
 import React from 'react';
-import '@/styles/TriggerList.css';
+import './TriggerList.css';
 
-const getTriggerIcon = (trigger) => {
-  const triggerLower = trigger.toLowerCase();
+const getTriggerIcon = (triggerName) => {
+  const triggerLower = triggerName.toLowerCase();
   
   if (triggerLower.includes('stress') || triggerLower.includes('pressure')) {
     return '🧨';
@@ -28,10 +28,18 @@ const getTriggerIcon = (trigger) => {
 const TriggerList = ({ triggers = [] }) => {
   return (
     <ul className="triggers-list">
-      {triggers.map((trigger, index) => (
-        <li key={index}>
-          <span className="trigger-icon">{getTriggerIcon(trigger)}</span>
-          {trigger}
+      {triggers.map((trigger) => (
+        <li key={trigger.id} className="trigger-item">
+          <input
+            type="checkbox"
+            id={`trigger-${trigger.id}`}
+            checked={trigger.checked}
+            onChange={() => {}}
+          />
+          <label htmlFor={`trigger-${trigger.id}`}>
+            <span className="trigger-icon">{getTriggerIcon(trigger.name)}</span>
+            {trigger.name}
+          </label>
         </li>
       ))}
     </ul>

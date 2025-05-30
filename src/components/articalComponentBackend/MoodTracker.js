@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '@/styles/MoodTracker.css';
+import './MoodTracker.css';
 
 const MoodTracker = ({ initialMoodData = [], onMoodSelected }) => {
   const [currentMood, setCurrentMood] = useState('neutral');
@@ -42,7 +42,7 @@ const MoodTracker = ({ initialMoodData = [], onMoodSelected }) => {
           </div>
         </div>
         <div className="mood-selector">
-          <p>How are you feeling today?</p>
+          <p>How&apos;s your mood today?</p>
           <div className="mood-options">
             {moodOptions.map((mood, index) => (
               <button

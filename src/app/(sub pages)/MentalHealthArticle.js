@@ -67,7 +67,7 @@ const MentalHealthArticle = ({ clientData = {} }) => {
 
       <footer className="article-footer">
         <p className="footer-message">
-          "Understanding your emotions is the first step toward managing them effectively."
+          &quot;Mental health is not a destination, but a process&quot;
         </p>
       </footer>
     </div>

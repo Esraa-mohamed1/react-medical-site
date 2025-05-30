@@ -1,13 +1,12 @@
 import {
+  Github,
   Home,
+  Linkedin,
   NotebookText,
   Palette,
   Phone,
+  Twitter,
   User,
-  Book,
-  Heart,
-  LogIn,
-  UserPlus,
 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
@@ -21,22 +20,19 @@ const getIcon = (icon) => {
       return <Home className="w-full h-auto" strokeWidth={1.5} />;
     case "about":
       return <User className="w-full h-auto" strokeWidth={1.5} />;
-    case "doctors":
-      return <User className="w-full h-auto" strokeWidth={1.5} />;
-    case "articles":
-      return <Book className="w-full h-auto" strokeWidth={1.5} />;
-    case "mental-health":
-      return <Heart className="w-full h-auto" strokeWidth={1.5} />;
-    case "contact":
-      return <Phone className="w-full h-auto" strokeWidth={1.5} />;
-    case "log-in":
-      return <LogIn className="w-full h-auto" strokeWidth={1.5} />;
-    case "user-plus":
-      return <UserPlus className="w-full h-auto" strokeWidth={1.5} />;
     case "projects":
       return <Palette className="w-full h-auto" strokeWidth={1.5} />;
-    case "catalog":
+    case "contact":
+      return <Phone className="w-full h-auto" strokeWidth={1.5} />;
+    case "github":
+      return <Github className="w-full h-auto" strokeWidth={1.5} />;
+    case "linkedin":
+      return <Linkedin className="w-full h-auto" strokeWidth={1.5} />;
+    case "twitter":
+      return <Twitter className="w-full h-auto" strokeWidth={1.5} />;
+    case "resume":
       return <NotebookText className="w-full h-auto" strokeWidth={1.5} />;
+
     default:
       return <Home className="w-full h-auto" strokeWidth={1.5} />;
   }

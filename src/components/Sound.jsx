@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { Volume2, VolumeX } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 
 const Modal = ({ onClose, toggle }) => {
@@ -39,38 +39,42 @@ const Sound = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  const handleFirstUserInteraction = () => {
-    const musicConsent = localStorage.getItem("musicConsent");
-    if (musicConsent === "true" && !isPlaying) {
-      audioRef.current.play();
-      setIsPlaying(true);
-    }
-
-    ["click", "keydown", "touchstart"].forEach((event) =>
-      document.removeEventListener(event, handleFirstUserInteraction)
-    );
-  };
-
-  useEffect(() => {
-    const consent = localStorage.getItem("musicConsent");
-    const consentTime = localStorage.getItem("consentTime");
-
-    if (
-      consent &&
-      consentTime &&
-      new Date(consentTime).getTime() + 3 * 24 * 60 * 60 * 1000 > new Date()
-    ) {
-      setIsPlaying(consent === "true");
-
-      if (consent === "true") {
-        ["click", "keydown", "touchstart"].forEach((event) =>
-          document.addEventListener(event, handleFirstUserInteraction)
-        );
-      }
-    } else {
-      setShowModal(true);
+  const handleFirstUserInteraction = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.play()
+        .then(() => {
+          setIsPlaying(true);
+          localStorage.setItem('hasInteracted', 'true');
+        })
+        .catch(error => {
+          console.error('Error playing audio:', error);
+        });
     }
   }, []);
+
+  useEffect(() => {
+    const hasInteracted = localStorage.getItem('hasInteracted') === 'true';
+    
+    if (hasInteracted) {
+      handleFirstUserInteraction();
+    }
+
+    const handleInteraction = () => {
+      if (!hasInteracted) {
+        handleFirstUserInteraction();
+      }
+    };
+
+    window.addEventListener('click', handleInteraction);
+    window.addEventListener('keydown', handleInteraction);
+    window.addEventListener('touchstart', handleInteraction);
+
+    return () => {
+      window.removeEventListener('click', handleInteraction);
+      window.removeEventListener('keydown', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
+    };
+  }, [handleFirstUserInteraction]);
 
   const toggle = () => {
     const newState = !isPlaying;

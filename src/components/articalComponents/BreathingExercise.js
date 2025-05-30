@@ -1,9 +1,5 @@
-'use client';
-
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { FaPlay, FaPause, FaRedo } from 'react-icons/fa';
-import '@/styles/BreathingExercise.css';
+import React, { useState, useEffect } from 'react';
+import '../../styles/BreathingExercise.css' ;
 
 const BreathingExercise = () => {
   const [isActive, setIsActive] = useState(false);

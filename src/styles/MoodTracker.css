@@ -1,131 +1,9 @@
 .mood-tracker {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 1rem;
-  padding: 2rem;
-  margin-bottom: 2rem;
-}
-
-.mood-tracker-header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.mood-tracker-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: white;
-  margin-bottom: 0.5rem;
-}
-
-.mood-tracker-subtitle {
-  color: #a0aec0;
-}
-
-.mood-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.mood-option {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.mood-option:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px);
-}
-
-.mood-option.selected {
-  background: #3b82f6;
-  color: white;
-}
-
-.mood-icon {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-}
-
-.mood-label {
-  font-size: 0.875rem;
-  text-align: center;
-}
-
-.mood-notes {
-  margin-top: 2rem;
-}
-
-.notes-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: white;
-}
-
-.notes-textarea {
-  width: 100%;
-  min-height: 100px;
-  padding: 0.75rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.5rem;
-  color: white;
-  resize: vertical;
-}
-
-.notes-textarea:focus {
-  outline: none;
-  border-color: #3b82f6;
-}
-
-.mood-history {
-  margin-top: 2rem;
-}
-
-.history-title {
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: white;
-  margin-bottom: 1rem;
-}
-
-.history-list {
-  display: grid;
-  gap: 1rem;
-}
-
-.history-item {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 0.5rem;
-  padding: 1rem;
-}
-
-.history-date {
-  color: #a0aec0;
-  font-size: 0.875rem;
-  margin-bottom: 0.5rem;
-}
-
-.history-mood {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.history-notes {
-  color: #e2e8f0;
-  font-size: 0.875rem;
-}
-
+    background: white;
+    border-radius: 12px;
+    padding: 0.2rem;
+    margin: 0.5rem 0;
+  }
 /*   
   .tracker-container {
     margin-top: 0.2rem;
@@ -194,6 +72,21 @@
     flex-wrap: wrap;
     /* gap: 0.5rem; */
     /* margin-top: 1rem; */
+  }
+  
+  .mood-option {
+    background: white;
+    border: 1px solid #ddd;
+    /* padding: 0.5rem 1rem; */
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .mood-option.selected {
+    background: #6e8efb;
+    color: white;
+    border-color: #6e8efb;
   }
   
   .tracker-button {

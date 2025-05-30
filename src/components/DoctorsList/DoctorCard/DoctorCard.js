@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaStar, FaCalendarAlt, FaMapMarkerAlt, FaClock, FaLanguage } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import Image from 'next/image';
 import './DoctorCard.css';
 
 const DoctorCard = ({ doctor }) => {
@@ -30,7 +31,13 @@ const DoctorCard = ({ doctor }) => {
   return (
     <div className="doctor-card">
       <div className="doctor-image-container">
-        <img src={doctor.image} alt={doctor.name} className="doctor-image" />
+        <Image
+          src={doctor.profilePicture}
+          alt={`${doctor.name}'s profile`}
+          width={100}
+          height={100}
+          className="doctor-image"
+        />
         {doctor.available && (
           <div className="availability-badge">
             <FaClock className="availability-icon" />

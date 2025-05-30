@@ -1,101 +1,101 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { FaMapMarkerAlt } from 'react-icons/fa';
-import '@/styles/DoctorsList.css';
+import React from 'react';
+import dynamic from 'next/dynamic';
+import { FaStar, FaMapMarkerAlt } from 'react-icons/fa';
+import Image from 'next/image';
+import './MapView.css';
 
-const MapView = ({ doctors, onDoctorSelect }) => {
-  const mapRef = useRef(null);
-  const markersRef = useRef([]);
+// Dynamically import the map components with no SSR
+const MapContainer = dynamic(
+  () => import('react-leaflet').then((mod) => mod.MapContainer),
+  { ssr: false }
+);
+const TileLayer = dynamic(
+  () => import('react-leaflet').then((mod) => mod.TileLayer),
+  { ssr: false }
+);
+const Marker = dynamic(
+  () => import('react-leaflet').then((mod) => mod.Marker),
+  { ssr: false }
+);
+const Popup = dynamic(
+  () => import('react-leaflet').then((mod) => mod.Popup),
+  { ssr: false }
+);
 
-  useEffect(() => {
-    if (!window.google) {
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
-      script.async = true;
-      script.defer = true;
-      script.onload = initializeMap;
-      document.head.appendChild(script);
-    } else {
-      initializeMap();
-    }
-
-    return () => {
-      markersRef.current.forEach(marker => marker.setMap(null));
-    };
-  }, [doctors]);
-
-  const initializeMap = () => {
-    const mapOptions = {
-      center: { lat: 40.7128, lng: -74.0060 }, // New York
-      zoom: 12,
-      styles: [
-        {
-          featureType: 'all',
-          elementType: 'all',
-          stylers: [
-            { invert_lightness: true },
-            { saturation: 10 },
-            { lightness: 30 },
-            { gamma: 0.5 },
-            { hue: '#3B82F6' }
-          ]
-        }
-      ]
-    };
-
-    const map = new window.google.maps.Map(mapRef.current, mapOptions);
-
-    // Clear existing markers
-    markersRef.current.forEach(marker => marker.setMap(null));
-    markersRef.current = [];
-
-    // Add markers for each doctor
-    doctors.forEach(doctor => {
-      const marker = new window.google.maps.Marker({
-        position: doctor.location,
-        map,
-        icon: {
-          path: window.google.maps.SymbolPath.CIRCLE,
-          scale: 10,
-          fillColor: '#3B82F6',
-          fillOpacity: 1,
-          strokeColor: '#ffffff',
-          strokeWeight: 2
-        }
-      });
-
-      const infoWindow = new window.google.maps.InfoWindow({
-        content: `
-          <div class="p-2">
-            <h3 class="font-bold">${doctor.name}</h3>
-            <p class="text-sm">${doctor.specialty}</p>
-            <p class="text-sm">${doctor.clinic.address}</p>
-          </div>
-        `
-      });
-
-      marker.addListener('click', () => {
-        infoWindow.open(map, marker);
-        if (onDoctorSelect) {
-          onDoctorSelect(doctor);
-        }
-      });
-
-      markersRef.current.push(marker);
-    });
-  };
-
+const MapView = ({ doctors }) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="map-container"
-    >
-      <div ref={mapRef} className="w-full h-full rounded-lg" />
-    </motion.div>
+    <div className="map-view-container">
+      <div className="map-container">
+        {typeof window !== 'undefined' && (
+          <MapContainer 
+            center={[30.0444, 31.2357]} 
+            zoom={13} 
+            style={{height: "600px", width: "100%", borderRadius: "8px"}}
+          >
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            {doctors.map(doctor => (
+              doctor.location && (
+                <Marker position={doctor.location.coordinates} key={doctor.id}>
+                  <Popup>
+                    <div className="map-popup">
+                      <Image
+                        src={doctor.image}
+                        alt={`${doctor.name}'s profile`}
+                        width={50}
+                        height={50}
+                        className="doctor-marker-image"
+                      />
+                      <h4>{doctor.name}</h4>
+                      <p>{doctor.specialty}</p>
+                      <div className="rating">
+                        <FaStar className="star-icon" />
+                        <span>{doctor.rating}</span>
+                        <span>({doctor.reviews} reviews)</span>
+                      </div>
+                      <button className="book-button">Book Appointment</button>
+                    </div>
+                  </Popup>
+                </Marker>
+              )
+            ))}
+          </MapContainer>
+        )}
+      </div>
+      <div className="map-sidebar">
+        <h3>Doctors Near You</h3>
+        <div className="map-doctors-list">
+          {doctors.map(doctor => (
+            <div key={doctor.id} className="map-doctor-card">
+              <Image
+                src={doctor.image}
+                alt={`${doctor.name}'s profile`}
+                width={80}
+                height={80}
+                className="doctor-info-image"
+              />
+              <div className="map-doctor-info">
+                <h4>{doctor.name}</h4>
+                <p>{doctor.specialty}</p>
+                <div className="rating">
+                  <FaStar className="star-icon" />
+                  <span>{doctor.rating}</span>
+                  <span>({doctor.reviews} reviews)</span>
+                </div>
+                <div className="location">
+                  <FaMapMarkerAlt />
+                  <span>{doctor.location.address}</span>
+                </div>
+                <button className="book-button">Book Now</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 };
 

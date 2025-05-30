@@ -11,11 +11,13 @@ const inter = Inter({
 
 export const metadata = {
   title: {
-    template: "Pearla - Find Your Mystery Pearl | %s",
-    default: "Pearla - Find Your Mystery Pearl",
+    template:
+      "Next.js Portfolio Created with Three.js and Tailwind CSS | %s | CodeBucks",
+    default:
+      "Next.js Portfolio Created with Three.js and Tailwind CSS by CodeBucks",
   },
   description:
-    "Discover your unique pearl journey with Pearla. Explore our collection of timeless pearls, mystery boxes, and custom designs. Find the pearl that speaks to your story.",
+    "A unique creative portfolio designed by CodeBucks with cutting-edge technologies like Next.js, Tailwind CSS, Three.js, and Framer Motion. Experience the art of modern web development firsthand. Checkout CodeBucks on youtube.",
 };
 
 export default function RootLayout({ children }) {

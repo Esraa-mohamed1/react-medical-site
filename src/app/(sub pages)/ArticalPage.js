@@ -367,7 +367,7 @@ const ArticalPage = ({ clientData = {} }) => {
       {/* Footer with quote only */}
       <footer className="article-footer">
         <div className="footer-quote">
-          "Peace comes from within. Do not seek it without." - Buddha
+          &quot;Peace comes from within. Do not seek it without.&quot; - Buddha
         </div>
       </footer>
 

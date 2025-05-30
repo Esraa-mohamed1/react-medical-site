@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+export const dynamic = "force-dynamic";
+
+import React from 'react';
 import DoctorsList from '@/components/DoctorsList/DoctorsList';
-import '@/styles/DoctorsList.css';
 
 export default function DoctorsPage() {
   return (
