@@ -79,7 +79,7 @@ body {
   background-color: var(--secondary-purple);
 }
 .hero-class{
-    background: linear-gradient(135deg, var(--secondary-purple), var(--dark-purple));
+    background: linear-gradient(135deg, #0d7ceb, #aa73e6);
   position: relative;
   overflow: hidden;
 }

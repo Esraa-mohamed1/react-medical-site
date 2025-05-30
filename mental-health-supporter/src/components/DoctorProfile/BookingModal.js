@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form, Row, Col, Alert } from 'react-bootstrap';
 import { FaUser, FaPhone, FaEnvelope, FaCalendarDay, FaInfoCircle } from 'react-icons/fa';
-import { PayPalButton } from 'react-paypal-button-v2';
+import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 
 const BookingModal = ({ show, onHide, selectedSlot }) => {
   const [formData, setFormData] = useState({
@@ -48,7 +48,7 @@ const BookingModal = ({ show, onHide, selectedSlot }) => {
     }, 1000);
   };
 
-  const handlePaymentSuccess = (details, data) => {
+  const handlePaymentSuccess = (details) => {
     setPaymentCompleted(true);
     setSubmitStatus({
       type: 'success',
@@ -92,7 +92,6 @@ const BookingModal = ({ show, onHide, selectedSlot }) => {
               placeholder="Enter patient name"
               value={formData.name}
               onChange={handleChange}
-              className="text-start"
               required
             />
             <Form.Control.Feedback type="invalid">
@@ -120,7 +119,6 @@ const BookingModal = ({ show, onHide, selectedSlot }) => {
                   placeholder="Enter phone number"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="text-start"
                   required
                 />
                 <Form.Control.Feedback type="invalid">
@@ -141,7 +139,6 @@ const BookingModal = ({ show, onHide, selectedSlot }) => {
               placeholder="example@email.com"
               value={formData.email}
               onChange={handleChange}
-              className="text-start"
             />
           </Form.Group>
 
@@ -154,7 +151,6 @@ const BookingModal = ({ show, onHide, selectedSlot }) => {
               placeholder="Any additional information..."
               value={formData.notes}
               onChange={handleChange}
-              className="text-start"
             />
           </Form.Group>
 
@@ -174,13 +170,19 @@ const BookingModal = ({ show, onHide, selectedSlot }) => {
 
         {!paymentCompleted && (
           <div className="mt-4">
-            <PayPalButton
-              amount="10.00"
-              onSuccess={handlePaymentSuccess}
-              options={{
-                clientId: 'AYxEkVx6AWNMRdcLDVReuhZLoGrn0aTzPPJG_9HjzPXWF9HXWxDJajJxfrtx8VKNOxgd5OUrvj77VKJT'
-              }}
-            />
+            <PayPalScriptProvider options={{ "client-id": "AYxEkVx6AWNMRdcLDVReuhZLoGrn0aTzPPJG_9HjzPXWF9HXWxDJajJxfrtx8VKNOxgd5OUrvj77VKJT" }}>
+              <PayPalButtons
+                style={{ layout: "horizontal" }}
+                createOrder={(data, actions) => {
+                  return actions.order.create({
+                    purchase_units: [{ amount: { value: "10.00" } }],
+                  });
+                }}
+                onApprove={(data, actions) => {
+                  return actions.order.capture().then(handlePaymentSuccess);
+                }}
+              />
+            </PayPalScriptProvider>
           </div>
         )}
       </Modal.Body>

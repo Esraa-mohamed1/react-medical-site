@@ -6,6 +6,7 @@ import RegisterPage from "./pages/RegisterPage";
 import DoctorsList from './components/DoctorsList/DoctorsList'; 
 import DoctorRegister from './components/DoctorsRegister/DoctorRegister';
 import MentalHealthArticle from './pages/MentalHealthArticle';
+import DoctorPage from './pages/DoctorPage';
 
 function App() {
   return (
@@ -18,7 +19,12 @@ function App() {
         <Route path="/artical" element={<MentalHealthArticle />} />
         <Route path="/doctors" element={<DoctorsList />} />
         <Route path="/doctor-register" element={<DoctorRegister />} />
+        <Route path="/doctorDetails" element={<DoctorPage />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
+    
+          
+          {/* <Route path="/" element={<DoctorPage />} /> */}
+     
       </Routes>
     </Router>
     )
