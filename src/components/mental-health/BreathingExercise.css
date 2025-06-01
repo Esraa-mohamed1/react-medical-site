@@ -1,0 +1,155 @@
+.breathing-exercise {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.breathing-circle {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 1s ease-in-out;
+  position: relative;
+  background: linear-gradient(135deg, #4a90e2, #67b26f);
+}
+
+.breathing-circle[data-phase="inhale"] {
+  animation: inhale 4s ease-in-out;
+  background: linear-gradient(135deg, #4a90e2, #67b26f);
+}
+
+.breathing-circle[data-phase="hold"] {
+  animation: hold 4s ease-in-out;
+  background: linear-gradient(135deg, #67b26f, #4ca2cd);
+}
+
+.breathing-circle[data-phase="exhale"] {
+  animation: exhale 6s ease-in-out;
+  background: linear-gradient(135deg, #4ca2cd, #4a90e2);
+}
+
+.breathing-circle[data-phase="rest"] {
+  animation: rest 2s ease-in-out;
+  background: linear-gradient(135deg, #4a90e2, #67b26f);
+}
+
+.circle-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  text-align: center;
+}
+
+.count {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.phase {
+  font-size: 1.2rem;
+  text-transform: capitalize;
+  margin-top: 0.5rem;
+}
+
+.breathing-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.instructions {
+  font-size: 1.2rem;
+  text-align: center;
+  color: #333;
+  margin: 0;
+}
+
+.cycle-info {
+  font-size: 1rem;
+  color: #666;
+  margin: 0;
+}
+
+.control-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.control-button {
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.control-button.start {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.control-button.stop {
+  background-color: #e24a4a;
+  color: white;
+}
+
+.control-button.reset {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.control-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes inhale {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes hold {
+  0% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes exhale {
+  0% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes rest {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+  }
+} 

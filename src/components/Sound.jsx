@@ -29,7 +29,6 @@ const Modal = ({ onClose, toggle }) => {
         </div>
       </div>
     </div>,
-
     document.getElementById("my-modal")
   );
 };
@@ -38,22 +37,32 @@ const Sound = () => {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [hasUserInteracted, setHasUserInteracted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
 
-  const handleFirstUserInteraction = useCallback(() => {
-    if (audioRef.current) {
-      audioRef.current.play()
-        .then(() => {
-          setIsPlaying(true);
-          localStorage.setItem('hasInteracted', 'true');
-        })
-        .catch(error => {
-          console.error('Error playing audio:', error);
-        });
+  const handleFirstUserInteraction = useCallback(async () => {
+    if (!audioRef.current || hasUserInteracted) return;
+
+    try {
+      // First try to play with muted audio
+      audioRef.current.muted = true;
+      await audioRef.current.play();
+      
+      // If successful, unmute and play
+      audioRef.current.muted = false;
+      setIsMuted(false);
+      setIsPlaying(true);
+      setHasUserInteracted(true);
+      localStorage.setItem('hasInteracted', 'true');
+    } catch (error) {
+      console.log('Audio playback prevented:', error);
+      setShowModal(true);
     }
-  }, []);
+  }, [hasUserInteracted]);
 
   useEffect(() => {
     const hasInteracted = localStorage.getItem('hasInteracted') === 'true';
+    setHasUserInteracted(hasInteracted);
     
     if (hasInteracted) {
       handleFirstUserInteraction();
@@ -76,21 +85,40 @@ const Sound = () => {
     };
   }, [handleFirstUserInteraction]);
 
-  const toggle = () => {
-    const newState = !isPlaying;
-    setIsPlaying(!isPlaying);
-    newState ? audioRef.current.play() : audioRef.current.pause();
-    localStorage.setItem("musicConsent", String(newState));
-    localStorage.setItem("consentTime", new Date().toISOString());
-    setShowModal(false);
+  const toggle = async () => {
+    if (!hasUserInteracted) {
+      setShowModal(true);
+      return;
+    }
+
+    try {
+      const newState = !isPlaying;
+      setIsPlaying(newState);
+      
+      if (audioRef.current) {
+        if (newState) {
+          await audioRef.current.play();
+        } else {
+          audioRef.current.pause();
+        }
+      }
+      
+      localStorage.setItem("musicConsent", String(newState));
+      localStorage.setItem("consentTime", new Date().toISOString());
+      setShowModal(false);
+    } catch (error) {
+      console.log('Error toggling audio:', error);
+      setIsPlaying(false);
+    }
   };
+
   return (
     <div className="fixed top-4 right-2.5 xs:right-4 z-50 group">
       {showModal && (
         <Modal onClose={() => setShowModal(false)} toggle={toggle} />
       )}
 
-      <audio ref={audioRef} loop>
+      <audio ref={audioRef} loop muted={isMuted}>
         <source src={"/audio/birds39-forest-20772.mp3"} type="audio/mpeg" />
         your browser does not support the audio element.
       </audio>

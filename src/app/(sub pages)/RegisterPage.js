@@ -1,13 +1,13 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import AuthForm from '../components/AuthForm';
 
 export default function RegisterPage() {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const handleRegister = (data) => {
     console.log('Register data:', data);
-    navigate('/artical');
+    router.push('/artical');
   };
 
   return <AuthForm variant="register" onSubmit={handleRegister} />;

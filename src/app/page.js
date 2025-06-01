@@ -18,11 +18,12 @@ export default function Home() {
         <Navigation />
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <Image
-            src="/pearla.png"
+            src="/images/pearla.png"
             alt="Pearla"
             width={400}
             height={400}
             className="object-contain"
+            priority
           />
         </div>
       </div>

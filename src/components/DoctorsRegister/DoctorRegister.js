@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useNavigate } from 'react-router-dom'; // ✅ Add this
+import { useRouter } from 'next/navigation';
 import './DoctorRegister.css';
 
 const DoctorRegister = () => {
-    const navigate = useNavigate(); // ✅ Hook for navigation
+    const router = useRouter();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -96,7 +96,7 @@ const DoctorRegister = () => {
     bio: ''
   });
 
-  setTimeout(() => navigate('/login'), 2000);
+  setTimeout(() => router.push('/login'), 2000);
 
 } catch (error) {
   console.error('Registration error:', error);

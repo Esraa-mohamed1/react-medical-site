@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import  '../../styles/ProfessionalHelp.css' ;
-import { useNavigate } from 'react-router-dom';
+import '../../styles/ProfessionalHelp.css';
+import { useRouter } from 'next/navigation';
 
 const ProfessionalHelp = ({ angerLevel }) => {
   const [showBooks, setShowBooks] = useState(false);
@@ -10,9 +10,10 @@ const ProfessionalHelp = ({ angerLevel }) => {
     'Anger Management for Dummies by W. Doyle Gentry',
     'The Dance of Anger by Harriet Lerner'
   ];
-  const navigate = useNavigate();
+  const router = useRouter();
+  
   const handleFindTherapist = () => {
-    navigate('/doctors');
+    router.push('/doctors');
   };
 
   return (

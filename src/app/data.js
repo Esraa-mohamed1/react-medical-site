@@ -102,24 +102,6 @@ export const BtnList = [
   { label: "Register", link: "/register", icon: "user-plus", newTab: false },
   { label: "Contact", link: "/contact", icon: "contact", newTab: false },
   {
-    label: "Instagram",
-    link: "https://www.instagram.com/pearla",
-    icon: "instagram",
-    newTab: true,
-  },
-  {
-    label: "Facebook",
-    link: "https://www.facebook.com/pearla",
-    icon: "facebook",
-    newTab: true,
-  },
-  {
-    label: "Pinterest",
-    link: "https://www.pinterest.com/pearla",
-    icon: "pinterest",
-    newTab: true,
-  },
-  {
     label: "Catalog",
     link: "/catalog.pdf",
     icon: "catalog",

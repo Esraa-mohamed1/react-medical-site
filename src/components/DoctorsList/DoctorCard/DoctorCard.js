@@ -1,11 +1,11 @@
 import React from 'react';
 import { FaStar, FaCalendarAlt, FaMapMarkerAlt, FaClock, FaLanguage } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import './DoctorCard.css';
 
 const DoctorCard = ({ doctor }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const renderStars = () => {
     const stars = [];
@@ -88,7 +88,7 @@ const DoctorCard = ({ doctor }) => {
           <button className="primary-button">Book Appointment</button>
           <button
             className="secondary-button"
-            onClick={() => navigate('/doctorDetails')}
+            onClick={() => router.push('/doctorDetails')}
           >
             View Profile
           </button>
