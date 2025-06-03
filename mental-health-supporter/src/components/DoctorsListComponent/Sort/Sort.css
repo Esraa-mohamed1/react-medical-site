@@ -1,0 +1,47 @@
+.sort-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.sort-options {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.sort-label {
+  font-size: 0.95rem;
+  color: #475569;
+  font-weight: 500;
+}
+
+.sort-button {
+  padding: 0.5rem 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #64748b;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.sort-button:hover {
+  color: #3b82f6;
+}
+
+.sort-button.active {
+  color: #3b82f6;
+  border-bottom-color: #3b82f6;
+}
+
+.doctors-count {
+  font-size: 0.95rem;
+  color: #64748b;
+  font-weight: 500;
+}

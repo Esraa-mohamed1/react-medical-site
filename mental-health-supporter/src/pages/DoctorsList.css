@@ -1,0 +1,16 @@
+
+.doctors-list-page {
+  max-width: 90%;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.doctors-list-container {
+  margin-top: 2rem;
+}
+
+.doctors-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
