@@ -1,4 +1,23 @@
-/* Add these new styles at the top of your existing CSS */
+/* Icons styling */
+.icon:not(.star-icon) {
+  color: #3b82f6;
+  opacity: 0.9;
+}
+
+.star-icon {
+  color: #ffc107;
+}
+
+/* Doctor card styling */
+.doctor-card {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
 .doctor-photo-container {
   width: 80px;
   height: 80px;
@@ -15,7 +34,6 @@
   object-fit: cover;
 }
 
-/* Update the doctor-header to include the photo */
 .doctor-header {
   display: flex;
   justify-content: space-between;
@@ -27,16 +45,6 @@
 .doctor-titles {
   flex: 2;
   margin-right: 1rem;
-}
-
-/* Rest of your existing CSS remains the same */
-.doctor-card {
-  background-color: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  margin-bottom: 1.5rem;
-  overflow: hidden;
-  border: 1px solid #e2e8f0;
 }
 
 .doctor-name {
@@ -62,7 +70,7 @@
   display: block;
   font-size: 1.5rem;
   font-weight: 700;
-  color:#1e3a8a;
+  color: #3b82f6;
 }
 
 .rating-count {
@@ -128,31 +136,24 @@
 
 .book-button {
   padding: 0.75rem 1.5rem;
-  background-color: #3b82f6;
-  color: white;
-  border: none;
+  background-color: white;
+  color: #3b82f6;
+  border: 1px solid #3b82f6;
   border-radius: 0.375rem;
   cursor: pointer;
   font-weight: 500;
   font-size: 0.95rem;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
 }
 
 .book-button:hover {
-  background-color: #2563eb;
+  background-color: #eff6ff;
 }
 
 .icon {
   margin-right: 5px;
-  color: #555;
-}
-
-.star-icon {
-  color: #ffc107; /* Gold color for stars */
 }
 
 .doctor-actions .icon {
   margin-right: 8px;
 }
-
-/* Adjust other styles as needed */

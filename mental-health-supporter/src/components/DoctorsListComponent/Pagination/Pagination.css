@@ -1,6 +1,7 @@
 .pagination {
   display: flex;
   justify-content: center;
+  text-align:center;
   flex-wrap: wrap; /* Allow buttons to wrap on small screens */
   gap: 0.5rem; /* Reduced gap for better mobile fit */
   margin: 2.5rem 0;

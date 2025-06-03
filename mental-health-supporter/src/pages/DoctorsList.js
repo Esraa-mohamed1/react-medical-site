@@ -277,12 +277,20 @@ const DoctorsList = () => {
   };
 
   return (
-    <div className="doctors-list-page">
+  <div className="doctors-list-page">
+    {/* Hero section with sticky positioning */}
+    <div className="hero-section sticky-hero">
       <Hero />
-      <SearchFilters 
-        onSearch={handleSearch} 
-        onFilterChange={handleFilterChange}
-      />
+    </div>
+    
+    <div className="content-area">
+      <div className="filters-section">
+        <SearchFilters 
+          onSearch={handleSearch} 
+          onFilterChange={handleFilterChange}
+        />
+      </div>
+      
       <div className="doctors-list-container">
         <Sort 
           activeOption={sortOption}
@@ -307,7 +315,7 @@ const DoctorsList = () => {
         )}
       </div>
     </div>
-  );
+  </div>
+);
 };
-
 export default DoctorsList;

@@ -3,7 +3,6 @@
   padding: 1.5rem;
   border-radius: 0.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  margin-bottom: 2rem;
   border: 1px solid #e2e8f0;
   width: 100%;
   box-sizing: border-box;
@@ -17,13 +16,13 @@
 }
 
 .filter-group {
-  flex: 1 1 200px;
+  flex: 1 1 100%;
   min-width: 0;
   margin-bottom: 0.75rem;
 }
 
 .filter-group.search-by-name {
-  flex: 2 1 300px;
+  flex: 1 1 100%;
 }
 
 .filter-select {
@@ -94,8 +93,9 @@ label {
 
 .filter-actions {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 0.5rem;
+  justify-content: flex-start;
+  margin-top: 1rem;
+  gap: 0.75rem;
 }
 
 .clear-filters-button {
@@ -138,9 +138,5 @@ label {
   
   .search-button {
     padding: 0 1rem;
-  }
-
-  .filter-actions {
-    justify-content: center;
   }
 }
