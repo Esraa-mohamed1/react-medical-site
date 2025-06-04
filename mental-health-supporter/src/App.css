@@ -1,12 +1,4 @@
-:root {
-  --primary-purple: #0056b3;    /* 1 - أزرق غامق */
-  --secondary-purple: #0077cc;  /* 2 - أزرق متوسط */
-  --light-purple: #0099e6;     /* 3 - أزرق فاتح */
-  --dark-purple: #00bfff;      /* 4 - تركوازي */
-  --white: #ffffff;
-  --light-gray: #f8f9fa;
-  --text-dark: #333333;        /* ÷ و = رمادي غامق */
-}
+
 .App {
   text-align: center;
 }
@@ -53,13 +45,13 @@
   background-color: var(--light-gray);
 }
 
-body {
+/* body {
   font-family: 'Tajawal', sans-serif;
   direction: rtl;
   margin: 0;
   padding: 0;
   color: var(--text-dark);
-}
+} */
 
 .section-title {
   color: var(--primary-purple);
@@ -97,3 +89,5 @@ body {
   opacity: 0.1;
   z-index: 0;
 }
+
+
