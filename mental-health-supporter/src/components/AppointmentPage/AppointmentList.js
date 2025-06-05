@@ -18,11 +18,11 @@ export default function AppointmentList() {
     const uniqueIds = new Set(ids);
     
     if (ids.length !== uniqueIds.size) {
-      console.error('Warning: Duplicate appointment IDs found! This will cause update issues.');
+      console.error('Warning: Duplicate appointment IDs found! Assigning new unique IDs.');
       // Assign new unique IDs if duplicates exist
       const fixedAppointments = appointmentData.map((appt, index) => ({
         ...appt,
-        id: appt.id + '-' + index // Append index to make unique
+        id: `${appt.id}-${index}` // Make ID unique by appending index
       }));
       setAppointments(fixedAppointments);
     } else {
@@ -59,10 +59,10 @@ export default function AppointmentList() {
       );
       
       updateStatus(appt.id, 'Approved');
-      await Swal.fire('Approved!',  'Email sent that approved appointment','success');
+      await Swal.fire('Approved!', 'Email sent.', 'success');
     } catch (err) {
       console.error('Error:', err);
-      await Swal.fire('Error', 'error');
+      await Swal.fire('Error', 'Failed to update appointment.', 'error');
     }
   };
 
@@ -83,7 +83,7 @@ export default function AppointmentList() {
       );
       
       updateStatus(appt.id, 'Rejected');
-      await Swal.fire('Rejected', 'Email sent that reject appointment', 'info');
+      await Swal.fire('Rejected', 'Email sent.', 'info');
     } catch (err) {
       console.error('Error:', err);
       await Swal.fire('Error', 'Failed to update appointment.', 'error');
@@ -122,6 +122,18 @@ export default function AppointmentList() {
     });
   };
 
+  // Function to get status display text
+  const getStatusText = (status) => {
+    switch(status) {
+      case 'Approved': return 'Approved';
+      case 'Rejected': return 'Rejected';
+      case 'Completed': return 'Completed';
+      case 'Canceled': return 'Canceled';
+      case 'Waiting': return 'Waiting';
+      default: return status;
+    }
+  };
+
   return (
     <div className="container py-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
@@ -153,37 +165,53 @@ export default function AppointmentList() {
             </tr>
           </thead>
           <tbody className="text-center">
-            {filteredAppointments.map((appt, index) => (
-              <tr key={`${appt.id}-${index}`} className="table-row-custom">
-                <td>{index + 1}</td>
-                <td className="fw-semibold">{appt.patient}</td>
-                <td className="text-muted">{appt.reason}</td>
-                <td>
-                  <span className="badge bg-light text-dark px-2 py-1 border">
-                    {appt.start} - {appt.end}
-                  </span>
-                </td>
-                <td>{appt.date}</td>
-                <td>
-                  <span className={`badge px-3 py-2 text-white rounded-pill me-2
-                    ${appt.status === 'Approved' ? 'bg-primary' :
-                      appt.status === 'Rejected' ? 'bg-danger' :
-                      appt.status === 'Completed' ? 'bg-success' :
-                      appt.status === 'Canceled' ? 'bg-secondary' :
-                      appt.status === 'Waiting' ? 'bg-warning text-dark' : 'bg-light text-dark'}`}>
-                    {appt.status}
-                  </span>
-                  {appt.status === 'Waiting' && (
-                    <button
-                      className="btn btn-sm btn-info text-white rounded-pill px-3"
-                      onClick={() => handleView(appt)}
-                    >
-                      View
-                    </button>
-                  )}
+            {filteredAppointments.length > 0 ? (
+              filteredAppointments.map((appt, index) => (
+                <tr key={`${appt.id}-${index}`} className="table-row-custom">
+                  <td>{index + 1}</td>
+                  <td className="fw-semibold">{appt.patient}</td>
+                  <td className="text-muted">{appt.reason}</td>
+                  <td>
+                    <span className="badge bg-light text-dark px-2 py-1 border">
+                      {appt.start} - {appt.end}
+                    </span>
+                  </td>
+                  <td>{appt.date}</td>
+                  <td>
+                    <span className={`badge px-3 py-2 text-white rounded-pill me-2
+                      ${appt.status === 'Approved' ? 'bg-success' :
+                        appt.status === 'Rejected' ? 'bg-danger' :
+                        appt.status === 'Completed' ? 'bg-primary' :
+                        appt.status === 'Canceled' ? 'bg-secondary' :
+                        appt.status === 'Waiting' ? 'bg-warning text-dark' : 'bg-light text-dark'}`}>
+                      {getStatusText(appt.status)}
+                    </span>
+                    {appt.status === 'Waiting' && (
+                      <button
+                        className="btn btn-sm btn-info text-white rounded-pill px-3"
+                        onClick={() => handleView(appt)}
+                      >
+                        View
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="6" className="text-center py-5">
+                  <div className="d-flex flex-column align-items-center">
+                    <i className="bi bi-calendar-x fs-1 text-muted mb-3"></i>
+                    <h5 className="text-muted">No appointments found</h5>
+                    <p className="text-muted">
+                      {statusFilter === 'All' 
+                        ? "There are currently no appointments in the system."
+                        : `There are no ${getStatusText(statusFilter).toLowerCase()} appointments.`}
+                    </p>
+                  </div>
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
