@@ -59,7 +59,7 @@ export default function AppointmentList() {
       );
       
       updateStatus(appt.id, 'Approved');
-      await Swal.fire('Approved!',  'success');
+      await Swal.fire('Approved!',  'Email sent that approved appointment','success');
     } catch (err) {
       console.error('Error:', err);
       await Swal.fire('Error', 'error');
@@ -83,7 +83,7 @@ export default function AppointmentList() {
       );
       
       updateStatus(appt.id, 'Rejected');
-      await Swal.fire('Rejected', 'Email sent and status updated.', 'info');
+      await Swal.fire('Rejected', 'Email sent that reject appointment', 'info');
     } catch (err) {
       console.error('Error:', err);
       await Swal.fire('Error', 'Failed to update appointment.', 'error');
@@ -166,9 +166,9 @@ export default function AppointmentList() {
                 <td>{appt.date}</td>
                 <td>
                   <span className={`badge px-3 py-2 text-white rounded-pill me-2
-                    ${appt.status === 'Approved' ? 'bg-success' :
+                    ${appt.status === 'Approved' ? 'bg-primary' :
                       appt.status === 'Rejected' ? 'bg-danger' :
-                      appt.status === 'Completed' ? 'bg-primary' :
+                      appt.status === 'Completed' ? 'bg-success' :
                       appt.status === 'Canceled' ? 'bg-secondary' :
                       appt.status === 'Waiting' ? 'bg-warning text-dark' : 'bg-light text-dark'}`}>
                     {appt.status}
