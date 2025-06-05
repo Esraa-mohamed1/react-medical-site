@@ -8,6 +8,7 @@ export const appointments = [
     patient: 'Tony Hack',
     reason: 'General Check-up',
     status: 'Completed',
+     email: 'tony@example.com',
   },
   {
     id: 2,
@@ -38,5 +39,17 @@ export const appointments = [
     patient: 'Emily Watford',
     reason: 'Headache',
     status: 'Waiting',
+    email:"emily@gmail.com",
+  },
+    {
+    id: 4,
+    date: '2025-04-25',
+    day: 'TUE',
+    start: '10:00',
+    end: '12:00',
+    patient: 'Alshimaa',
+    reason: 'Headache',
+    status: 'Waiting',
+    email:"alshimaashahat21@gmail.com",
   },
 ];
