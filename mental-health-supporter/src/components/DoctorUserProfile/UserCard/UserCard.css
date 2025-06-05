@@ -1,0 +1,33 @@
+.user-card {
+  background-color: #e6f2ff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.user-card__title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.75rem;
+  color: #0066cc;
+}
+
+.user-card__info {
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.user-card__edit-btn {
+  display: inline-block;
+  background-color: #0077cc;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+  margin-top: 1rem;
+}
+
+.user-card__edit-btn:hover {
+  background-color: #005fa3;
+}
