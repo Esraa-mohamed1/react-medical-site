@@ -10,16 +10,27 @@ const EditDoctor = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate API call
     const fetchDoctor = async () => {
       try {
-        // In a real app, replace with actual API call
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
         const mockDoctor = {
           id: id,
-          name: "John Smith",
-          specialization: "Cardiology",
-          contact: "+1234567890",
-          email: "john.smith@example.com",
+          name: "Mohamed El Anany",
+          title: "Professor of Surgery and oncology",
+          photo: "../components/DoctorsListComponent/images/doctor.png",
+          rating: 4.8,
+          ratingCount: 514,
+          specialty: "General Surgeon",
+          location: "New Cairo : 15 street from 79 street",
+          fee: "600 EGP",
+          waitingTime: "10 Minutes",
+          callCost: "16676 - Cost of regular call",
+          city: "Cairo",
+          area: "New Cairo",
+          insurance: ["Allianz", "MetLife"],
+          email: "m.elanany@example.com",
           license: "MD-12345"
         };
         setDoctor(mockDoctor);
@@ -35,42 +46,55 @@ const EditDoctor = () => {
 
   const handleSubmit = async (updatedDoctor) => {
     try {
-      // Simulate API update
       console.log("Updating doctor:", updatedDoctor);
-      // In a real app, you would call your API here
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Show success message
-      alert("Doctor profile updated successfully!");
+      // In a real app, you would:
+      // 1. Update your state/store
+      // 2. Possibly make an API call to save changes
+      // 3. Then navigate back
       
-      // Navigate back to view page
+      // For now, we'll just log and navigate
       navigate(`/doctors/${id}`);
     } catch (error) {
       console.error("Error updating doctor:", error);
-      alert("Failed to update doctor profile. Please try again.");
+      throw error; // This will be caught in DoctorForm
     }
   };
 
   const handleCancel = () => {
-    navigate(`/doctors/${id}`);
+    if (window.confirm('Are you sure you want to cancel? Any unsaved changes will be lost.')) {
+      navigate(`/doctors/${id}`);
+    }
   };
 
   if (loading) return (
     <div className="loading-container">
-      <div className="loading-spinner"></div>
-      <p>Loading doctor data...</p>
+      <div className="spinner-border text-primary" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+      <p className="mt-3">Loading doctor data...</p>
     </div>
   );
 
-  if (!doctor) return <div className="error-message">Doctor not found</div>;
+  if (!doctor) return (
+    <div className="alert alert-danger error-message">
+      Doctor not found
+    </div>
+  );
 
   return (
-    <div className="edit-doctor-page">
-      <DoctorForm 
-        doctor={doctor} 
-        onSubmit={handleSubmit}
-        onCancel={handleCancel}
-      />
+    <div className="edit-doctor-page container py-4">
+      <div className="row justify-content-center">
+        <div className="col-lg-10">
+          <DoctorForm 
+            doctor={doctor} 
+            onSubmit={handleSubmit}
+            onCancel={handleCancel}
+          />
+        </div>
+      </div>
     </div>
   );
 };

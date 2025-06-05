@@ -1,3 +1,4 @@
+/* Doctor Profile Card - Full Width */
 .doctor-profile-card {
   background: linear-gradient(135deg, #f0f8ff 0%, #e6f2ff 100%);
   border-radius: 12px;
@@ -6,41 +7,64 @@
   margin: 1rem 0;
   border: 1px solid rgba(0, 119, 204, 0.1);
   transition: all 0.3s ease;
-  max-width: 600px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.doctor-profile-card:hover {
-  box-shadow: 0 6px 25px rgba(0, 119, 204, 0.2);
-  transform: translateY(-2px);
-}
-
+/* Profile Header */
 .profile-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 1.5rem;
+  gap: 2rem;
+}
+
+.avatar-container {
   position: relative;
 }
 
-.avatar {
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(135deg, #0077cc 0%, #00a1ff 100%);
-  color: white;
+.doctor-photo {
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-right: 1.5rem;
+  object-fit: cover;
+  border: 3px solid #0077cc;
   box-shadow: 0 4px 8px rgba(0, 119, 204, 0.2);
+}
+
+.header-info {
+  flex: 1;
 }
 
 .doctor-name {
   font-size: 1.75rem;
   font-weight: 600;
   color: #005fa3;
-  margin: 0;
+  margin: 0 0 0.5rem 0;
+}
+
+.doctor-title {
+  display: block;
+  font-size: 1rem;
+  color: #6699cc;
+  margin-bottom: 0.5rem;
+}
+
+.rating-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.rating {
+  color: #ffb400;
+  font-weight: bold;
+}
+
+.rating-count {
+  color: #6699cc;
+  font-size: 0.9rem;
 }
 
 .specialization-badge {
@@ -50,12 +74,13 @@
   border-radius: 20px;
   font-size: 0.85rem;
   font-weight: 500;
-  margin-left: auto;
+  display: inline-block;
 }
 
+/* Profile Details */
 .profile-details {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
   margin-bottom: 2rem;
 }
@@ -78,6 +103,7 @@
   font-weight: 500;
 }
 
+/* Actions */
 .profile-actions {
   display: flex;
   justify-content: flex-end;
@@ -99,29 +125,25 @@
   cursor: pointer;
 }
 
-.edit-button:hover {
-  background: linear-gradient(135deg, #0066b3 0%, #0088dd 100%);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 119, 204, 0.4);
-}
-
-.edit-button i {
-  font-size: 0.9rem;
-}
-
-/* Responsive adjustments */
+/* Responsive */
 @media (max-width: 768px) {
-  .profile-details {
-    grid-template-columns: 1fr;
-  }
-  
   .profile-header {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
   }
   
-  .specialization-badge {
-    margin-left: 0;
-    margin-top: 0.5rem;
+  .doctor-photo {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .profile-actions {
+    justify-content: center;
+  }
+  
+  .edit-button {
+    width: 100%;
+    justify-content: center;
   }
 }

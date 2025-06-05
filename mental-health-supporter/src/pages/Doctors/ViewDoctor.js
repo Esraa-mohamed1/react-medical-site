@@ -10,16 +10,25 @@ const ViewDoctor = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate API call
     const fetchDoctor = async () => {
       try {
-        // In a real app, replace with actual API call
+        // Mock data with all the fields you requested
         const mockDoctor = {
           id: id,
-          name: "John Smith",
-          specialization: "Cardiology",
-          contact: "+1234567890",
-          email: "john.smith@example.com",
+          name: "Mohamed El Anany",
+          title: "Professor of Surgery and oncology",
+          photo: "../components/DoctorsListComponent/images/doctor.png",
+          rating: 4.8,
+          ratingCount: 514,
+          specialty: "General Surgeon",
+          location: "New Cairo : 15 street from 79 street",
+          fee: "600 EGP",
+          waitingTime: "10 Minutes",
+          callCost: "16676 - Cost of regular call",
+          city: "Cairo",
+          area: "New Cairo",
+          insurance: ["Allianz", "MetLife"],
+          email: "m.elanany@example.com",
           license: "MD-12345"
         };
         setDoctor(mockDoctor);
