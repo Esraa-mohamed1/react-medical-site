@@ -51,3 +51,29 @@
   transform: translateY(-1px);
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
+
+.form-select {
+  min-width: 180px;
+}
+
+.status-completed {
+  background-color: #198754 !important;
+  color: white;
+}
+.status-canceled {
+  background-color: #dc3545 !important;
+  color: white;
+}
+.status-waiting {
+  background-color: #ffc107 !important;
+  color: black;
+}
+
+.table-row-custom:hover {
+  background-color: #f8f9fa;
+}
+
+.form-select:focus {
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+  border-color: #86b7fe;
+}
