@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import Hero from '../components/DoctorsListComponent/Hero/Hero';
-import SearchFilters from '../components/DoctorsListComponent/SearchFilters/SearchFilters';
-import Sort from '../components/DoctorsListComponent/Sort/Sort';
-import DoctorsCard from '../components/DoctorsListComponent/DoctorsCard/DoctorsCard';
-import Pagination from '../components/DoctorsListComponent/Pagination/Pagination';
+import Hero from './Hero/Hero';
+import SearchFilters from './SearchFilters/SearchFilters';
+import Sort from './Sort/Sort';
+import DoctorsCard from './DoctorsCard/DoctorsCard';
+import Pagination from './Pagination/Pagination';
 import './DoctorsList.css';
 
 const DoctorsList = () => {
@@ -276,14 +276,35 @@ const DoctorsList = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  return (
+return (
   <div className="doctors-list-page">
-    {/* Hero section with sticky positioning */}
-    <div className="hero-section sticky-hero">
+    {/* Hero section */}
+    <div className="hero-section">
       <Hero />
     </div>
-    
+
+    {/* Main search bar */}
+    <div className="main-search-container">
+      <div className="search-input-container">
+        <input 
+          type="text" 
+          placeholder="Search by name or specialty" 
+          className="search-input"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyPress={(e) => e.key === 'Enter' && handleSearch(searchTerm)}
+        />
+        <button 
+          className="search-button" 
+          onClick={() => handleSearch(searchTerm)}
+        >
+          Search
+        </button>
+      </div>
+    </div>
+
     <div className="content-area">
+      {/* Filters section (left side) */}
       <div className="filters-section">
         <SearchFilters 
           onSearch={handleSearch} 
@@ -292,11 +313,14 @@ const DoctorsList = () => {
       </div>
       
       <div className="doctors-list-container">
+        {/* Sort section */}
         <Sort 
           activeOption={sortOption}
           onChangeSort={handleSortChange}
           doctorsCount={filteredDoctors.length}
         />
+        
+        {/* Doctors cards - one per row */}
         <div className="doctors-cards">
           {currentDoctors.length > 0 ? (
             currentDoctors.map(doctor => (
@@ -306,13 +330,17 @@ const DoctorsList = () => {
             <div className="no-results">No doctors match your search criteria.</div>
           )}
         </div>
-        {filteredDoctors.length > doctorsPerPage && (
-          <Pagination 
-            currentPage={currentPage} 
-            totalPages={totalPages} 
-            paginate={paginate}
-          />
-        )}
+      </div>
+    </div>
+
+    {/* Full-width pagination container - MOVED OUTSIDE content-area */}
+    <div className="pagination-container">
+      <div className="pagination">
+        <Pagination 
+          currentPage={currentPage} 
+          totalPages={totalPages} 
+          paginate={paginate}
+        />
       </div>
     </div>
   </div>

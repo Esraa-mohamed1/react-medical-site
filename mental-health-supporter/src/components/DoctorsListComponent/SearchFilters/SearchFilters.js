@@ -10,15 +10,15 @@ const SearchFilters = ({ onSearch, onFilterChange }) => {
     insurance: ''
   });
 
-  const handleSearch = () => {
-    onSearch(searchInput);
-  };
+  // const handleSearch = () => {
+  //   onSearch(searchInput);
+  // };
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleSearch();
-    }
-  };
+  // const handleKeyPress = (e) => {
+  //   if (e.key === 'Enter') {
+  //     handleSearch();
+  //   }
+  // };
 
   const handleFilterChange = (filterName, value) => {
     setFilters(prev => ({ ...prev, [filterName]: value }));
@@ -104,7 +104,7 @@ const SearchFilters = ({ onSearch, onFilterChange }) => {
           </select>
         </div>
         
-        <div className="filter-group search-by-name">
+        {/* <div className="filter-group search-by-name">
           <label htmlFor="search">Search by name or specialty</label>
           <div className="search-input-container">
             <input 
@@ -120,7 +120,7 @@ const SearchFilters = ({ onSearch, onFilterChange }) => {
               Search
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <div className="filter-actions">

@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ArticalPage from "./pages/ArticalPage";
-import DoctorRegister from './components/DoctorsRegisterComponent/DoctorRegister';
-import DoctorsList from './pages/DoctorsList';
+import DoctorRegister from './pages/DoctorRegisterPage';
+import DoctorsList from './pages/DoctorsListPage';
 
 function App() {
   return (
