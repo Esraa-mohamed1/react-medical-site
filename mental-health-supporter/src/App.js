@@ -19,12 +19,8 @@ function App() {
         <Route path="/artical" element={<MentalHealthArticle />} />
         <Route path="/doctors" element={<DoctorsList />} />
         <Route path="/doctor-register" element={<DoctorRegister />} />
-        <Route path="/doctorDetails" element={<DoctorPage />} />
+        <Route path="/doctors/:doctor_id" element={<DoctorPage />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
-    
-          
-          {/* <Route path="/" element={<DoctorPage />} /> */}
-     
       </Routes>
     </Router>
     )

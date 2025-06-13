@@ -30,8 +30,7 @@ export default function AuthForm({ variant = 'login', onSubmit }) {
     else if (formData.password.length < 6) newErrors.password = 'Password must be at least 6 characters';
 
     if (!isLogin) {
-      if (!formData.name) newErrors.name = 'Name is required';
-
+      if (!formData.name) newErrors.name = 'Username is required';
       if (!formData.confirmPassword) newErrors.confirmPassword = 'Please confirm your password';
       else if (formData.password !== formData.confirmPassword)
         newErrors.confirmPassword = 'Passwords do not match';
@@ -39,6 +38,17 @@ export default function AuthForm({ variant = 'login', onSubmit }) {
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      return;
+    }
+
+    // Extra: prevent empty username/email/password
+    if (!isLogin && (!formData.name || !formData.email || !formData.password)) {
+      setErrors({
+        ...newErrors,
+        name: !formData.name ? 'Username is required' : undefined,
+        email: !formData.email ? 'Email is required' : undefined,
+        password: !formData.password ? 'Password is required' : undefined,
+      });
       return;
     }
 
@@ -55,7 +65,7 @@ export default function AuthForm({ variant = 'login', onSubmit }) {
             <input
               type="text"
               name="name"
-              placeholder="Name"
+              placeholder="Username"
               className={`form-control ${errors.name ? 'is-invalid' : ''}`}
               value={formData.name}
               onChange={handleChange}

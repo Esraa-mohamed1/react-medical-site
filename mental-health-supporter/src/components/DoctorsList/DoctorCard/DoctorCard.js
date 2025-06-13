@@ -81,7 +81,7 @@ const DoctorCard = ({ doctor }) => {
           <button className="primary-button">Book Appointment</button>
           <button
             className="secondary-button"
-            onClick={() => navigate('/doctorDetails')}
+            onClick={() => navigate(`/doctors/${doctor.id}`)}
           >
             View Profile
           </button>

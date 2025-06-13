@@ -4,6 +4,12 @@ import { motion } from 'framer-motion';
 import { FaMapMarkerAlt, FaClock, FaMoneyBillWave, FaProcedures, FaWifi } from 'react-icons/fa';
 
 const ClinicDetails = ({ clinic }) => {
+  // Defensive checks for undefined/null fields
+  const address = clinic?.address || '';
+  const openingHours = clinic?.openingHours || '';
+  const fees = clinic?.fees || '';
+  const services = Array.isArray(clinic?.services) ? clinic.services : (clinic?.services ? String(clinic.services).split(',') : []);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -21,9 +27,9 @@ const ClinicDetails = ({ clinic }) => {
               </div>
               <div>
                 <h6 className="mb-1 fw-bold">Clinic Address</h6>
-                <p className="mb-0 text-muted">{clinic.address}</p>
+                <p className="mb-0 text-muted">{address}</p>
                 <a 
-                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(clinic.address)}`} 
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} 
                   className="text-primary small" 
                   target="_blank" 
                   rel="noopener noreferrer"
@@ -39,7 +45,7 @@ const ClinicDetails = ({ clinic }) => {
               </div>
               <div>
                 <h6 className="mb-1 fw-bold">Working Hours</h6>
-                <p className="mb-0 text-muted">{clinic.openingHours}</p>
+                <p className="mb-0 text-muted">{openingHours}</p>
               </div>
             </ListGroup.Item>
             
@@ -49,7 +55,7 @@ const ClinicDetails = ({ clinic }) => {
               </div>
               <div>
                 <h6 className="mb-1 fw-bold">Consultation Fee</h6>
-                <p className="mb-0 text-muted">{clinic.fees}</p>
+                <p className="mb-0 text-muted">{fees}</p>
                 <small className="text-muted">(Price may vary based on service)</small>
               </div>
             </ListGroup.Item>
@@ -61,7 +67,7 @@ const ClinicDetails = ({ clinic }) => {
               Available Services
             </h6>
             <div className="d-flex flex-wrap gap-2 justify-content-end">
-              {clinic.services.map((service, index) => (
+              {services.map((service, index) => (
                 <Badge 
                   key={index} 
                   pill 

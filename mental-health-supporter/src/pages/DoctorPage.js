@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 import CustomNavbar from '../components/Navbar';
 import HeroSection from '../components/HeroSection';
@@ -7,106 +8,59 @@ import ClinicDetails from '../components/DoctorProfile/ClinicDetails';
 import AppointmentBooking from '../components/DoctorProfile/AppointmentBooking';
 import PatientReviews from '../components/DoctorProfile/PatientReviews';
 import ContactInfo from '../components/DoctorProfile/ContactInfo';
+import { fetchDoctorById } from '../services/api';
 
 const DoctorPage = () => {
-  // Doctor data
-  const doctorData = {
-    id: 1,
-    name: 'Dr. Sarah Johnson',
-    specialty: 'Cardiologist',
-    profilePicture: '/images/1.jpeg',
-    bio: 'Board-certified cardiologist with 12 years of experience. Specializes in preventive cardiology and heart failure management. Completed fellowship at Mayo Clinic.',
-    rating: 4.9,
-    experience: 12,
-    reviewsCount: 215,
-    education: [
-      'MD - Harvard Medical School',
-      'Residency - Massachusetts General Hospital',
-      'Fellowship - Mayo Clinic'
-    ],
-    languages: ['English', 'Spanish']
-  };
+  const { doctor_id } = useParams();
+  const [doctorData, setDoctorData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  // Clinic data
-  const clinicData = {
-    name: 'HeartCare Specialists',
-    address: '123 Medical Center Drive, Boston, MA 02115',
-    fees: '$250',
-    services: [
-      'Cardiac Consultation',
-      'Echocardiography',
-      'Stress Testing',
-      'Holter Monitoring',
-      'Preventive Cardiology'
-    ],
-    openingHours: 'Monday-Friday: 8:00 AM - 5:00 PM'
-  };
-
-  // Available slots
-  const availableSlots = [
-    '9:00 AM - 9:30 AM',
-    '10:00 AM - 10:30 AM',
-    '11:00 AM - 11:30 AM',
-    '2:00 PM - 2:30 PM',
-    '3:00 PM - 3:30 PM'
-  ];
-
-  // Reviews data
-  const reviews = [
-    {
-      id: 1,
-      patientName: 'Michael Brown',
-      rating: 5,
-      comment: 'Dr. Johnson is extremely knowledgeable and took the time to explain everything clearly. The clinic is modern and well-equipped.',
-      date: 'March 15, 2023'
-    },
-    {
-      id: 2,
-      patientName: 'Emily Wilson',
-      rating: 5,
-      comment: 'Excellent bedside manner and thorough examination. I felt completely comfortable throughout my visit.',
-      date: 'February 28, 2023'
+  useEffect(() => {
+    async function getDoctor() {
+      setLoading(true);
+      setError('');
+      try {
+        const data = await fetchDoctorById(doctor_id);
+        setDoctorData(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
     }
-  ];
+    getDoctor();
+  }, [doctor_id]);
 
-  // Contact info
-  const contactInfo = {
-    phone: '(617) 555-0123',
-    email: 'info@heartcare.com',
-    address: '123 Medical Center Drive, Boston, MA 02115',
-    mapLink: 'https://maps.example.com',
-    socialMedia: {
-      facebook: 'https://facebook.com/heartcare',
-      twitter: 'https://twitter.com/heartcare',
-      instagram: 'https://instagram.com/heartcare'
-    }
-  };
+  if (loading) return <div className="text-center my-5">Loading doctor information...</div>;
+  if (error) return <div className="alert alert-danger text-center my-5">{error}</div>;
+  if (!doctorData) return null;
+
+  // You may need to adapt the following to match your backend's doctor data structure
+  const clinicData = doctorData.clinic || {};
+  const availableSlots = doctorData.availableSlots || [];
+  const reviews = doctorData.reviews || [];
+  const contactInfo = doctorData.contact || {};
 
   return (
     <div className="doctor-page-ltr">
       <CustomNavbar />
       <HeroSection doctor={doctorData} />
-      
       <Container className="my-5">
         <Row>
-          {/* Left Column - Doctor Info and Details */}
-          <Col lg={4}>
-             <div className="sticky-top" style={{ top: '20px' }}>
-              <AppointmentBooking slots={availableSlots} />
-            </div>
-           
-          </Col>
-          
-          {/* Right Column - Appointment Booking */}
           <Col lg={8}>
-          <DoctorInfo doctor={doctorData} />
+            <DoctorInfo doctor={doctorData} />
             <ClinicDetails clinic={clinicData} />
             <PatientReviews reviews={reviews} />
             <ContactInfo contact={contactInfo} />
           </Col>
+          <Col lg={4}>
+            <div className="sticky-top" style={{ top: '20px' }}>
+              <AppointmentBooking slots={availableSlots} />
+            </div>
+          </Col>
         </Row>
       </Container>
-      
       <footer className="bg-dark text-white py-4">
         <Container>
           <div className="text-center">
