@@ -15,7 +15,6 @@ const api = axios.create({
 // Add request interceptor
 api.interceptors.request.use(
     async (config) => {
-        await login();
         const token = localStorage.getItem('token'); // Or get from your auth state management
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
@@ -23,6 +22,18 @@ api.interceptors.request.use(
         return config;
     },
     (error) => {
+        return Promise.reject(error);
+    }
+);
+
+// Add response interceptor
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response && error.response.status === 401) {
+            localStorage.removeItem('token'); // Clear token
+            window.location.href = '/admin/login';
+        }
         return Promise.reject(error);
     }
 );

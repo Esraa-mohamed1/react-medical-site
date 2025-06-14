@@ -334,8 +334,8 @@ const DoctorsList = () => {
           {/* Doctors cards - one per row */}
           {currentDoctors.length > 0 ? (
             currentDoctors.map(doctor => (
-              <div className="doctors-cards" key={doctor.doctor_id}>
-                <DoctorsCard doctor={doctor} />
+              <div className="doctors-cards">
+                <DoctorsCard doctor={doctor} key={doctor.doctor_id} />
               </div>
             ))
           ) : (

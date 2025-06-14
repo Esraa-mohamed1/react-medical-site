@@ -9,12 +9,8 @@ const api = axios.create({
     },
 });
 
-export const login = async () => {
+export const login = async (credentials) => {
     try {
-        const credentials = {
-            username: process.env.REACT_APP_USERNAME,
-            password: process.env.REACT_APP_PASSWORD,
-        };
         const response = await api.post('/users/login/', credentials);
 
         if (response.data.access) {

@@ -1,10 +1,14 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import './DoctorsCard.css';
 import doctorPlaceholder from '../images/doctor-placeholder.jpg';
 import doctorImage from '../images/doctor.png';
 import { FaStar, FaUserFriends, FaMapMarkerAlt, FaMoneyBillWave, FaClock, FaPhone, FaUser, FaCalendarAlt } from 'react-icons/fa';
 
 const DoctorsCard = ({ doctor }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="doctor-card" key={doctor.doctor_id}>
       <div className="doctor-header">
@@ -63,7 +67,7 @@ const DoctorsCard = ({ doctor }) => {
       </div>
 
       <div className="doctor-actions">
-        <button className="view-doctor-button">
+        <button onClick={() => navigate(`/doctors-list/${doctor.doctor_id}`)} className="view-doctor-button">
           <FaUser className="icon" /> View Doctor
         </button>
         <button className="book-button">
