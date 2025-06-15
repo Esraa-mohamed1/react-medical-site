@@ -36,6 +36,35 @@ const additionalStyles = {
         cursor: 'pointer',
         marginTop: '1rem',
         fontSize: '1rem',
+    },
+    buttonContainer: {
+        position: 'absolute',
+        top: '2rem',
+        right: '2rem',
+        display: 'flex',
+        gap: '1rem'
+    },
+    cancelButton: {
+        padding: '0.75rem',
+        backgroundColor: '#fff',
+        border: '1px solid #ddd',
+        borderRadius: '8px',
+        cursor: 'pointer',
+        fontSize: '1.2rem',
+        color: '#dc3545',
+        transition: 'all 0.2s ease',
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
+    },
+    actionButton: {
+        padding: '0.75rem',
+        backgroundColor: '#fff',
+        border: '1px solid #ddd',
+        borderRadius: '8px',
+        cursor: 'pointer',
+        fontSize: '1.2rem',
+        color: '#333',
+        transition: 'all 0.2s ease',
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
     }
 };
 
@@ -249,6 +278,12 @@ const DoctorDetailsPage = () => {
         }
     };
 
+    const handleCancel = () => {
+        setEditedDoctor(doctor);
+        setIsEditing(false);
+        setError(null);
+    };
+
     const handleChange = (field, value) => {
         setEditedDoctor(prev => ({
             ...prev,
@@ -282,9 +317,19 @@ const DoctorDetailsPage = () => {
                     <button onClick={handleBack} style={styles.backButton}>
                         ← Back to Doctors
                     </button>
-                    <button onClick={isEditing ? handleSave : handleEdit} style={styles.editButton}>
-                        {isEditing ? '💾' : '✏️'}
-                    </button>
+                    <div style={styles.buttonContainer}>
+                        {isEditing && (
+                            <button onClick={handleCancel} style={styles.cancelButton}>
+                                ❌
+                            </button>
+                        )}
+                        <button 
+                            onClick={isEditing ? handleSave : handleEdit} 
+                            style={styles.actionButton}
+                        >
+                            {isEditing ? '💾' : '✏️'}
+                        </button>
+                    </div>
                     <div style={styles.doctorHeader}>
                         <div style={styles.doctorProfile}>
                             {isEditing ? (
@@ -370,9 +415,17 @@ const DoctorDetailsPage = () => {
                     </div>
 
                     {isEditing && (
-                        <button onClick={handleSave} style={styles.saveButton}>
-                            Save Changes
-                        </button>
+                        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+                            <button 
+                                onClick={handleCancel} 
+                                style={{ ...styles.saveButton, backgroundColor: '#dc3545' }}
+                            >
+                                Cancel
+                            </button>
+                            <button onClick={handleSave} style={styles.saveButton}>
+                                Save Changes
+                            </button>
+                        </div>
                     )}
                 </div>
             </div>
