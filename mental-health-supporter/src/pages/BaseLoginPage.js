@@ -98,7 +98,11 @@ const BaseLoginPage = ({ userType }) => {
             const response = await login(formData);
 
             if (response.data.access) {
-                navigate(`/${userType.toLowerCase()}s-list/${response.data.user_id}/`);
+                if (userType === 'Admin') {
+                    navigate('/doctors-list');
+                } else {
+                    navigate(`/${userType.toLowerCase()}s-list/${response.data.user_id}/`);
+                }
             }
         } catch (err) {
             setError('Invalid username or password');

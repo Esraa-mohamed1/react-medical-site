@@ -22,6 +22,7 @@ function App() {
         <Route path="/artical" element={<MentalHealthArticle />} />
         <Route path="/doctors/login" element={<BaseLoginPage userType={'Doctor'} />} />
         <Route path="/patients/login" element={<BaseLoginPage userType={'Patient'} />} />
+        <Route path="/admin/login" element={<BaseLoginPage userType={'Admin'} />} />
         <Route path="/doctors-list" element={<DoctorsList />} />
         <Route path="/doctors-list/:id" element={<DoctorDetailsPage />} />
         <Route path="/patients-list/:id" element={<PatientDetailsPage />} />
