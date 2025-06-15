@@ -1,4 +1,4 @@
-import { getData } from '../api';
+import { getData, updateData } from '../api';
 
 export const getDoctors = async () => {
     try {
@@ -18,5 +18,16 @@ export const getDoctorById = async (doctorId) => {
     } catch (error) {
         console.error('Error fetching doctor:', error);
         return null;
+    }
+};
+
+// Add this new function to update a doctor
+export const updateDoctor = async (doctorId, doctorData) => {
+    try {
+        const updatedDoctor = await updateData(`/medical/doctors/${doctorId}/update/`, doctorData);
+        return updatedDoctor;
+    } catch (error) {
+        console.error('Error updating doctor:', error);
+        throw error; // Re-throw the error to handle it in the component
     }
 };

@@ -1,10 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getDoctorById } from './../services/doctors/DoctorServices';
+import { getDoctorById, updateDoctor } from './../services/doctors/DoctorServices';
 import doctorPlaceholder from './../components/DoctorsListComponent/images/doctor-placeholder.jpg';
 import doctorImage from './../components/DoctorsListComponent/images/doctor.png';
 
+const additionalStyles = {
+    editButton: {
+        position: 'absolute',
+        top: '2rem',
+        right: '2rem',
+        padding: '0.75rem',
+        backgroundColor: 'white',
+        border: '1px solid #ddd',
+        borderRadius: '8px',
+        cursor: 'pointer',
+        fontSize: '1.2rem',
+        color: '#333',
+        transition: 'all 0.2s ease',
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
+    },
+    editInput: {
+        width: '100%',
+        padding: '0.5rem',
+        fontSize: '1rem',
+        border: '1px solid #ddd',
+        borderRadius: '4px',
+        marginTop: '0.5rem',
+    },
+    saveButton: {
+        padding: '0.75rem 1.5rem',
+        backgroundColor: '#4CAF50',
+        color: 'white',
+        border: 'none',
+        borderRadius: '8px',
+        cursor: 'pointer',
+        marginTop: '1rem',
+        fontSize: '1rem',
+    }
+};
+
 const styles = {
+    ...additionalStyles,
     doctorDetailsPage: {
         padding: '2rem',
         width: '100%',
@@ -173,6 +209,8 @@ const DoctorDetailsPage = () => {
     const [doctor, setDoctor] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editedDoctor, setEditedDoctor] = useState(null);
     const { id } = useParams();
 
     useEffect(() => {
@@ -180,6 +218,7 @@ const DoctorDetailsPage = () => {
             try {
                 const data = await getDoctorById(id);
                 setDoctor(data);
+                setEditedDoctor(data);
             } catch (err) {
                 setError('Failed to fetch doctor details');
                 console.error('Error:', err);
@@ -195,38 +234,102 @@ const DoctorDetailsPage = () => {
         navigate('/doctors-list');
     };
 
+    const handleEdit = () => {
+        setIsEditing(true);
+    };
+
+    const handleSave = async () => {
+        try {
+            const updatedData = await updateDoctor(id, editedDoctor);
+            setDoctor(updatedData);
+            setIsEditing(false);
+        } catch (err) {
+            setError('Failed to update doctor details');
+            console.error('Error:', err);
+        }
+    };
+
+    const handleChange = (field, value) => {
+        setEditedDoctor(prev => ({
+            ...prev,
+            [field]: value
+        }));
+    };
+
     if (loading) return <div style={styles.loading}>Loading...</div>;
     if (error) return <div style={styles.error}>{error}</div>;
     if (!doctor) return <div style={styles.notFound}>Doctor not found</div>;
+
+    const renderValue = (field, label) => {
+        if (isEditing) {
+            return (
+                <input
+                    type="text"
+                    value={editedDoctor[field]}
+                    onChange={(e) => handleChange(field, e.target.value)}
+                    style={styles.editInput}
+                    placeholder={label}
+                />
+            );
+        }
+        return <span style={styles.value}>{doctor[field]}</span>;
+    };
 
     return (
         <div style={styles.doctorDetailsPage}>
             <div style={styles.doctorDetailsContainer}>
                 <div style={styles.headerContainer}>
-                    <button 
-                        onClick={handleBack} 
-                        style={styles.backButton}
-                    >
+                    <button onClick={handleBack} style={styles.backButton}>
                         ← Back to Doctors
+                    </button>
+                    <button onClick={isEditing ? handleSave : handleEdit} style={styles.editButton}>
+                        {isEditing ? '💾' : '✏️'}
                     </button>
                     <div style={styles.doctorHeader}>
                         <div style={styles.doctorProfile}>
-                            <img
-                                src={doctorImage || doctorPlaceholder}
-                                // src={doctor.profile_url || doctorImage || doctorPlaceholder}
-                                alt={doctor.full_name}
-                                style={styles.doctorImage}
-                            />
+                            {isEditing ? (
+                                <div>
+                                    <img
+                                        src={doctorImage || doctorPlaceholder}
+                                        alt={editedDoctor.full_name}
+                                        style={styles.doctorImage}
+                                    />
+                                    <input
+                                        type="text"
+                                        value={editedDoctor.profile_url || ''}
+                                        onChange={(e) => handleChange('profile_url', e.target.value)}
+                                        style={styles.editInput}
+                                        placeholder="Image URL"
+                                    />
+                                </div>
+                            ) : (
+                                <img
+                                    src={doctor.profile_url || doctorImage || doctorPlaceholder}
+                                    alt={doctor.full_name}
+                                    style={styles.doctorImage}
+                                />
+                            )}
                             <div style={styles.doctorBasicInfo}>
-                                <h1 style={styles.title}>{doctor.full_name}</h1>
-                                <h2 style={styles.subtitle}>{doctor.specialization}</h2>
+                                <h1 style={styles.title}>{renderValue('full_name', 'Full Name')}</h1>
+                                <h2 style={styles.subtitle}>{renderValue('specialization', 'Specialization')}</h2>
                                 <div style={styles.availabilityBadge}>
-                                    <span style={{
-                                        ...styles.status,
-                                        ...(doctor.available ? styles.available : styles.unavailable)
-                                    }}>
-                                        {doctor.available ? 'Available' : 'Unavailable'}
-                                    </span>
+                                    {isEditing ? (
+                                        <select
+                                            value={editedDoctor.available}
+                                            onChange={(e) => handleChange('available', e.target.value === 'true')}
+                                            style={styles.editInput}
+                                        >
+                                            <option value={true}>Available</option>
+                                            <option value={false}>Unavailable</option>
+                                        </select>
+                                    ) : (
+                                        <span style={{
+                                            ...styles.status,
+                                            ...(doctor.available ? styles.available : styles.unavailable)
+                                        }}>
+                                            {doctor.available ? 'Available' : 'Unavailable'}
+                                        </span>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -239,11 +342,11 @@ const DoctorDetailsPage = () => {
                         <div style={styles.infoGrid}>
                             <div style={styles.infoItem}>
                                 <span style={styles.label}>Email:</span>
-                                <span style={styles.value}>{doctor.email}</span>
+                                {renderValue('email', 'Email')}
                             </div>
                             <div style={styles.infoItem}>
                                 <span style={styles.label}>Phone:</span>
-                                <span style={styles.value}>{doctor.phone}</span>
+                                {renderValue('phone', 'Phone')}
                             </div>
                         </div>
                     </div>
@@ -253,31 +356,24 @@ const DoctorDetailsPage = () => {
                         <div style={styles.infoGrid}>
                             <div style={styles.infoItem}>
                                 <span style={styles.label}>Clinic Name:</span>
-                                <span style={styles.value}>{doctor.clinic_name}</span>
+                                {renderValue('clinic_name', 'Clinic Name')}
                             </div>
                             <div style={styles.infoItem}>
                                 <span style={styles.label}>City:</span>
-                                <span style={styles.value}>{doctor.city}</span>
+                                {renderValue('city', 'City')}
                             </div>
                             <div style={styles.infoItem}>
                                 <span style={styles.label}>Address:</span>
-                                <span style={styles.value}>{doctor.clinic_address}</span>
+                                {renderValue('clinic_address', 'Clinic Address')}
                             </div>
                         </div>
                     </div>
 
-                    <div style={styles.mapSection}>
-                        <h3 style={styles.sectionTitle}>Location</h3>
-                        <div style={styles.mapContainer}>
-                            <div style={styles.mapPlaceholder}>
-                                Map showing location at:
-                                <br />
-                                Lat: {doctor.latitude}
-                                <br />
-                                Long: {doctor.longitude}
-                            </div>
-                        </div>
-                    </div>
+                    {isEditing && (
+                        <button onClick={handleSave} style={styles.saveButton}>
+                            Save Changes
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
