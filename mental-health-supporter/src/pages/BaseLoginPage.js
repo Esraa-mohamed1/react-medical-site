@@ -72,7 +72,7 @@ const styles = {
     }
 };
 
-const AdminLoginPage = () => {
+const BaseLoginPage = ({ userType }) => {
     const [formData, setFormData] = useState({
         username: '',
         password: ''
@@ -98,7 +98,7 @@ const AdminLoginPage = () => {
             const response = await login(formData);
 
             if (response.data.access) {
-                navigate('/doctors-list');
+                navigate(`/${userType.toLowerCase()}s-list/${response.data.user_id}/`);
             }
         } catch (err) {
             setError('Invalid username or password');
@@ -111,7 +111,7 @@ const AdminLoginPage = () => {
     return (
         <div style={styles.adminLoginContainer}>
             <div style={styles.loginBox}>
-                <h2 style={styles.title}>Admin Login</h2>
+                <h2 style={styles.title}>{userType} Login</h2>
                 {error && <div style={styles.errorMessage}>{error}</div>}
                 <form onSubmit={handleSubmit}>
                     <div style={styles.formGroup}>
@@ -136,8 +136,8 @@ const AdminLoginPage = () => {
                             required
                         />
                     </div>
-                    <button 
-                        type="submit" 
+                    <button
+                        type="submit"
                         style={styles.loginButton}
                         disabled={isLoading}
                     >
@@ -153,4 +153,4 @@ const AdminLoginPage = () => {
     );
 };
 
-export default AdminLoginPage;
+export default BaseLoginPage;

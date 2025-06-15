@@ -7,24 +7,27 @@ import MentalHealthArticle from './pages/MentalHealthArticle';
 import DoctorPage from './pages/DoctorPage';
 import ArticalPage from "./pages/ArticalPage";
 import DoctorsList from './pages/DoctorsListPage';
-import AdminLoginPage from './pages/AdminLoginPage';
+import BaseLoginPage from './pages/BaseLoginPage';
 import DoctorDetailsPage from './pages/DoctorDetailsPage';
+import PatientDetailsPage from './pages/PatientDetailsPage';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/admin/login" replace />} />
+        <Route path="/" element={<Navigate to="/artical" replace />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/artical" element={<ArticalPage />} />
         <Route path="/artical" element={<MentalHealthArticle />} />
-        <Route path="/admin/login" element={<AdminLoginPage />} />
+        <Route path="/doctors/login" element={<BaseLoginPage userType={'Doctor'} />} />
+        <Route path="/patients/login" element={<BaseLoginPage userType={'Patient'} />} />
         <Route path="/doctors-list" element={<DoctorsList />} />
         <Route path="/doctors-list/:id" element={<DoctorDetailsPage />} />
+        <Route path="/patients-list/:id" element={<PatientDetailsPage />} />
         <Route path="/doctor-register" element={<DoctorRegister />} />
         <Route path="/doctorDetails" element={<DoctorPage />} />
-        <Route path="*" element={<Navigate to="/admin/login" replace />} />
+        <Route path="*" element={<Navigate to="/doctors/login" replace />} />
 
 
         {/* <Route path="/" element={<DoctorPage />} /> */}
