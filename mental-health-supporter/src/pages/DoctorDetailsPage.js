@@ -260,7 +260,7 @@ const DoctorDetailsPage = () => {
     }, [id]);
 
     const handleBack = () => {
-        navigate('/doctors-list');
+        navigate('/');
     };
 
     const handleEdit = () => {
@@ -323,8 +323,8 @@ const DoctorDetailsPage = () => {
                                 ❌
                             </button>
                         )}
-                        <button 
-                            onClick={isEditing ? handleSave : handleEdit} 
+                        <button
+                            onClick={isEditing ? handleSave : handleEdit}
                             style={styles.actionButton}
                         >
                             {isEditing ? '💾' : '✏️'}
@@ -416,8 +416,8 @@ const DoctorDetailsPage = () => {
 
                     {isEditing && (
                         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-                            <button 
-                                onClick={handleCancel} 
+                            <button
+                                onClick={handleCancel}
                                 style={{ ...styles.saveButton, backgroundColor: '#dc3545' }}
                             >
                                 Cancel

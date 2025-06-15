@@ -231,10 +231,10 @@ const PatientDetailsPage = () => {
     if (error) return <div style={{ textAlign: 'center', padding: '2rem', color: '#ef4444' }}>{error}</div>;
     if (!patient) return <div style={{ textAlign: 'center', padding: '2rem' }}>Patient not found</div>;
 
-    const renderField = (label, field, type = 'text') => (
+    const renderField = (label, field, type = 'text', editable = true) => (
         <div style={styles.field}>
             <div style={styles.label}>{label}</div>
-            {isEditing ? (
+            {isEditing && editable ? (
                 <input
                     type={type}
                     value={editedPatient[field] || ''}
@@ -242,7 +242,12 @@ const PatientDetailsPage = () => {
                     style={styles.input}
                 />
             ) : (
-                <div style={styles.value}>{patient[field]}</div>
+                <div style={styles.value}>
+                    {field === 'created_at'
+                        ? new Date(patient[field]).toLocaleDateString()
+                        : patient[field]
+                    }
+                </div>
             )}
         </div>
     );
@@ -251,7 +256,7 @@ const PatientDetailsPage = () => {
         <div style={styles.container}>
             <div style={styles.card}>
                 <div style={styles.header}>
-                    <button onClick={() => navigate('/patients-list')} style={styles.backButton}>
+                    <button onClick={() => navigate('/')} style={styles.backButton}>
                         ← Back
                     </button>
                     <div style={styles.buttonsContainer}>
@@ -301,7 +306,7 @@ const PatientDetailsPage = () => {
                         <h2 style={styles.sectionTitle}>👤 Basic Information</h2>
                         <div style={styles.grid}>
                             {renderField('Full Name', 'full_name')}
-                            {renderField('Member Since', 'created_at', 'datetime-local')}
+                            {renderField('Member Since', 'created_at', 'datetime-local', false)}
                         </div>
                     </div>
 
