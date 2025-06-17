@@ -6,6 +6,9 @@ export default function AuthForm({ variant = 'login', onSubmit }) {
 
   const [formData, setFormData] = useState({
     name: '',
+    full_name: '',
+    phone: '',
+    address: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -43,10 +46,11 @@ export default function AuthForm({ variant = 'login', onSubmit }) {
     }
 
     // Extra: prevent empty username/email/password
-    if (!isLogin && (!formData.name || !formData.email || !formData.password)) {
+    if (!isLogin && (!formData.name || !formData.full_name || !formData.email || !formData.password)) {
       setErrors({
         ...newErrors,
         name: !formData.name ? 'Username is required' : undefined,
+        full_name: !formData.full_name ? 'Fullname is required' : undefined,
         email: !formData.email ? 'Email is required' : undefined,
         password: !formData.password ? 'Password is required' : undefined,
       });
@@ -88,17 +92,52 @@ export default function AuthForm({ variant = 'login', onSubmit }) {
         </div>
 
         {!isLogin && (
-          <div className="mb-3">
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-              value={formData.email}
-              onChange={handleChange}
-            />
-            {errors.email && <div className="invalid-feedback">{errors.email}</div>}
-          </div>
+          <>
+            <div className="mb-3">
+              <input
+                type="text"
+                name="full_name"
+                placeholder="Fullname"
+                className={`form-control ${errors.full_name ? 'is-invalid' : ''}`}
+                value={formData.full_name}
+                onChange={handleChange}
+              />
+              {errors.full_name && <div className="invalid-feedback">{errors.full_name}</div>}
+            </div>
+            <div className="mb-3">
+              <input
+                type="text"
+                name="phone"
+                placeholder="Phone"
+                className={`form-control ${errors.phone ? 'is-invalid' : ''}`}
+                value={formData.phone}
+                onChange={handleChange}
+              />
+              {errors.phone && <div className="invalid-feedback">{errors.phone}</div>}
+            </div>
+            <div className="mb-3">
+              <input
+                type="text"
+                name="address"
+                placeholder="Address"
+                className={`form-control ${errors.address ? 'is-invalid' : ''}`}
+                value={formData.address}
+                onChange={handleChange}
+              />
+              {errors.address && <div className="invalid-feedback">{errors.address}</div>}
+            </div>
+            <div className="mb-3">
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                value={formData.email}
+                onChange={handleChange}
+              />
+              {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+            </div>
+          </>
         )}
         <div className="mb-3">
           <input
