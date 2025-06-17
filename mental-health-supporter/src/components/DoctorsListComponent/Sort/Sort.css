@@ -1,0 +1,87 @@
+.sort-container {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e2e8f0;
+  gap: 1rem; /* Add gap for wrapped items */
+}
+
+.sort-options {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap; /* Allow sort buttons to wrap */
+  row-gap: 0.75rem; /* Reduce vertical gap when wrapped */
+}
+
+.sort-label {
+  font-size: 0.95rem;
+  color: #475569;
+  font-weight: 500;
+  white-space: nowrap; /* Prevent label from breaking */
+}
+
+.sort-button {
+  padding: 0.5rem 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #64748b;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+  white-space: nowrap; /* Prevent button text from breaking */
+  position: relative; /* For potential hover/active effects */
+}
+
+.sort-button:hover {
+  color: #3b82f6;
+}
+
+.sort-button.active {
+  color: #3b82f6;
+  border-bottom-color: #3b82f6;
+  font-weight: 600; /* Slightly bolder for active state */
+}
+
+.doctors-count {
+  font-size: 0.95rem;
+  color: #64748b;
+  font-weight: 500;
+  white-space: nowrap; /* Prevent count from breaking */
+  margin-left: auto; /* Push to end when wrapped */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .sort-container {
+    flex-direction: column; /* Stack vertically on small screens */
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .sort-options {
+    gap: 1rem;
+    width: 100%;
+  }
+  
+  .doctors-count {
+    margin-left: 0;
+    align-self: flex-end; /* Align count to right */
+  }
+}
+
+@media (max-width: 480px) {
+  .sort-options {
+    gap: 0.75rem 1rem; /* Smaller gaps on very small screens */
+  }
+  
+  .sort-button {
+    font-size: 0.9rem; /* Slightly smaller text */
+    padding: 0.5rem 0.25rem; /* Adjusted padding */
+  }
+}
