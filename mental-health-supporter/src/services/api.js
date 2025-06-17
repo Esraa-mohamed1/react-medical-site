@@ -15,11 +15,11 @@ export async function registerUser({ name, email, password }) {
   return response.json();
 }
 
-export async function loginUser({ email, password }) {
+export async function loginUser({ name, password }) {
   const response = await fetch(BASE_URL + "login/", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({ username: name, password })
   });
   if (!response.ok) {
     const errorData = await response.json();
@@ -87,6 +87,7 @@ api.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 401) {
       localStorage.removeItem('access'); // Clear token
+      localStorage.removeItem('loggedUser')
       window.location.href = '/login';
     }
     return Promise.reject(error);

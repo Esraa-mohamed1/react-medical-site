@@ -256,7 +256,7 @@ const PatientDetailsPage = () => {
         <div style={styles.container}>
             <div style={styles.card}>
                 <div style={styles.header}>
-                    <button onClick={() => navigate('/')} style={styles.backButton}>
+                    <button onClick={() => navigate('/artical')} style={styles.backButton}>
                         ← Back
                     </button>
                     <div style={styles.buttonsContainer}>

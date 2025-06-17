@@ -13,7 +13,12 @@ export default function LoginPage() {
       const result = await loginUser(data);
       localStorage.setItem('access', result.access);
       localStorage.setItem('refresh', result.refresh);
-      navigate('/artical');
+      localStorage.setItem('loggedUser', JSON.stringify({ ...data, id: result.user_id }));
+      if (data['role'] === 'patient') {
+        navigate('/artical');
+      } else {
+        navigate('/doctors-list/' + result.user_id)
+      }
     } catch (error) {
       setError(error.message);
     }

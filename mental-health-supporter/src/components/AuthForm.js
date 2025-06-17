@@ -9,28 +9,29 @@ export default function AuthForm({ variant = 'login', onSubmit }) {
     email: '',
     password: '',
     confirmPassword: '',
+    role: 'patient', // Add default role
   });
 
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: '' }); 
+    setErrors({ ...errors, [e.target.name]: '' });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const newErrors = {};
-
-    if (!formData.email) newErrors.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Invalid email';
+    if (!formData.name) newErrors.name = 'Username is required';
 
     if (!formData.password) newErrors.password = 'Password is required';
     else if (formData.password.length < 6) newErrors.password = 'Password must be at least 6 characters';
 
     if (!isLogin) {
-      if (!formData.name) newErrors.name = 'Username is required';
+      if (!formData.email) newErrors.email = 'Email is required';
+      else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Invalid email';
+
       if (!formData.confirmPassword) newErrors.confirmPassword = 'Please confirm your password';
       else if (formData.password !== formData.confirmPassword)
         newErrors.confirmPassword = 'Passwords do not match';
@@ -60,32 +61,45 @@ export default function AuthForm({ variant = 'login', onSubmit }) {
       <form className="auth-card" onSubmit={handleSubmit} noValidate>
         <h2 className="auth-title">{isLogin ? 'Log in' : 'Create account'}</h2>
 
-        {!isLogin && (
+        {isLogin && (
           <div className="mb-3">
-            <input
-              type="text"
-              name="name"
-              placeholder="Username"
-              className={`form-control ${errors.name ? 'is-invalid' : ''}`}
-              value={formData.name}
+            <select
+              name="role"
+              className="form-select form-control"
+              value={formData.role}
               onChange={handleChange}
-            />
-            {errors.name && <div className="invalid-feedback">{errors.name}</div>}
+            >
+              <option value="patient">Login as Patient</option>
+              <option value="doctor">Login as Doctor</option>
+            </select>
           </div>
         )}
 
         <div className="mb-3">
           <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-            value={formData.email}
+            type="text"
+            name="name"
+            placeholder="Username"
+            className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+            value={formData.name}
             onChange={handleChange}
           />
-          {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+          {errors.name && <div className="invalid-feedback">{errors.name}</div>}
         </div>
 
+        {!isLogin && (
+          <div className="mb-3">
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+              value={formData.email}
+              onChange={handleChange}
+            />
+            {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+          </div>
+        )}
         <div className="mb-3">
           <input
             type="password"

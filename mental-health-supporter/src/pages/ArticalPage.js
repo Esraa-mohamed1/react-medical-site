@@ -3,8 +3,10 @@ import '../styles/article.css';
 
 const ArticalPage = ({ clientData = {} }) => {
   // Enhanced default values
+
+  const loggedUser = JSON.parse(localStorage.getItem('loggedUser'))
   const {
-    name = 'Client',
+    name = loggedUser['name'] ?? 'Client',
     angerLevel = 50,
     copingStrategies = [
       'Practice deep breathing for 5 minutes',
@@ -137,7 +139,7 @@ const ArticalPage = ({ clientData = {} }) => {
 
   const getTriggerIcon = (trigger) => {
     const triggerLower = trigger.toLowerCase();
-    
+
     if (triggerLower.includes('stress') || triggerLower.includes('pressure')) {
       return '🧨';
     } else if (triggerLower.includes('misunderstood') || triggerLower.includes('ignored')) {
@@ -170,9 +172,26 @@ const ArticalPage = ({ clientData = {} }) => {
         <div className="user-greeting">
           <span className="welcome">Welcome, </span>
           <span className="username">{name}</span>
+          <a 
+            href={`/patients-list/${loggedUser['id']}`} 
+            className="view-profile-link" 
+            style={{
+              marginLeft: '15px',
+              fontSize: '1rem',
+              color: '#4a90e2',
+              textDecoration: 'none',
+              padding: '5px 10px',
+              borderRadius: '4px',
+              backgroundColor: '#f8f9fa',
+              border: '1px solid #e9ecef',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            View Profile →
+          </a>
         </div>
       </header>
-      
+
       <main className="article-content">
         {/* Breathing Exercise Section */}
         <section className={`breathing-exercise ${isBreathingActive ? 'active' : ''}`}>
@@ -183,7 +202,7 @@ const ArticalPage = ({ clientData = {} }) => {
                 {!isBreathingActive ? (
                   <>
                     <p>Try this guided breathing exercise</p>
-                    <button 
+                    <button
                       className="start-breathing"
                       onClick={() => setIsBreathingActive(true)}
                     >
@@ -199,7 +218,7 @@ const ArticalPage = ({ clientData = {} }) => {
                       {breathPhase === 'rest' && 'Rest'}
                     </p>
                     <div className="breath-count">Breaths: {breathCount}</div>
-                    <button 
+                    <button
                       className="stop-breathing"
                       onClick={() => {
                         setIsBreathingActive(false);
@@ -217,7 +236,7 @@ const ArticalPage = ({ clientData = {} }) => {
             <p>Follow the rhythm: 4 seconds in, 4 seconds hold, 4 seconds out, 4 seconds rest</p>
           </div>
         </section>
-        
+
         {/* Anger Profile Section */}
         <section className="anger-profile">
           <h3>Your Anger Profile</h3>
@@ -226,8 +245,8 @@ const ArticalPage = ({ clientData = {} }) => {
               <h4>Current Anger Level</h4>
               <div className="progress-container">
                 <div className="progress-bar">
-                  <div 
-                    className="progress-fill" 
+                  <div
+                    className="progress-fill"
                     style={{ width: `${angerLevel}%` }}
                   ></div>
                 </div>
@@ -239,24 +258,24 @@ const ArticalPage = ({ clientData = {} }) => {
                 <div className="anger-value">{angerLevel}/100</div>
               </div>
             </div>
-            
+
             <div className="metric">
-        <h4>Common Triggers</h4>
-        <ul className="triggers-list">
-          {triggers.map((trigger, index) => (
-            <li key={index}>
-              <span className="trigger-icon">{getTriggerIcon(trigger)}</span>
-              {trigger}
-            </li>
-          ))}
-        </ul>
-      </div>
+              <h4>Common Triggers</h4>
+              <ul className="triggers-list">
+                {triggers.map((trigger, index) => (
+                  <li key={index}>
+                    <span className="trigger-icon">{getTriggerIcon(trigger)}</span>
+                    {trigger}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </section>
 
 
-        
-        
+
+
         {/* Coping Strategies Section */}
         <section className="personalized-tips">
           <h3>Recommended Coping Strategies</h3>
@@ -273,7 +292,7 @@ const ArticalPage = ({ clientData = {} }) => {
                   {index % 5 === 4 && '💪'}
                 </div>
                 <p>{strategy}</p>
-                <button 
+                <button
                   className="try-button"
                   onClick={() => setActiveTip(strategy)}
                 >
@@ -283,7 +302,7 @@ const ArticalPage = ({ clientData = {} }) => {
             ))}
           </div>
         </section>
-        
+
         {/* Professional Help Section */}
         <section className="professional-help">
           <div className="help-content">
@@ -307,7 +326,7 @@ const ArticalPage = ({ clientData = {} }) => {
                 <span className="icon">💬</span>
                 Chat with a Friend
               </button>
-              <button 
+              <button
                 className="resource-button resources"
                 onClick={() => setShowBooksPopup(true)}
               >
@@ -317,7 +336,7 @@ const ArticalPage = ({ clientData = {} }) => {
             </div>
           </div>
         </section>
-        
+
         {/* Mood Tracker Section */}
         <section className="mood-tracker">
           <h3>Track Your Progress</h3>
@@ -327,9 +346,9 @@ const ArticalPage = ({ clientData = {} }) => {
               <div className="progress-circles">
                 {moodData.map((day, index) => (
                   <div key={index} className="circle-container">
-                    <div 
+                    <div
                       className="progress-circle"
-                      style={{ 
+                      style={{
                         background: `conic-gradient(#6e8efb ${day.mood}%, #e9ecef ${day.mood}% 100%)`
                       }}
                     >
@@ -363,7 +382,7 @@ const ArticalPage = ({ clientData = {} }) => {
           </div>
         </section>
       </main>
-      
+
       {/* Footer with quote only */}
       <footer className="article-footer">
         <div className="footer-quote">
@@ -385,7 +404,7 @@ const ArticalPage = ({ clientData = {} }) => {
                 <li key={index}>{step}</li>
               ))}
             </ul>
-            <button 
+            <button
               className="popup-close"
               onClick={() => setActiveTip(null)}
             >
@@ -406,7 +425,7 @@ const ArticalPage = ({ clientData = {} }) => {
                 <li key={index}>📖 {book}</li>
               ))}
             </ul>
-            <button 
+            <button
               className="popup-close"
               onClick={() => setShowBooksPopup(false)}
             >

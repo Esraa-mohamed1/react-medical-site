@@ -314,9 +314,9 @@ const DoctorDetailsPage = () => {
         <div style={styles.doctorDetailsPage}>
             <div style={styles.doctorDetailsContainer}>
                 <div style={styles.headerContainer}>
-                    <button onClick={handleBack} style={styles.backButton}>
+                    {/* <button onClick={handleBack} style={styles.backButton}>
                         ← Back to Doctors
-                    </button>
+                    </button> */}
                     <div style={styles.buttonContainer}>
                         {isEditing && (
                             <button onClick={handleCancel} style={styles.cancelButton}>
