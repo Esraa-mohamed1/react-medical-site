@@ -29,6 +29,7 @@ export async function loginUser({ name, password }) {
 }
 
 export async function registerDoctor(formData) {
+  console.log(formData)
   const response = await fetch("http://127.0.0.1:8000/api/users/register/doctor/", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

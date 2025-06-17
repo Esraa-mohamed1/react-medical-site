@@ -9,6 +9,7 @@ const DoctorRegister = () => {
     const [formData, setFormData] = useState({
         full_name: '',
         specialization: 'Psychiatrist',
+        username: '',
         email: '',
         phone: '',
         clinic_name: '',
@@ -44,6 +45,7 @@ const DoctorRegister = () => {
     const validateForm = () => {
         const newErrors = {};
         if (!formData.full_name.trim()) newErrors.full_name = 'Full name is required';
+        if (!formData.username.trim()) newErrors.username = 'Username is required';
         if (!formData.specialization.trim()) newErrors.specialization = 'Specialization is required';
         if (!formData.email.trim()) {
             newErrors.email = 'Email is required';
@@ -72,6 +74,7 @@ const DoctorRegister = () => {
             setFormData({
                 full_name: '',
                 specialization: 'Psychiatrist',
+                username: '',
                 email: '',
                 phone: '',
                 clinic_name: '',
@@ -84,7 +87,8 @@ const DoctorRegister = () => {
                 password: '',
                 confirmPassword: ''
             });
-            setTimeout(() => navigate('/login'), 2000);
+            navigate('/login');
+            // setTimeout(() => navigate('/login'), 2000);
         } catch (error) {
             setSuccessMessage(error.message || 'Registration failed. Please try again.');
         } finally {
@@ -130,6 +134,17 @@ const DoctorRegister = () => {
                         onChange={handleChange}
                     />
                     {errors.full_name && <div className="invalid-feedback">{errors.full_name}</div>}
+                </div>
+                <div className="mb-3">
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="Username"
+                        className={`form-control ${errors.username ? 'is-invalid' : ''}`}
+                        value={formData.username}
+                        onChange={handleChange}
+                    />
+                    {errors.username && <div className="invalid-feedback">{errors.username}</div>}
                 </div>
                 <div className="mb-3">
                     <input
@@ -212,7 +227,7 @@ const DoctorRegister = () => {
                         onChange={handleChange}
                         step="any"
                     />
-                    <button type="button" className="btn btn-primary" onClick={() => setShowMap(true)} style={{whiteSpace:'nowrap'}}>
+                    <button type="button" className="btn btn-primary" onClick={() => setShowMap(true)} style={{ whiteSpace: 'nowrap' }}>
                         Pick on Map
                     </button>
                 </div>
