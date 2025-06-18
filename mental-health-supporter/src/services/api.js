@@ -28,13 +28,21 @@ export async function loginUser({ name, password }) {
   return response.json();
 }
 
-export async function registerDoctor(formData) {
-  console.log(formData)
-  const response = await fetch("http://127.0.0.1:8000/api/users/register/doctor/", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(formData)
-  });
+export async function registerDoctor(formData, isFormData = false) {
+  let options;
+  if (isFormData) {
+    options = {
+      method: "POST",
+      body: formData // FormData instance
+    };
+  } else {
+    options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData)
+    };
+  }
+  const response = await fetch("http://127.0.0.1:8000/api/users/register/doctor/", options);
   if (!response.ok) {
     const errorData = await response.json();
     throw new Error(errorData.detail || errorData.error || "Doctor registration failed");
