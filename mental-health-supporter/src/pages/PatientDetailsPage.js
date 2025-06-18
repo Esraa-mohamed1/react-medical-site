@@ -175,6 +175,21 @@ const styles = {
         flexDirection: 'column',
         alignItems: 'center',
         gap: '1rem'
+    },
+    showDoctorsButton: {
+        backgroundColor: '#4f46e5',
+        color: 'white',
+        padding: '0.75rem 1.5rem',
+        borderRadius: '8px',
+        border: 'none',
+        cursor: 'pointer',
+        fontSize: '0.875rem',
+        fontWeight: '500',
+        marginLeft: '1rem',
+        transition: 'background-color 0.2s',
+        '&:hover': {
+            backgroundColor: '#4338ca'
+        }
     }
 };
 
@@ -257,7 +272,7 @@ const PatientDetailsPage = () => {
             <div style={styles.card}>
                 <div style={styles.header}>
                     <button onClick={() => navigate('/artical')} style={styles.backButton}>
-                        ← Back
+                        ← Back to Doctors
                     </button>
                     <div style={styles.buttonsContainer}>
                         {isEditing ? (
@@ -270,9 +285,17 @@ const PatientDetailsPage = () => {
                                 </button>
                             </>
                         ) : (
-                            <button onClick={handleEdit} style={{ ...styles.button, ...styles.editButton }}>
-                                Edit Profile
-                            </button>
+                            <>
+                                <button onClick={handleEdit} style={{ ...styles.button, ...styles.editButton }}>
+                                    Edit Profile
+                                </button>
+                                <button
+                                    onClick={() => navigate('/doctors-list')}
+                                    style={{ ...styles.button, ...styles.showDoctorsButton }}
+                                >
+                                    Show All Doctors
+                                </button>
+                            </>
                         )}
                     </div>
                     <div style={styles.profileSection}>

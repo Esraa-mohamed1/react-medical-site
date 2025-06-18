@@ -241,6 +241,7 @@ const DoctorDetailsPage = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [editedDoctor, setEditedDoctor] = useState(null);
     const { id } = useParams();
+    const userRole = JSON.parse(localStorage.getItem('loggedUser'))['role']
 
     useEffect(() => {
         const fetchDoctorDetails = async () => {
@@ -260,7 +261,7 @@ const DoctorDetailsPage = () => {
     }, [id]);
 
     const handleBack = () => {
-        navigate('/');
+        navigate('/artical');
     };
 
     const handleEdit = () => {
@@ -314,22 +315,24 @@ const DoctorDetailsPage = () => {
         <div style={styles.doctorDetailsPage}>
             <div style={styles.doctorDetailsContainer}>
                 <div style={styles.headerContainer}>
-                    {/* <button onClick={handleBack} style={styles.backButton}>
-                        ← Back to Doctors
-                    </button> */}
-                    <div style={styles.buttonContainer}>
-                        {isEditing && (
-                            <button onClick={handleCancel} style={styles.cancelButton}>
-                                ❌
+                    <button onClick={handleBack} style={styles.backButton}>
+                        ← Back
+                    </button>
+                    {userRole === 'doctor' && (
+                        <div style={styles.buttonContainer}>
+                            {isEditing && (
+                                <button onClick={handleCancel} style={styles.cancelButton}>
+                                    ❌
+                                </button>
+                            )}
+                            <button
+                                onClick={isEditing ? handleSave : handleEdit}
+                                style={styles.actionButton}
+                            >
+                                {isEditing ? '💾' : '✏️'}
                             </button>
-                        )}
-                        <button
-                            onClick={isEditing ? handleSave : handleEdit}
-                            style={styles.actionButton}
-                        >
-                            {isEditing ? '💾' : '✏️'}
-                        </button>
-                    </div>
+                        </div>
+                    )}
                     <div style={styles.doctorHeader}>
                         <div style={styles.doctorProfile}>
                             {isEditing ? (
