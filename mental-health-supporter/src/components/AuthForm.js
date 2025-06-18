@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { registerUser, loginUser } from '../api';
 import '../styles/auth.css';
 
 export default function AuthForm({ variant = 'login', onSubmit }) {
@@ -9,62 +10,92 @@ export default function AuthForm({ variant = 'login', onSubmit }) {
     full_name: '',
     phone: '',
     address: '',
+    city: '',
+    profile_url: '',
     email: '',
     password: '',
     confirmPassword: '',
-    role: 'patient', // Add default role
+    role: 'patient',
   });
 
   const [errors, setErrors] = useState({});
+  const [success, setSuccess] = useState('');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setErrors({ ...errors, [e.target.name]: '' });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setSuccess('');
     const newErrors = {};
     if (!formData.name) newErrors.name = 'Username is required';
-
     if (!formData.password) newErrors.password = 'Password is required';
     else if (formData.password.length < 6) newErrors.password = 'Password must be at least 6 characters';
-
     if (!isLogin) {
       if (!formData.email) newErrors.email = 'Email is required';
       else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Invalid email';
-
       if (!formData.confirmPassword) newErrors.confirmPassword = 'Please confirm your password';
       else if (formData.password !== formData.confirmPassword)
         newErrors.confirmPassword = 'Passwords do not match';
+      if (!formData.city) newErrors.city = 'City is required';
+      if (!formData.profile_url) newErrors.profile_url = 'Profile URL is required';
     }
-
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-
-    // Extra: prevent empty username/email/password
-    if (!isLogin && (!formData.name || !formData.full_name || !formData.email || !formData.password)) {
+    if (!isLogin && (!formData.name || !formData.full_name || !formData.email || !formData.password || !formData.city || !formData.profile_url)) {
       setErrors({
         ...newErrors,
         name: !formData.name ? 'Username is required' : undefined,
         full_name: !formData.full_name ? 'Fullname is required' : undefined,
         email: !formData.email ? 'Email is required' : undefined,
         password: !formData.password ? 'Password is required' : undefined,
+        city: !formData.city ? 'City is required' : undefined,
+        profile_url: !formData.profile_url ? 'Profile URL is required' : undefined,
       });
       return;
     }
-
-    onSubmit(formData);
+    try {
+      if (isLogin) {
+        await loginUser({ username: formData.name, password: formData.password });
+        setSuccess('Login successful!');
+      } else {
+        await registerUser({
+          username: formData.name,
+          email: formData.email,
+          password: formData.password,
+          full_name: formData.full_name,
+          phone: formData.phone,
+          address: formData.address,
+          city: formData.city,
+          profile_url: formData.profile_url,
+        });
+        setSuccess('Registration successful! Please check your email for verification.');
+      }
+      setFormData({
+        name: '',
+        full_name: '',
+        phone: '',
+        address: '',
+        city: '',
+        profile_url: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        role: 'patient',
+      });
+    } catch (err) {
+      setErrors({ ...newErrors, form: err.message });
+    }
   };
 
   return (
     <div className="auth-page">
       <form className="auth-card" onSubmit={handleSubmit} noValidate>
         <h2 className="auth-title">{isLogin ? 'Log in' : 'Create account'}</h2>
-
         {isLogin && (
           <div className="mb-3">
             <select
@@ -78,7 +109,6 @@ export default function AuthForm({ variant = 'login', onSubmit }) {
             </select>
           </div>
         )}
-
         <div className="mb-3">
           <input
             type="text"
@@ -90,7 +120,6 @@ export default function AuthForm({ variant = 'login', onSubmit }) {
           />
           {errors.name && <div className="invalid-feedback">{errors.name}</div>}
         </div>
-
         {!isLogin && (
           <>
             <div className="mb-3">
@@ -128,6 +157,28 @@ export default function AuthForm({ variant = 'login', onSubmit }) {
             </div>
             <div className="mb-3">
               <input
+                type="text"
+                name="city"
+                placeholder="City"
+                className={`form-control ${errors.city ? 'is-invalid' : ''}`}
+                value={formData.city}
+                onChange={handleChange}
+              />
+              {errors.city && <div className="invalid-feedback">{errors.city}</div>}
+            </div>
+            <div className="mb-3">
+              <input
+                type="text"
+                name="profile_url"
+                placeholder="Profile URL"
+                className={`form-control ${errors.profile_url ? 'is-invalid' : ''}`}
+                value={formData.profile_url}
+                onChange={handleChange}
+              />
+              {errors.profile_url && <div className="invalid-feedback">{errors.profile_url}</div>}
+            </div>
+            <div className="mb-3">
+              <input
                 type="email"
                 name="email"
                 placeholder="Email"
@@ -150,7 +201,6 @@ export default function AuthForm({ variant = 'login', onSubmit }) {
           />
           {errors.password && <div className="invalid-feedback">{errors.password}</div>}
         </div>
-
         {!isLogin && (
           <div className="mb-3">
             <input
@@ -166,11 +216,11 @@ export default function AuthForm({ variant = 'login', onSubmit }) {
             )}
           </div>
         )}
-
         <button type="submit" className="btn btn-light w-100 mb-2">
           {isLogin ? 'Log in' : 'Register'}
         </button>
-
+        {errors.form && <div className="text-danger text-center">{errors.form}</div>}
+        {success && <div className="text-success text-center">{success}</div>}
         <p className="auth-switch text-center">
           {isLogin ? (
             <>New to MHS? <a href="/register">Create an account</a></>

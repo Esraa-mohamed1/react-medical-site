@@ -11,14 +11,12 @@ export default function LoginPage() {
     setError('');
     try {
       const result = await loginUser(data);
+      console.log('Login data:', data);
+      console.log('Login result:', result);
       localStorage.setItem('access', result.access);
       localStorage.setItem('refresh', result.refresh);
       localStorage.setItem('loggedUser', JSON.stringify({ ...data, id: result.user_id }));
-      if (data['role'] === 'patient') {
-        navigate('/artical');
-      } else {
-        navigate('/doctors-list/' + result.user_id)
-      }
+      navigate('/artical');
     } catch (error) {
       setError(error.message);
     }
