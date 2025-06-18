@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getDoctorById, updateDoctor } from './../services/doctors/DoctorServices';
 import doctorPlaceholder from './../components/DoctorsListComponent/images/doctor-placeholder.jpg';
 import doctorImage from './../components/DoctorsListComponent/images/doctor.png';
+import CustomNavbar from './../components/Navbar';
 
 const additionalStyles = {
     editButton: {
@@ -312,127 +313,130 @@ const DoctorDetailsPage = () => {
     };
 
     return (
-        <div style={styles.doctorDetailsPage}>
-            <div style={styles.doctorDetailsContainer}>
-                <div style={styles.headerContainer}>
-                    {/* <button onClick={handleBack} style={styles.backButton}>
-                        ← Back
-                    </button> */}
-                    {userRole === 'doctor' && (
-                        <div style={styles.buttonContainer}>
-                            {isEditing && (
-                                <button onClick={handleCancel} style={styles.cancelButton}>
-                                    ❌
+        <>
+            <CustomNavbar />
+            <div style={styles.doctorDetailsPage}>
+                <div style={styles.doctorDetailsContainer}>
+                    <div style={styles.headerContainer}>
+                        {/* <button onClick={handleBack} style={styles.backButton}>
+                            ← Back
+                        </button> */}
+                        {userRole === 'doctor' && (
+                            <div style={styles.buttonContainer}>
+                                {isEditing && (
+                                    <button onClick={handleCancel} style={styles.cancelButton}>
+                                        ❌
+                                    </button>
+                                )}
+                                <button
+                                    onClick={isEditing ? handleSave : handleEdit}
+                                    style={styles.actionButton}
+                                >
+                                    {isEditing ? '💾' : '✏️'}
                                 </button>
-                            )}
-                            <button
-                                onClick={isEditing ? handleSave : handleEdit}
-                                style={styles.actionButton}
-                            >
-                                {isEditing ? '💾' : '✏️'}
-                            </button>
-                        </div>
-                    )}
-                    <div style={styles.doctorHeader}>
-                        <div style={styles.doctorProfile}>
-                            {isEditing ? (
-                                <div>
+                            </div>
+                        )}
+                        <div style={styles.doctorHeader}>
+                            <div style={styles.doctorProfile}>
+                                {isEditing ? (
+                                    <div>
+                                        <img
+                                            src={doctorImage || doctorPlaceholder}
+                                            alt={editedDoctor.full_name}
+                                            style={styles.doctorImage}
+                                        />
+                                        <input
+                                            type="text"
+                                            value={editedDoctor.profile_url || ''}
+                                            onChange={(e) => handleChange('profile_url', e.target.value)}
+                                            style={styles.editInput}
+                                            placeholder="Image URL"
+                                        />
+                                    </div>
+                                ) : (
                                     <img
-                                        src={doctorImage || doctorPlaceholder}
-                                        alt={editedDoctor.full_name}
+                                        src={doctor.profile_url || doctorImage || doctorPlaceholder}
+                                        alt={doctor.full_name}
                                         style={styles.doctorImage}
                                     />
-                                    <input
-                                        type="text"
-                                        value={editedDoctor.profile_url || ''}
-                                        onChange={(e) => handleChange('profile_url', e.target.value)}
-                                        style={styles.editInput}
-                                        placeholder="Image URL"
-                                    />
-                                </div>
-                            ) : (
-                                <img
-                                    src={doctor.profile_url || doctorImage || doctorPlaceholder}
-                                    alt={doctor.full_name}
-                                    style={styles.doctorImage}
-                                />
-                            )}
-                            <div style={styles.doctorBasicInfo}>
-                                <h1 style={styles.title}>{renderValue('full_name', 'Full Name')}</h1>
-                                <h2 style={styles.subtitle}>{renderValue('specialization', 'Specialization')}</h2>
-                                <div style={styles.availabilityBadge}>
-                                    {isEditing ? (
-                                        <select
-                                            value={editedDoctor.available}
-                                            onChange={(e) => handleChange('available', e.target.value === 'true')}
-                                            style={styles.editInput}
-                                        >
-                                            <option value={true}>Available</option>
-                                            <option value={false}>Unavailable</option>
-                                        </select>
-                                    ) : (
-                                        <span style={{
-                                            ...styles.status,
-                                            ...(doctor.available ? styles.available : styles.unavailable)
-                                        }}>
-                                            {doctor.available ? 'Available' : 'Unavailable'}
-                                        </span>
-                                    )}
+                                )}
+                                <div style={styles.doctorBasicInfo}>
+                                    <h1 style={styles.title}>{renderValue('full_name', 'Full Name')}</h1>
+                                    <h2 style={styles.subtitle}>{renderValue('specialization', 'Specialization')}</h2>
+                                    <div style={styles.availabilityBadge}>
+                                        {isEditing ? (
+                                            <select
+                                                value={editedDoctor.available}
+                                                onChange={(e) => handleChange('available', e.target.value === 'true')}
+                                                style={styles.editInput}
+                                            >
+                                                <option value={true}>Available</option>
+                                                <option value={false}>Unavailable</option>
+                                            </select>
+                                        ) : (
+                                            <span style={{
+                                                ...styles.status,
+                                                ...(doctor.available ? styles.available : styles.unavailable)
+                                            }}>
+                                                {doctor.available ? 'Available' : 'Unavailable'}
+                                            </span>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div style={styles.doctorContent}>
-                    <div style={styles.infoSection}>
-                        <h3 style={styles.sectionTitle}>Contact Information</h3>
-                        <div style={styles.infoGrid}>
-                            <div style={styles.infoItem}>
-                                <span style={styles.label}>Email:</span>
-                                {renderValue('email', 'Email')}
-                            </div>
-                            <div style={styles.infoItem}>
-                                <span style={styles.label}>Phone:</span>
-                                {renderValue('phone', 'Phone')}
+                    <div style={styles.doctorContent}>
+                        <div style={styles.infoSection}>
+                            <h3 style={styles.sectionTitle}>Contact Information</h3>
+                            <div style={styles.infoGrid}>
+                                <div style={styles.infoItem}>
+                                    <span style={styles.label}>Email:</span>
+                                    {renderValue('email', 'Email')}
+                                </div>
+                                <div style={styles.infoItem}>
+                                    <span style={styles.label}>Phone:</span>
+                                    {renderValue('phone', 'Phone')}
+                                </div>
                             </div>
                         </div>
+
+                        <div style={styles.infoSection}>
+                            <h3 style={styles.sectionTitle}>Clinic Details</h3>
+                            <div style={styles.infoGrid}>
+                                <div style={styles.infoItem}>
+                                    <span style={styles.label}>Clinic Name:</span>
+                                    {renderValue('clinic_name', 'Clinic Name')}
+                                </div>
+                                <div style={styles.infoItem}>
+                                    <span style={styles.label}>City:</span>
+                                    {renderValue('city', 'City')}
+                                </div>
+                                <div style={styles.infoItem}>
+                                    <span style={styles.label}>Address:</span>
+                                    {renderValue('clinic_address', 'Clinic Address')}
+                                </div>
+                            </div>
+                        </div>
+
+                        {isEditing && (
+                            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+                                <button
+                                    onClick={handleCancel}
+                                    style={{ ...styles.saveButton, backgroundColor: '#dc3545' }}
+                                >
+                                    Cancel
+                                </button>
+                                <button onClick={handleSave} style={styles.saveButton}>
+                                    Save Changes
+                                </button>
+                            </div>
+                        )}
                     </div>
-
-                    <div style={styles.infoSection}>
-                        <h3 style={styles.sectionTitle}>Clinic Details</h3>
-                        <div style={styles.infoGrid}>
-                            <div style={styles.infoItem}>
-                                <span style={styles.label}>Clinic Name:</span>
-                                {renderValue('clinic_name', 'Clinic Name')}
-                            </div>
-                            <div style={styles.infoItem}>
-                                <span style={styles.label}>City:</span>
-                                {renderValue('city', 'City')}
-                            </div>
-                            <div style={styles.infoItem}>
-                                <span style={styles.label}>Address:</span>
-                                {renderValue('clinic_address', 'Clinic Address')}
-                            </div>
-                        </div>
-                    </div>
-
-                    {isEditing && (
-                        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-                            <button
-                                onClick={handleCancel}
-                                style={{ ...styles.saveButton, backgroundColor: '#dc3545' }}
-                            >
-                                Cancel
-                            </button>
-                            <button onClick={handleSave} style={styles.saveButton}>
-                                Save Changes
-                            </button>
-                        </div>
-                    )}
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

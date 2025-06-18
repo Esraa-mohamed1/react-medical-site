@@ -2,11 +2,11 @@ import axios from 'axios';
 
 const BASE_URL = "http://127.0.0.1:8000/api/users/";
 
-export async function registerUser({ name, email, password }) {
+export async function registerUser({ full_name, name, email, password, phone, address }) {
   const response = await fetch(BASE_URL + "register/user/", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username: name, email, password }) // send username, not name
+    body: JSON.stringify({ username: name, full_name, phone, address, email, password }) // send username, not name
   });
   if (!response.ok) {
     const errorData = await response.json();

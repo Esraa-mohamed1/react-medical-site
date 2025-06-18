@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getPatientById, updatePatient } from './../services/patients/PatientServices';
 import patientPlaceholder from './../components/DoctorsListComponent/images/doctor-placeholder.jpg';
+import CustomNavbar from './../components/Navbar';
 
 const styles = {
     container: {
@@ -268,83 +269,86 @@ const PatientDetailsPage = () => {
     );
 
     return (
-        <div style={styles.container}>
-            <div style={styles.card}>
-                <div style={styles.header}>
-                    <button onClick={() => navigate('/artical')} style={styles.backButton}>
-                        ← Back to Article
-                    </button>
-                    <div style={styles.buttonsContainer}>
-                        {isEditing ? (
-                            <>
-                                <button onClick={handleCancel} style={{ ...styles.button, ...styles.cancelButton }}>
-                                    Cancel
-                                </button>
-                                <button onClick={handleSave} style={{ ...styles.button, ...styles.saveButton }}>
-                                    Save Changes
-                                </button>
-                            </>
-                        ) : (
-                            <>
-                                <button onClick={handleEdit} style={{ ...styles.button, ...styles.editButton }}>
-                                    Edit Profile
-                                </button>
-                                <button
-                                    onClick={() => navigate('/doctors-list')}
-                                    style={{ ...styles.button, ...styles.showDoctorsButton }}
-                                >
-                                    Show All Doctors
-                                </button>
-                            </>
-                        )}
-                    </div>
-                    <div style={styles.profileSection}>
-                        <div style={styles.imageContainer}>
-                            <img
-                                src={patient.profile_url || patientPlaceholder}
-                                alt={patient.full_name}
-                                style={styles.avatar}
-                            />
-                            {isEditing && (
-                                <input
-                                    type="text"
-                                    placeholder="Enter image URL"
-                                    value={editedPatient.profile_url || ''}
-                                    onChange={(e) => handleChange('profile_url', e.target.value)}
-                                    style={styles.imageInput}
-                                />
+        <>
+            <CustomNavbar />
+            <div style={styles.container}>
+                <div style={styles.card}>
+                    <div style={styles.header}>
+                        {/* <button onClick={() => navigate('/artical')} style={styles.backButton}>
+                            ← Back to Article
+                        </button> */}
+                        <div style={styles.buttonsContainer}>
+                            {isEditing ? (
+                                <>
+                                    <button onClick={handleCancel} style={{ ...styles.button, ...styles.cancelButton }}>
+                                        Cancel
+                                    </button>
+                                    <button onClick={handleSave} style={{ ...styles.button, ...styles.saveButton }}>
+                                        Save Changes
+                                    </button>
+                                </>
+                            ) : (
+                                <>
+                                    <button onClick={handleEdit} style={{ ...styles.button, ...styles.editButton }}>
+                                        Edit Profile
+                                    </button>
+                                    <button
+                                        onClick={() => navigate('/doctors-list')}
+                                        style={{ ...styles.button, ...styles.showDoctorsButton }}
+                                    >
+                                        Show All Doctors
+                                    </button>
+                                </>
                             )}
                         </div>
-                        <div style={styles.profileInfo}>
-                            <h1 style={styles.name}>{patient.full_name}</h1>
-                            <div style={styles.created}>
-                                Member since: {new Date(patient.created_at).toLocaleDateString()}
+                        <div style={styles.profileSection}>
+                            <div style={styles.imageContainer}>
+                                <img
+                                    src={patient.profile_url || patientPlaceholder}
+                                    alt={patient.full_name}
+                                    style={styles.avatar}
+                                />
+                                {isEditing && (
+                                    <input
+                                        type="text"
+                                        placeholder="Enter image URL"
+                                        value={editedPatient.profile_url || ''}
+                                        onChange={(e) => handleChange('profile_url', e.target.value)}
+                                        style={styles.imageInput}
+                                    />
+                                )}
+                            </div>
+                            <div style={styles.profileInfo}>
+                                <h1 style={styles.name}>{patient.full_name}</h1>
+                                <div style={styles.created}>
+                                    Member since: {new Date(patient.created_at).toLocaleDateString()}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style={styles.mainContent}>
+                        <div style={styles.section}>
+                            <h2 style={styles.sectionTitle}>👤 Basic Information</h2>
+                            <div style={styles.grid}>
+                                {renderField('Full Name', 'full_name')}
+                                {renderField('Member Since', 'created_at', 'datetime-local', false)}
+                            </div>
+                        </div>
+
+                        <div style={styles.section}>
+                            <h2 style={styles.sectionTitle}>📞 Contact Information</h2>
+                            <div style={styles.grid}>
+                                {renderField('Email', 'email', 'email')}
+                                {renderField('Phone', 'phone')}
+                                {renderField('Address', 'address')}
+                                {renderField('City', 'city')}
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div style={styles.mainContent}>
-                    <div style={styles.section}>
-                        <h2 style={styles.sectionTitle}>👤 Basic Information</h2>
-                        <div style={styles.grid}>
-                            {renderField('Full Name', 'full_name')}
-                            {renderField('Member Since', 'created_at', 'datetime-local', false)}
-                        </div>
-                    </div>
-
-                    <div style={styles.section}>
-                        <h2 style={styles.sectionTitle}>📞 Contact Information</h2>
-                        <div style={styles.grid}>
-                            {renderField('Email', 'email', 'email')}
-                            {renderField('Phone', 'phone')}
-                            {renderField('Address', 'address')}
-                            {renderField('City', 'city')}
-                        </div>
-                    </div>
-                </div>
             </div>
-        </div>
+        </>
     );
 };
 

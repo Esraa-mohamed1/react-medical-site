@@ -15,7 +15,7 @@ export default function LoginPage() {
       localStorage.setItem('refresh', result.refresh);
       localStorage.setItem('loggedUser', JSON.stringify({ ...data, id: result.user_id }));
       if (data['role'] === 'patient') {
-        navigate('/artical');
+        navigate('/patients-list/' + result.user_id);
       } else {
         navigate('/doctors-list/' + result.user_id)
       }
