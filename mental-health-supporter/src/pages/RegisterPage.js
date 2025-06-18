@@ -13,7 +13,7 @@ export default function RegisterPage() {
     setSuccess('');
     try {
       await registerUser(data);
-      setSuccess('Registration successful! Please check your email.');
+      setSuccess(`Registration successful! A verification email has been sent to ${data.email}. Please check your inbox.`);
       setTimeout(() => navigate('/login'), 2000);
     } catch (error) {
       setError(error.message);

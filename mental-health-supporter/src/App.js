@@ -26,10 +26,11 @@ function App() {
         <Route path="/admin/login" element={<BaseLoginPage userType={'Admin'} />} />
         <Route path="/doctors-list" element={<DoctorsList />} />
         <Route path="/doctors-list/:id" element={<DoctorDetailsPage />} />
+        <Route path="/patients-list" element={<div style={{textAlign: 'center', padding: '2rem'}}>Please select a patient profile to view.</div>} />
         <Route path="/patients-list/:id" element={<PatientDetailsPage />} />
         <Route path="/doctor-register" element={<DoctorRegister />} />
         <Route path="/doctors/:doctor_id" element={<DoctorPage />} />
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
       </Routes>
     </Router>
   )
