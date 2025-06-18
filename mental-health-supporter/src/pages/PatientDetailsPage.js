@@ -272,7 +272,7 @@ const PatientDetailsPage = () => {
             <div style={styles.card}>
                 <div style={styles.header}>
                     <button onClick={() => navigate('/artical')} style={styles.backButton}>
-                        ← Back to Doctors
+                        ← Back to Article
                     </button>
                     <div style={styles.buttonsContainer}>
                         {isEditing ? (
