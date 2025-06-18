@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getDoctorById, updateDoctor } from './../services/doctors/DoctorServices';
 import doctorPlaceholder from './../components/DoctorsListComponent/images/doctor-placeholder.jpg';
 import doctorImage from './../components/DoctorsListComponent/images/doctor.png';
@@ -234,7 +234,7 @@ const styles = {
 };
 
 const DoctorDetailsPage = () => {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const [doctor, setDoctor] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -260,9 +260,9 @@ const DoctorDetailsPage = () => {
         fetchDoctorDetails();
     }, [id]);
 
-    const handleBack = () => {
-        navigate('/artical');
-    };
+    // const handleBack = () => {
+    //     navigate('/artical');
+    // };
 
     const handleEdit = () => {
         setIsEditing(true);
@@ -315,9 +315,9 @@ const DoctorDetailsPage = () => {
         <div style={styles.doctorDetailsPage}>
             <div style={styles.doctorDetailsContainer}>
                 <div style={styles.headerContainer}>
-                    <button onClick={handleBack} style={styles.backButton}>
+                    {/* <button onClick={handleBack} style={styles.backButton}>
                         ← Back
-                    </button>
+                    </button> */}
                     {userRole === 'doctor' && (
                         <div style={styles.buttonContainer}>
                             {isEditing && (
