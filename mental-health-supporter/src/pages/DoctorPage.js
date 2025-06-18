@@ -64,7 +64,7 @@ const DoctorPage = () => {
       <footer className="bg-dark text-white py-4">
         <Container>
           <div className="text-center">
-            <p className="mb-0">© 2023 HeartCare Specialists. All rights reserved.</p>
+            <p className="mb-0">© 2025 HeartCare Specialists. All rights reserved.</p>
           </div>
         </Container>
       </footer>
