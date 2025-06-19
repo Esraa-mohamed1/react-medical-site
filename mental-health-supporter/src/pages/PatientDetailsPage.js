@@ -175,22 +175,34 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: '1rem'
+        gap: '1rem',
+        position: 'relative'
     },
-    showDoctorsButton: {
-        backgroundColor: '#4f46e5',
+    changePhotoOverlay: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '180px',
+        height: '180px',
+        borderRadius: '50%',
+        background: 'rgba(0,0,0,0.45)',
         color: 'white',
-        padding: '0.75rem 1.5rem',
-        borderRadius: '8px',
-        border: 'none',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        opacity: 0,
+        transition: 'opacity 0.2s',
         cursor: 'pointer',
-        fontSize: '0.875rem',
-        fontWeight: '500',
-        marginLeft: '1rem',
-        transition: 'background-color 0.2s',
-        '&:hover': {
-            backgroundColor: '#4338ca'
-        }
+        fontSize: '1.1rem',
+        zIndex: 2
+    },
+    imageContainerHover: {
+        opacity: 1
+    },
+    cameraIcon: {
+        fontSize: '2rem',
+        marginBottom: '0.3rem'
     }
 };
 
@@ -202,6 +214,7 @@ const PatientDetailsPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [imagePreview, setImagePreview] = useState(null); // For local preview
+    const [isHoveringImage, setIsHoveringImage] = useState(false);
     const { id } = useParams();
 
     useEffect(() => {
@@ -310,28 +323,52 @@ const PatientDetailsPage = () => {
                                     <button onClick={handleEdit} style={{ ...styles.button, ...styles.editButton }}>
                                         Edit Profile
                                     </button>
-                                    <button
+                                    {/* <button
                                         onClick={() => navigate('/doctors-list')}
                                         style={{ ...styles.button, ...styles.showDoctorsButton }}
                                     >
                                         Show All Doctors
-                                    </button>
+                                    </button> */}
                                 </>
                             )}
                         </div>
                         <div style={styles.profileSection}>
-                            <div style={styles.imageContainer}>
-                                <img
-                                    src={profileImageSrc}
-                                    alt={patient.full_name}
-                                    style={styles.avatar}
-                                />
-                                {isEditing && (
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={handleImageChange}
-                                        style={styles.imageInput}
+                            <div
+                                style={styles.imageContainer}
+                                onMouseEnter={() => setIsHoveringImage(true)}
+                                onMouseLeave={() => setIsHoveringImage(false)}
+                            >
+                                {isEditing ? (
+                                    <>
+                                        <label htmlFor="profile-image-upload" style={{ cursor: 'pointer', position: 'relative' }}>
+                                            <img
+                                                src={profileImageSrc}
+                                                alt={patient.full_name}
+                                                style={styles.avatar}
+                                            />
+                                            <div
+                                                style={{
+                                                    ...styles.changePhotoOverlay,
+                                                    ...(isHoveringImage ? styles.imageContainerHover : {})
+                                                }}
+                                            >
+                                                <span style={styles.cameraIcon}>📷</span>
+                                                <span>Change Photo</span>
+                                            </div>
+                                        </label>
+                                        <input
+                                            id="profile-image-upload"
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleImageChange}
+                                            style={{ display: 'none' }}
+                                        />
+                                    </>
+                                ) : (
+                                    <img
+                                        src={profileImageSrc}
+                                        alt={patient.full_name}
+                                        style={styles.avatar}
                                     />
                                 )}
                             </div>

@@ -231,16 +231,50 @@ const styles = {
     headerContainer: {
         position: 'relative',
         width: '100%'
-    }
+    },
+    imageContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '1rem',
+        position: 'relative'
+    },
+    changePhotoOverlay: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '250px',
+        height: '250px',
+        borderRadius: '50%',
+        background: 'rgba(0,0,0,0.45)',
+        color: 'white',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        opacity: 0,
+        transition: 'opacity 0.2s',
+        cursor: 'pointer',
+        fontSize: '1.1rem',
+        zIndex: 2
+    },
+    imageContainerHover: {
+        opacity: 1
+    },
+    cameraIcon: {
+        fontSize: '2rem',
+        marginBottom: '0.3rem'
+    },
 };
 
 const DoctorDetailsPage = () => {
-    // const navigate = useNavigate();
     const [doctor, setDoctor] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [editedDoctor, setEditedDoctor] = useState(null);
+    const [imagePreview, setImagePreview] = useState(null);
+    const [isHoveringImage, setIsHoveringImage] = useState(false);
     const { id } = useParams();
     const userRole = JSON.parse(localStorage.getItem('loggedUser'))['role']
 
@@ -250,6 +284,7 @@ const DoctorDetailsPage = () => {
                 const data = await getDoctorById(id);
                 setDoctor(data);
                 setEditedDoctor(data);
+                setImagePreview(null);
             } catch (err) {
                 setError('Failed to fetch doctor details');
                 console.error('Error:', err);
@@ -261,19 +296,14 @@ const DoctorDetailsPage = () => {
         fetchDoctorDetails();
     }, [id]);
 
-    // const handleBack = () => {
-    //     navigate('/artical');
-    // };
-
-    const handleEdit = () => {
-        setIsEditing(true);
-    };
+    const handleEdit = () => setIsEditing(true);
 
     const handleSave = async () => {
         try {
             const updatedData = await updateDoctor(id, editedDoctor);
             setDoctor(updatedData);
             setIsEditing(false);
+            setImagePreview(null);
         } catch (err) {
             setError('Failed to update doctor details');
             console.error('Error:', err);
@@ -284,6 +314,7 @@ const DoctorDetailsPage = () => {
         setEditedDoctor(doctor);
         setIsEditing(false);
         setError(null);
+        setImagePreview(null);
     };
 
     const handleChange = (field, value) => {
@@ -291,6 +322,18 @@ const DoctorDetailsPage = () => {
             ...prev,
             [field]: value
         }));
+    };
+
+    // Handle file input change for profile_image
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setEditedDoctor(prev => ({
+                ...prev,
+                profile_image: file
+            }));
+            setImagePreview(URL.createObjectURL(file));
+        }
     };
 
     if (loading) return <div style={styles.loading}>Loading...</div>;
@@ -312,15 +355,17 @@ const DoctorDetailsPage = () => {
         return <span style={styles.value}>{doctor[field]}</span>;
     };
 
+    // Use imagePreview if available, otherwise use doctor.profile_image or placeholder
+    const profileImageSrc = imagePreview
+        ? imagePreview
+        : (doctor.profile_image || doctorImage || doctorPlaceholder);
+
     return (
         <>
             <CustomNavbar />
             <div style={styles.doctorDetailsPage}>
                 <div style={styles.doctorDetailsContainer}>
                     <div style={styles.headerContainer}>
-                        {/* <button onClick={handleBack} style={styles.backButton}>
-                            ← Back
-                        </button> */}
                         {userRole === 'doctor' && (
                             <div style={styles.buttonContainer}>
                                 {isEditing && (
@@ -338,28 +383,45 @@ const DoctorDetailsPage = () => {
                         )}
                         <div style={styles.doctorHeader}>
                             <div style={styles.doctorProfile}>
-                                {isEditing ? (
-                                    <div>
+                                <div
+                                    style={styles.imageContainer}
+                                    onMouseEnter={() => setIsHoveringImage(true)}
+                                    onMouseLeave={() => setIsHoveringImage(false)}
+                                >
+                                    {isEditing ? (
+                                        <>
+                                            <label htmlFor="doctor-image-upload" style={{ cursor: 'pointer', position: 'relative' }}>
+                                                <img
+                                                    src={profileImageSrc}
+                                                    alt={editedDoctor.full_name}
+                                                    style={styles.doctorImage}
+                                                />
+                                                <div
+                                                    style={{
+                                                        ...styles.changePhotoOverlay,
+                                                        ...(isHoveringImage ? styles.imageContainerHover : {})
+                                                    }}
+                                                >
+                                                    <span style={styles.cameraIcon}>📷</span>
+                                                    <span>Change Photo</span>
+                                                </div>
+                                            </label>
+                                            <input
+                                                id="doctor-image-upload"
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={handleImageChange}
+                                                style={{ display: 'none' }}
+                                            />
+                                        </>
+                                    ) : (
                                         <img
-                                            src={doctorImage || doctorPlaceholder}
-                                            alt={editedDoctor.full_name}
+                                            src={profileImageSrc}
+                                            alt={doctor.full_name}
                                             style={styles.doctorImage}
                                         />
-                                        <input
-                                            type="text"
-                                            value={editedDoctor.profile_url || ''}
-                                            onChange={(e) => handleChange('profile_url', e.target.value)}
-                                            style={styles.editInput}
-                                            placeholder="Image URL"
-                                        />
-                                    </div>
-                                ) : (
-                                    <img
-                                        src={doctor.profile_url || doctorImage || doctorPlaceholder}
-                                        alt={doctor.full_name}
-                                        style={styles.doctorImage}
-                                    />
-                                )}
+                                    )}
+                                </div>
                                 <div style={styles.doctorBasicInfo}>
                                     <h1 style={styles.title}>{renderValue('full_name', 'Full Name')}</h1>
                                     <h2 style={styles.subtitle}>{renderValue('specialization', 'Specialization')}</h2>

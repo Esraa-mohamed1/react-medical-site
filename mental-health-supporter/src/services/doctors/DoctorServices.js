@@ -1,4 +1,4 @@
-import { getData, patchData } from '../api';
+import { getData, updateData } from '../api';
 
 export const getDoctors = async () => {
     try {
@@ -21,12 +21,27 @@ export const getDoctorById = async (doctorId) => {
     }
 };
 
-// Add this new function to update a doctor
+// Update doctor using FormData for file upload
 export const updateDoctor = async (doctorId, doctorData) => {
     try {
         // ignore saving academic_degree_document as it's not maintained on the profile for now
         const { academic_degree_document, ...restDoctorData } = doctorData;
-        const updatedDoctor = await patchData(`/medical/doctors/${doctorId}/update/`, restDoctorData);
+        const formData = new FormData();
+        for (const key in restDoctorData) {
+            if (restDoctorData[key] !== undefined && restDoctorData[key] !== null) {
+                // If profile_image is a File, append it, otherwise skip if it's not a file
+                if (key === 'profile_image' && restDoctorData[key] instanceof File) {
+                    formData.append('profile_image', restDoctorData[key]);
+                } else if (key !== 'profile_image') {
+                    formData.append(key, restDoctorData[key]);
+                }
+            }
+        }
+        const updatedDoctor = await updateData(
+            `/medical/doctors/${doctorId}/update/`,
+            formData,
+            { headers: { 'Content-Type': 'multipart/form-data' } }
+        );
         return updatedDoctor;
     } catch (error) {
         console.error('Error updating doctor:', error);
