@@ -12,6 +12,7 @@ import BaseLoginPage from './pages/BaseLoginPage';
 import DoctorDetailsPage from './pages/DoctorDetailsPage';
 import PatientDetailsPage from './pages/PatientDetailsPage';
 import RegisterSelectPage from './pages/RegisterSelectPage';
+import AccountSettingsPage from './pages/AccountSettingsPage';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/doctors-list/:id" element={<DoctorDetailsPage />} />
         <Route path="/patients-list/:id" element={<PatientDetailsPage />} />
         <Route path="/doctors/:doctor_id" element={<DoctorPage />} />
+        <Route path="/settings" element={<AccountSettingsPage />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>

@@ -125,6 +125,17 @@ export const updateData = async (endpoint, data, config = {}) => {
   }
 };
 
+// POST request
+export const postData = async (endpoint, data) => {
+  try {
+    const response = await api.post(endpoint, data);
+    return response.data;
+  } catch (error) {
+    console.error('Error patching data:', error);
+    throw error;
+  }
+};
+
 // PATCH request
 export const patchData = async (endpoint, data) => {
   try {
