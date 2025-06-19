@@ -1,8 +1,8 @@
 import { getData, updateData } from '../api';
 
-export const getDoctors = async () => {
+export const getDoctors = async (queryParms = "") => {
     try {
-        const doctors = await getData('/medical/doctors/');
+        const doctors = await getData('/medical/doctors/' + queryParms);
         return doctors;
     } catch (error) {
         console.error('Error fetching doctors:', error);
