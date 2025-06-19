@@ -18,7 +18,6 @@ const DoctorRegister = () => {
         latitude: '',
         longitude: '',
         available: true,
-        profile_url: '',
         password: '',
         confirmPassword: ''
     });
@@ -107,7 +106,6 @@ const DoctorRegister = () => {
                 latitude: '',
                 longitude: '',
                 available: true,
-                profile_url: '',
                 password: '',
                 confirmPassword: ''
             });
@@ -262,16 +260,6 @@ const DoctorRegister = () => {
                     lat={formData.latitude}
                     lng={formData.longitude}
                 />
-                <div className="mb-3">
-                    <input
-                        type="text"
-                        name="profile_url"
-                        placeholder="Profile URL"
-                        className="form-control"
-                        value={formData.profile_url}
-                        onChange={handleChange}
-                    />
-                </div>
                 <div className="mb-3">
                     <input
                         type="password"
