@@ -247,7 +247,15 @@ const DoctorDetailsPage = () => {
     useEffect(() => {
         const fetchDoctorDetails = async () => {
             try {
+                console.log('Fetching doctor with id:', id); // Debug: log id
                 const data = await getDoctorById(id);
+                console.log('Fetched doctor data:', data); // Debug: log data
+                if (!data || Object.keys(data).length === 0) {
+                    setError('No doctor data found.');
+                    setDoctor(null);
+                    setEditedDoctor(null);
+                    return;
+                }
                 setDoctor(data);
                 setEditedDoctor(data);
             } catch (err) {
