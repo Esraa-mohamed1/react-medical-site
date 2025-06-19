@@ -6,7 +6,8 @@ export async function registerUser({ full_name, name, email, password, phone, ad
   const response = await fetch(BASE_URL + "register/user/", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username: name, full_name, phone, address, email, password }) // send username, not name
+    body: JSON.stringify({ username: name, full_name, phone, address, email, password })
+
   });
   if (!response.ok) {
     const errorData = await response.json();
@@ -79,9 +80,14 @@ const api = axios.create({
 // Add request interceptor
 api.interceptors.request.use(
   async (config) => {
-    const token = localStorage.getItem('access'); // Or get from your auth state management
+    // Always get the latest token from localStorage
+    const token = localStorage.getItem('access');
     if (token) {
+      config.headers = config.headers || {};
       config.headers.Authorization = `Bearer ${token}`;
+    } else {
+      // Optionally, you can log or handle missing token here
+      console.warn('No access token found in localStorage');
     }
     return config;
   },
@@ -96,8 +102,9 @@ api.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 401) {
       localStorage.removeItem('access'); // Clear token
-      localStorage.removeItem('loggedUser')
-      window.location.href = '/login';
+      localStorage.removeItem('loggedUser');
+      // Do NOT redirect to login, just clear tokens
+      // Optionally, you can set a global state or show a message here
     }
     return Promise.reject(error);
   }
@@ -135,3 +142,12 @@ export const patchData = async (endpoint, data) => {
     throw error;
   }
 };
+
+// Utility: Ensure tokens and user info are set in localStorage for API auth
+export function setAuthTokens({ access, refresh, user_id, username }) {
+  if (access) localStorage.setItem('access', access);
+  if (refresh) localStorage.setItem('refresh', refresh);
+  if (user_id && username) {
+    localStorage.setItem('loggedUser', JSON.stringify({ user_id, username }));
+  }
+}
