@@ -201,6 +201,7 @@ const PatientDetailsPage = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [imagePreview, setImagePreview] = useState(null); // For local preview
     const { id } = useParams();
 
     useEffect(() => {
@@ -209,6 +210,7 @@ const PatientDetailsPage = () => {
                 const data = await getPatientById(id);
                 setPatient(data);
                 setEditedPatient(data);
+                setImagePreview(null);
             } catch (err) {
                 setError('Failed to fetch patient details');
                 console.error('Error:', err);
@@ -224,6 +226,7 @@ const PatientDetailsPage = () => {
     const handleCancel = () => {
         setEditedPatient(patient);
         setIsEditing(false);
+        setImagePreview(null);
     };
 
     const handleSave = async () => {
@@ -231,6 +234,7 @@ const PatientDetailsPage = () => {
             const updatedData = await updatePatient(id, editedPatient);
             setPatient(updatedData);
             setIsEditing(false);
+            setImagePreview(null);
         } catch (err) {
             setError('Failed to update patient details');
         }
@@ -241,6 +245,18 @@ const PatientDetailsPage = () => {
             ...prev,
             [field]: value
         }));
+    };
+
+    // Handle file input change for profile_image
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setEditedPatient(prev => ({
+                ...prev,
+                profile_image: file
+            }));
+            setImagePreview(URL.createObjectURL(file));
+        }
     };
 
     if (loading) return <div style={{ textAlign: 'center', padding: '2rem' }}>Loading...</div>;
@@ -268,15 +284,17 @@ const PatientDetailsPage = () => {
         </div>
     );
 
+    // Use imagePreview if available, otherwise use patient.profile_image or placeholder
+    const profileImageSrc = imagePreview
+        ? imagePreview
+        : (patient.profile_image || patientPlaceholder);
+
     return (
         <>
             <CustomNavbar />
             <div style={styles.container}>
                 <div style={styles.card}>
                     <div style={styles.header}>
-                        {/* <button onClick={() => navigate('/artical')} style={styles.backButton}>
-                            ← Back to Article
-                        </button> */}
                         <div style={styles.buttonsContainer}>
                             {isEditing ? (
                                 <>
@@ -304,16 +322,15 @@ const PatientDetailsPage = () => {
                         <div style={styles.profileSection}>
                             <div style={styles.imageContainer}>
                                 <img
-                                    src={patient.profile_url || patientPlaceholder}
+                                    src={profileImageSrc}
                                     alt={patient.full_name}
                                     style={styles.avatar}
                                 />
                                 {isEditing && (
                                     <input
-                                        type="text"
-                                        placeholder="Enter image URL"
-                                        value={editedPatient.profile_url || ''}
-                                        onChange={(e) => handleChange('profile_url', e.target.value)}
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleImageChange}
                                         style={styles.imageInput}
                                     />
                                 )}

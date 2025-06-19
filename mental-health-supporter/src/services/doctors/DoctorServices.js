@@ -1,4 +1,4 @@
-import { getData, updateData } from '../api';
+import { getData, patchData } from '../api';
 
 export const getDoctors = async () => {
     try {
@@ -24,7 +24,9 @@ export const getDoctorById = async (doctorId) => {
 // Add this new function to update a doctor
 export const updateDoctor = async (doctorId, doctorData) => {
     try {
-        const updatedDoctor = await updateData(`/medical/doctors/${doctorId}/update/`, doctorData);
+        // ignore saving academic_degree_document as it's not maintained on the profile for now
+        const { academic_degree_document, ...restDoctorData } = doctorData;
+        const updatedDoctor = await patchData(`/medical/doctors/${doctorId}/update/`, restDoctorData);
         return updatedDoctor;
     } catch (error) {
         console.error('Error updating doctor:', error);

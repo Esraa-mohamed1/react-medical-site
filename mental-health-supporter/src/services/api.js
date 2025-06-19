@@ -115,9 +115,9 @@ export const getData = async (endpoint) => {
 };
 
 // PUT request
-export const updateData = async (endpoint, data) => {
+export const updateData = async (endpoint, data, config = {}) => {
   try {
-    const response = await api.put(endpoint, data);
+    const response = await api.put(endpoint, data, config);
     return response.data;
   } catch (error) {
     console.error('Error updating data:', error);

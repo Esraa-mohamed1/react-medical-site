@@ -10,7 +10,6 @@ export const getPatients = async () => {
     }
 };
 
-// If you need to get a specific doctor by ID
 export const getPatientById = async (patientId) => {
     try {
         const doctor = await getData(`/medical/patients/${patientId}/`);
@@ -21,13 +20,28 @@ export const getPatientById = async (patientId) => {
     }
 };
 
-// Add this new function to update a doctor
-export const updatePatient = async (patientId, doctorData) => {
+// Update patient using FormData for file upload
+export const updatePatient = async (patientId, patientData) => {
     try {
-        const updatedDoctor = await updateData(`/medical/patients/${patientId}/update/`, doctorData);
-        return updatedDoctor;
+        const formData = new FormData();
+        for (const key in patientData) {
+            if (patientData[key] !== undefined && patientData[key] !== null) {
+                // If profile_image is a File, append it, otherwise skip if it's not a file
+                if (key === 'profile_image' && patientData[key] instanceof File) {
+                    formData.append('profile_image', patientData[key]);
+                } else if (key !== 'profile_image') {
+                    formData.append(key, patientData[key]);
+                }
+            }
+        }
+        const updatedPatient = await updateData(
+            `/medical/patients/${patientId}/update/`,
+            formData,
+            { headers: { 'Content-Type': 'multipart/form-data' } }
+        );
+        return updatedPatient;
     } catch (error) {
         console.error('Error updating patient:', error);
-        throw error; // Re-throw the error to handle it in the component
+        throw error;
     }
 };
