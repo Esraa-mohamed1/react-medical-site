@@ -8,7 +8,7 @@ export default function RegisterPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  const handleRegister = async (data) => {
+  const handleRegister = async (data, setFieldErrors) => {
     setError('');
     setSuccess('');
     try {
@@ -16,9 +16,17 @@ export default function RegisterPage() {
       setSuccess('Registration successful! Please check your email.');
       setTimeout(() => navigate('/login'), 2000);
     } catch (error) {
-      setError(error.message);
+      // Show field-specific error if possible
+      if (error.message && error.message.toLowerCase().includes('username')) {
+        setFieldErrors({ name: error.message });
+      } else if (error.message && error.message.toLowerCase().includes('email')) {
+        setFieldErrors({ email: error.message });
+      } else {
+        setError(error.message);
+      }
     }
   };
+
   return (
     <div>
       {error && (
@@ -31,7 +39,7 @@ export default function RegisterPage() {
           {success}
         </div>
       )}
-      <AuthForm variant="register" onSubmit={handleRegister} />
+      <AuthForm variant="register" onSubmit={handleRegister} serverError={error} />
     </div>
   );
 }

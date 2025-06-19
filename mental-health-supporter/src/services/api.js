@@ -16,10 +16,17 @@ export async function registerUser({ full_name, name, email, password, phone, ad
 }
 
 export async function loginUser({ name, password }) {
+  // Allow login with either username or email
+  let loginPayload = {};
+  if (name.includes('@')) {
+    loginPayload = { email: name, password };
+  } else {
+    loginPayload = { username: name, password };
+  }
   const response = await fetch(BASE_URL + "login/", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username: name, password })
+    body: JSON.stringify(loginPayload)
   });
   if (!response.ok) {
     const errorData = await response.json();

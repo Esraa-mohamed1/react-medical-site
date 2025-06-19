@@ -6,40 +6,45 @@ import Swal from 'sweetalert2';
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const [error, setError] = useState('');
+  const [serverError, setServerError] = useState('');
 
-  const handleLogin = async (data) => {
-    setError('');
+  const handleLogin = async (data, setFieldErrors) => {
+    setServerError('');
     try {
       const result = await loginUser(data);
       localStorage.setItem('access', result.access);
       localStorage.setItem('refresh', result.refresh);
       localStorage.setItem('loggedUser', JSON.stringify({ ...data, id: result.user_id }));
-      if (data['role'] === 'patient') {
+      // Redirect based on backend role
+      if (result.role === 'patient') {
         navigate('/patients-list/' + result.user_id);
+      } else if (result.role === 'doctor') {
+        navigate('/doctors-list/' + result.user_id);
       } else {
-        navigate('/doctors-list/' + result.user_id)
+        navigate('/artical');
       }
     } catch (error) {
       // Show SweetAlert2 for blocked login (pending/rejected)
-      Swal.fire({
-        icon: 'error',
-        title: 'Login Blocked',
-        text: error.message,
-        confirmButtonText: 'OK',
-      });
-      setError(error.message);
+      if (error.message && (error.message.includes('pending') || error.message.includes('rejected'))) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Blocked',
+          text: error.message,
+          confirmButtonText: 'OK',
+        });
+      }
+      // Show error under username/email field if possible
+      if (error.message && error.message.toLowerCase().includes('username')) {
+        setFieldErrors({ email: error.message });
+      } else {
+        setServerError(error.message);
+      }
     }
   };
 
   return (
     <div>
-      {error && (
-        <div className="alert alert-danger text-center" role="alert" style={{ maxWidth: 400, margin: '1rem auto' }}>
-          {error}
-        </div>
-      )}
-      <AuthForm variant="login" onSubmit={handleLogin} />
+      <AuthForm variant="login" onSubmit={handleLogin} serverError={serverError} />
     </div>
   );
 }
