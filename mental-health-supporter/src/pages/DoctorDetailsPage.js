@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getDoctorById, updateDoctor } from './../services/doctors/DoctorServices';
 import doctorPlaceholder from './../components/DoctorsListComponent/images/doctor-placeholder.jpg';
 import doctorImage from './../components/DoctorsListComponent/images/doctor.png';
+import AppointmentBooking from '../components/DoctorProfile/AppointmentBooking';
 
 const additionalStyles = {
     editButton: {
@@ -415,6 +416,13 @@ const DoctorDetailsPage = () => {
                                 {renderValue('clinic_address', 'Clinic Address')}
                             </div>
                         </div>
+                    </div>
+
+                    <div style={{ margin: '2rem 0' }}>
+                        <h3 style={styles.sectionTitle}>Book Appointment</h3>
+                        {doctor && doctor.doctor_id && (
+                            <AppointmentBooking doctorId={doctor.doctor_id} />
+                        )}
                     </div>
 
                     {isEditing && (

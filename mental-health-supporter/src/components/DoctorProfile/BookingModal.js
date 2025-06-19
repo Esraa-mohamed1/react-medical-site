@@ -2,58 +2,107 @@ import React, { useState } from 'react';
 import { Modal, Button, Form, Row, Col, Alert } from 'react-bootstrap';
 import { FaUser, FaPhone, FaEnvelope, FaCalendarDay, FaInfoCircle } from 'react-icons/fa';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
+import { createAppointment } from '../../services/doctors/AppointmentService';
+import Swal from 'sweetalert2';
 
-const BookingModal = ({ show, onHide, selectedSlot }) => {
+const BookingModal = ({ show, onHide, selectedSlot, doctorId }) => {
   const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    email: '',
     notes: ''
   });
-
   const [validated, setValidated] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [paymentCompleted, setPaymentCompleted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-
-    if (form.checkValidity() === false) {
-      e.stopPropagation();
-      setValidated(true);
-      return;
-    }
-
-    setSubmitStatus({ type: 'info', message: 'Submitting your booking...' });
-
-    setTimeout(() => {
-      setSubmitStatus({
-        type: 'success',
-        message: `Appointment successfully booked for ${formData.name} at ${selectedSlot}`
-      });
-
-      setTimeout(() => {
-        setFormData({ name: '', phone: '', email: '', notes: '' });
-        setValidated(false);
-        setSubmitStatus(null);
-        setPaymentCompleted(false);
-        onHide();
-      }, 2000);
-    }, 1000);
-  };
-
-  const handlePaymentSuccess = (details) => {
+  const handlePaymentSuccess = async (details, data) => {
     setPaymentCompleted(true);
     setSubmitStatus({
       type: 'success',
       message: `Payment completed by ${details.payer.name.given_name}`
     });
+    setLoading(true);
+    setError('');
+    setSuccess('');
+    try {
+      const accessToken = localStorage.getItem('access');
+      const transactionId = data.orderID || (details.purchase_units && details.purchase_units[0]?.payments?.captures[0]?.id);
+      const appointmentData = {
+        title: 'Consultation',
+        doctor: doctorId,
+        appointment_date: selectedSlot && selectedSlot.dateTime ? selectedSlot.dateTime : '',
+        notes: formData.notes,
+        paypal_transaction_id: transactionId
+      };
+      await createAppointment(appointmentData, accessToken);
+      setSuccess('Appointment booked successfully!');
+      setSubmitStatus({
+        type: 'success',
+        message: `Appointment successfully booked for ${appointmentData.appointment_date}`
+      });
+      setTimeout(() => {
+        setFormData({ notes: '' });
+        setValidated(false);
+        setSubmitStatus(null);
+        setPaymentCompleted(false);
+        onHide();
+      }, 2000);
+    } catch (err) {
+      setError(err.response?.data ? JSON.stringify(err.response.data) : 'Failed to book appointment.');
+      console.error('Booking error:', err);
+    }
+    setLoading(false);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
+      setValidated(true);
+      return;
+    }
+    setLoading(true);
+    setError('');
+    setSuccess('');
+    try {
+      const accessToken = localStorage.getItem('access');
+      const appointmentData = {
+        title: 'Consultation',
+        doctor: doctorId,
+        appointment_date: selectedSlot && selectedSlot.dateTime ? selectedSlot.dateTime : '',
+        notes: formData.notes
+      };
+      await createAppointment(appointmentData, accessToken);
+      setSuccess('Appointment booked successfully!');
+      setSubmitStatus({
+        type: 'success',
+        message: `Appointment successfully booked for ${appointmentData.appointment_date}`
+      });
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Your appointment has been booked successfully.',
+        confirmButtonColor: '#6f42c1'
+      });
+      setTimeout(() => {
+        setFormData({ notes: '' });
+        setValidated(false);
+        setSubmitStatus(null);
+        setPaymentCompleted(false);
+        onHide();
+      }, 2000);
+    } catch (err) {
+      setError(err.response?.data ? JSON.stringify(err.response.data) : 'Failed to book appointment.');
+      console.error('Booking error:', err);
+    }
+    setLoading(false);
   };
 
   return (
@@ -74,103 +123,34 @@ const BookingModal = ({ show, onHide, selectedSlot }) => {
         )}
 
         <div className="text-start mb-4 p-3 bg-light rounded">
-          <h5 style={{ color: 'var(--secondary-purple)' }}>{selectedSlot}</h5>
-          <p className="text-muted mb-0">
-            {new Date().toLocaleDateString('en-US', { weekday: 'long' })}
-          </p>
+          <h5 style={{ color: 'var(--secondary-purple)' }}>
+            {selectedSlot && selectedSlot.dateTime
+              ? `${selectedSlot.dateTime}`
+              : 'No slot selected'}
+          </h5>
         </div>
 
-        <Form noValidate validated={validated} onSubmit={handleSubmit}>
+        <Form noValidate validated={validated}>
           <Form.Group className="mb-3 text-start">
-            <Form.Label>
-              <FaUser className="me-2" style={{ color: 'var(--primary-purple)' }} />
-              Patient Name
-            </Form.Label>
-            <Form.Control
-              type="text"
-              name="name"
-              placeholder="Enter patient name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              Please enter your name.
-            </Form.Control.Feedback>
-          </Form.Group>
-
-          <Form.Group className="mb-3 text-start">
-            <Form.Label>
-              <FaPhone className="me-2" style={{ color: 'var(--primary-purple)' }} />
-              Phone Number
-            </Form.Label>
-            <Row>
-              <Col xs={4}>
-                <Form.Select defaultValue="+1" name="countryCode">
-                  <option value="+1">🇺🇸 +1</option>
-                  <option value="+44">🇬🇧 +44</option>
-                  <option value="+971">🇦🇪 +971</option>
-                </Form.Select>
-              </Col>
-              <Col>
-                <Form.Control
-                  type="tel"
-                  name="phone"
-                  placeholder="Enter phone number"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  required
-                />
-                <Form.Control.Feedback type="invalid">
-                  Please provide a valid phone number.
-                </Form.Control.Feedback>
-              </Col>
-            </Row>
-          </Form.Group>
-
-          <Form.Group className="mb-3 text-start">
-            <Form.Label>
-              <FaEnvelope className="me-2" style={{ color: 'var(--primary-purple)' }} />
-              Email (Optional)
-            </Form.Label>
-            <Form.Control
-              type="email"
-              name="email"
-              placeholder="example@email.com"
-              value={formData.email}
-              onChange={handleChange}
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3 text-start">
-            <Form.Label>Additional Notes (Optional)</Form.Label>
+            <Form.Label>Notes</Form.Label>
             <Form.Control
               as="textarea"
               rows={3}
               name="notes"
-              placeholder="Any additional information..."
+              placeholder="Discuss symptoms, etc."
               value={formData.notes}
               onChange={handleChange}
+              required
             />
+            <Form.Control.Feedback type="invalid">
+              Please provide notes for the appointment.
+            </Form.Control.Feedback>
           </Form.Group>
-
-          <div className="d-grid gap-2">
-            <Button
-              variant="primary"
-              type="submit"
-              disabled={submitStatus?.type === 'success'}
-            >
-              Confirm Booking
-            </Button>
-            <Button variant="outline-secondary" onClick={onHide}>
-              Cancel
-            </Button>
-          </div>
         </Form>
 
         {!paymentCompleted && (
           <div className="mt-4">
-            <PayPalScriptProvider options={{ "client-id": "AYxEkVx6AWNMRdcLDVReuhZLoGrn0aTzPPJG_9HjzPXWF9HXWxDJajJxfrtx8VKNOxgd5OUrvj77VKJT" }}>
+            <PayPalScriptProvider options={{ "client-id": "AaJOaVlRFMUDizYhEvaYNeNv4Ewm_VUprTaeVqnPTA6yFFnsybdEIdHcVRdVupPRjluzJKDrP-dfVugd" }}>
               <PayPalButtons
                 style={{ layout: "horizontal" }}
                 createOrder={(data, actions) => {
@@ -179,12 +159,27 @@ const BookingModal = ({ show, onHide, selectedSlot }) => {
                   });
                 }}
                 onApprove={(data, actions) => {
-                  return actions.order.capture().then(handlePaymentSuccess);
+                  return actions.order.capture().then((details) => handlePaymentSuccess(details, data));
                 }}
               />
             </PayPalScriptProvider>
           </div>
         )}
+
+        <Form noValidate validated={validated} onSubmit={handleSubmit}>
+          <div className="d-grid gap-2 mt-3">
+            <Button
+              variant="primary"
+              type="submit"
+              disabled={submitStatus?.type === 'success' || loading}
+            >
+              Confirm Booking
+            </Button>
+            <Button variant="outline-secondary" onClick={onHide}>
+              Cancel
+            </Button>
+          </div>
+        </Form>
       </Modal.Body>
     </Modal>
   );

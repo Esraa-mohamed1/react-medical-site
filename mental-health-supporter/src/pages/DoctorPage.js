@@ -56,7 +56,7 @@ const DoctorPage = () => {
           </Col>
           <Col lg={4}>
             <div className="sticky-top" style={{ top: '20px' }}>
-              <AppointmentBooking slots={availableSlots} />
+              <AppointmentBooking doctorId={doctorData.doctor_id || doctor_id} />
             </div>
           </Col>
         </Row>
