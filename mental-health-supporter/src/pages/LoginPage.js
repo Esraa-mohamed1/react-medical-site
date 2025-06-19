@@ -12,6 +12,16 @@ export default function LoginPage() {
     setError('');
     try {
       const result = await loginUser(data);
+      // result.user_role should come from backend if possible, fallback to data.role
+      const userRole = result.role || result.user_role || data.role;
+      if (!result.user_id) {
+        setError('No account found for this username and role.');
+        return;
+      }
+      if (userRole !== data.role) {
+        setError(`No ${data.role} account found for this username. Please check your role selection.`);
+        return;
+      }
       localStorage.setItem('access', result.access);
       localStorage.setItem('refresh', result.refresh);
       localStorage.setItem('loggedUser', JSON.stringify({ ...data, id: result.user_id }));
