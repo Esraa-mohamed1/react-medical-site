@@ -12,8 +12,20 @@ export const getDoctors = async () => {
 
 // If you need to get a specific doctor by ID
 export const getDoctorById = async (doctorId) => {
+    const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
+    const role = loggedUser?.role;
+    let endpoint = `/medical/doctors/${doctorId}/`;
+    // Always try /users/doctors/<id>/ first for doctors, fallback to /medical/doctors/<id>/ if not found
+    if (role === 'doctor') {
+        try {
+            const doctor = await getData(`/users/doctors/${doctorId}/`);
+            if (doctor && doctor.doctor_id) return doctor;
+        } catch (err) {
+            // fallback below
+        }
+    }
     try {
-        const doctor = await getData(`/medical/doctors/${doctorId}/`);
+        const doctor = await getData(endpoint);
         return doctor;
     } catch (error) {
         console.error('Error fetching doctor:', error);
