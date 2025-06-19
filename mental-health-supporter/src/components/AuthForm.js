@@ -118,7 +118,7 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
         )}
         <p className="auth-switch text-center">
           {isLogin ? (
-            <>New to MHS? <a href="/register">Create an account</a></>
+            <>New to MHS? <a href="/register-select">Create an account</a></>
           ) : (
             <>Already have an account? <a href="/login">Log in</a></>
           )}
