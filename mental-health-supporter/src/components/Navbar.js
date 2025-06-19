@@ -1,11 +1,18 @@
 import React from 'react';
 import { Navbar, Container, Nav, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { FaUser, FaClinicMedical } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
+import { FaUser, FaClinicMedical, FaSignOutAlt } from 'react-icons/fa';
 
 const CustomNavbar = () => {
-  const loggedUser = JSON.parse(localStorage.getItem('loggedUser'))
-  const profileUrl = loggedUser['role'] == 'patient' ? `/patients-list/${loggedUser['id']}` : `/doctors-list/${loggedUser['id']}`
+  const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
+  const profileUrl = loggedUser['role'] === 'patient' ? `/patients-list/${loggedUser['id']}` : `/doctors-list/${loggedUser['id']}`;
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/login');
+  };
+
   return (
     <Navbar expand="lg" className="shadow-sm py-3" bg="white" dir="ltr">
       <Container>
@@ -29,6 +36,14 @@ const CustomNavbar = () => {
             >
               <FaUser className="me-2" />
               View Profile
+            </Button>
+            <Button
+              variant="outline-danger"
+              className="d-flex align-items-center"
+              onClick={handleLogout}
+            >
+              <FaSignOutAlt className="me-2" />
+              Logout
             </Button>
           </div>
         </Navbar.Collapse>
