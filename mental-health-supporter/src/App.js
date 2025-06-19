@@ -11,6 +11,7 @@ import DoctorsList from './pages/DoctorsListPage';
 import BaseLoginPage from './pages/BaseLoginPage';
 import DoctorDetailsPage from './pages/DoctorDetailsPage';
 import PatientDetailsPage from './pages/PatientDetailsPage';
+import RegisterSelectPage from './pages/RegisterSelectPage';
 
 function App() {
   return (
@@ -18,7 +19,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/register-select" element={<RegisterSelectPage />} />
+        <Route path="/register" element={<RegisterPage />} /> {/* For patients */}
+        <Route path="/doctor-register" element={<DoctorRegister />} /> {/* For doctors */}
         <Route path="/artical" element={<ArticalPage />} />
         <Route path="/artical" element={<MentalHealthArticle />} />
         <Route path="/doctors/login" element={<BaseLoginPage userType={'Doctor'} />} />
@@ -27,7 +30,6 @@ function App() {
         <Route path="/doctors-list" element={<DoctorsList />} />
         <Route path="/doctors-list/:id" element={<DoctorDetailsPage />} />
         <Route path="/patients-list/:id" element={<PatientDetailsPage />} />
-        <Route path="/doctor-register" element={<DoctorRegister />} />
         <Route path="/doctors/:doctor_id" element={<DoctorPage />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
