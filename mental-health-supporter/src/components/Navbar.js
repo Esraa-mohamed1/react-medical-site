@@ -1,9 +1,22 @@
 import React from 'react';
-import { Navbar, Container, Nav, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { FaUser, FaSignInAlt, FaClinicMedical } from 'react-icons/fa';
+import { Navbar, Container, Nav, Dropdown } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
+import { FaUser, FaClinicMedical, FaSignOutAlt, FaCog } from 'react-icons/fa';
 
 const CustomNavbar = () => {
+  const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
+  const profileUrl = loggedUser['role'] === 'patient' ? `/patients-list/${loggedUser['id']}` : `/doctors-list/${loggedUser['id']}`;
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/login');
+  };
+
+  const handleAccountSettings = () => {
+    navigate('/settings');
+  };
+
   return (
     <Navbar expand="lg" className="shadow-sm py-3" bg="white" dir="ltr">
       <Container>
@@ -15,20 +28,30 @@ const CustomNavbar = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/" className="text-dark mx-2 fw-medium">Home</Nav.Link>
-            <Nav.Link as={Link} to="/doctors" className="text-dark mx-2 fw-medium">Doctors</Nav.Link>
-            {/* <Nav.Link as={Link} to="/clinics" className="text-dark mx-2 fw-medium">Clinics</Nav.Link> */}
+            <Nav.Link as={Link} to="/doctors-list" className="text-dark mx-2 fw-medium">Doctors</Nav.Link>
             <Nav.Link as={Link} to="/contact" className="text-dark mx-2 fw-medium">Contact</Nav.Link>
           </Nav>
-          <div className="d-flex gap-2">
-            {/* <Button variant="outline-primary" className="d-flex align-items-center">
-              <FaSignInAlt className="me-2" />
-              Login
-            </Button>
-            <Button variant="primary" className="d-flex align-items-center">
+          <Dropdown align="end">
+            <Dropdown.Toggle variant="primary" className="d-flex align-items-center">
               <FaUser className="me-2" />
-              Register
-            </Button> */}
-          </div>
+              {loggedUser['name']}
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item as={Link} to={profileUrl}>
+                <FaUser className="me-2" />
+                View Profile
+              </Dropdown.Item>
+              <Dropdown.Item onClick={handleAccountSettings}>
+                <FaCog className="me-2" />
+                Account Settings
+              </Dropdown.Item>
+              <Dropdown.Divider />
+              <Dropdown.Item onClick={handleLogout} className="text-danger">
+                <FaSignOutAlt className="me-2" />
+                Logout
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </Navbar.Collapse>
       </Container>
     </Navbar>

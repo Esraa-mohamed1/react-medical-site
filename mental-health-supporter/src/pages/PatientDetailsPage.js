@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getPatientById, updatePatient } from './../services/patients/PatientServices';
 import patientPlaceholder from './../components/DoctorsListComponent/images/doctor-placeholder.jpg';
+import CustomNavbar from './../components/Navbar';
 
 const styles = {
     container: {
@@ -174,22 +175,34 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: '1rem'
+        gap: '1rem',
+        position: 'relative'
     },
-    showDoctorsButton: {
-        backgroundColor: '#4f46e5',
+    changePhotoOverlay: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '180px',
+        height: '180px',
+        borderRadius: '50%',
+        background: 'rgba(0,0,0,0.45)',
         color: 'white',
-        padding: '0.75rem 1.5rem',
-        borderRadius: '8px',
-        border: 'none',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        opacity: 0,
+        transition: 'opacity 0.2s',
         cursor: 'pointer',
-        fontSize: '0.875rem',
-        fontWeight: '500',
-        marginLeft: '1rem',
-        transition: 'background-color 0.2s',
-        '&:hover': {
-            backgroundColor: '#4338ca'
-        }
+        fontSize: '1.1rem',
+        zIndex: 2
+    },
+    imageContainerHover: {
+        opacity: 1
+    },
+    cameraIcon: {
+        fontSize: '2rem',
+        marginBottom: '0.3rem'
     }
 };
 
@@ -200,6 +213,8 @@ const PatientDetailsPage = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [imagePreview, setImagePreview] = useState(null); // For local preview
+    const [isHoveringImage, setIsHoveringImage] = useState(false);
     const { id } = useParams();
 
     useEffect(() => {
@@ -208,6 +223,7 @@ const PatientDetailsPage = () => {
                 const data = await getPatientById(id);
                 setPatient(data);
                 setEditedPatient(data);
+                setImagePreview(null);
             } catch (err) {
                 setError('Failed to fetch patient details');
                 console.error('Error:', err);
@@ -223,6 +239,7 @@ const PatientDetailsPage = () => {
     const handleCancel = () => {
         setEditedPatient(patient);
         setIsEditing(false);
+        setImagePreview(null);
     };
 
     const handleSave = async () => {
@@ -230,6 +247,7 @@ const PatientDetailsPage = () => {
             const updatedData = await updatePatient(id, editedPatient);
             setPatient(updatedData);
             setIsEditing(false);
+            setImagePreview(null);
         } catch (err) {
             setError('Failed to update patient details');
         }
@@ -240,6 +258,18 @@ const PatientDetailsPage = () => {
             ...prev,
             [field]: value
         }));
+    };
+
+    // Handle file input change for profile_image
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setEditedPatient(prev => ({
+                ...prev,
+                profile_image: file
+            }));
+            setImagePreview(URL.createObjectURL(file));
+        }
     };
 
     if (loading) return <div style={{ textAlign: 'center', padding: '2rem' }}>Loading...</div>;
@@ -267,84 +297,112 @@ const PatientDetailsPage = () => {
         </div>
     );
 
+    // Use imagePreview if available, otherwise use patient.profile_image or placeholder
+    const profileImageSrc = imagePreview
+        ? imagePreview
+        : (patient.profile_image || patientPlaceholder);
+
     return (
-        <div style={styles.container}>
-            <div style={styles.card}>
-                <div style={styles.header}>
-                    <button onClick={() => navigate('/artical')} style={styles.backButton}>
-                        ← Back to Article
-                    </button>
-                    <div style={styles.buttonsContainer}>
-                        {isEditing ? (
-                            <>
-                                <button onClick={handleCancel} style={{ ...styles.button, ...styles.cancelButton }}>
-                                    Cancel
-                                </button>
-                                <button onClick={handleSave} style={{ ...styles.button, ...styles.saveButton }}>
-                                    Save Changes
-                                </button>
-                            </>
-                        ) : (
-                            <>
-                                <button onClick={handleEdit} style={{ ...styles.button, ...styles.editButton }}>
-                                    Edit Profile
-                                </button>
-                                <button
-                                    onClick={() => navigate('/doctors-list')}
-                                    style={{ ...styles.button, ...styles.showDoctorsButton }}
-                                >
-                                    Show All Doctors
-                                </button>
-                            </>
-                        )}
-                    </div>
-                    <div style={styles.profileSection}>
-                        <div style={styles.imageContainer}>
-                            <img
-                                src={patient.profile_url || patientPlaceholder}
-                                alt={patient.full_name}
-                                style={styles.avatar}
-                            />
-                            {isEditing && (
-                                <input
-                                    type="text"
-                                    placeholder="Enter image URL"
-                                    value={editedPatient.profile_url || ''}
-                                    onChange={(e) => handleChange('profile_url', e.target.value)}
-                                    style={styles.imageInput}
-                                />
+        <>
+            <CustomNavbar />
+            <div style={styles.container}>
+                <div style={styles.card}>
+                    <div style={styles.header}>
+                        <div style={styles.buttonsContainer}>
+                            {isEditing ? (
+                                <>
+                                    <button onClick={handleCancel} style={{ ...styles.button, ...styles.cancelButton }}>
+                                        Cancel
+                                    </button>
+                                    <button onClick={handleSave} style={{ ...styles.button, ...styles.saveButton }}>
+                                        Save Changes
+                                    </button>
+                                </>
+                            ) : (
+                                <>
+                                    <button onClick={handleEdit} style={{ ...styles.button, ...styles.editButton }}>
+                                        Edit Profile
+                                    </button>
+                                    {/* <button
+                                        onClick={() => navigate('/doctors-list')}
+                                        style={{ ...styles.button, ...styles.showDoctorsButton }}
+                                    >
+                                        Show All Doctors
+                                    </button> */}
+                                </>
                             )}
                         </div>
-                        <div style={styles.profileInfo}>
-                            <h1 style={styles.name}>{patient.full_name}</h1>
-                            <div style={styles.created}>
-                                Member since: {new Date(patient.created_at).toLocaleDateString()}
+                        <div style={styles.profileSection}>
+                            <div
+                                style={styles.imageContainer}
+                                onMouseEnter={() => setIsHoveringImage(true)}
+                                onMouseLeave={() => setIsHoveringImage(false)}
+                            >
+                                {isEditing ? (
+                                    <>
+                                        <label htmlFor="profile-image-upload" style={{ cursor: 'pointer', position: 'relative' }}>
+                                            <img
+                                                src={profileImageSrc}
+                                                alt={patient.full_name}
+                                                style={styles.avatar}
+                                            />
+                                            <div
+                                                style={{
+                                                    ...styles.changePhotoOverlay,
+                                                    ...(isHoveringImage ? styles.imageContainerHover : {})
+                                                }}
+                                            >
+                                                <span style={styles.cameraIcon}>📷</span>
+                                                <span>Change Photo</span>
+                                            </div>
+                                        </label>
+                                        <input
+                                            id="profile-image-upload"
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleImageChange}
+                                            style={{ display: 'none' }}
+                                        />
+                                    </>
+                                ) : (
+                                    <img
+                                        src={profileImageSrc}
+                                        alt={patient.full_name}
+                                        style={styles.avatar}
+                                    />
+                                )}
+                            </div>
+                            <div style={styles.profileInfo}>
+                                <h1 style={styles.name}>{patient.full_name}</h1>
+                                <div style={styles.created}>
+                                    Member since: {new Date(patient.created_at).toLocaleDateString()}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style={styles.mainContent}>
+                        <div style={styles.section}>
+                            <h2 style={styles.sectionTitle}>👤 Basic Information</h2>
+                            <div style={styles.grid}>
+                                {renderField('Full Name', 'full_name')}
+                                {renderField('Member Since', 'created_at', 'datetime-local', false)}
+                            </div>
+                        </div>
+
+                        <div style={styles.section}>
+                            <h2 style={styles.sectionTitle}>📞 Contact Information</h2>
+                            <div style={styles.grid}>
+                                {renderField('Email', 'email', 'email')}
+                                {renderField('Phone', 'phone')}
+                                {renderField('Address', 'address')}
+                                {renderField('City', 'city')}
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div style={styles.mainContent}>
-                    <div style={styles.section}>
-                        <h2 style={styles.sectionTitle}>👤 Basic Information</h2>
-                        <div style={styles.grid}>
-                            {renderField('Full Name', 'full_name')}
-                            {renderField('Member Since', 'created_at', 'datetime-local', false)}
-                        </div>
-                    </div>
-
-                    <div style={styles.section}>
-                        <h2 style={styles.sectionTitle}>📞 Contact Information</h2>
-                        <div style={styles.grid}>
-                            {renderField('Email', 'email', 'email')}
-                            {renderField('Phone', 'phone')}
-                            {renderField('Address', 'address')}
-                            {renderField('City', 'city')}
-                        </div>
-                    </div>
-                </div>
             </div>
-        </div>
+        </>
     );
 };
 

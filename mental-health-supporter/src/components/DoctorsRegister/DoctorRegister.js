@@ -18,7 +18,6 @@ const DoctorRegister = () => {
         latitude: '',
         longitude: '',
         available: true,
-        profile_url: '',
         password: '',
         confirmPassword: ''
     });
@@ -26,6 +25,8 @@ const DoctorRegister = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
     const [showMap, setShowMap] = useState(false);
+    const [degreeFile, setDegreeFile] = useState(null);
+    const [degreeFileError, setDegreeFileError] = useState('');
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -40,6 +41,13 @@ const DoctorRegister = () => {
 
     const handlePickLocation = ({ lat, lng }) => {
         setFormData((prev) => ({ ...prev, latitude: lat, longitude: lng }));
+    };
+
+    const handleFileChange = (e) => {
+        setDegreeFile(e.target.files[0]);
+        if (errors.degreeFile) {
+            setErrors({ ...errors, degreeFile: null });
+        }
     };
 
     const validateForm = () => {
@@ -60,6 +68,18 @@ const DoctorRegister = () => {
         if (formData.password !== formData.confirmPassword) {
             newErrors.confirmPassword = 'Passwords do not match';
         }
+        // Degree file validation
+        if (!degreeFile) {
+            newErrors.degreeFile = 'Academic degree document is required';
+        } else {
+            const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+            if (!allowedTypes.includes(degreeFile.type)) {
+                newErrors.degreeFile = 'Only PDF, JPG, or PNG files are allowed';
+            }
+            if (degreeFile.size > 5 * 1024 * 1024) {
+                newErrors.degreeFile = 'File size must be less than 5MB';
+            }
+        }
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -69,7 +89,10 @@ const DoctorRegister = () => {
         if (!validateForm()) return;
         setIsSubmitting(true);
         try {
-            await registerDoctor(formData);
+            const form = new FormData();
+            Object.entries(formData).forEach(([key, value]) => form.append(key, value));
+            form.append('academic_degree_document', degreeFile);
+            await registerDoctor(form, true);
             setSuccessMessage('Doctor registered successfully!');
             setFormData({
                 full_name: '',
@@ -83,12 +106,11 @@ const DoctorRegister = () => {
                 latitude: '',
                 longitude: '',
                 available: true,
-                profile_url: '',
                 password: '',
                 confirmPassword: ''
             });
+            setDegreeFile(null);
             navigate('/login');
-            // setTimeout(() => navigate('/login'), 2000);
         } catch (error) {
             setSuccessMessage(error.message || 'Registration failed. Please try again.');
         } finally {
@@ -240,16 +262,6 @@ const DoctorRegister = () => {
                 />
                 <div className="mb-3">
                     <input
-                        type="text"
-                        name="profile_url"
-                        placeholder="Profile URL"
-                        className="form-control"
-                        value={formData.profile_url}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div className="mb-3">
-                    <input
                         type="password"
                         name="password"
                         placeholder="Password"
@@ -269,6 +281,18 @@ const DoctorRegister = () => {
                         onChange={handleChange}
                     />
                     {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword}</div>}
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="degreeFile" className="form-label">Academic Degree Document (PDF, JPG, PNG, max 5MB)</label>
+                    <input
+                        type="file"
+                        id="degreeFile"
+                        name="degreeFile"
+                        className={`form-control ${errors.degreeFile ? 'is-invalid' : ''}`}
+                        accept=".pdf, .jpg, .jpeg, .png"
+                        onChange={handleFileChange}
+                    />
+                    {errors.degreeFile && <div className="invalid-feedback">{errors.degreeFile}</div>}
                 </div>
                 <button type="submit" className="btn btn-light w-100 mb-2" disabled={isSubmitting}>
                     {isSubmitting ? 'Registering...' : 'Register'}

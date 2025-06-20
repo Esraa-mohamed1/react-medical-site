@@ -35,13 +35,21 @@ export async function loginUser({ name, password }) {
   return response.json();
 }
 
-export async function registerDoctor(formData) {
-  console.log(formData)
-  const response = await fetch("http://127.0.0.1:8000/api/users/register/doctor/", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(formData)
-  });
+export async function registerDoctor(formData, isFormData = false) {
+  let options;
+  if (isFormData) {
+    options = {
+      method: "POST",
+      body: formData // FormData instance
+    };
+  } else {
+    options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData)
+    };
+  }
+  const response = await fetch("http://127.0.0.1:8000/api/users/register/doctor/", options);
   if (!response.ok) {
     const errorData = await response.json();
     throw new Error(errorData.detail || errorData.error || "Doctor registration failed");
@@ -120,12 +128,23 @@ export const getData = async (endpoint) => {
 };
 
 // PUT request
-export const updateData = async (endpoint, data) => {
+export const updateData = async (endpoint, data, config = {}) => {
   try {
-    const response = await api.put(endpoint, data);
+    const response = await api.put(endpoint, data, config);
     return response.data;
   } catch (error) {
     console.error('Error updating data:', error);
+    throw error;
+  }
+};
+
+// POST request
+export const postData = async (endpoint, data) => {
+  try {
+    const response = await api.post(endpoint, data);
+    return response.data;
+  } catch (error) {
+    console.error('Error patching data:', error);
     throw error;
   }
 };
@@ -139,6 +158,7 @@ export const patchData = async (endpoint, data) => {
     console.error('Error patching data:', error);
     throw error;
   }
+
 };
 
 // Utility: Ensure tokens and user info are set in localStorage for API auth
