@@ -50,7 +50,7 @@ const AccountSettingsPage = () => {
             );
             setUsernameMsg('Username updated successfully.');
         } catch (err) {
-            setUsernameMsg('Failed to update username.');
+            setUsernameMsg(`Failed to update username. ${err.response.data.username[0]}`);
         }
         setLoading(false);
     };
