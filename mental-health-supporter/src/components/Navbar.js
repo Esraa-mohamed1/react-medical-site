@@ -5,8 +5,17 @@ import { FaUser, FaClinicMedical, FaSignOutAlt, FaCog } from 'react-icons/fa';
 
 const CustomNavbar = () => {
   const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
-  const profileUrl = loggedUser['role'] === 'patient' ? `/patients-list/${loggedUser['id']}` : `/doctors-list/${loggedUser['id']}`;
   const navigate = useNavigate();
+
+  if (!loggedUser || !loggedUser.role || !loggedUser.id) {
+    return null; // لا تظهر الـ Navbar إذا لم تتوفر بيانات المستخدم
+  }
+  let profileUrl = '';
+  if (loggedUser.role === 'doctor') {
+    profileUrl = `/doctors/${loggedUser.id}`;
+  } else if (loggedUser.role === 'patient') {
+    profileUrl = `/patients-list/${loggedUser.id}`;
+  }
 
   const handleLogout = () => {
     localStorage.clear();
@@ -37,7 +46,7 @@ const CustomNavbar = () => {
               {loggedUser['name']}
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item as={Link} to={profileUrl}>
+              <Dropdown.Item as={Link} to={profileUrl} disabled={!profileUrl}>
                 <FaUser className="me-2" />
                 View Profile
               </Dropdown.Item>

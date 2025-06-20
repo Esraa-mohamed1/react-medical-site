@@ -14,14 +14,19 @@ export default function LoginPage() {
       const result = await loginUser(data);
       localStorage.setItem('access', result.access);
       localStorage.setItem('refresh', result.refresh);
-      localStorage.setItem('loggedUser', JSON.stringify({ ...data, id: result.user_id }));
-      // Redirect based on backend role
-      if (result.role === 'patient') {
-        navigate('/patients-list/' + result.user_id);
-      } else if (result.role === 'doctor') {
-        navigate('/doctors-list/' + result.user_id);
+      let loggedUser = { role: result.role };
+      if (result.role === 'doctor' && result.user.doctor_id) {
+        loggedUser = { ...result.user, role: result.role, id: result.user.doctor_id };
+        localStorage.setItem('loggedUser', JSON.stringify(loggedUser));
+        navigate('/doctors/' + result.user.doctor_id);
+      } else if (result.role === 'patient' && result.user.patient_id) {
+        loggedUser = { ...result.user, role: result.role, id: result.user.patient_id };
+        localStorage.setItem('loggedUser', JSON.stringify(loggedUser));
+        navigate('/patients-list/' + result.user.patient_id);
       } else {
-        navigate('/artical');
+        // If valid profile data is missing, show an error message and do not redirect
+        setServerError('Failed to retrieve profile data. Please contact support.');
+        localStorage.setItem('loggedUser', JSON.stringify(loggedUser));
       }
     } catch (error) {
       // SweetAlert2 for blocked login (pending/rejected)
