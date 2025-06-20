@@ -74,6 +74,8 @@ const DoctorRegister = () => {
                 newErrors.degreeFile = 'File size must be less than 5MB';
             }
         }
+        if (!formData.phone.trim()) newErrors.phone = 'Phone is required';
+        if (!formData.clinic_address.trim()) newErrors.clinic_address = 'Clinic address is required';
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -85,10 +87,35 @@ const DoctorRegister = () => {
         if (!validateForm()) return;
         setIsSubmitting(true);
         try {
-            const form = new FormData();
-            Object.entries(formData).forEach(([key, value]) => form.append(key, value));
-            form.append('academic_degree_document', degreeFile);
-            await registerDoctor(form, true);
+            let response;
+            if (degreeFile) {
+                // إذا كان هناك ملف، استخدم FormData وأرسل الحقول بأسمائها الصحيحة فقط
+                const form = new FormData();
+                form.set('full_name', String(formData.full_name || ''));
+                form.set('phone', String(formData.phone || ''));
+                form.set('address', String(formData.clinic_address || ''));
+                form.set('specialization', String(formData.specialization || ''));
+                form.set('username', String(formData.username || ''));
+                form.set('email', String(formData.email || ''));
+                form.set('clinic_name', String(formData.clinic_name || ''));
+                form.set('city', String(formData.city || ''));
+                form.set('latitude', String(formData.latitude || ''));
+                form.set('longitude', String(formData.longitude || ''));
+                form.set('available', String(formData.available));
+                form.set('password', String(formData.password || ''));
+                // إذا كان الباك اند يتوقع password2 أضف السطر التالي:
+                // form.set('password2', String(formData.confirmPassword || ''));
+                // لا ترسل confirmPassword ولا clinic_address نهائياً
+                form.append('academic_degree_document', degreeFile);
+                response = await registerDoctor(form, true);
+            } else {
+                // If no file, send JSON
+                const jsonData = {
+                    ...formData,
+                    address: formData.clinic_address || '',
+                };
+                response = await registerDoctor(jsonData, false);
+            }
             setSuccessMessage('Doctor registered successfully!');
             setFormData({
                 full_name: '',
@@ -125,6 +152,8 @@ const DoctorRegister = () => {
                     academic_degree_document: 'degreeFile',
                     specialization: 'specialization',
                     confirmPassword: 'confirmPassword',
+                    clinic_name: 'clinic_name',
+                    address: 'clinic_address',
                 };
                 // Ensure all error fields are mapped and set
                 Object.keys(data).forEach((key) => {
@@ -155,7 +184,7 @@ const DoctorRegister = () => {
                 try {
                     const raw = JSON.stringify(error);
                     console.log('🟠 Raw error JSON:', raw);
-                } catch (e) {}
+                } catch (e) { }
             }
         } finally {
             setIsSubmitting(false);
