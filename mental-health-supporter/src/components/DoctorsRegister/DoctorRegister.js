@@ -24,9 +24,8 @@ const DoctorRegister = () => {
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
-    const [showMap, setShowMap] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const [degreeFile, setDegreeFile] = useState(null);
-    const [degreeFileError, setDegreeFileError] = useState('');
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -37,10 +36,6 @@ const DoctorRegister = () => {
         if (errors[name]) {
             setErrors({ ...errors, [name]: null });
         }
-    };
-
-    const handlePickLocation = ({ lat, lng }) => {
-        setFormData((prev) => ({ ...prev, latitude: lat, longitude: lng }));
     };
 
     const handleFileChange = (e) => {
@@ -68,7 +63,6 @@ const DoctorRegister = () => {
         if (formData.password !== formData.confirmPassword) {
             newErrors.confirmPassword = 'Passwords do not match';
         }
-        // Degree file validation
         if (!degreeFile) {
             newErrors.degreeFile = 'Academic degree document is required';
         } else {
@@ -86,6 +80,8 @@ const DoctorRegister = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setErrorMessage('');
+        setSuccessMessage('');
         if (!validateForm()) return;
         setIsSubmitting(true);
         try {
@@ -112,28 +108,57 @@ const DoctorRegister = () => {
             setDegreeFile(null);
             navigate('/login');
         } catch (error) {
-            setSuccessMessage(error.message || 'Registration failed. Please try again.');
+            setErrors({});
+            let fieldErrors = {};
+            // Debugging: log all error details
+            console.log('❌ error:', error);
+            console.log('❌ error.response:', error.response);
+            console.log('❌ error.response?.data:', error.response?.data);
+            console.log('❌ error.message:', error.message);
+            if (error.response && error.response.data) {
+                const data = error.response.data;
+                const keyMap = {
+                    email: 'email',
+                    username: 'username',
+                    password: 'password',
+                    full_name: 'full_name',
+                    academic_degree_document: 'degreeFile',
+                    specialization: 'specialization',
+                    confirmPassword: 'confirmPassword',
+                };
+                // Ensure all error fields are mapped and set
+                Object.keys(data).forEach((key) => {
+                    const frontendKey = keyMap[key] || key;
+                    let msg = data[key];
+                    if (Array.isArray(msg)) msg = msg[0];
+                    if (typeof msg === 'string') {
+                        // Always set the error for the field
+                        if (frontendKey === 'username' && (msg.toLowerCase().includes('exist') || msg.toLowerCase().includes('unique'))) {
+                            fieldErrors.username = 'This username is already taken. Please choose another.';
+                        } else if (frontendKey === 'email' && (msg.toLowerCase().includes('exist') || msg.toLowerCase().includes('unique'))) {
+                            fieldErrors.email = 'This email is already registered. Please use another.';
+                        } else {
+                            fieldErrors[frontendKey] = msg;
+                        }
+                    }
+                });
+                // Fallback: if no field errors, show a generic error
+                if (Object.keys(fieldErrors).length === 0) {
+                    setErrorMessage('Registration failed. Please check your data.');
+                } else {
+                    setErrors(fieldErrors);
+                }
+                console.log('🛑 Server validation errors:', fieldErrors);
+            } else {
+                setErrorMessage('Unexpected error occurred. Please try again.');
+                console.log('🟠 Fallback error object:', error);
+                try {
+                    const raw = JSON.stringify(error);
+                    console.log('🟠 Raw error JSON:', raw);
+                } catch (e) {}
+            }
         } finally {
             setIsSubmitting(false);
-        }
-    };
-
-    const handleGetLocation = () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    setFormData((prev) => ({
-                        ...prev,
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude
-                    }));
-                },
-                (error) => {
-                    alert('Unable to retrieve your location.');
-                }
-            );
-        } else {
-            alert('Geolocation is not supported by your browser.');
         }
     };
 
@@ -141,149 +166,151 @@ const DoctorRegister = () => {
         <div className="auth-page">
             <form className="auth-card" onSubmit={handleSubmit} noValidate>
                 <h2 className="auth-title">Doctor Registration</h2>
-                {successMessage && (
-                    <div className="alert alert-success" role="alert">
-                        {successMessage}
+                {successMessage && <div className="alert alert-success">{successMessage}</div>}
+                <div className="row mb-3">
+                    <div className="col">
+                        <input
+                            type="text"
+                            name="full_name"
+                            placeholder="Full Name"
+                            className={`form-control ${errors.full_name ? 'is-invalid' : ''}`}
+                            value={formData.full_name}
+                            onChange={handleChange}
+                        />
+                        {errors.full_name && <div className="invalid-feedback">{errors.full_name}</div>}
                     </div>
-                )}
-                <div className="mb-3">
-                    <input
-                        type="text"
-                        name="full_name"
-                        placeholder="Full Name"
-                        className={`form-control ${errors.full_name ? 'is-invalid' : ''}`}
-                        value={formData.full_name}
-                        onChange={handleChange}
-                    />
-                    {errors.full_name && <div className="invalid-feedback">{errors.full_name}</div>}
+                    <div className="col">
+                        <input
+                            type="text"
+                            name="username"
+                            placeholder="Username"
+                            className={`form-control ${errors.username ? 'is-invalid' : ''}`}
+                            value={formData.username}
+                            onChange={handleChange}
+                        />
+                        {errors.username && <div className="invalid-feedback">{errors.username}</div>}
+                    </div>
+                </div>
+                <div className="row mb-3">
+                    <div className="col">
+                        <input
+                            type="text"
+                            name="specialization"
+                            placeholder="Specialization"
+                            className={`form-control ${errors.specialization ? 'is-invalid' : ''}`}
+                            value={formData.specialization}
+                            onChange={handleChange}
+                        />
+                        {errors.specialization && <div className="invalid-feedback">{errors.specialization}</div>}
+                    </div>
+                    <div className="col">
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Email"
+                            className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                            value={formData.email}
+                            onChange={handleChange}
+                        />
+                        {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+                    </div>
+                </div>
+                <div className="row mb-3">
+                    <div className="col">
+                        <input
+                            type="tel"
+                            name="phone"
+                            placeholder="Phone"
+                            className="form-control"
+                            value={formData.phone}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className="col">
+                        <input
+                            type="text"
+                            name="clinic_name"
+                            placeholder="Clinic Name"
+                            className="form-control"
+                            value={formData.clinic_name}
+                            onChange={handleChange}
+                        />
+                    </div>
+                </div>
+                <div className="row mb-3">
+                    <div className="col">
+                        <input
+                            type="text"
+                            name="clinic_address"
+                            placeholder="Clinic Address"
+                            className="form-control"
+                            value={formData.clinic_address}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className="col">
+                        <input
+                            type="text"
+                            name="city"
+                            placeholder="City"
+                            className="form-control"
+                            value={formData.city}
+                            onChange={handleChange}
+                        />
+                    </div>
+                </div>
+                <div className="row mb-3">
+                    <div className="col">
+                        <input
+                            type="number"
+                            name="latitude"
+                            placeholder="Latitude"
+                            className="form-control"
+                            value={formData.latitude}
+                            onChange={handleChange}
+                            step="any"
+                        />
+                    </div>
+                    <div className="col">
+                        <input
+                            type="number"
+                            name="longitude"
+                            placeholder="Longitude"
+                            className="form-control"
+                            value={formData.longitude}
+                            onChange={handleChange}
+                            step="any"
+                        />
+                    </div>
+                </div>
+                <div className="row mb-3">
+                    <div className="col">
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Password"
+                            className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                            value={formData.password}
+                            onChange={handleChange}
+                        />
+                        {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+                    </div>
+                    <div className="col">
+                        <input
+                            type="password"
+                            name="confirmPassword"
+                            placeholder="Confirm password"
+                            className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
+                        />
+                        {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword}</div>}
+                    </div>
                 </div>
                 <div className="mb-3">
-                    <input
-                        type="text"
-                        name="username"
-                        placeholder="Username"
-                        className={`form-control ${errors.username ? 'is-invalid' : ''}`}
-                        value={formData.username}
-                        onChange={handleChange}
-                    />
-                    {errors.username && <div className="invalid-feedback">{errors.username}</div>}
-                </div>
-                <div className="mb-3">
-                    <input
-                        type="text"
-                        name="specialization"
-                        placeholder="Specialization"
-                        className={`form-control ${errors.specialization ? 'is-invalid' : ''}`}
-                        value={formData.specialization}
-                        onChange={handleChange}
-                    />
-                    {errors.specialization && <div className="invalid-feedback">{errors.specialization}</div>}
-                </div>
-                <div className="mb-3">
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-                        value={formData.email}
-                        onChange={handleChange}
-                    />
-                    {errors.email && <div className="invalid-feedback">{errors.email}</div>}
-                </div>
-                <div className="mb-3">
-                    <input
-                        type="tel"
-                        name="phone"
-                        placeholder="Phone"
-                        className="form-control"
-                        value={formData.phone}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div className="mb-3">
-                    <input
-                        type="text"
-                        name="clinic_name"
-                        placeholder="Clinic Name"
-                        className="form-control"
-                        value={formData.clinic_name}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div className="mb-3">
-                    <input
-                        type="text"
-                        name="clinic_address"
-                        placeholder="Clinic Address"
-                        className="form-control"
-                        value={formData.clinic_address}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div className="mb-3">
-                    <input
-                        type="text"
-                        name="city"
-                        placeholder="City"
-                        className="form-control"
-                        value={formData.city}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div className="mb-3 d-flex align-items-center gap-2">
-                    <input
-                        type="number"
-                        name="latitude"
-                        placeholder="Latitude"
-                        className="form-control"
-                        value={formData.latitude}
-                        onChange={handleChange}
-                        step="any"
-                    />
-                    <input
-                        type="number"
-                        name="longitude"
-                        placeholder="Longitude"
-                        className="form-control"
-                        value={formData.longitude}
-                        onChange={handleChange}
-                        step="any"
-                    />
-                    <button type="button" className="btn btn-primary" onClick={() => setShowMap(true)} style={{ whiteSpace: 'nowrap' }}>
-                        Pick on Map
-                    </button>
-                </div>
-                <MapPicker
-                    show={showMap}
-                    onClose={() => setShowMap(false)}
-                    onPick={handlePickLocation}
-                    lat={formData.latitude}
-                    lng={formData.longitude}
-                />
-                <div className="mb-3">
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        className={`form-control ${errors.password ? 'is-invalid' : ''}`}
-                        value={formData.password}
-                        onChange={handleChange}
-                    />
-                    {errors.password && <div className="invalid-feedback">{errors.password}</div>}
-                </div>
-                <div className="mb-3">
-                    <input
-                        type="password"
-                        name="confirmPassword"
-                        placeholder="Confirm password"
-                        className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                    />
-                    {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword}</div>}
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="degreeFile" className="form-label">Academic Degree Document (PDF, JPG, PNG, max 5MB)</label>
+                    <label htmlFor="degreeFile" className="form-label" style={{ color: 'white', fontWeight: 'bold' }}>
+                        Academic Degree Document (PDF, JPG, PNG, max 5MB)
+                    </label>
                     <input
                         type="file"
                         id="degreeFile"

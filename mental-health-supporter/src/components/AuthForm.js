@@ -35,7 +35,23 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
       setErrors(newErrors);
       return;
     }
-    onSubmit(formData, setErrors);
+    onSubmit(formData, (apiErrors = {}) => {
+      // Map backend errors to user-friendly messages
+      const mappedErrors = { ...apiErrors };
+      if (apiErrors.email && (apiErrors.email.toLowerCase().includes('exist') || apiErrors.email.toLowerCase().includes('already')) ) {
+        mappedErrors.email = 'This email is already registered. Please use another email.';
+      }
+      if (apiErrors.name && (apiErrors.name.toLowerCase().includes('exist') || apiErrors.name.toLowerCase().includes('already')) ) {
+        mappedErrors.name = 'This username is already taken. Please use another username.';
+      }
+      if (apiErrors.username && (apiErrors.username.toLowerCase().includes('exist') || apiErrors.username.toLowerCase().includes('already')) ) {
+        mappedErrors.name = 'This username is already taken. Please use another username.';
+      }
+      if (apiErrors.detail && apiErrors.detail.toLowerCase().includes('doctor registration failed')) {
+        mappedErrors.email = 'This email or username is already used.';
+      }
+      setErrors(mappedErrors);
+    });
   };
 
   // Google login handler (updated to correct backend endpoint)
@@ -56,7 +72,7 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
             value={formData.name}
             onChange={handleChange}
           />
-          {errors.name && <div className="invalid-feedback">{errors.name}</div>}
+          {errors.name && <div className="invalid-feedback" style={{ display: 'block', color: 'red' }}>{errors.name}</div>}
         </div>
         {!isLogin && (
           <>
@@ -69,7 +85,7 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
                 value={formData.email}
                 onChange={handleChange}
               />
-              {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+              {errors.email && <div className="invalid-feedback" style={{ display: 'block', color: 'red' }}>{errors.email}</div>}
             </div>
           </>
         )}
@@ -82,7 +98,7 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
             value={formData.password}
             onChange={handleChange}
           />
-          {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+          {errors.password && <div className="invalid-feedback" style={{ display: 'block', color: 'red' }}>{errors.password}</div>}
         </div>
         {!isLogin && (
           <div className="mb-3">
@@ -95,12 +111,12 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
               onChange={handleChange}
             />
             {errors.confirmPassword && (
-              <div className="invalid-feedback">{errors.confirmPassword}</div>
+              <div className="invalid-feedback" style={{ display: 'block', color: 'red' }}>{errors.confirmPassword}</div>
             )}
           </div>
         )}
         {serverError && (
-          <div className="invalid-feedback" style={{ display: 'block', textAlign: 'center', marginBottom: '1rem' }}>{serverError}</div>
+          <div className="invalid-feedback" style={{ display: 'block', textAlign: 'center', marginBottom: '1rem', color: 'red' }}>{serverError}</div>
         )}
         <button type="submit" className="btn btn-light w-100 mb-2">
           {isLogin ? 'Log in' : 'Register'}

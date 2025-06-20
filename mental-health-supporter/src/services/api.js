@@ -51,8 +51,16 @@ export async function registerDoctor(formData, isFormData = false) {
   }
   const response = await fetch("http://127.0.0.1:8000/api/users/register/doctor/", options);
   if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.detail || errorData.error || "Doctor registration failed");
+    let errorData;
+    try {
+      errorData = await response.json();
+    } catch {
+      errorData = { detail: "Doctor registration failed" };
+    }
+    // Throw an error object with response and data for frontend error handling
+    const error = new Error(errorData.detail || errorData.error || "Doctor registration failed");
+    error.response = { data: errorData };
+    throw error;
   }
   return response.json();
 }

@@ -22,6 +22,7 @@ const DoctorRegister = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -75,11 +76,10 @@ const DoctorRegister = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    setErrorMessage('');
+    setSuccessMessage('');
     if (!validateForm()) return;
-    
     setIsSubmitting(true);
-    
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
       console.log('Doctor Registered:', formData);
@@ -102,7 +102,7 @@ const DoctorRegister = () => {
       setTimeout(() => navigate('/login'), 2000);
     } catch (error) {
       console.error('Registration error:', error);
-      setSuccessMessage('Registration failed. Please try again.');
+      setErrorMessage(error.message || 'Registration failed. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -116,6 +116,11 @@ const DoctorRegister = () => {
           <p>Become part of our community of mental health supporters</p>
         </div>
 
+        {errorMessage && (
+          <div className="alert alert-danger" role="alert">
+            {errorMessage}
+          </div>
+        )}
         {successMessage && (
           <div className="alert alert-success" role="alert">
             {successMessage}
@@ -262,6 +267,22 @@ const DoctorRegister = () => {
               onChange={handleChange}
               rows="3"
             />
+          </div>
+
+          {/* Academic Degree Document Upload */}
+          <div className="mb-3">
+            <label htmlFor="degreeFile" className="form-label" style={{ color: 'white', fontWeight: 'bold' }}>
+              Academic Degree Document (PDF, JPG, PNG, max 5MB)
+            </label>
+            <input
+              type="file"
+              id="degreeFile"
+              name="degreeFile"
+              className={`form-control ${errors && errors.degreeFile ? 'is-invalid' : ''}`}
+              accept=".pdf, .jpg, .jpeg, .png"
+              onChange={handleFileChange}
+            />
+            {errors && errors.degreeFile && <div className="invalid-feedback">{errors.degreeFile}</div>}
           </div>
 
           <div className="form-footer">
