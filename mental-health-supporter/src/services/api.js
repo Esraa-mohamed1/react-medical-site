@@ -2,11 +2,18 @@ import axios from 'axios';
 
 const BASE_URL = "http://127.0.0.1:8000/api/users/";
 
-export async function registerUser({ full_name, name, email, password, phone, address }) {
+export async function registerUser({ name, email, password, full_name, phone, address }) {
   const response = await fetch(BASE_URL + "register/user/", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username: name, full_name, phone, address, email, password }) // send username, not name
+    body: JSON.stringify({
+      username: name,
+      email,
+      password,
+      full_name,
+      phone,
+      address
+    })
   });
   if (!response.ok) {
     let errorData;
@@ -110,9 +117,14 @@ const api = axios.create({
 // Add request interceptor
 api.interceptors.request.use(
   async (config) => {
-    const token = localStorage.getItem('access'); // Or get from your auth state management
+    // Always get the latest token from localStorage
+    const token = localStorage.getItem('access');
     if (token) {
+      config.headers = config.headers || {};
       config.headers.Authorization = `Bearer ${token}`;
+    } else {
+      // Optionally, you can log or handle missing token here
+      console.warn('No access token found in localStorage');
     }
     return config;
   },
@@ -127,8 +139,9 @@ api.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 401) {
       localStorage.removeItem('access'); // Clear token
-      localStorage.removeItem('loggedUser')
-      window.location.href = '/login';
+      localStorage.removeItem('loggedUser');
+      // Do NOT redirect to login, just clear tokens
+      // Optionally, you can set a global state or show a message here
     }
     return Promise.reject(error);
   }
@@ -156,6 +169,17 @@ export const updateData = async (endpoint, data, config = {}) => {
   }
 };
 
+// POST request
+export const postData = async (endpoint, data) => {
+  try {
+    const response = await api.post(endpoint, data);
+    return response.data;
+  } catch (error) {
+    console.error('Error patching data:', error);
+    throw error;
+  }
+};
+
 // PATCH request
 export const patchData = async (endpoint, data) => {
   try {
@@ -165,4 +189,14 @@ export const patchData = async (endpoint, data) => {
     console.error('Error patching data:', error);
     throw error;
   }
+
 };
+
+// Utility: Ensure tokens and user info are set in localStorage for API auth
+export function setAuthTokens({ access, refresh, user_id, username }) {
+  if (access) localStorage.setItem('access', access);
+  if (refresh) localStorage.setItem('refresh', refresh);
+  if (user_id && username) {
+    localStorage.setItem('loggedUser', JSON.stringify({ user_id, username }));
+  }
+}

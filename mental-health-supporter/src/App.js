@@ -12,30 +12,37 @@ import DoctorDetailsPage from './pages/DoctorDetailsPage';
 import PatientDetailsPage from './pages/PatientDetailsPage';
 import RegisterSelectPage from './pages/RegisterSelectPage';
 import GoogleAuthRedirect from './pages/GoogleAuthRedirect';
+import AccountSettingsPage from './pages/AccountSettingsPage';
+
+import ErrorBoundary from './ErrorBoundary';
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register-select" element={<RegisterSelectPage />} />
-        <Route path="/register" element={<RegisterPage />} /> {/* For patients */}
-        <Route path="/doctor-register" element={<DoctorRegister />} /> {/* For doctors */}
-        <Route path="/artical" element={<ArticalPage />} />
-        <Route path="/mental-health-article" element={<MentalHealthArticle />} />
-        <Route path="/doctors/login" element={<BaseLoginPage userType={'Doctor'} />} />
-        <Route path="/patients/login" element={<BaseLoginPage userType={'Patient'} />} />
-        <Route path="/admin/login" element={<BaseLoginPage userType={'Admin'} />} />
-        <Route path="/doctors-list" element={<DoctorsList />} />
-        <Route path="/doctors-list/:id" element={<DoctorDetailsPage />} />
-        <Route path="/patients-list/:id" element={<PatientDetailsPage />} />
-        {/* Google OAuth2 redirect handler */}
-        <Route path="/social/complete/google-oauth2/" element={<GoogleAuthRedirect />} />
-        <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
-    </Router>
-  )
+    <ErrorBoundary>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/register-select" element={<RegisterSelectPage />} />
+          <Route path="/artical" element={<ArticalPage />} />
+          <Route path="/artical" element={<MentalHealthArticle />} />
+          <Route path="/doctors/login" element={<BaseLoginPage userType={'Doctor'} />} />
+          <Route path="/patients/login" element={<BaseLoginPage userType={'Patient'} />} />
+          <Route path="/admin/login" element={<BaseLoginPage userType={'Admin'} />} />
+          <Route path="/doctors-list" element={<DoctorsList />} />
+          <Route path="/doctors-list/:id" element={<DoctorDetailsPage />} />
+          <Route path="/patients-list" element={<div style={{ textAlign: 'center', padding: '2rem' }}>Please select a patient profile to view.</div>} />
+          <Route path="/patients-list/:id" element={<PatientDetailsPage />} />
+          <Route path="/doctor-register" element={<DoctorRegister />} />
+          <Route path="/doctors/:doctor_id" element={<DoctorPage />} />
+          <Route path="/settings" element={<AccountSettingsPage />} />
+          <Route path="/social/complete/google-oauth2/" element={<GoogleAuthRedirect />} />
+          {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
+        </Routes>
+      </Router>
+    </ErrorBoundary>
+  );
 }
 
 export default App;

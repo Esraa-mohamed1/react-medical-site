@@ -1,24 +1,34 @@
-import React, { useState } from 'react';
-import { Card, Button, Badge, Accordion } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Card, Button, Badge } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import BookingModal from './BookingModal';
-import { FaCalendarAlt, FaClock, FaArrowDown } from 'react-icons/fa';
+import { FaCalendarAlt } from 'react-icons/fa';
+import { getAvailableTimes } from '../../services/doctors/AvailableTimeService';
 
-const AppointmentBooking = ({ slots }) => {
+const AppointmentBooking = ({ doctorId }) => {
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [activeDay, setActiveDay] = useState('today');
+  const [availableTimes, setAvailableTimes] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (doctorId) {
+      setLoading(true);
+      getAvailableTimes(doctorId)
+        .then(setAvailableTimes)
+        .catch(() => setError('Failed to fetch available times'))
+        .finally(() => setLoading(false));
+    }
+  }, [doctorId]);
 
   const handleBookClick = (slot) => {
-    setSelectedSlot(slot);
+    setSelectedSlot({
+      ...slot,
+      dateTime: slot.date_time || slot.dateTime || `${slot.date}T${slot.time}` // ensure ISO format
+    });
     setShowModal(true);
   };
-
-  const days = [
-    { id: 'today', name: 'Today', date: 'June 25', slots: slots.slice(0, 4) },
-    { id: 'tomorrow', name: 'Tomorrow', date: 'June 26', slots: slots.slice(2, 6) },
-    { id: 'dayAfter', name: 'Day After', date: 'June 27', slots: slots.slice(1, 5) }
-  ];
 
   return (
     <>
@@ -34,48 +44,29 @@ const AppointmentBooking = ({ slots }) => {
               <h4 className="mb-0 ms-2" style={{ color: 'var(--primary-purple)' }}>Book Appointment</h4>
               <FaCalendarAlt size={24} style={{ color: 'var(--primary-purple)' }} />
             </div>
-
-            <Accordion defaultActiveKey="today" className="mb-3">
-              {days.map((day) => (
-                <Accordion.Item eventKey={day.id} key={day.id}>
-                  <Accordion.Header>
-                    <div className="d-flex justify-content-between w-100 ps-2">
-                      <span className="fw-bold">{day.name}, {day.date}</span>
-                      <FaArrowDown />
-                    </div>
-                  </Accordion.Header>
-                  <Accordion.Body className="p-0">
-                    <div className="d-grid gap-2 mt-2">
-                      {day.slots.map((slot, index) => (
-                        <Button
-                          key={index}
-                          variant="outline-primary"
-                          className="time-slot-btn d-flex justify-content-between align-items-center"
-                          onClick={() => handleBookClick(`${day.name} ${slot}`)}
-                        >
-                          <span>{slot}</span>
-                          <Badge bg="light" text="primary" pill>Available</Badge>
-                        </Button>
-                      ))}
-                    </div>
-                  </Accordion.Body>
-                </Accordion.Item>
-              ))}
-            </Accordion>
-
-            <div className="text-center mt-3">
-              <Button variant="light" className="text-primary w-100">
-                Show More Appointments
-              </Button>
+            {loading && <div>Loading available times...</div>}
+            {error && <div className="text-danger">{error}</div>}
+            <div className="d-grid gap-2 mt-2">
+              {availableTimes.length > 0 ? availableTimes.map((slot) => (
+                <Button
+                  key={slot.id}
+                  variant="outline-primary"
+                  className="time-slot-btn d-flex justify-content-between align-items-center"
+                  onClick={() => handleBookClick(slot)}
+                >
+                  <span>{slot.time}</span>
+                  <Badge bg="light" text="primary" pill>Available</Badge>
+                </Button>
+              )) : !loading && <div>No available times for this doctor.</div>}
             </div>
           </Card.Body>
         </Card>
       </motion.div>
-
       <BookingModal
         show={showModal}
         onHide={() => setShowModal(false)}
         selectedSlot={selectedSlot}
+        doctorId={doctorId}
       />
     </>
   );
