@@ -67,7 +67,7 @@ const DoctorsCard = ({ doctor }) => {
       </div>
 
       <div className="doctor-actions">
-        <button onClick={() => navigate(`/doctors-list/${doctor.doctor_id}`)} className="view-doctor-button">
+        <button onClick={() => navigate(`/doctors/${doctor.doctor_id}`)} className="view-doctor-button">
           <FaUser className="icon" /> View Doctor
         </button>
         <button className="book-button">
