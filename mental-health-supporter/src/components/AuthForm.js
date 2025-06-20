@@ -35,7 +35,11 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
       setErrors(newErrors);
       return;
     }
-    onSubmit(formData, (apiErrors = {}) => {
+    // عند تسجيل الدخول، أرسل username بدل name
+    const submitData = isLogin
+      ? { username: formData.name, password: formData.password }
+      : formData;
+    onSubmit(submitData, (apiErrors = {}) => {
       // Map backend errors to user-friendly messages
       const mappedErrors = { ...apiErrors };
       if (apiErrors.email && (apiErrors.email.toLowerCase().includes('exist') || apiErrors.email.toLowerCase().includes('already')) ) {
@@ -122,15 +126,32 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
           {isLogin ? 'Log in' : 'Register'}
         </button>
         {isLogin && (
-          <button
-            type="button"
-            className="btn btn-light w-100 mb-2"
-            onClick={handleGoogleLogin}
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #ddd', borderRadius: '50%', width: 48, height: 48, margin: '0 auto 1rem auto', padding: 0 }}
-            title="Log in with Google"
-          >
-            <img src="/images/google-logo.png" alt="Google" style={{ width: 28, height: 28 }} />
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, margin: '0 0 0.2rem 0' }}>
+            <button
+              type="button"
+              onClick={handleGoogleLogin}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: '1px solid #ddd',
+                background: '#fff',
+                borderRadius: '50%',
+                width: 50,
+                height: 50,
+                padding: 0,
+                boxShadow: '0 2px 8px rgba(0,0,0,0.07)',
+                cursor: 'pointer',
+                transition: 'box-shadow 0.2s',
+              }}
+              title="Log in with Google"
+            >
+              <img src="/images/google-logo.png" alt="Google" style={{ width: 24, height: 24 }} />
+            </button>
+            <span style={{ color: 'white', fontWeight: 500, fontSize: '1rem', letterSpacing: 0.1, whiteSpace: 'nowrap' }}>
+              Login with your Google account
+            </span>
+          </div>
         )}
         <p className="auth-switch text-center">
           {isLogin ? (

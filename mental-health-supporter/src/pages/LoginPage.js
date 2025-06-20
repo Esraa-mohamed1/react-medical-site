@@ -24,7 +24,7 @@ export default function LoginPage() {
         navigate('/artical');
       }
     } catch (error) {
-      // Show SweetAlert2 for blocked login (pending/rejected)
+      // SweetAlert2 for blocked login (pending/rejected)
       if (error.message && (error.message.includes('pending') || error.message.includes('rejected'))) {
         Swal.fire({
           icon: 'error',
@@ -33,9 +33,35 @@ export default function LoginPage() {
           confirmButtonText: 'OK',
         });
       }
-      // Show error under username/email field if possible
-      if (error.message && error.message.toLowerCase().includes('username')) {
-        setFieldErrors({ email: error.message });
+      // Field-specific error handling
+      if (error.response && error.response.data) {
+        const data = error.response.data;
+        let fieldErrors = {};
+        if (data.error && data.error.toLowerCase().includes('invalid')) {
+          // Always show under both fields for clarity
+          fieldErrors.name = 'Invalid username or email or password.';
+          fieldErrors.password = 'Invalid username or email or password.';
+        } else if (data.username) {
+          fieldErrors.name = data.username[0] || 'Invalid username.';
+        } else if (data.email) {
+          fieldErrors.name = data.email[0] || 'Invalid email.';
+        } else if (data.password) {
+          fieldErrors.password = data.password[0] || 'Invalid password.';
+        } else if (data.error) {
+          setServerError(data.error);
+          return;
+        }
+        if (Object.keys(fieldErrors).length > 0) {
+          setFieldErrors(fieldErrors);
+        } else {
+          setServerError(error.message);
+        }
+      } else if (error.message && error.message.toLowerCase().includes('username')) {
+        setFieldErrors({ name: error.message });
+      } else if (error.message && error.message.toLowerCase().includes('email')) {
+        setFieldErrors({ name: error.message });
+      } else if (error.message && error.message.toLowerCase().includes('password')) {
+        setFieldErrors({ password: error.message });
       } else {
         setServerError(error.message);
       }

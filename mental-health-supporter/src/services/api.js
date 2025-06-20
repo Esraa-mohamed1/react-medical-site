@@ -9,28 +9,44 @@ export async function registerUser({ full_name, name, email, password, phone, ad
     body: JSON.stringify({ username: name, full_name, phone, address, email, password }) // send username, not name
   });
   if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.detail || errorData.error || "Registration failed");
+    let errorData;
+    try {
+      errorData = await response.json();
+    } catch {
+      errorData = { detail: "Registration failed" };
+    }
+    // Throw an error object with response and data for frontend error handling
+    const error = new Error(errorData.detail || errorData.error || "Registration failed");
+    error.response = { data: errorData };
+    throw error;
   }
   return response.json();
 }
 
-export async function loginUser({ name, password }) {
-  // Allow login with either username or email
-  let loginPayload = {};
-  if (name.includes('@')) {
-    loginPayload = { email: name, password };
-  } else {
-    loginPayload = { username: name, password };
+export async function loginUser(formData) {
+  // دعم تسجيل الدخول باليوزرنيم أو الإيميل
+  let loginData = { ...formData };
+  if (loginData.username && loginData.username.includes('@')) {
+    // إذا أدخل المستخدم إيميل، أرسله في حقل username
+    loginData = { username: loginData.username, password: loginData.password };
   }
-  const response = await fetch(BASE_URL + "login/", {
+  const options = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(loginPayload)
-  });
+    body: JSON.stringify(loginData)
+  };
+  const response = await fetch("http://127.0.0.1:8000/api/users/login/", options);
   if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.error || errorData.detail || "Login failed");
+    let errorData;
+    try {
+      errorData = await response.json();
+    } catch {
+      errorData = { detail: "Login failed" };
+    }
+    // Throw an error object with response and data for frontend error handling
+    const error = new Error(errorData.detail || errorData.error || "Login failed");
+    error.response = { data: errorData };
+    throw error;
   }
   return response.json();
 }
