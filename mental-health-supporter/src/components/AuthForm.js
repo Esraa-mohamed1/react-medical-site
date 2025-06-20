@@ -6,6 +6,7 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
 
   const [formData, setFormData] = useState({
     name: '', // username or email for login, username for register
+    full_name: '', // <-- add full_name for registration
     email: '',
     password: '',
     confirmPassword: '',
@@ -25,6 +26,7 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
     if (!formData.password) newErrors.password = 'Password is required';
     else if (formData.password.length < 6) newErrors.password = 'Password must be at least 6 characters';
     if (!isLogin) {
+      if (!formData.full_name) newErrors.full_name = 'Full name is required';
       if (!formData.email) newErrors.email = 'Email is required';
       else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Invalid email';
       if (!formData.confirmPassword) newErrors.confirmPassword = 'Please confirm your password';
@@ -38,7 +40,7 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
     // عند تسجيل الدخول، أرسل username بدل name
     const submitData = isLogin
       ? { username: formData.name, password: formData.password }
-      : formData;
+      : { ...formData, full_name: formData.full_name };
     onSubmit(submitData, (apiErrors = {}) => {
       // Map backend errors to user-friendly messages
       const mappedErrors = { ...apiErrors };
@@ -50,6 +52,9 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
       }
       if (apiErrors.username && (apiErrors.username.toLowerCase().includes('exist') || apiErrors.username.toLowerCase().includes('already')) ) {
         mappedErrors.name = 'This username is already taken. Please use another username.';
+      }
+      if (apiErrors.full_name && apiErrors.full_name.toLowerCase().includes('required')) {
+        mappedErrors.full_name = 'Full name is required.';
       }
       if (apiErrors.detail && apiErrors.detail.toLowerCase().includes('doctor registration failed')) {
         mappedErrors.email = 'This email or username is already used.';
@@ -80,6 +85,17 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
         </div>
         {!isLogin && (
           <>
+            <div className="mb-3">
+              <input
+                type="text"
+                name="full_name"
+                placeholder="Full Name"
+                className={`form-control ${errors.full_name ? 'is-invalid' : ''}`}
+                value={formData.full_name}
+                onChange={handleChange}
+              />
+              {errors.full_name && <div className="invalid-feedback" style={{ display: 'block', color: 'red' }}>{errors.full_name}</div>}
+            </div>
             <div className="mb-3">
               <input
                 type="email"
