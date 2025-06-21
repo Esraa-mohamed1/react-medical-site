@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import Hero from './Hero/Hero';
 import SearchFilters from './SearchFilters/SearchFilters';
-import Sort from './Sort/Sort';
+// import Sort from './Sort/Sort';
 import DoctorsCard from './DoctorsCard/DoctorsCard';
 import Pagination from './Pagination/Pagination';
 import './DoctorsList.css';
 import { getDoctors } from './../../services/doctors/DoctorServices';
 
 const DoctorsList = () => {
+  const { t } = useTranslation();
+
   const [filteredDoctors, setFilteredDoctors] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
@@ -17,31 +21,12 @@ const DoctorsList = () => {
     available: '',
   });
 
-  // const [sortOption, setSortOption] = useState('mostPopular');
   const doctorsPerPage = 6;
 
-  // Fix the useEffect implementation
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
         let queryParms = getQueryParams(filters, searchTerm);
-
-        // Apply sorting
-        // switch (sortOption) {
-        //   case 'highestRating':
-        //     result.sort((a, b) => b.rating - a.rating);
-        //     break;
-        //   case 'lowestPrice':
-        //     result.sort((a, b) => parseFloat(a.fee) - parseFloat(b.fee));
-        //     break;
-        //   case 'highestPrice':
-        //     result.sort((a, b) => parseFloat(b.fee) - parseFloat(a.fee));
-        //     break;
-        //   case 'mostPopular':
-        //   default:
-        //     result.sort((a, b) => b.ratingCount - a.ratingCount);
-        // }
-
         let fullParams = (queryParms.length > 0 ? '?' : '') + queryParms.join('&');
         let result = await getDoctors(fullParams);
         setFilteredDoctors(result);
@@ -53,7 +38,7 @@ const DoctorsList = () => {
     };
 
     fetchDoctors();
-  }, [filters]);
+  }, [filters, searchTerm]);
 
   const indexOfLastDoctor = currentPage * doctorsPerPage;
   const indexOfFirstDoctor = indexOfLastDoctor - doctorsPerPage;
@@ -62,12 +47,9 @@ const DoctorsList = () => {
 
   const getQueryParams = (filters, searchTerm) => {
     let queryParms = [];
-    // Apply search
     if (searchTerm) {
       queryParms.push(`search=${searchTerm.toLowerCase()}`);
     }
-
-    // Apply filters
     if (filters.specialization) {
       queryParms.push(`specialization=${filters.specialization}`);
     }
@@ -78,9 +60,10 @@ const DoctorsList = () => {
       queryParms.push(`available=${filters.available === 'true' ? "True" : "False"}`);
     }
     return queryParms;
-  }
+  };
+
   const handleSearch = async (term) => {
-    let queryParms = getQueryParams(filters, searchTerm);
+    let queryParms = getQueryParams(filters, term);
     let fullParams = (queryParms.length > 0 ? '?' : '') + queryParms.join('&');
     let result = await getDoctors(fullParams);
     setFilteredDoctors(result);
@@ -93,10 +76,6 @@ const DoctorsList = () => {
       [filterName]: value
     }));
   };
-
-  // const handleSortChange = (option) => {
-  //   setSortOption(option);
-  // };
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -115,7 +94,7 @@ const DoctorsList = () => {
         <div className="search-input-container">
           <input
             type="text"
-            placeholder="Search by full name"
+            placeholder={t('doctorsList.searchPlaceholder')}
             className="search-input"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -125,13 +104,13 @@ const DoctorsList = () => {
             className="search-button"
             onClick={() => handleSearch(searchTerm)}
           >
-            Search
+            {t('doctorsList.searchButton')}
           </button>
         </div>
       </div>
 
       <div className="content-area">
-        {/* Filters section (left side) */}
+        {/* Filters section */}
         <div className="filters-section">
           <SearchFilters
             onSearch={handleSearch}
@@ -147,20 +126,20 @@ const DoctorsList = () => {
             doctorsCount={filteredDoctors.length}
           /> */}
 
-          {/* Doctors cards - one per row */}
+          {/* Doctors cards */}
           {currentDoctors.length > 0 ? (
             currentDoctors.map(doctor => (
-              <div className="doctors-cards">
-                <DoctorsCard doctor={doctor} key={doctor.doctor_id} />
+              <div className="doctors-cards" key={doctor.doctor_id}>
+                <DoctorsCard doctor={doctor} />
               </div>
             ))
           ) : (
-            <div className="no-results">No doctors match your search criteria.</div>
+            <div className="no-results">{t('doctorsList.noResults')}</div>
           )}
         </div>
       </div>
 
-      {/* Full-width pagination container - MOVED OUTSIDE content-area */}
+      {/* Pagination */}
       <div className="pagination-container">
         <div className="pagination">
           <Pagination
@@ -173,4 +152,5 @@ const DoctorsList = () => {
     </div>
   );
 };
+
 export default DoctorsList;

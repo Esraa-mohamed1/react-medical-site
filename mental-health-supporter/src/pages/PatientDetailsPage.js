@@ -1,25 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { getPatientById, updatePatient } from './../services/patients/PatientServices';
-import patientPlaceholder from './../components/DoctorsListComponent/images/doctor-placeholder.jpg';
-import CustomNavbar from './../components/Navbar';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { getPatientById, updatePatient } from '../services/patients/PatientServices';
+import patientPlaceholder from '../components/DoctorsListComponent/images/doctor-placeholder.jpg';
+import CustomNavbar from '../components/Navbar';
 
+// Enhanced professional styling
 const styles = {
     container: {
         padding: '2rem',
-        backgroundColor: '#f0f7ff',
-        minHeight: '100vh'
+        backgroundColor: '#f8fafc',
+        minHeight: '100vh',
+        fontFamily: '"Segoe UI", Roboto, "Helvetica Neue", sans-serif'
     },
     card: {
         backgroundColor: 'white',
         borderRadius: '16px',
-        boxShadow: '0 8px 24px rgba(149, 157, 165, 0.2)',
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
         overflow: 'hidden',
         maxWidth: '1200px',
-        margin: '0 auto'
+        margin: '0 auto',
+        transition: 'box-shadow 0.3s ease',
+        ':hover': {
+            boxShadow: '0 8px 30px rgba(0, 0, 0, 0.12)'
+        }
     },
     header: {
-        background: 'linear-gradient(135deg, #6B8DD6 0%, #8E37D7 100%)',
+        background: 'linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%)',
         color: 'white',
         padding: '2.5rem',
         position: 'relative'
@@ -27,32 +34,39 @@ const styles = {
     profileSection: {
         display: 'flex',
         gap: '2.5rem',
-        alignItems: 'center'
+        alignItems: 'center',
+        '@media (max-width: 768px)': {
+            flexDirection: 'column',
+            textAlign: 'center',
+            gap: '1.5rem'
+        }
     },
     avatar: {
-        width: '180px',
-        height: '180px',
+        width: '160px',
+        height: '160px',
         borderRadius: '50%',
         border: '4px solid rgba(255, 255, 255, 0.3)',
-        objectFit: 'cover'
+        objectFit: 'cover',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+        transition: 'transform 0.3s ease',
+        ':hover': {
+            transform: 'scale(1.03)'
+        }
     },
     profileInfo: {
         flex: 1
     },
     name: {
-        fontSize: '2.5rem',
-        fontWeight: '700',
-        margin: '0 0 0.5rem 0'
-    },
-    id: {
-        fontSize: '1rem',
-        opacity: '0.9',
-        fontWeight: '500'
+        fontSize: '2rem',
+        fontWeight: '600',
+        margin: '0 0 0.5rem 0',
+        letterSpacing: '0.5px'
     },
     created: {
         fontSize: '0.875rem',
-        color: 'rgba(255, 255, 255, 0.8)',
-        marginTop: '0.5rem'
+        color: 'rgba(255, 255, 255, 0.85)',
+        marginTop: '0.5rem',
+        fontWeight: '400'
     },
     mainContent: {
         padding: '2rem'
@@ -60,57 +74,72 @@ const styles = {
     section: {
         backgroundColor: '#f8fafc',
         borderRadius: '12px',
-        padding: '1.5rem',
-        marginBottom: '1.5rem'
+        padding: '1.75rem',
+        marginBottom: '1.75rem',
+        border: '1px solid #e2e8f0'
     },
     sectionTitle: {
         fontSize: '1.25rem',
         color: '#1e293b',
         fontWeight: '600',
-        marginBottom: '1rem',
+        marginBottom: '1.25rem',
         display: 'flex',
         alignItems: 'center',
-        gap: '0.5rem'
+        gap: '0.75rem',
+        letterSpacing: '0.3px'
     },
     grid: {
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
         gap: '1.5rem'
     },
     field: {
         backgroundColor: 'white',
-        padding: '1rem',
-        borderRadius: '8px',
-        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)'
+        padding: '1.25rem',
+        borderRadius: '10px',
+        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.04)',
+        border: '1px solid #edf2f7',
+        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+        ':hover': {
+            transform: 'translateY(-2px)',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)'
+        }
     },
     label: {
         color: '#64748b',
-        fontSize: '0.875rem',
-        marginBottom: '0.5rem'
+        fontSize: '0.8125rem',
+        marginBottom: '0.5rem',
+        fontWeight: '500',
+        textTransform: 'uppercase',
+        letterSpacing: '0.5px'
     },
     value: {
         color: '#0f172a',
         fontSize: '1rem',
-        fontWeight: '500'
+        fontWeight: '500',
+        lineHeight: '1.5'
     },
     input: {
         width: '100%',
-        padding: '0.75rem',
-        borderRadius: '6px',
+        padding: '0.75rem 1rem',
+        borderRadius: '8px',
         border: '1px solid #cbd5e1',
         fontSize: '1rem',
-        transition: 'border-color 0.2s',
-        '&:focus': {
-            borderColor: '#6B8DD6',
-            outline: 'none'
+        transition: 'all 0.2s ease',
+        backgroundColor: '#f8fafc',
+        ':focus': {
+            borderColor: '#3a7bd5',
+            outline: 'none',
+            boxShadow: '0 0 0 3px rgba(58, 123, 213, 0.1)',
+            backgroundColor: 'white'
         }
     },
     buttonsContainer: {
         position: 'absolute',
-        top: '1rem',
-        right: '1rem',
+        top: '1.5rem',
+        right: '1.5rem',
         display: 'flex',
-        gap: '0.5rem'
+        gap: '0.75rem'
     },
     button: {
         padding: '0.75rem 1.5rem',
@@ -118,58 +147,36 @@ const styles = {
         border: 'none',
         cursor: 'pointer',
         fontSize: '0.875rem',
-        fontWeight: '500',
-        transition: 'all 0.2s'
+        fontWeight: '600',
+        transition: 'all 0.2s ease',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.5rem',
+        letterSpacing: '0.5px'
     },
     editButton: {
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        backgroundColor: 'rgba(255, 255, 255, 0.15)',
         color: 'white',
-        '&:hover': {
-            backgroundColor: 'rgba(255, 255, 255, 0.3)'
+        backdropFilter: 'blur(5px)',
+        ':hover': {
+            backgroundColor: 'rgba(255, 255, 255, 0.25)'
         }
     },
     saveButton: {
         backgroundColor: '#10b981',
         color: 'white',
-        '&:hover': {
-            backgroundColor: '#059669'
+        ':hover': {
+            backgroundColor: '#0d9f6e',
+            transform: 'translateY(-1px)'
         }
     },
     cancelButton: {
         backgroundColor: '#ef4444',
         color: 'white',
-        '&:hover': {
-            backgroundColor: '#dc2626'
+        ':hover': {
+            backgroundColor: '#dc2626',
+            transform: 'translateY(-1px)'
         }
-    },
-    backButton: {
-        position: 'absolute',
-        top: '1rem',
-        left: '1rem',
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        color: 'white',
-        padding: '0.5rem 1rem',
-        borderRadius: '6px',
-        border: 'none',
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0.5rem',
-        fontSize: '0.875rem',
-        transition: 'background-color 0.2s',
-        '&:hover': {
-            backgroundColor: 'rgba(255, 255, 255, 0.3)'
-        }
-    },
-    imageInput: {
-        marginTop: '1rem',
-        width: '100%',
-        padding: '0.5rem',
-        borderRadius: '4px',
-        border: '1px solid rgba(255, 255, 255, 0.3)',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        color: 'white',
-        fontSize: '0.875rem'
     },
     imageContainer: {
         display: 'flex',
@@ -182,60 +189,74 @@ const styles = {
         position: 'absolute',
         top: 0,
         left: 0,
-        width: '180px',
-        height: '180px',
+        width: '100%',
+        height: '100%',
         borderRadius: '50%',
-        background: 'rgba(0,0,0,0.45)',
+        background: 'rgba(0,0,0,0.5)',
         color: 'white',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         opacity: 0,
-        transition: 'opacity 0.2s',
+        transition: 'all 0.3s ease',
         cursor: 'pointer',
-        fontSize: '1.1rem',
-        zIndex: 2
-    },
-    imageContainerHover: {
-        opacity: 1
+        fontSize: '0.9rem',
+        zIndex: 2,
+        ':hover': {
+            opacity: 1
+        }
     },
     cameraIcon: {
-        fontSize: '2rem',
-        marginBottom: '0.3rem'
+        fontSize: '1.75rem',
+        marginBottom: '0.25rem'
+    },
+    loadingMessage: {
+        textAlign: 'center',
+        padding: '3rem',
+        color: '#64748b',
+        fontSize: '1.1rem'
+    },
+    errorMessage: {
+        textAlign: 'center',
+        padding: '3rem',
+        color: '#ef4444',
+        fontSize: '1.1rem',
+        fontWeight: '500'
     }
 };
 
 const PatientDetailsPage = () => {
-    const navigate = useNavigate();
+    const { t } = useTranslation();
     const [patient, setPatient] = useState(null);
     const [editedPatient, setEditedPatient] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [imagePreview, setImagePreview] = useState(null); // For local preview
-    const [isHoveringImage, setIsHoveringImage] = useState(false);
+    const [imagePreview, setImagePreview] = useState(null);
     const { id } = useParams();
 
-    useEffect(() => {
-        const fetchPatientDetails = async () => {
-            try {
-                const data = await getPatientById(id);
-                setPatient(data);
-                setEditedPatient(data);
-                setImagePreview(null);
-            } catch (err) {
-                setError('Failed to fetch patient details');
-                console.error('Error:', err);
-            } finally {
-                setLoading(false);
-            }
-        };
+    const fetchPatientDetails = useCallback(async () => {
+        try {
+            setLoading(true);
+            const data = await getPatientById(id);
+            setPatient(data);
+            setEditedPatient(data);
+            setImagePreview(null);
+        } catch (err) {
+            setError(t('patient.fetchError'));
+            console.error('Error fetching patient:', err);
+        } finally {
+            setLoading(false);
+        }
+    }, [id, t]);
 
+    useEffect(() => {
         fetchPatientDetails();
-    }, [id]);
+    }, [fetchPatientDetails]);
 
     const handleEdit = () => setIsEditing(true);
+
     const handleCancel = () => {
         setEditedPatient(patient);
         setIsEditing(false);
@@ -244,41 +265,34 @@ const PatientDetailsPage = () => {
 
     const handleSave = async () => {
         try {
+            setLoading(true);
             const updatedData = await updatePatient(id, editedPatient);
             setPatient(updatedData);
             setIsEditing(false);
             setImagePreview(null);
         } catch (err) {
-            setError('Failed to update patient details');
+            setError(t('patient.updateError'));
+            console.error('Error updating patient:', err);
+        } finally {
+            setLoading(false);
         }
     };
 
     const handleChange = (field, value) => {
-        setEditedPatient(prev => ({
-            ...prev,
-            [field]: value
-        }));
+        setEditedPatient(prev => ({ ...prev, [field]: value }));
     };
 
-    // Handle file input change for profile_image
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setEditedPatient(prev => ({
-                ...prev,
-                profile_image: file
-            }));
+            setEditedPatient(prev => ({ ...prev, profile_image: file }));
             setImagePreview(URL.createObjectURL(file));
         }
     };
 
-    if (loading) return <div style={{ textAlign: 'center', padding: '2rem' }}>Loading...</div>;
-    if (error) return <div style={{ textAlign: 'center', padding: '2rem', color: '#ef4444' }}>{error}</div>;
-    if (!patient) return <div style={{ textAlign: 'center', padding: '2rem' }}>Patient not found</div>;
-
     const renderField = (label, field, type = 'text', editable = true) => (
         <div style={styles.field}>
-            <div style={styles.label}>{label}</div>
+            <div style={styles.label}>{t(label)}</div>
             {isEditing && editable ? (
                 <input
                     type={type}
@@ -290,17 +304,17 @@ const PatientDetailsPage = () => {
                 <div style={styles.value}>
                     {field === 'created_at'
                         ? new Date(patient[field]).toLocaleDateString()
-                        : patient[field]
-                    }
+                        : patient[field] || '-'}
                 </div>
             )}
         </div>
     );
 
-    // Use imagePreview if available, otherwise use patient.profile_image or placeholder
-    const profileImageSrc = imagePreview
-        ? imagePreview
-        : (patient.profile_image || patientPlaceholder);
+    if (loading) return <div style={styles.loadingMessage}>{t('patient.loading')}</div>;
+    if (error) return <div style={styles.errorMessage}>{error}</div>;
+    if (!patient) return <div style={styles.loadingMessage}>{t('patient.notFound')}</div>;
+
+    const profileImageSrc = imagePreview || patient.profile_image || patientPlaceholder;
 
     return (
         <>
@@ -311,33 +325,31 @@ const PatientDetailsPage = () => {
                         <div style={styles.buttonsContainer}>
                             {isEditing ? (
                                 <>
-                                    <button onClick={handleCancel} style={{ ...styles.button, ...styles.cancelButton }}>
-                                        Cancel
+                                    <button
+                                        onClick={handleCancel}
+                                        style={{ ...styles.button, ...styles.cancelButton }}
+                                    >
+                                        {t('patient.cancel')}
                                     </button>
-                                    <button onClick={handleSave} style={{ ...styles.button, ...styles.saveButton }}>
-                                        Save Changes
+                                    <button
+                                        onClick={handleSave}
+                                        style={{ ...styles.button, ...styles.saveButton }}
+                                    >
+                                        {t('patient.save')}
                                     </button>
                                 </>
                             ) : (
-                                <>
-                                    <button onClick={handleEdit} style={{ ...styles.button, ...styles.editButton }}>
-                                        Edit Profile
-                                    </button>
-                                    {/* <button
-                                        onClick={() => navigate('/doctors-list')}
-                                        style={{ ...styles.button, ...styles.showDoctorsButton }}
-                                    >
-                                        Show All Doctors
-                                    </button> */}
-                                </>
+                                <button
+                                    onClick={handleEdit}
+                                    style={{ ...styles.button, ...styles.editButton }}
+                                >
+                                    {t('patient.edit')}
+                                </button>
                             )}
                         </div>
+
                         <div style={styles.profileSection}>
-                            <div
-                                style={styles.imageContainer}
-                                onMouseEnter={() => setIsHoveringImage(true)}
-                                onMouseLeave={() => setIsHoveringImage(false)}
-                            >
+                            <div style={styles.imageContainer}>
                                 {isEditing ? (
                                     <>
                                         <label htmlFor="profile-image-upload" style={{ cursor: 'pointer', position: 'relative' }}>
@@ -346,14 +358,9 @@ const PatientDetailsPage = () => {
                                                 alt={patient.full_name}
                                                 style={styles.avatar}
                                             />
-                                            <div
-                                                style={{
-                                                    ...styles.changePhotoOverlay,
-                                                    ...(isHoveringImage ? styles.imageContainerHover : {})
-                                                }}
-                                            >
+                                            <div style={styles.changePhotoOverlay}>
                                                 <span style={styles.cameraIcon}>📷</span>
-                                                <span>Change Photo</span>
+                                                <span>{t('patient.changePhoto')}</span>
                                             </div>
                                         </label>
                                         <input
@@ -372,10 +379,11 @@ const PatientDetailsPage = () => {
                                     />
                                 )}
                             </div>
+
                             <div style={styles.profileInfo}>
                                 <h1 style={styles.name}>{patient.full_name}</h1>
                                 <div style={styles.created}>
-                                    Member since: {new Date(patient.created_at).toLocaleDateString()}
+                                    {t('patient.memberSince')}: {new Date(patient.created_at).toLocaleDateString()}
                                 </div>
                             </div>
                         </div>
@@ -383,20 +391,20 @@ const PatientDetailsPage = () => {
 
                     <div style={styles.mainContent}>
                         <div style={styles.section}>
-                            <h2 style={styles.sectionTitle}>👤 Basic Information</h2>
+                            <h2 style={styles.sectionTitle}>👤 {t('patient.basicInfo')}</h2>
                             <div style={styles.grid}>
-                                {renderField('Full Name', 'full_name')}
-                                {renderField('Member Since', 'created_at', 'datetime-local', false)}
+                                {renderField('patient.fullName', 'full_name')}
+                                {renderField('patient.memberSince', 'created_at', 'datetime-local', false)}
                             </div>
                         </div>
 
                         <div style={styles.section}>
-                            <h2 style={styles.sectionTitle}>📞 Contact Information</h2>
+                            <h2 style={styles.sectionTitle}>📞 {t('patient.contactInfo')}</h2>
                             <div style={styles.grid}>
-                                {renderField('Email', 'email', 'email')}
-                                {renderField('Phone', 'phone')}
-                                {renderField('Address', 'address')}
-                                {renderField('City', 'city')}
+                                {renderField('patient.email', 'email', 'email')}
+                                {renderField('patient.phone', 'phone')}
+                                {renderField('patient.address', 'address')}
+                                {renderField('patient.city', 'city')}
                             </div>
                         </div>
                     </div>

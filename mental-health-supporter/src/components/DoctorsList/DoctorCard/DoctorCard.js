@@ -1,10 +1,12 @@
 import React from 'react';
 import { FaStar, FaCalendarAlt, FaMapMarkerAlt, FaClock, FaLanguage } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import './DoctorCard.css';
 
 const DoctorCard = ({ doctor }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const renderStars = () => {
     const stars = [];
@@ -34,7 +36,7 @@ const DoctorCard = ({ doctor }) => {
         {doctor.available && (
           <div className="availability-badge">
             <FaClock className="availability-icon" />
-            <span>Available Today</span>
+            <span>{t('doctorCard.availableToday')}</span>
           </div>
         )}
       </div>
@@ -48,7 +50,7 @@ const DoctorCard = ({ doctor }) => {
             <div className="stars">
               {renderStars()}
               <span className="rating-value">{doctor.rating}</span>
-              <span className="reviews">({doctor.reviews} reviews)</span>
+              <span className="reviews">({doctor.reviews} {t('doctorCard.reviews')})</span>
             </div>
           </div>
         </div>
@@ -56,7 +58,7 @@ const DoctorCard = ({ doctor }) => {
         <div className="details-grid">
           <div className="detail-item">
             <FaCalendarAlt className="detail-icon" />
-            <span>{doctor.experience} years experience</span>
+            <span>{doctor.experience} {t('doctorCard.yearsExperience')}</span>
           </div>
 
           <div className="detail-item">
@@ -72,18 +74,18 @@ const DoctorCard = ({ doctor }) => {
           {doctor.nextAvailable && (
             <div className="detail-item">
               <FaClock className="detail-icon" />
-              <span>Next available: {doctor.nextAvailable}</span>
+              <span>{t('doctorCard.nextAvailable')}: {doctor.nextAvailable}</span>
             </div>
           )}
         </div>
 
         <div className="card-actions">
-          <button className="primary-button">Book Appointment</button>
+          <button className="primary-button">{t('doctorCard.bookAppointment')}</button>
           <button
             className="secondary-button"
             onClick={() => navigate(`/doctors/${doctor.id}`)}
           >
-            View Profile
+            {t('doctorCard.viewProfile')}
           </button>
         </div>
       </div>

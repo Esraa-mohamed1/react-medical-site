@@ -1,23 +1,15 @@
 import React, { useState } from 'react';
 import './SearchFilters.css';
+import { useTranslation } from 'react-i18next';
 
 const SearchFilters = ({ onSearch, onFilterChange }) => {
+  const { t } = useTranslation();
   const [searchInput, setSearchInput] = useState('');
   const [filters, setFilters] = useState({
     specialization: '',
     city: '',
     available: '',
   });
-
-  // const handleSearch = () => {
-  //   onSearch(searchInput);
-  // };
-
-  // const handleKeyPress = (e) => {
-  //   if (e.key === 'Enter') {
-  //     handleSearch();
-  //   }
-  // };
 
   const handleFilterChange = (filterName, value) => {
     setFilters(prev => ({ ...prev, [filterName]: value }));
@@ -31,7 +23,6 @@ const SearchFilters = ({ onSearch, onFilterChange }) => {
       available: '',
     });
     setSearchInput('');
-    // Trigger filter changes with empty values
     onFilterChange('specialization', '');
     onFilterChange('city', '');
     onFilterChange('available', '');
@@ -42,38 +33,38 @@ const SearchFilters = ({ onSearch, onFilterChange }) => {
     <div className="search-filters">
       <div className="filter-row">
         <div className="filter-group">
-          <label htmlFor="specialization">Select a specialty</label>
+          <label htmlFor="specialization">{t('filters.specialty')}</label>
           <select
             id="specialization"
             className="filter-select"
             onChange={(e) => handleFilterChange('specialization', e.target.value)}
             value={filters.specialization}
           >
-            <option value="">All Specialties</option>
-            <option value="General Surgeon">General Surgeon</option>
-            <option value="Cardiology">Cardiology</option>
-            <option value="Dermatology">Dermatology</option>
-            <option value="Surgery">Surgery</option>
+            <option value="">{t('filters.allSpecialties')}</option>
+            <option value="General Surgeon">{t('filters.generalSurgeon')}</option>
+            <option value="Cardiology">{t('filters.cardiology')}</option>
+            <option value="Dermatology">{t('filters.dermatology')}</option>
+            <option value="Surgery">{t('filters.surgery')}</option>
           </select>
         </div>
 
         <div className="filter-group">
-          <label htmlFor="city">In this city</label>
+          <label htmlFor="city">{t('filters.city')}</label>
           <select
             id="city"
             className="filter-select"
             onChange={(e) => handleFilterChange('city', e.target.value)}
             value={filters.city}
           >
-            <option value="">All Cities</option>
-            <option value="Cairo">Cairo</option>
-            <option value="Alexandria">Alexandria</option>
-            <option value="Minya">Minya</option>
+            <option value="">{t('filters.allCities')}</option>
+            <option value="Cairo">{t('filters.cairo')}</option>
+            <option value="Alexandria">{t('filters.alexandria')}</option>
+            <option value="Minya">{t('filters.minya')}</option>
           </select>
         </div>
 
         <div className="filter-group">
-          <label htmlFor="available">Availability</label>
+          <label htmlFor="available">{t('filters.availability')}</label>
           <select
             id="available"
             className="filter-select"
@@ -81,53 +72,25 @@ const SearchFilters = ({ onSearch, onFilterChange }) => {
             value={filters.area}
           >
             <option value=""></option>
-            <option value="true">Available</option>
-            <option value="false">Not Available</option>
+            <option value="true">{t('filters.available')}</option>
+            <option value="false">{t('filters.notAvailable')}</option>
           </select>
         </div>
-      </div>
-
-      <div className="filter-row">
-        {/* <div className="filter-group">
-          <label htmlFor="insurance">My insurance is</label>
-          <select 
-            id="insurance" 
-            className="filter-select"
-            onChange={(e) => handleFilterChange('insurance', e.target.value)}
-            value={filters.insurance}
-          >
-            <option value="">All Insurance</option>
-            <option value="Allianz">Allianz</option>
-            <option value="MetLife">MetLife</option>
-          </select>
-        </div> */}
-
-        {/* <div className="filter-group search-by-name">
-          <label htmlFor="search">Search by name or specialty</label>
-          <div className="search-input-container">
-            <input 
-              type="text" 
-              id="search" 
-              placeholder="Doctor name or specialty" 
-              className="search-input"
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              onKeyPress={handleKeyPress}
-            />
-            <button className="search-button" onClick={handleSearch}>
-              Search
-            </button>
-          </div>
-        </div> */}
       </div>
 
       <div className="filter-actions">
         <button
           className="clear-filters-button"
           onClick={clearAllFilters}
-          disabled={!filters.specialty && !filters.city && !filters.area && !filters.insurance && !searchInput}
+          disabled={
+            !filters.specialty &&
+            !filters.city &&
+            !filters.area &&
+            !filters.insurance &&
+            !searchInput
+          }
         >
-          Clear All Filters
+          {t('filters.clearAll')}
         </button>
       </div>
     </div>

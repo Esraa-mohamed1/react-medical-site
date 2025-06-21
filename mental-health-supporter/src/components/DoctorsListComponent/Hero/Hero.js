@@ -1,12 +1,15 @@
 import React from 'react';
 import './Hero.css';
+import { useTranslation } from 'react-i18next';
 
 const Hero = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="hero">
-      <h1 className="hero-title">Best Doctors in Egypt</h1>
-      <p className="hero-subtitle">Book online or call 16676</p>
-      <p className="hero-stats">15000 Doctors - 9000 Professors and Consultants - More than 40 Specialties</p>
+      <h1 className="hero-title">{t('hero.title')}</h1>
+      <p className="hero-subtitle">{t('hero.subtitle')}</p>
+      <p className="hero-stats">{t('hero.stats')}</p>
     </div>
   );
 };

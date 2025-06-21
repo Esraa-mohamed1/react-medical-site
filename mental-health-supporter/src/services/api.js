@@ -107,8 +107,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      localStorage.removeItem('access'); // Clear token
-      localStorage.removeItem('loggedUser');
+      localStorage.clear(); // Clear all localstorage values "tokens, loggedin user"
       // Do NOT redirect to login, just clear tokens
       // Optionally, you can set a global state or show a message here
     }
