@@ -4,7 +4,9 @@
     "doctors": "Doctors",
     "contactUs": "Contact",
     "settings": "settings",
-    "logout": "logout"
+    "logout": "logout",
+    "viewProfile": "View Profile",
+    "accountSettings": "Account Settings"
   },
   "doctorDetails": {
     "loading": "Loading doctor details",

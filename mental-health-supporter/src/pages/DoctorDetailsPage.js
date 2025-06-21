@@ -5,7 +5,7 @@ import doctorPlaceholder from '../components/DoctorsListComponent/images/doctor-
 import doctorImage from '../components/DoctorsListComponent/images/doctor.png';
 import AppointmentBooking from '../components/DoctorProfile/AppointmentBooking';
 import CustomNavbar from '../components/Navbar';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 
 // Constants for colors and styles
@@ -287,10 +287,9 @@ const getStyles = () => ({
     },
 });
 
-const DoctorDetailsPage = ({ t }) => {
-    const styles = getStyles();
-    const [language, setLanguage] = useState('en');
-    const { i18n } = useTranslation();
+const DoctorDetailsPage = () => {
+    let styles = getStyles();
+    const { t, i18n } = useTranslation();
 
     const [doctor, setDoctor] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -302,12 +301,6 @@ const DoctorDetailsPage = ({ t }) => {
 
     const { id } = useParams();
     const userRole = JSON.parse(localStorage.getItem('loggedUser'))?.role || '';
-
-    const changeLanguage = (lng) => {
-        i18n.changeLanguage(lng);
-        setLanguage(lng);
-        document.body.dir = lng === 'ar' ? 'rtl' : 'ltr';
-    };
 
     useEffect(() => {
         const fetchDoctorDetails = async () => {
@@ -332,6 +325,34 @@ const DoctorDetailsPage = ({ t }) => {
 
         fetchDoctorDetails();
     }, [id]);
+
+
+    const changeStylesDirection = (styles) => {
+        if (i18n.language === 'ar') {
+            return {
+                ...styles,
+                buttonContainer: {
+                    position: 'absolute',
+                    top: '2rem',
+                    left: '2rem',
+                    display: 'flex',
+                    gap: '1rem',
+                },
+            }
+        }
+
+        return {
+            ...styles,
+            buttonContainer: {
+                position: 'absolute',
+                top: '2rem',
+                right: '2rem',
+                display: 'flex',
+                gap: '1rem',
+            },
+        }
+    }
+
 
     const handleEdit = () => setIsEditing(true);
 
@@ -418,6 +439,8 @@ const DoctorDetailsPage = ({ t }) => {
     if (loading) return <div style={styles.loading}>{t('doctorDetails.loading')}...</div>;
     if (error) return <div style={styles.error}>{t(error)}</div>;
     if (!doctor) return <div style={styles.notFound}>{t('doctorDetails.doctorNotFound')}</div>;
+
+    styles = changeStylesDirection(styles);
 
     return (
         <>
@@ -512,12 +535,14 @@ const DoctorDetailsPage = ({ t }) => {
                             </div>
                         </div>
 
+                        {/*
                         <div style={{ margin: '2rem 0' }}>
                             <h3 style={styles.sectionTitle}>{t('doctorDetails.bookAppointment')}</h3>
                             {doctor && doctor.doctor_id && (
                                 <AppointmentBooking doctorId={doctor.doctor_id} />
                             )}
                         </div>
+                        */}
 
                         <div style={styles.section}>
                             <h3 style={styles.sectionTitle}>{t('doctorDetails.clinicDetails')}</h3>
@@ -569,4 +594,4 @@ DoctorDetailsPage.propTypes = {
     t: PropTypes.func.isRequired,
 };
 
-export default withTranslation()(DoctorDetailsPage);
+export default DoctorDetailsPage;

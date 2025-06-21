@@ -6,7 +6,7 @@ import patientPlaceholder from '../components/DoctorsListComponent/images/doctor
 import CustomNavbar from '../components/Navbar';
 
 // Enhanced professional styling
-const styles = {
+let styles = {
     container: {
         padding: '2rem',
         backgroundColor: '#f8fafc',
@@ -227,7 +227,7 @@ const styles = {
 };
 
 const PatientDetailsPage = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [patient, setPatient] = useState(null);
     const [editedPatient, setEditedPatient] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
@@ -235,6 +235,32 @@ const PatientDetailsPage = () => {
     const [error, setError] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
     const { id } = useParams();
+
+    const changeStylesDirection = (styles) => {
+        if (i18n.language === 'ar') {
+            return {
+                ...styles,
+                buttonsContainer: {
+                    position: 'absolute',
+                    top: '1.5rem',
+                    left: '1.5rem',
+                    display: 'flex',
+                    gap: '0.75rem'
+                },
+            }
+        }
+
+        return {
+            ...styles,
+            buttonsContainer: {
+                position: 'absolute',
+                top: '1.5rem',
+                right: '1.5rem',
+                display: 'flex',
+                gap: '0.75rem'
+            },
+        }
+    }
 
     const fetchPatientDetails = useCallback(async () => {
         try {
@@ -315,6 +341,9 @@ const PatientDetailsPage = () => {
     if (!patient) return <div style={styles.loadingMessage}>{t('patient.notFound')}</div>;
 
     const profileImageSrc = imagePreview || patient.profile_image || patientPlaceholder;
+
+    // change direction of styles
+    styles = changeStylesDirection(styles);
 
     return (
         <>

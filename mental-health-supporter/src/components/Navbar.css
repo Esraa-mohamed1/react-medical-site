@@ -27,16 +27,16 @@
 }
 
 /* Default LTR styles */
-:dir(ltr) .custom-navbar nav ul {
+/* :dir(ltr) .custom-navbar nav ul {
   flex-direction: row;
   justify-content: flex-start;
-}
+} */
 
 /* RTL support */
-:dir(rtl) .custom-navbar nav ul {
+/* :dir(rtl) .custom-navbar nav ul {
   flex-direction: row-reverse;
   justify-content: flex-end;
-}
+} */
 
 /* Links */
 .custom-navbar nav ul li a {
@@ -65,7 +65,7 @@
 }
 
 /* RTL underline fix */
-:dir(rtl) .custom-navbar nav ul li a::after {
+/* :dir(rtl) .custom-navbar nav ul li a::after {
   left: auto;
   right: 0;
-}
+} */

@@ -15,8 +15,12 @@ import RegisterSelectPage from './pages/RegisterSelectPage';
 import AccountSettingsPage from './pages/AccountSettingsPage';
 
 import ErrorBoundary from './ErrorBoundary';
+import useRefreshToken from './hooks/useRefreshToken';
+
 
 function App() {
+  useRefreshToken();
+
   return (
     <ErrorBoundary>
       <Router>

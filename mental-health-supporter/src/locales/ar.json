@@ -4,7 +4,9 @@
     "doctors": "الأطباء",
     "contactUs": "تواصل معنا",
     "settings": "إعدادات الحساب",
-    "logout": "نسجيل الخروج"
+    "logout": "نسجيل الخروج",
+    "viewProfile": "عرض الملف الشخصي",
+    "accountSettings": "إعدادات الحساب"
   },
   "doctorDetails": {
     "loading": "جاري تحميل بيانات الطبيب",

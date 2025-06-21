@@ -12,7 +12,6 @@ export default function AuthForm({ variant = 'login', onSubmit }) {
     email: '',
     password: '',
     confirmPassword: '',
-    role: 'patient', // Add default role
   });
 
   const [errors, setErrors] = useState({});
@@ -64,20 +63,6 @@ export default function AuthForm({ variant = 'login', onSubmit }) {
     <div className="auth-page">
       <form className="auth-card" onSubmit={handleSubmit} noValidate>
         <h2 className="auth-title">{isLogin ? 'Log in' : 'Create account'}</h2>
-
-        {isLogin && (
-          <div className="mb-3">
-            <select
-              name="role"
-              className="form-select form-control"
-              value={formData.role}
-              onChange={handleChange}
-            >
-              <option value="patient">Login as Patient</option>
-              <option value="doctor">Login as Doctor</option>
-            </select>
-          </div>
-        )}
 
         <div className="mb-3">
           <input
