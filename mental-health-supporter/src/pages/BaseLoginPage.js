@@ -100,6 +100,10 @@ const BaseLoginPage = ({ userType }) => {
             if (response.data.access) {
                 if (userType === 'Admin') {
                     navigate('/doctors-list');
+                } else if (userType === 'Doctor') {
+                    navigate('/');
+                } else if (userType === 'Patient') {
+                    navigate('/');
                 } else {
                     navigate(`/${userType.toLowerCase()}s-list/${response.data.user_id}/`);
                 }

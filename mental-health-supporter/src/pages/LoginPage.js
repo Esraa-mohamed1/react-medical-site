@@ -18,11 +18,11 @@ export default function LoginPage() {
       if (result.role === 'doctor' && result.user.doctor_id) {
         loggedUser = { ...result.user, role: result.role, id: result.user.doctor_id };
         localStorage.setItem('loggedUser', JSON.stringify(loggedUser));
-        navigate('/doctors/' + result.user.doctor_id);
+        navigate('/');
       } else if (result.role === 'patient' && result.user.patient_id) {
         loggedUser = { ...result.user, role: result.role, id: result.user.patient_id };
         localStorage.setItem('loggedUser', JSON.stringify(loggedUser));
-        navigate('/patients-list/' + result.user.patient_id);
+        navigate('/');
       } else {
         // If valid profile data is missing, show an error message and do not redirect
         setServerError('Failed to retrieve profile data. Please contact support.');

@@ -1,29 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Navbar, Container, Nav, Dropdown } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaClinicMedical, FaSignOutAlt, FaCog } from 'react-icons/fa';
+import './Navbar.css';
 
 const CustomNavbar = () => {
   const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
   const navigate = useNavigate();
+  const [showDropdown, setShowDropdown] = useState(false);
 
-  if (!loggedUser || !loggedUser.role || !loggedUser.id) {
-    return null; // لا تظهر الـ Navbar إذا لم تتوفر بيانات المستخدم
-  }
   let profileUrl = '';
-  if (loggedUser.role === 'doctor') {
-    profileUrl = `/doctors/${loggedUser.id}`;
-  } else if (loggedUser.role === 'patient') {
-    profileUrl = `/patients-list/${loggedUser.id}`;
+  if (loggedUser && loggedUser.role && loggedUser.id) {
+    if (loggedUser.role === 'doctor') {
+      profileUrl = `/doctors/${loggedUser.id}`;
+    } else if (loggedUser.role === 'patient') {
+      profileUrl = `/patients-list/${loggedUser.id}`;
+    }
   }
 
   const handleLogout = () => {
     localStorage.clear();
+    setShowDropdown(false);
     navigate('/login');
   };
 
   const handleAccountSettings = () => {
+    setShowDropdown(false);
     navigate('/settings');
+  };
+
+  const handleProfileClick = () => {
+    setShowDropdown(false);
+    if (profileUrl) {
+      navigate(profileUrl);
+    }
+  };
+
+  const handleDropdownToggle = (isOpen) => {
+    setShowDropdown(isOpen);
   };
 
   return (
@@ -38,29 +52,36 @@ const CustomNavbar = () => {
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/" className="text-dark mx-2 fw-medium">Home</Nav.Link>
             <Nav.Link as={Link} to="/doctors-list" className="text-dark mx-2 fw-medium">Doctors</Nav.Link>
-            <Nav.Link as={Link} to="/contact" className="text-dark mx-2 fw-medium">Contact</Nav.Link>
+            <Nav.Link as={Link} to="/artical" className="text-dark mx-2 fw-medium">Articles</Nav.Link>
           </Nav>
-          <Dropdown align="end">
-            <Dropdown.Toggle variant="primary" className="d-flex align-items-center">
-              <FaUser className="me-2" />
-              {loggedUser['name']}
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item as={Link} to={profileUrl} disabled={!profileUrl}>
+          {loggedUser && loggedUser.role && loggedUser.id ? (
+            <Dropdown align="end" show={showDropdown} onToggle={handleDropdownToggle}>
+              <Dropdown.Toggle variant="primary" className="d-flex align-items-center">
                 <FaUser className="me-2" />
-                View Profile
-              </Dropdown.Item>
-              <Dropdown.Item onClick={handleAccountSettings}>
-                <FaCog className="me-2" />
-                Account Settings
-              </Dropdown.Item>
-              <Dropdown.Divider />
-              <Dropdown.Item onClick={handleLogout} className="text-danger">
-                <FaSignOutAlt className="me-2" />
-                Logout
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+                {loggedUser['name'] || 'User'}
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={handleProfileClick} disabled={!profileUrl}>
+                  <FaUser className="me-2" />
+                  View Profile
+                </Dropdown.Item>
+                <Dropdown.Item onClick={handleAccountSettings}>
+                  <FaCog className="me-2" />
+                  Account Settings
+                </Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item onClick={handleLogout} className="text-danger">
+                  <FaSignOutAlt className="me-2" />
+                  Logout
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          ) : (
+            <Nav>
+              <Nav.Link as={Link} to="/login" className="text-dark mx-2 fw-medium">Login</Nav.Link>
+              <Nav.Link as={Link} to="/register" className="text-dark mx-2 fw-medium">Register</Nav.Link>
+            </Nav>
+          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>

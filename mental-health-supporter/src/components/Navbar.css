@@ -46,3 +46,7 @@
 .custom-navbar nav ul li a:hover::after {
   width: 100%;
 }
+
+.dropdown-menu {
+  z-index: 2000 !important;
+}

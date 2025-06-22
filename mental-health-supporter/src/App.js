@@ -11,8 +11,9 @@ import BaseLoginPage from './pages/BaseLoginPage';
 import DoctorDetailsPage from './pages/DoctorDetailsPage';
 import PatientDetailsPage from './pages/PatientDetailsPage';
 import RegisterSelectPage from './pages/RegisterSelectPage';
-import GoogleAuthRedirect from './pages/GoogleAuthRedirect';
 import AccountSettingsPage from './pages/AccountSettingsPage';
+import HomePage from './features/homePage/homePage';
+import PrivateRoute from './components/PrivateRoute';
 
 import ErrorBoundary from './ErrorBoundary';
 
@@ -21,12 +22,11 @@ function App() {
     <ErrorBoundary>
       <Router>
         <Routes>
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/register-select" element={<RegisterSelectPage />} />
           <Route path="/artical" element={<ArticalPage />} />
-          <Route path="/artical" element={<MentalHealthArticle />} />
           <Route path="/doctors/login" element={<BaseLoginPage userType={'Doctor'} />} />
           <Route path="/patients/login" element={<BaseLoginPage userType={'Patient'} />} />
           <Route path="/admin/login" element={<BaseLoginPage userType={'Admin'} />} />
@@ -37,8 +37,7 @@ function App() {
           <Route path="/doctor-register" element={<DoctorRegister />} />
           <Route path="/doctors/:doctor_id" element={<DoctorPage />} />
           <Route path="/settings" element={<AccountSettingsPage />} />
-          <Route path="/social/complete/google-oauth2/" element={<GoogleAuthRedirect />} />
-          {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
+          <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </Router>
     </ErrorBoundary>
