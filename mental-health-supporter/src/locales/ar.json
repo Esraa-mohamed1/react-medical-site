@@ -1,0 +1,187 @@
+{
+  "navbar": {
+    "home": "الرئيسية",
+    "doctors": "الأطباء",
+    "contactUs": "تواصل معنا",
+    "settings": "إعدادات الحساب",
+    "logout": "نسجيل الخروج",
+    "viewProfile": "عرض الملف الشخصي",
+    "accountSettings": "إعدادات الحساب"
+  },
+  "doctorDetails": {
+    "loading": "جاري تحميل بيانات الطبيب",
+    "doctorNotFound": "الطبيب غير موجود",
+    "available": "متاح",
+    "unavailable": "غير متاح",
+    "changePhoto": "تغيير الصورة",
+    "notSpecified": "غير محدد",
+
+    "fullName": "الاسم الكامل",
+    "specialization": "التخصص",
+
+    "contactInformation": "معلومات التواصل",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+
+    "bookAppointment": "حجز موعد",
+
+    "clinicDetails": "تفاصيل العيادة",
+    "clinicName": "اسم العيادة",
+    "city": "المدينة",
+    "clinicAddress": "عنوان العيادة",
+
+    "saveChanges": "حفظ التغييرات",
+    "cancel": "إلغاء"
+  },
+  "doctorCard": {
+    "availableToday": "متاح اليوم",
+    "reviews": "مراجعة",
+    "yearsExperience": "سنة خبرة",
+    "nextAvailable": "الموعد القادم",
+    "bookAppointment": "احجز موعد",
+    "viewProfile": "عرض الملف",
+    "overallRating": "التقييم العام من",
+    "visitors": "زائر",
+    "fees": "الرسوم",
+    "free": "مجانا",
+    "waitingTime": "وقت الانتظار",
+    "viewDoctor": "عرض الطبيب",
+    "book": "احجز"
+  },
+  "hero": {
+    "title": "أفضل الأطباء في مصر",
+    "subtitle": "احجز عبر الإنترنت أو اتصل على 16676",
+    "stats": "15000 طبيب - 9000 أستاذ واستشاري - أكثر من 40 تخصصًا"
+  },
+  "filters": {
+    "specialty": "اختر تخصصًا",
+    "allSpecialties": "كل التخصصات",
+    "generalSurgeon": "جراح عام",
+    "cardiology": "طب القلب",
+    "dermatology": "الجلدية",
+    "surgery": "الجراحة",
+
+    "city": "في هذه المدينة",
+    "allCities": "كل المدن",
+    "cairo": "القاهرة",
+    "alexandria": "الإسكندرية",
+    "minya": "المنيا",
+
+    "availability": "التوفر",
+    "available": "متاح",
+    "notAvailable": "غير متاح",
+
+    "clearAll": "مسح جميع الفلاتر"
+  },
+  "doctorsList": {
+    "searchPlaceholder": "ابحث بالاسم الكامل",
+    "searchButton": "بحث",
+    "noResults": "لا يوجد أطباء يطابقون معايير البحث الخاصة بك."
+  },
+  "doctorPage": {
+    "loading": "جاري تحميل معلومات الطبيب...",
+    "error": "حدث خطأ: {{error}}",
+    "footer": "© 2025 أخصائيو هارت كير. جميع الحقوق محفوظة."
+  },
+  "doctorInfo": {
+    "yearsExperience": "{{count}} سنة خبرة",
+    "ratingWithReviews": "{{rating}} ({{count}}+ مراجعة)",
+    "aboutDoctor": "عن الدكتور {{name}}",
+    "specialization": "التخصص",
+    "noSpecialization": "لا يوجد تخصص مذكور",
+    "education": "التعليم",
+    "languages": "اللغات المتحدث بها"
+  },
+  "contactInfo": {
+    "title": "معلومات الاتصال",
+    "phone": "رقم الهاتف",
+    "callNow": "اتصل الآن",
+    "email": "البريد الإلكتروني",
+    "sendMessage": "إرسال رسالة",
+    "address": "عنوان العيادة",
+    "viewMap": "عرض على الخريطة",
+    "socialMedia": "وسائل التواصل الاجتماعي"
+  },
+  "clinicDetails": {
+    "title": "معلومات العيادة",
+    "address": "عنوان العيادة",
+    "viewMap": "عرض على الخريطة",
+    "hours": "ساعات العمل",
+    "fees": "رسوم الاستشارة",
+    "feesNote": "(قد تختلف الأسعار حسب الخدمة)",
+    "services": "الخدمات المتاحة"
+  },
+  "bookingModal": {
+    "title": "تأكيد الحجز",
+    "slotNone": "لم يتم تحديد موعد",
+    "notes": "ملاحظات",
+    "notesPlaceholder": "ناقش الأعراض، إلخ.",
+    "notesInvalid": "يرجى إضافة ملاحظات للحجز.",
+    "confirm": "تأكيد الحجز",
+    "cancel": "إلغاء",
+    "paymentCompleted": "تم الدفع بواسطة {{name}}",
+    "bookingSuccess": "تم حجز الموعد بنجاح!",
+    "swalTitle": "تم!",
+    "swalText": "تم حجز موعدك بنجاح.",
+    "paypalAmount": "10.00"
+  },
+  "appointmentBooking": {
+    "title": "حجز موعد",
+    "loading": "جارٍ تحميل المواعيد المتاحة...",
+    "fetchError": "فشل في جلب المواعيد المتاحة",
+    "available": "متاح",
+    "noTimes": "لا توجد مواعيد متاحة لهذا الطبيب."
+  },
+  "reviews": {
+    "title": "تقييمات المرضى",
+    "addReview": "إضافة تقييم",
+    "cancel": "إلغاء",
+    "fullName": "الاسم الكامل",
+    "comment": "محتوى التقييم",
+    "rating": "التقييم",
+    "submit": "نشر التقييم",
+    "response": "رد العيادة"
+  },
+  "account": {
+    "settings": "إعدادات الحساب",
+    "changeUsername": "تغيير اسم المستخدم",
+    "invalidUsername": "يرجى إدخال اسم مستخدم صالح.",
+    "usernameUpdated": "تم تحديث اسم المستخدم بنجاح.",
+    "usernameFailed": "فشل في تحديث اسم المستخدم. {{error}}",
+    "usernameRequirements": "يجب أن يتكون اسم المستخدم من {{min}} أحرف على الأقل ويحتوي على أحرف وأرقام وشرطات سفلية فقط.",
+    "saveUsername": "حفظ اسم المستخدم",
+    "resetPassword": "إعادة تعيين كلمة المرور",
+    "currentPassword": "كلمة المرور الحالية",
+    "newPassword": "كلمة المرور الجديدة",
+    "confirmPassword": "تأكيد كلمة المرور الجديدة",
+    "enterCurrentPassword": "يرجى إدخال كلمة المرور الحالية.",
+    "passwordInvalid": "كلمة المرور الجديدة لا تستوفي الشروط.",
+    "passwordsMismatch": "كلمتا المرور غير متطابقتين.",
+    "passwordUpdated": "تم تحديث كلمة المرور بنجاح.",
+    "passwordFailed": "فشل في تحديث كلمة المرور. يرجى التحقق من كلمة المرور الحالية.",
+    "minChars": "الحد الأدنى {{min}} أحرف.",
+    "hasNumber": "يجب أن تحتوي على رقم واحد على الأقل.",
+    "hasUpper": "يجب أن تحتوي على حرف كبير واحد على الأقل.",
+    "hasLower": "يجب أن تحتوي على حرف صغير واحد على الأقل.",
+    "hasSpecial": "يجب أن تحتوي على رمز خاص واحد على الأقل.",
+    "repeatPassword": "أعد كتابة كلمة المرور الجديدة."
+  },
+  "patient": {
+    "loading": "جارٍ التحميل...",
+    "fetchError": "فشل في جلب بيانات المريض",
+    "updateError": "فشل في تحديث بيانات المريض",
+    "notFound": "لم يتم العثور على المريض",
+    "edit": "تعديل الملف الشخصي",
+    "cancel": "إلغاء",
+    "save": "حفظ التغييرات",
+    "changePhoto": "تغيير الصورة",
+    "memberSince": "عضو منذ",
+    "basicInfo": "المعلومات الأساسية",
+    "contactInfo": "معلومات التواصل",
+    "fullName": "الاسم الكامل",
+    "email": "البريد الإلكتروني",
+    "phone": "رقم الهاتف",
+    "address": "العنوان",
+    "city": "المدينة"
+  }
+}

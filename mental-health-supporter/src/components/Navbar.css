@@ -11,11 +11,13 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
+/* Logo style remains unchanged */
 .custom-navbar .logo {
   font-size: 1.6rem;
   font-weight: bold;
 }
 
+/* Shared styles for both directions */
 .custom-navbar nav ul {
   display: flex;
   list-style: none;
@@ -24,6 +26,19 @@
   padding: 0;
 }
 
+/* Default LTR styles */
+/* :dir(ltr) .custom-navbar nav ul {
+  flex-direction: row;
+  justify-content: flex-start;
+} */
+
+/* RTL support */
+/* :dir(rtl) .custom-navbar nav ul {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+} */
+
+/* Links */
 .custom-navbar nav ul li a {
   text-decoration: none;
   color: white;
@@ -32,6 +47,7 @@
   transition: all 0.3s ease;
 }
 
+/* Underline effect */
 .custom-navbar nav ul li a::after {
   content: '';
   width: 0%;
@@ -43,6 +59,13 @@
   transition: 0.3s ease;
 }
 
+/* Animate underline on hover */
 .custom-navbar nav ul li a:hover::after {
   width: 100%;
 }
+
+/* RTL underline fix */
+/* :dir(rtl) .custom-navbar nav ul li a::after {
+  left: auto;
+  right: 0;
+} */

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+
 import CustomNavbar from '../components/Navbar';
 import HeroSection from '../components/HeroSection';
 import DoctorInfo from '../components/DoctorProfile/DoctorInfo';
@@ -15,6 +17,7 @@ const DoctorPage = () => {
   const [doctorData, setDoctorData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const { t } = useTranslation();
 
   useEffect(() => {
     async function getDoctor() {
@@ -32,11 +35,10 @@ const DoctorPage = () => {
     getDoctor();
   }, [doctor_id]);
 
-  if (loading) return <div className="text-center my-5">Loading doctor information...</div>;
-  if (error) return <div className="alert alert-danger text-center my-5">{error}</div>;
+  if (loading) return <div className="text-center my-5">{t('doctorPage.loading')}</div>;
+  if (error) return <div className="alert alert-danger text-center my-5">{t('doctorPage.error', { error })}</div>;
   if (!doctorData) return null;
 
-  // You may need to adapt the following to match your backend's doctor data structure
   const clinicData = doctorData.clinic || {};
   const availableSlots = doctorData.availableSlots || [];
   const reviews = doctorData.reviews || [];
@@ -64,7 +66,7 @@ const DoctorPage = () => {
       <footer className="bg-dark text-white py-4">
         <Container>
           <div className="text-center">
-            <p className="mb-0">© 2025 HeartCare Specialists. All rights reserved.</p>
+            <p className="mb-0">{t('doctorPage.footer')}</p>
           </div>
         </Container>
       </footer>

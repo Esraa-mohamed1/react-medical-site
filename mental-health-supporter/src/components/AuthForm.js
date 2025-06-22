@@ -16,7 +16,7 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: '' }); 
+    setErrors({ ...errors, [e.target.name]: '' });
   };
 
   const handleSubmit = (e) => {
@@ -44,13 +44,13 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
     onSubmit(submitData, (apiErrors = {}) => {
       // Map backend errors to user-friendly messages
       const mappedErrors = { ...apiErrors };
-      if (apiErrors.email && (apiErrors.email.toLowerCase().includes('exist') || apiErrors.email.toLowerCase().includes('already')) ) {
+      if (apiErrors.email && (apiErrors.email.toLowerCase().includes('exist') || apiErrors.email.toLowerCase().includes('already'))) {
         mappedErrors.email = 'This email is already registered. Please use another email.';
       }
-      if (apiErrors.name && (apiErrors.name.toLowerCase().includes('exist') || apiErrors.name.toLowerCase().includes('already')) ) {
+      if (apiErrors.name && (apiErrors.name.toLowerCase().includes('exist') || apiErrors.name.toLowerCase().includes('already'))) {
         mappedErrors.name = 'This username is already taken. Please use another username.';
       }
-      if (apiErrors.username && (apiErrors.username.toLowerCase().includes('exist') || apiErrors.username.toLowerCase().includes('already')) ) {
+      if (apiErrors.username && (apiErrors.username.toLowerCase().includes('exist') || apiErrors.username.toLowerCase().includes('already'))) {
         mappedErrors.name = 'This username is already taken. Please use another username.';
       }
       if (apiErrors.full_name && apiErrors.full_name.toLowerCase().includes('required')) {

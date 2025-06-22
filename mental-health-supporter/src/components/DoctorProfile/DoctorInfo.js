@@ -2,12 +2,12 @@ import React from 'react';
 import { Card, Badge } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { FaGraduationCap, FaLanguage, FaAward, FaStar } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 
 const DoctorInfo = ({ doctor }) => {
-  // Defensive checks for undefined/null fields
-  // Try to get the doctor's name from several possible fields
+  const { t } = useTranslation();
+
   const name = doctor.name || doctor.full_name || doctor.username || '';
-  // Try to get the doctor's specialty from several possible fields
   const specialty = doctor.specialty || doctor.specialization || '';
   const profilePicture = doctor.profilePicture || '/images/1.jpeg';
   const experience = doctor.experience || 0;
@@ -15,21 +15,15 @@ const DoctorInfo = ({ doctor }) => {
   const reviewsCount = doctor.reviewsCount || 0;
   const bio = doctor.bio || '';
   const education = Array.isArray(doctor.education) ? doctor.education : (doctor.education ? String(doctor.education).split(',') : []);
-  // Languages: always show Arabic and English as static data
   const languages = ["Arabic", "English"];
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
       <Card className="border-0 shadow-sm mb-4" dir="ltr">
         <Card.Body className="p-4">
           <div className="d-flex flex-column flex-md-row align-items-center text-center text-md-start">
-            {/* Image on the left */}
             <motion.img
-              src={profilePicture || null}
+              src={profilePicture}
               alt={name}
               className="rounded-circle mb-3 mb-md-0 me-md-4 doctor-img"
               whileHover={{ scale: 1.05 }}
@@ -37,43 +31,44 @@ const DoctorInfo = ({ doctor }) => {
               style={{ maxWidth: '120px' }}
             />
 
-            {/* Content aligned left */}
             <div className="text-start w-100">
               <h2 className="mb-2" style={{ color: 'var(--primary-purple)' }}>{name}</h2>
               <h5 className="text-muted mb-3">{specialty}</h5>
 
               <div className="d-flex flex-wrap justify-content-center justify-content-md-start gap-2 mb-3">
                 <Badge pill bg="light" text="primary" className="px-3 py-2 d-flex align-items-center">
-                  <FaAward className="me-1" /> {experience} years experience
+                  <FaAward className="me-1" />
+                  {t('doctorInfo.yearsExperience', { count: experience })}
                 </Badge>
                 <Badge pill bg="light" text="primary" className="px-3 py-2 d-flex align-items-center">
-                  <FaStar className="me-1 text-warning" /> {rating} ({reviewsCount}+ reviews)
+                  <FaStar className="me-1 text-warning" />
+                  {t('doctorInfo.ratingWithReviews', { rating, count: reviewsCount })}
                 </Badge>
               </div>
             </div>
           </div>
 
           <div className="mt-4 text-start">
-            <h5 className="fw-bold mb-3">About Dr. {name.split(' ')[0]}</h5>
+            <h5 className="fw-bold mb-3">{t('doctorInfo.aboutDoctor', { name: name.split(' ')[0] })}</h5>
             <p className="mb-4">{bio}</p>
 
             <div className="row">
               <div className="col-md-6 mb-3 text-start">
                 <h6 className="fw-bold d-flex align-items-center">
                   <FaGraduationCap className="me-2" style={{ color: 'var(--primary-purple)' }} />
-                  Specialization
+                  {t('doctorInfo.specialization')}
                 </h6>
                 <div className="ps-3 mb-2">
                   {specialty ? (
                     <span>{specialty}</span>
                   ) : (
-                    <span className="text-muted">No specialization listed</span>
+                    <span className="text-muted">{t('doctorInfo.noSpecialization')}</span>
                   )}
                 </div>
-                {/* Optionally, show education below specialization if needed */}
+
                 {education.length > 0 && (
                   <>
-                    <h6 className="fw-bold mt-3">Education</h6>
+                    <h6 className="fw-bold mt-3">{t('doctorInfo.education')}</h6>
                     <ul className="ps-3">
                       {education.map((edu, index) => (
                         <li key={index} className="mb-1">{edu}</li>
@@ -82,10 +77,11 @@ const DoctorInfo = ({ doctor }) => {
                   </>
                 )}
               </div>
+
               <div className="col-md-6 mb-3 text-start">
                 <h6 className="fw-bold d-flex align-items-center">
                   <FaLanguage className="me-2" style={{ color: 'var(--primary-purple)' }} />
-                  Languages Spoken
+                  {t('doctorInfo.languages')}
                 </h6>
                 <div className="d-flex flex-wrap gap-2">
                   {languages.map((lang, index) => (

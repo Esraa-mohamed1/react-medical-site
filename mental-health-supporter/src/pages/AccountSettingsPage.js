@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { FaUserEdit, FaKey } from 'react-icons/fa';
 import { postData } from '../services/api';
 import CustomNavbar from '../components/Navbar';
+import { useTranslation } from 'react-i18next';
 
 const usernameMinLength = 3;
 const passwordMinLength = 8;
 
 const AccountSettingsPage = () => {
+    const { t } = useTranslation();
     const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
     const [username, setUsername] = useState(loggedUser?.name || '');
     const [currentPassword, setCurrentPassword] = useState('');
@@ -16,16 +18,12 @@ const AccountSettingsPage = () => {
     const [passwordMsg, setPasswordMsg] = useState('');
     const [loading, setLoading] = useState(false);
 
-    // Validation states
     const [usernameTouched, setUsernameTouched] = useState(false);
     const [currentPasswordTouched, setCurrentPasswordTouched] = useState(false);
     const [newPasswordTouched, setNewPasswordTouched] = useState(false);
     const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
 
-    // Username validation
     const usernameValid = username.length >= usernameMinLength && /^[a-zA-Z0-9_]+$/.test(username);
-
-    // Password validations
     const newPasswordValid = newPassword.length >= passwordMinLength;
     const newPasswordHasNumber = /\d/.test(newPassword);
     const newPasswordHasUpper = /[A-Z]/.test(newPassword);
@@ -33,42 +31,37 @@ const AccountSettingsPage = () => {
     const newPasswordHasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(newPassword);
     const passwordsMatch = newPassword === confirmPassword;
 
-    // Update username handler
     const handleUsernameChange = async (e) => {
         e.preventDefault();
         setUsernameMsg('');
         if (!usernameValid) {
-            setUsernameMsg('Please enter a valid username.');
+            setUsernameMsg(t('account.invalidUsername'));
             return;
         }
         setLoading(true);
         try {
             await postData(`/users/change-username/`, { username });
-            localStorage.setItem(
-                'loggedUser',
-                JSON.stringify({ ...loggedUser, name: username })
-            );
-            setUsernameMsg('Username updated successfully.');
+            localStorage.setItem('loggedUser', JSON.stringify({ ...loggedUser, name: username }));
+            setUsernameMsg(t('account.usernameUpdated'));
         } catch (err) {
-            setUsernameMsg(`Failed to update username. ${err.response.data.username[0]}`);
+            setUsernameMsg(t('account.usernameFailed', { error: err.response?.data?.username?.[0] || '' }));
         }
         setLoading(false);
     };
 
-    // Reset password handler
     const handlePasswordChange = async (e) => {
         e.preventDefault();
         setPasswordMsg('');
         if (!currentPassword) {
-            setPasswordMsg('Please enter your current password.');
+            setPasswordMsg(t('account.enterCurrentPassword'));
             return;
         }
         if (!newPasswordValid || !newPasswordHasNumber || !newPasswordHasUpper || !newPasswordHasLower || !newPasswordHasSpecial) {
-            setPasswordMsg('New password does not meet requirements.');
+            setPasswordMsg(t('account.passwordInvalid'));
             return;
         }
         if (!passwordsMatch) {
-            setPasswordMsg('New passwords do not match.');
+            setPasswordMsg(t('account.passwordsMismatch'));
             return;
         }
         setLoading(true);
@@ -77,7 +70,7 @@ const AccountSettingsPage = () => {
                 old_password: currentPassword,
                 new_password: newPassword,
             });
-            setPasswordMsg('Password updated successfully.');
+            setPasswordMsg(t('account.passwordUpdated'));
             setCurrentPassword('');
             setNewPassword('');
             setConfirmPassword('');
@@ -85,7 +78,7 @@ const AccountSettingsPage = () => {
             setCurrentPasswordTouched(false);
             setConfirmPasswordTouched(false);
         } catch (err) {
-            setPasswordMsg('Failed to update password. Please check your current password.');
+            setPasswordMsg(t('account.passwordFailed'));
         }
         setLoading(false);
     };
@@ -95,12 +88,12 @@ const AccountSettingsPage = () => {
             <CustomNavbar />
             <div style={{ maxWidth: 500, margin: '2rem auto', padding: 24, background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px #eee' }}>
                 <h2 className="mb-4" style={{ textAlign: 'center' }}>
-                    <FaUserEdit className="me-2" /> Account Settings
+                    <FaUserEdit className="me-2" /> {t('account.settings')}
                 </h2>
 
-                {/* Username Change */}
+                {/* Username */}
                 <form onSubmit={handleUsernameChange} style={{ marginBottom: 32 }}>
-                    <label className="form-label fw-bold">Change Username</label>
+                    <label className="form-label fw-bold">{t('account.changeUsername')}</label>
                     <input
                         type="text"
                         className="form-control mb-2"
@@ -111,7 +104,7 @@ const AccountSettingsPage = () => {
                         disabled={loading}
                     />
                     <div style={{ fontSize: 13, color: usernameTouched && !usernameValid ? 'red' : '#888' }}>
-                        Username must be at least {usernameMinLength} characters, only letters, numbers, and underscores.
+                        {t('account.usernameRequirements', { min: usernameMinLength })}
                     </div>
                     {usernameMsg && (
                         <div className="mt-2" style={{ color: usernameMsg.includes('success') ? 'green' : 'red' }}>
@@ -119,17 +112,17 @@ const AccountSettingsPage = () => {
                         </div>
                     )}
                     <button type="submit" className="btn btn-primary mt-2" disabled={loading || !usernameValid}>
-                        Save Username
+                        {t('account.saveUsername')}
                     </button>
                 </form>
 
-                {/* Password Change */}
+                {/* Password */}
                 <form onSubmit={handlePasswordChange}>
-                    <label className="form-label fw-bold">Reset Password</label>
+                    <label className="form-label fw-bold">{t('account.resetPassword')}</label>
                     <input
                         type="password"
                         className="form-control mb-2"
-                        placeholder="Current Password"
+                        placeholder={t('account.currentPassword')}
                         value={currentPassword}
                         onChange={(e) => setCurrentPassword(e.target.value)}
                         onBlur={() => setCurrentPasswordTouched(true)}
@@ -137,12 +130,13 @@ const AccountSettingsPage = () => {
                         disabled={loading}
                     />
                     <div style={{ fontSize: 13, color: currentPasswordTouched && !currentPassword ? 'red' : '#888' }}>
-                        Enter your current password.
+                        {t('account.enterCurrentPassword')}
                     </div>
+
                     <input
                         type="password"
                         className="form-control mb-2"
-                        placeholder="New Password"
+                        placeholder={t('account.newPassword')}
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                         onBlur={() => setNewPasswordTouched(true)}
@@ -151,25 +145,26 @@ const AccountSettingsPage = () => {
                     />
                     <div style={{ fontSize: 13 }}>
                         <div style={{ color: newPasswordTouched && !newPasswordValid ? 'red' : '#888' }}>
-                            Minimum {passwordMinLength} characters.
+                            {t('account.minChars', { min: passwordMinLength })}
                         </div>
                         <div style={{ color: newPasswordTouched && !newPasswordHasNumber ? 'red' : '#888' }}>
-                            At least one number.
+                            {t('account.hasNumber')}
                         </div>
                         <div style={{ color: newPasswordTouched && !newPasswordHasUpper ? 'red' : '#888' }}>
-                            At least one uppercase letter.
+                            {t('account.hasUpper')}
                         </div>
                         <div style={{ color: newPasswordTouched && !newPasswordHasLower ? 'red' : '#888' }}>
-                            At least one lowercase letter.
+                            {t('account.hasLower')}
                         </div>
                         <div style={{ color: newPasswordTouched && !newPasswordHasSpecial ? 'red' : '#888' }}>
-                            At least one special character.
+                            {t('account.hasSpecial')}
                         </div>
                     </div>
+
                     <input
                         type="password"
                         className="form-control mb-2"
-                        placeholder="Confirm New Password"
+                        placeholder={t('account.confirmPassword')}
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         onBlur={() => setConfirmPasswordTouched(true)}
@@ -178,29 +173,20 @@ const AccountSettingsPage = () => {
                     />
                     <div style={{ fontSize: 13, color: confirmPasswordTouched && !passwordsMatch ? 'red' : '#888' }}>
                         {confirmPasswordTouched && !passwordsMatch
-                            ? 'Passwords do not match.'
-                            : 'Repeat the new password.'}
+                            ? t('account.passwordsMismatch')
+                            : t('account.repeatPassword')}
                     </div>
                     {passwordMsg && (
                         <div className="mt-2" style={{ color: passwordMsg.includes('success') ? 'green' : 'red' }}>
                             {passwordMsg}
                         </div>
                     )}
-                    <button
-                        type="submit"
-                        className="btn btn-primary mt-2"
-                        disabled={
-                            loading ||
-                            !currentPassword ||
-                            !newPasswordValid ||
-                            !newPasswordHasNumber ||
-                            !newPasswordHasUpper ||
-                            !newPasswordHasLower ||
-                            !newPasswordHasSpecial ||
-                            !passwordsMatch
-                        }
-                    >
-                        <FaKey className="me-2" /> Reset Password
+                    <button type="submit" className="btn btn-primary mt-2" disabled={
+                        loading || !currentPassword || !newPasswordValid ||
+                        !newPasswordHasNumber || !newPasswordHasUpper ||
+                        !newPasswordHasLower || !newPasswordHasSpecial || !passwordsMatch
+                    }>
+                        <FaKey className="me-2" /> {t('account.resetPassword')}
                     </button>
                 </form>
             </div>
