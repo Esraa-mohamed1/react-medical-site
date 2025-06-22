@@ -18,7 +18,7 @@ export default function LoginPage() {
       if (result.role === 'doctor' && result.user.doctor_id) {
         loggedUserObj = { ...loggedUserObj, ...result.user, role: result.role, id: result.user.doctor_id };
         localStorage.setItem('loggedUser', JSON.stringify(loggedUserObj));
-        navigate('/doctors/' + result.user.doctor_id);
+        navigate('/doctors-list/' + result.user.doctor_id);
       } else if (result.role === 'patient' && result.user.patient_id) {
         loggedUserObj = { ...loggedUserObj, ...result.user, role: result.role, id: result.user.patient_id };
         localStorage.setItem('loggedUser', JSON.stringify(loggedUserObj));
