@@ -74,39 +74,32 @@ const CustomNavbar = () => {
             <Nav.Link as={Link} to="/articles" className="nav-link">Articles</Nav.Link>
           </Nav>
           <Nav>
-            {loggedUser ? (
-              <Dropdown align="end" show={showDropdown} onToggle={handleDropdownToggle}>
-                <Dropdown.Toggle variant="primary" className="d-flex align-items-center">
-                  <FaUser className="me-2" />
-                  {loggedUser.name || 'User'}
+            {loggedUser && loggedUser.role && loggedUser.id ? (
+              <Dropdown show={showDropdown} onToggle={(isOpen) => setShowDropdown(isOpen)}>
+                <Dropdown.Toggle as={Nav.Link} className="dropdown-toggle-no-caret">
+                  <div className="profile-icon">
+                    <FaUser size={24} />
+                  </div>
                 </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  {loggedUser.role === 'doctor' ? (
+                <Dropdown.Menu align="end">
+                  <Dropdown.Item as={Link} to={profileUrl}>
+                    <FaUser className="me-2" /> View Profile
+                  </Dropdown.Item>
+                  {loggedUser.role === 'doctor' && (
                     <Dropdown.Item onClick={handleDashboardClick}>
-                      <FaTachometerAlt className="me-2" />
-                      Dashboard
-                    </Dropdown.Item>
-                  ) : (
-                    <Dropdown.Item onClick={handleProfileClick} disabled={!profileUrl}>
-                      <FaUser className="me-2" />
-                      My Profile
+                      <FaTachometerAlt className="me-2" /> Dashboard
                     </Dropdown.Item>
                   )}
-                  <Dropdown.Item onClick={handleAccountSettings}>
-                    <FaCog className="me-2" />
-                    Account Settings
-                  </Dropdown.Item>
                   <Dropdown.Divider />
-                  <Dropdown.Item onClick={handleLogout} className="text-danger">
-                    <FaSignOutAlt className="me-2" />
-                    Logout
+                  <Dropdown.Item onClick={handleLogout}>
+                    <FaSignOutAlt className="me-2" /> Logout
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             ) : (
               <>
-                <Nav.Link as={Link} to="/login" className="text-dark mx-2 fw-medium">Login</Nav.Link>
-                <Nav.Link as={Link} to="/register" className="text-dark mx-2 fw-medium">Register</Nav.Link>
+                <Nav.Link as={Link} to="/login" className="nav-link">Login</Nav.Link>
+                <Nav.Link as={Link} to="/register-select" className="nav-link">Register</Nav.Link>
               </>
             )}
           </Nav>
