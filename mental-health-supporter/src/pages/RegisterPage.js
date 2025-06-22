@@ -34,7 +34,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div>
+    <div className="auth-page">
       <AuthForm variant="register" onSubmit={handleRegister} serverError={serverError} />
     </div>
   );

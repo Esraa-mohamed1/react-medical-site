@@ -61,7 +61,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div>
+    <div className="auth-page">
       <AuthForm variant="login" onSubmit={handleLogin} serverError={serverError} />
     </div>
   );
