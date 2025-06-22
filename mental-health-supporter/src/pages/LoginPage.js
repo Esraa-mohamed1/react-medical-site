@@ -14,7 +14,7 @@ export default function LoginPage() {
       const result = await loginUser(data);
       localStorage.setItem('access', result.access);
       localStorage.setItem('refresh', result.refresh);
-      localStorage.setItem('loggedUser', JSON.stringify({ ...data, id: result.user_id }));
+      localStorage.setItem('loggedUser', JSON.stringify({ ...data, id: result.user_id, role: result['role'] }));
       if (result['role'] === 'patient') {
         navigate('/patients-list/' + result.user_id);
       } else {
