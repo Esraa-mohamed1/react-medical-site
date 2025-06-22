@@ -14,19 +14,19 @@ export default function LoginPage() {
       const result = await loginUser(data);
       localStorage.setItem('access', result.access);
       localStorage.setItem('refresh', result.refresh);
-      let loggedUser = { role: result.role };
+      let loggedUserObj = { name: result.username };
       if (result.role === 'doctor' && result.user.doctor_id) {
-        loggedUser = { ...result.user, role: result.role, id: result.user.doctor_id };
-        localStorage.setItem('loggedUser', JSON.stringify(loggedUser));
+        loggedUserObj = { ...loggedUserObj, ...result.user, role: result.role, id: result.user.doctor_id };
+        localStorage.setItem('loggedUser', JSON.stringify(loggedUserObj));
         navigate('/doctors/' + result.user.doctor_id);
       } else if (result.role === 'patient' && result.user.patient_id) {
-        loggedUser = { ...result.user, role: result.role, id: result.user.patient_id };
-        localStorage.setItem('loggedUser', JSON.stringify(loggedUser));
+        loggedUserObj = { ...loggedUserObj, ...result.user, role: result.role, id: result.user.patient_id };
+        localStorage.setItem('loggedUser', JSON.stringify(loggedUserObj));
         navigate('/patients-list/' + result.user.patient_id);
       } else {
         // If valid profile data is missing, show an error message and do not redirect
         setServerError('Failed to retrieve profile data. Please contact support.');
-        localStorage.setItem('loggedUser', JSON.stringify(loggedUser));
+        localStorage.setItem('loggedUser', JSON.stringify(loggedUserObj));
       }
     } catch (error) {
       // SweetAlert2 for blocked login (pending/rejected)
