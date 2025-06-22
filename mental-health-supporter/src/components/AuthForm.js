@@ -65,7 +65,22 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
 
   // Google login handler (updated to correct backend endpoint)
   const handleGoogleLogin = () => {
-    window.location.href = 'http://127.0.0.1:8000/api/users/social/login/google-oauth2/';
+    console.log('Google login button clicked!');
+    
+    try {
+      // Use the correct backend URL for Google OAuth - this initiates the OAuth flow
+      // Adding prompt=select_account to force account selection
+      const googleAuthUrl = 'http://127.0.0.1:8000/social/login/google-oauth2/?prompt=select_account';
+      console.log('Attempting to redirect to:', googleAuthUrl);
+      
+      // Simple redirect without checking backend first
+      console.log('Redirecting to Google OAuth...');
+      window.location.href = googleAuthUrl;
+        
+    } catch (error) {
+      console.error('Google login error:', error);
+      alert('Error during Google login: ' + error.message);
+    }
   };
 
   return (
@@ -142,7 +157,15 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
           {isLogin ? 'Log in' : 'Register'}
         </button>
         {isLogin && (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, margin: '0 0 0.2rem 0' }}>
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            gap: 12, 
+            margin: '1rem 0',
+            padding: '1rem',
+            borderTop: '1px solid rgba(255,255,255,0.1)'
+          }}>
             <button
               type="button"
               onClick={handleGoogleLogin}
@@ -150,22 +173,49 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                border: '1px solid #ddd',
-                background: '#fff',
-                borderRadius: '50%',
+                border: '2px solid #4285f4',
+                background: '#ffffff',
+                borderRadius: '8px',
                 width: 50,
                 height: 50,
                 padding: 0,
-                boxShadow: '0 2px 8px rgba(0,0,0,0.07)',
+                boxShadow: '0 2px 8px rgba(66, 133, 244, 0.2)',
                 cursor: 'pointer',
-                transition: 'box-shadow 0.2s',
+                transition: 'all 0.3s ease',
+                outline: 'none'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'translateY(-2px)';
+                e.target.style.boxShadow = '0 4px 12px rgba(66, 133, 244, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 2px 8px rgba(66, 133, 244, 0.2)';
               }}
               title="Log in with Google"
             >
-              <img src="/images/google-logo.png" alt="Google" style={{ width: 24, height: 24 }} />
+              <img 
+                src="/images/google-logo.png" 
+                alt="Google" 
+                style={{ width: 24, height: 24 }} 
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.parentElement.textContent = 'G';
+                  e.target.parentElement.style.fontSize = '20px';
+                  e.target.parentElement.style.fontWeight = 'bold';
+                  e.target.parentElement.style.color = '#4285f4';
+                }}
+              />
             </button>
-            <span style={{ color: 'white', fontWeight: 500, fontSize: '1rem', letterSpacing: 0.1, whiteSpace: 'nowrap' }}>
-              Login with your Google account
+            <span style={{ 
+              color: 'white', 
+              fontWeight: 500, 
+              fontSize: '0.9rem', 
+              letterSpacing: 0.1, 
+              whiteSpace: 'nowrap',
+              opacity: 0.9
+            }}>
+              Continue with Google
             </span>
           </div>
         )}

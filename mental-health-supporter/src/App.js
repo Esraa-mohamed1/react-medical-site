@@ -12,6 +12,7 @@ import DoctorDetailsPage from './pages/DoctorDetailsPage';
 import PatientDetailsPage from './pages/PatientDetailsPage';
 import RegisterSelectPage from './pages/RegisterSelectPage';
 import AccountSettingsPage from './pages/AccountSettingsPage';
+import GoogleAuthRedirect from './pages/GoogleAuthRedirect';
 import HomePage from './features/homePage/homePage';
 import PrivateRoute from './components/PrivateRoute';
 
@@ -27,6 +28,8 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/register-select" element={<RegisterSelectPage />} />
           <Route path="/artical" element={<ArticalPage />} />
+          <Route path="/google-auth-redirect" element={<GoogleAuthRedirect />} />
+          <Route path="/social/complete/google-oauth2/" element={<GoogleAuthRedirect />} />
           <Route path="/doctors/login" element={<BaseLoginPage userType={'Doctor'} />} />
           <Route path="/patients/login" element={<BaseLoginPage userType={'Patient'} />} />
           <Route path="/admin/login" element={<BaseLoginPage userType={'Admin'} />} />

@@ -2,89 +2,40 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthForm from '../components/AuthForm';
 import { registerUser } from '../services/api';
+import Swal from 'sweetalert2';
 
 export default function RegisterPage() {
   const navigate = useNavigate();
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [serverError, setServerError] = useState('');
 
   const handleRegister = async (data, setFieldErrors) => {
-    setError('');
-    setSuccess('');
     try {
       await registerUser(data);
-      setSuccess(`Registration successful! A verification email has been sent to ${data.email}. Please check your inbox.`);
-      setTimeout(() => navigate('/login'), 2000);
+      Swal.fire({
+        icon: 'success',
+        title: 'Registration Successful!',
+        text: 'You can now log in with your new account.',
+        timer: 3000,
+        showConfirmButton: false,
+      });
+      setTimeout(() => navigate('/login'), 3000);
     } catch (error) {
-      // Robust field-specific error handling
-      setFieldErrors({});
-      // Debug: log all error details for tracking
-      console.log('❌ error:', error);
-      console.log('❌ error.response:', error.response);
-      console.log('❌ error.response?.data:', error.response?.data);
-      console.log('❌ error.message:', error.message);
-      if (error.response && error.response.data) {
-        const data = error.response.data;
-        let fieldErrors = {};
-        // Map backend keys to frontend field names
-        const keyMap = {
-          username: 'name',
-          email: 'email',
-          password: 'password',
-          full_name: 'full_name',
-        };
-        Object.keys(data).forEach((key) => {
-          const frontendKey = keyMap[key] || key;
-          let msg = data[key];
-          if (Array.isArray(msg)) msg = msg[0];
-          if (typeof msg === 'string') {
-            // Always show a clear English message for username/email duplicate or required
-            if (frontendKey === 'name' && (msg.toLowerCase().includes('exist') || msg.toLowerCase().includes('unique'))) {
-              fieldErrors.name = 'This username is already taken. Please use another username.';
-            } else if (frontendKey === 'email' && (msg.toLowerCase().includes('exist') || msg.toLowerCase().includes('unique'))) {
-              fieldErrors.email = 'This email is already registered. Please use another email.';
-            } else if (frontendKey === 'name' && msg.toLowerCase().includes('required')) {
-              fieldErrors.name = 'Username is required.';
-            } else if (frontendKey === 'email' && msg.toLowerCase().includes('required')) {
-              fieldErrors.email = 'Email is required.';
-            } else if (frontendKey === 'password' && msg.toLowerCase().includes('required')) {
-              fieldErrors.password = 'Password is required.';
-            } else {
-              fieldErrors[frontendKey] = msg;
-            }
-          }
-        });
-        if (Object.keys(fieldErrors).length > 0) {
-          setFieldErrors(fieldErrors);
-          console.log('🛑 Server validation errors:', fieldErrors);
-        } else if (data.detail) {
-          setError(data.detail);
+      const errorData = error.response?.data;
+      if (errorData) {
+        if (errorData.detail) {
+          setServerError(errorData.detail);
         } else {
-          setError(error.message);
+          setFieldErrors(errorData);
         }
-      } else if (error.message && error.message.toLowerCase().includes('username')) {
-        setFieldErrors({ name: error.message });
-      } else if (error.message && error.message.toLowerCase().includes('email')) {
-        setFieldErrors({ email: error.message });
       } else {
-        setError(error.message);
+        setServerError('An unexpected error occurred. Please try again.');
       }
     }
   };
 
   return (
     <div>
-      {error && (
-        <div className="alert alert-danger text-center" role="alert" style={{ maxWidth: 400, margin: '1rem auto' }}>
-          {error}
-        </div>
-      )}
-      {success && (
-        <div className="alert alert-success text-center" role="alert" style={{ maxWidth: 400, margin: '1rem auto' }}>
-          {success}
-        </div>
-      )}
-      <AuthForm variant="register" onSubmit={handleRegister} serverError={error} />
+      <AuthForm variant="register" onSubmit={handleRegister} serverError={serverError} />
     </div>
   );
 }

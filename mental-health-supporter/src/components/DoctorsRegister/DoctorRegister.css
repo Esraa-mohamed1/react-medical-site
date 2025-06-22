@@ -1,0 +1,146 @@
+/** Doctor Registration Professional Theme **/
+.doctor-register-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background-color: #f4f7f9;
+}
+
+.doctor-register-card {
+  width: 100%;
+  max-width: 700px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  border: 1px solid #e0e5ec;
+}
+
+.step-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #0d47a1; /* Professional Blue */
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e0e5ec;
+}
+
+.doctor-register-card form {
+  padding: 2rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-group label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #37474f;
+}
+
+.form-group input,
+.form-group select {
+  padding: 0.8rem 1rem;
+  border: 1px solid #c5d0db;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #0d47a1;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(13, 71, 161, 0.1);
+}
+
+.form-group input.is-invalid,
+.form-group select.is-invalid {
+  border-color: #c62828;
+  background-color: #fff8f8;
+}
+
+.invalid-feedback {
+  color: #c62828;
+  font-size: 0.8rem;
+}
+
+/** Progress Bar **/
+.progress-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 2.5rem;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e0e5ec;
+}
+
+.step-indicator {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #c5d0db;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+.step-indicator.active {
+  background-color: #0d47a1; /* Active Step Color */
+}
+
+.connector {
+  flex-grow: 1;
+  height: 2px;
+  background-color: #c5d0db;
+  margin: 0 1rem;
+}
+
+/** Navigation Buttons **/
+.navigation-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e0e5ec;
+}
+
+.btn-primary,
+.btn-secondary {
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background-color: #0d47a1;
+  color: white;
+}
+.btn-primary:hover {
+  background-color: #0b3a8a;
+}
+.btn-primary:disabled {
+  background-color: #90a4ae;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background-color: #e0e5ec;
+  color: #37474f;
+}
+.btn-secondary:hover {
+  background-color: #c5d0db;
+} 
