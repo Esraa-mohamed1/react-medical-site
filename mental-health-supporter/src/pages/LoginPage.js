@@ -8,60 +8,33 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [serverError, setServerError] = useState('');
 
-  const handleLogin = async (data, setFieldErrors) => {
+  const handleLogin = async (payload, setFieldErrors) => {
     setServerError('');
     try {
-      const result = await loginUser(data);
+      const data = await loginUser(payload);
+      console.log('Login successful:', data);
+      
+      localStorage.setItem('loggedUser', JSON.stringify(data));
+      window.dispatchEvent(new Event('authChange'));
 
-      if (result.is_blocked) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Login Failed',
-          text: 'Your account is blocked. Please contact support.',
-        });
-        return;
-      }
-
-      Swal.fire({
-        icon: 'success',
-        title: 'Login Successful!',
-        text: 'Welcome back!',
-        timer: 1500,
-        showConfirmButton: false
-      }).then(() => {
-        localStorage.setItem('access', result.access);
-        localStorage.setItem('refresh', result.refresh);
-        
-        const userRole = result.role;
-        let loggedUser = { role: userRole };
-
-        if (userRole === 'doctor' && result.user.doctor_id) {
-          loggedUser = { ...result.user, role: userRole, id: result.user.doctor_id };
-        } else if (userRole === 'patient' && result.user.patient_id) {
-          loggedUser = { ...result.user, role: userRole, id: result.user.patient_id };
-        }
-        
-        localStorage.setItem('loggedUser', JSON.stringify(loggedUser));
+      if (data.role === 'doctor') {
+        navigate('/doctor/dashboard');
+      } else {
         navigate('/');
-      });
-
+      }
     } catch (error) {
       console.error('Login failed:', error);
-      const errorData = error.response?.data;
-      if (errorData) {
-        if (errorData.detail) {
-          setServerError(errorData.detail);
-        } else {
-          setFieldErrors(errorData);
-        }
-      } else {
-        setServerError('An unexpected error occurred. Please try again.');
-      }
+      const errorMessage = error.response?.data?.detail || 'Login failed. Please check your credentials.';
+      setServerError(errorMessage);
     }
   };
 
+  const handleGoogleLogin = () => {
+    // ... existing code ...
+  };
+
   return (
-    <div>
+    <div className="auth-container">
       <AuthForm variant="login" onSubmit={handleLogin} serverError={serverError} />
     </div>
   );

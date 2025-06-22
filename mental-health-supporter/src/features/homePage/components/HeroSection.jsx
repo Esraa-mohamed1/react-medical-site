@@ -7,7 +7,7 @@ export default function HeroSection() {
 
   const handleAppointmentClick = () => {
     // Check if user is logged in
-    const user = JSON.parse(localStorage.getItem('user'))
+    const user = JSON.parse(localStorage.getItem('loggedUser'))
     
     if (!user) {
       navigate('/login')
@@ -15,12 +15,13 @@ export default function HeroSection() {
     }
     
     if (user.role === 'patient') {
-      navigate('/doctors-list')
+      navigate('/doctors')
     }
   }
 
-  const user = JSON.parse(localStorage.getItem('user'))
+  const user = JSON.parse(localStorage.getItem('loggedUser'))
   const showAppointmentButton = !user || user.role === 'patient'
+  const showDashboardButton = user && user.role === 'doctor'
 
   return (
     <section className={styles.hero}>
@@ -40,9 +41,17 @@ export default function HeroSection() {
                 Book An Appointment
               </button>
             )}
+            {showDashboardButton && (
+              <button 
+                className={styles.primaryButton}
+                onClick={() => navigate('/doctor/dashboard')}
+              >
+                Go to Dashboard
+              </button>
+            )}
             <button 
               className={styles.secondaryButton}
-              onClick={() => navigate('/artical')}
+              onClick={() => navigate('/articles')}
             >
               Read Articles
             </button>
