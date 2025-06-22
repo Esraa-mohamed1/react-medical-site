@@ -1,3 +1,119 @@
+/* DoctorRegister.css - Professional Theme */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary-color: #1E88E5; /* Professional Blue */
+  --primary-color-dark: #1565C0;
+  --background-color: #f4f8f9;
+  --card-background-color: #ffffff;
+  --text-color: #333;
+  --label-color: #455a64;
+  --border-color: #BDBDBD;
+  --error-color: #d32f2f;
+}
+
+.dr-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 3rem 1rem;
+  background: linear-gradient(135deg, #B2EBF2 0%, #80DEEA 100%);
+  font-family: 'Poppins', sans-serif;
+}
+
+.dr-card {
+  background-color: var(--card-background-color);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 3rem;
+  width: 100%;
+  max-width: 800px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dr-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.dr-header h2 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.dr-header p {
+  font-size: 1.1rem;
+  color: #6c757d;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  color: var(--label-color);
+  margin-bottom: 0.5rem;
+}
+
+.form-control {
+  height: calc(1.5em + 1rem + 2px);
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
+}
+
+.form-divider {
+  margin: 2rem 0;
+  border-top: 1px solid #e9ecef;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 0.875rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #fff;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-submit:hover {
+  background-color: var(--primary-color-dark);
+}
+
+.btn-submit:disabled {
+  background-color: #a1cfff;
+  cursor: not-allowed;
+}
+
+.dr-switch {
+  text-align: center;
+  margin-top: 1.5rem;
+  color: #6c757d;
+}
+
+.dr-switch a {
+  color: var(--primary-color);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.dr-switch a:hover {
+  text-decoration: underline;
+}
+
 .doctor-register-wrapper {
   min-height: 100vh;
   display: flex;
@@ -54,12 +170,6 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-}
-
-.doctor-register-container .form-group label {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #202124;
 }
 
 .doctor-register-container .form-group input,
@@ -152,4 +262,18 @@
   .doctor-register-container .doctor-form {
     padding: 1.5rem;
   }
+}
+
+.alert {
+  padding: 0.8rem 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.alert-danger {
+  background-color: #ffebee;
+  color: var(--error-color);
+  border: 1px solid #ffcdd2;
 }

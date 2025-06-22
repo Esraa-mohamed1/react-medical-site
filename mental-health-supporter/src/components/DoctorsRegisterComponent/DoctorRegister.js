@@ -1,73 +1,50 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useNavigate, Link } from 'react-router-dom'; // Added Link import
+import { useNavigate, Link } from 'react-router-dom';
+import { registerDoctor } from '../../../services/api'; // Assuming an API function
+import Swal from 'sweetalert2';
 import './DoctorRegister.css';
 
 const DoctorRegister = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    specialization: '',
-    licenseNumber: '',
-    yearsOfExperience: '',
+  const initialFormState = {
+    username: '',
+    full_name: '',
     email: '',
     phone: '',
     password: '',
     confirmPassword: '',
-    clinicAddress: '',
-    bio: ''
-  });
+    specialization: '',
+    license_number: '',
+    years_of_experience: '',
+    address: '',
+    bio: '',
+  };
+  const [formData, setFormData] = useState(initialFormState);
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ 
-      ...formData, 
-      [name]: value 
-    });
+    setFormData({ ...formData, [name]: value });
     if (errors[name]) {
-      setErrors({
-        ...errors,
-        [name]: ''
-      });
+      setErrors({ ...errors, [name]: '' });
     }
   };
 
   const validateForm = () => {
     const newErrors = {};
-    
-    if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
-    if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
+    if (!formData.username.trim()) newErrors.username = 'Username is required';
+    if (!formData.full_name.trim()) newErrors.full_name = 'Full name is required';
     if (!formData.specialization.trim()) newErrors.specialization = 'Specialization is required';
-    if (!formData.licenseNumber.trim()) newErrors.licenseNumber = 'License number is required';
-    
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
-    }
-    
-    if (!formData.phone.trim()) {
-      newErrors.phone = 'Phone number is required';
-    } else if (!/^\d{10,15}$/.test(formData.phone)) {
-      newErrors.phone = 'Phone number is invalid';
-    }
-    
-    if (!formData.password) {
-      newErrors.password = 'Password is required';
-    } else if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters';
-    }
-    
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password';
-    } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
-    }
+    if (!formData.license_number.trim()) newErrors.license_number = 'License number is required';
+    if (!formData.email.trim()) newErrors.email = 'Email is required';
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid';
+    if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
+    if (!formData.password) newErrors.password = 'Password is required';
+    else if (formData.password.length < 8) newErrors.password = 'Password must be at least 8 characters';
+    if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -75,216 +52,134 @@ const DoctorRegister = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     if (!validateForm()) return;
     
     setIsSubmitting(true);
-    
+    setErrors({});
+
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      console.log('Doctor Registered:', formData);
+      const doctorData = { ...formData };
+      delete doctorData.confirmPassword; // Don't send confirmPassword to backend
+
+      await registerDoctor(doctorData);
       
-      setSuccessMessage('Doctor registered successfully!');
-      setFormData({
-        firstName: '',
-        lastName: '',
-        specialization: '',
-        licenseNumber: '',
-        yearsOfExperience: '',
-        email: '',
-        phone: '',
-        password: '',
-        confirmPassword: '',
-        clinicAddress: '',
-        bio: ''
+      Swal.fire({
+        icon: 'success',
+        title: 'Registration Successful!',
+        text: 'Your registration is complete. You will now be redirected to the login page.',
+        timer: 2500,
+        showConfirmButton: false,
       });
 
-      setTimeout(() => navigate('/login'), 2000);
+      setFormData(initialFormState); // Clear form on success
+
+      setTimeout(() => navigate('/login'), 2500);
     } catch (error) {
-      console.error('Registration error:', error);
-      setSuccessMessage('Registration failed. Please try again.');
+      const newErrors = {};
+      if (error.response && error.response.data && typeof error.response.data === 'object') {
+        const errorData = error.response.data;
+        for (const [field, messages] of Object.entries(errorData)) {
+          newErrors[field] = Array.isArray(messages) ? messages.join(' ') : String(messages);
+        }
+      } else {
+        newErrors.non_field_errors = 
+          error.response?.data?.detail || error.message || 'An unexpected error occurred. Please try again.';
+      }
+      setErrors(newErrors);
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="doctor-register-wrapper">
-      <div className="doctor-register-container">
-        <div className="form-header">
+    <div className="dr-container">
+      <div className="dr-card">
+        <div className="dr-header">
           <h2>Doctor Registration</h2>
-          <p>Become part of our community of mental health supporters</p>
+          <p>Join our network of trusted mental health professionals.</p>
         </div>
 
-        {successMessage && (
-          <div className="alert alert-success" role="alert">
-            {successMessage}
-          </div>
+        {errors.non_field_errors && (
+          <div className="alert alert-danger" role="alert">{errors.non_field_errors}</div>
         )}
         
-        <form onSubmit={handleSubmit} className="doctor-form" noValidate>
-          <div className="mb-3">
-            <label htmlFor="firstName" className="form-label">First Name</label>
-            <input
-              type="text"
-              className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
-              id="firstName"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-            />
-            {errors.firstName && <div className="invalid-feedback">{errors.firstName}</div>}
+        <form onSubmit={handleSubmit} noValidate>
+          <div className="row">
+            <div className="col-md-6 form-group">
+              <label htmlFor="username">Username</label>
+              <input type="text" id="username" name="username" value={formData.username} onChange={handleChange} className={`form-control ${errors.username ? 'is-invalid' : ''}`} />
+              {errors.username && <div className="invalid-feedback">{errors.username}</div>}
+            </div>
+            <div className="col-md-6 form-group">
+              <label htmlFor="full_name">Full Name</label>
+              <input type="text" id="full_name" name="full_name" value={formData.full_name} onChange={handleChange} className={`form-control ${errors.full_name ? 'is-invalid' : ''}`} />
+              {errors.full_name && <div className="invalid-feedback">{errors.full_name}</div>}
+            </div>
           </div>
 
-          <div className="mb-3">
-            <label htmlFor="lastName" className="form-label">Last Name</label>
-            <input
-              type="text"
-              className={`form-control ${errors.lastName ? 'is-invalid' : ''}`}
-              id="lastName"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-            />
-            {errors.lastName && <div className="invalid-feedback">{errors.lastName}</div>}
+          <div className="row">
+            <div className="col-md-6 form-group">
+              <label htmlFor="email">Email</label>
+              <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} className={`form-control ${errors.email ? 'is-invalid' : ''}`} />
+              {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+            </div>
+            <div className="col-md-6 form-group">
+              <label htmlFor="phone">Phone</label>
+              <input type="text" id="phone" name="phone" value={formData.phone} onChange={handleChange} className={`form-control ${errors.phone ? 'is-invalid' : ''}`} />
+              {errors.phone && <div className="invalid-feedback">{errors.phone}</div>}
+            </div>
+          </div>
+          
+          <div className="row">
+            <div className="col-md-6 form-group">
+              <label htmlFor="password">Password</label>
+              <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} className={`form-control ${errors.password ? 'is-invalid' : ''}`} />
+              {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+            </div>
+            <div className="col-md-6 form-group">
+              <label htmlFor="confirmPassword">Confirm Password</label>
+              <input type="password" id="confirmPassword" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`} />
+              {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword}</div>}
+            </div>
           </div>
 
-          <div className="mb-3">
-            <label htmlFor="specialization" className="form-label">Specialization</label>
-            <input
-              type="text"
-              className={`form-control ${errors.specialization ? 'is-invalid' : ''}`}
-              id="specialization"
-              name="specialization"
-              value={formData.specialization}
-              onChange={handleChange}
-            />
-            {errors.specialization && <div className="invalid-feedback">{errors.specialization}</div>}
+          <hr className="form-divider" />
+
+          <div className="row">
+            <div className="col-md-6 form-group">
+              <label htmlFor="specialization">Specialization</label>
+              <input type="text" id="specialization" name="specialization" value={formData.specialization} onChange={handleChange} className={`form-control ${errors.specialization ? 'is-invalid' : ''}`} />
+              {errors.specialization && <div className="invalid-feedback">{errors.specialization}</div>}
+            </div>
+            <div className="col-md-6 form-group">
+              <label htmlFor="license_number">License Number</label>
+              <input type="text" id="license_number" name="license_number" value={formData.license_number} onChange={handleChange} className={`form-control ${errors.license_number ? 'is-invalid' : ''}`} />
+              {errors.license_number && <div className="invalid-feedback">{errors.license_number}</div>}
+            </div>
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="years_of_experience">Years of Experience</label>
+            <input type="number" id="years_of_experience" name="years_of_experience" value={formData.years_of_experience} onChange={handleChange} className="form-control" min="0" />
           </div>
 
-          <div className="mb-3">
-            <label htmlFor="licenseNumber" className="form-label">License Number</label>
-            <input
-              type="text"
-              className={`form-control ${errors.licenseNumber ? 'is-invalid' : ''}`}
-              id="licenseNumber"
-              name="licenseNumber"
-              value={formData.licenseNumber}
-              onChange={handleChange}
-            />
-            {errors.licenseNumber && <div className="invalid-feedback">{errors.licenseNumber}</div>}
+          <div className="form-group">
+            <label htmlFor="address">Clinic Address</label>
+            <input type="text" id="address" name="address" value={formData.address} onChange={handleChange} className="form-control" />
           </div>
 
-          <div className="mb-3">
-            <label htmlFor="yearsOfExperience" className="form-label">Years of Experience</label>
-            <input
-              type="number"
-              className="form-control"
-              id="yearsOfExperience"
-              name="yearsOfExperience"
-              value={formData.yearsOfExperience}
-              onChange={handleChange}
-              min="0"
-            />
+          <div className="form-group">
+            <label htmlFor="bio">Biography</label>
+            <textarea id="bio" name="bio" value={formData.bio} onChange={handleChange} className="form-control" rows="4"></textarea>
           </div>
 
-          <div className="mb-3">
-            <label htmlFor="email" className="form-label">Email</label>
-            <input
-              type="email"
-              className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-            />
-            {errors.email && <div className="invalid-feedback">{errors.email}</div>}
-          </div>
+          <button type="submit" className="btn-submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Submitting...' : 'Register'}
+          </button>
 
-          <div className="mb-3">
-            <label htmlFor="phone" className="form-label">Phone</label>
-            <input
-              type="text"
-              className={`form-control ${errors.phone ? 'is-invalid' : ''}`}
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-            />
-            {errors.phone && <div className="invalid-feedback">{errors.phone}</div>}
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="password" className="form-label">Password</label>
-            <input
-              type="password"
-              className={`form-control ${errors.password ? 'is-invalid' : ''}`}
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-            />
-            {errors.password && <div className="invalid-feedback">{errors.password}</div>}
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
-            <input
-              type="password"
-              className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
-              id="confirmPassword"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-            />
-            {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword}</div>}
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="clinicAddress" className="form-label">Clinic Address</label>
-            <input
-              type="text"
-              className="form-control"
-              id="clinicAddress"
-              name="clinicAddress"
-              value={formData.clinicAddress}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="bio" className="form-label">Bio</label>
-            <textarea
-              className="form-control"
-              id="bio"
-              name="bio"
-              value={formData.bio}
-              onChange={handleChange}
-              rows="3"
-            />
-          </div>
-
-          <div className="form-footer">
-            <button 
-              type="submit" 
-              className="btn btn-primary w-100"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? 'Registering...' : 'Register'}
-            </button>
-            
-            {/* Added login link */}
-            <p className="text-center mt-3">
-              Already have an account?{' '}
-              <Link to="/login" className="text-primary">
-                Log in
-              </Link>
-            </p>
-            
-            <p className="disclaimer text-center">
-              By registering, you agree to our Terms of Service and Privacy Policy
-            </p>
-          </div>
+          <p className="dr-switch">
+            Already have an account? <Link to="/login">Log in</Link>
+          </p>
         </form>
       </div>
     </div>

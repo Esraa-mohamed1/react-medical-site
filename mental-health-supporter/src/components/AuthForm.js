@@ -7,6 +7,7 @@ export default function AuthForm({ variant = 'login', onSubmit }) {
   const [formData, setFormData] = useState({
     name: '',
     full_name: '',
+    username: '',
     phone: '',
     address: '',
     email: '',
