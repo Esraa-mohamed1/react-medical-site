@@ -175,3 +175,14 @@
   position: absolute;
   right: 0;
 }
+
+.doctor-profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  background-image: url('../DoctorsListComponent/images/BG-MentalHealth.jpg');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+}
