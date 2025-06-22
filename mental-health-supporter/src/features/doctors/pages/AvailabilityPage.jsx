@@ -1,319 +1,323 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import "react-toastify/dist/ReactToastify.css";
-import "../style/style.css";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import CustomNavbar from '../../../components/Navbar';
 
-export default function AvailabilityPage() {
-  const [slots, setSlots] = useState([]);
+const AvailabilityPage = () => {
+  const [availableDates, setAvailableDates] = useState([]);
   const [formData, setFormData] = useState({
-    day_of_week: "",
-    start_time: "",
-    end_time: "",
+    date: '',
+    start_time: '',
+    end_time: '',
+    max_appointments: 1
   });
-  const [errors, setErrors] = useState({});
-  const [editingSlotId, setEditingSlotId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [editingId, setEditingId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("user"));
+    const userData = JSON.parse(localStorage.getItem('loggedUser'));
+    const token = localStorage.getItem('access');
     
-    if (!userData || userData?.role !== "doctor") {
-      toast.error("Only doctors can manage availability slots");
+    if (!userData || userData.role !== 'doctor' || !token) {
+      toast.error('Only doctors can manage availability');
       navigate('/login');
       return;
     }
-  
-    fetchSlots(userData.token);
+    
+    fetchAvailableDates(token);
   }, [navigate]);
 
-  const fetchSlots = async (token) => {
+  const fetchAvailableDates = async (token) => {
     try {
       setIsLoading(true);
-      const res = await axios.get("http://localhost:8000/api/availability/slots/", {
+      const response = await axios.get('http://127.0.0.1:8000/api/medical/availability/', {
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       });
-      setSlots(res.data);
+      setAvailableDates(response.data);
     } catch (error) {
-      console.error("Error fetching slots:", error);
-      if (error.response?.status === 401) {
-        toast.error("Session expired. Please login again.");
-        navigate('/login');
-      } else {
-        toast.error("Failed to fetch slots");
-      }
+      console.error('Error fetching availability:', error);
+      toast.error('Failed to load availability dates');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-    if (!formData.day_of_week) newErrors.day_of_week = "Day is required";
-    if (!formData.start_time) newErrors.start_time = "Start time is required";
-    if (!formData.end_time) newErrors.end_time = "End time is required";
-    else if (formData.end_time <= formData.start_time)
-      newErrors.end_time = "End time must be after start time";
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    
+    if (!formData.date || !formData.start_time || !formData.end_time) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+
+    if (formData.end_time <= formData.start_time) {
+      toast.error('End time must be after start time');
+      return;
+    }
 
     try {
-      const userData = JSON.parse(localStorage.getItem("user"));
-      if (!userData || userData.role !== "doctor") {
-        toast.error("Only doctors can manage availability slots");
-        navigate('/login');
-        return;
-      }
-
-      const config = {
-        headers: {
-          Authorization: `Bearer ${userData.token}`,
-          'Content-Type': 'application/json'
-        },
-      };
-
-      const payload = {
-        day: parseInt(formData.day_of_week),
-        start_time: formData.start_time,
-        end_time: formData.end_time,
-      };
-
-      if (editingSlotId) {
-        // For update, include the ID in the payload if your backend requires it
-        const updatePayload = {
-          ...payload,
-          id: editingSlotId
-        };
-        
+      setIsSubmitting(true);
+      const token = localStorage.getItem('access');
+      
+      if (editingId) {
+        // Update existing availability
         await axios.put(
-          `http://localhost:8000/api/availability/slots/${editingSlotId}/`,
-          updatePayload,
-          config
+          `http://127.0.0.1:8000/api/medical/availability/${editingId}/`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          }
         );
-        toast.success("Slot updated successfully");
+        toast.success('Availability updated successfully');
       } else {
+        // Create new availability
         await axios.post(
-          "http://localhost:8000/api/availability/slots/",
-          payload,
-          config
+          'http://127.0.0.1:8000/api/medical/availability/',
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          }
         );
-        toast.success("Slot added successfully");
+        toast.success('Availability date added successfully');
       }
-
-      setFormData({ day_of_week: "", start_time: "", end_time: "" });
-      setEditingSlotId(null);
-      fetchSlots(userData.token);
-      setErrors({});
+      
+      // Reset form and refresh data
+      setFormData({
+        date: '',
+        start_time: '',
+        end_time: '',
+        max_appointments: 1
+      });
+      setEditingId(null);
+      fetchAvailableDates(token);
     } catch (error) {
-      console.error("Error saving slot:", error);
-      if (error.response?.status === 401) {
-        toast.error("Session expired. Please login again.");
-        navigate('/login');
-      } else {
-        const errorMessage = error.response?.data?.day?.[0] || 
-                            error.response?.data?.detail || 
-                            "Error saving slot";
-        toast.error(errorMessage);
-      }
+      console.error('Error saving availability:', error);
+      toast.error(error.response?.data?.detail || 'Failed to save availability');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const handleEdit = (slot) => {
-    console.log("Editing slot:", slot); // Debug log
-    
-    setEditingSlotId(slot.id);
-    
-    // Handle both possible field names (day or day_of_week)
-    const dayValue = slot.day !== undefined ? slot.day : slot.day_of_week;
-    
+  const handleEdit = (availability) => {
+    setEditingId(availability.id);
     setFormData({
-      day_of_week: dayValue?.toString() || "",
-      start_time: slot.start_time || "",
-      end_time: slot.end_time || "",
+      date: availability.date,
+      start_time: availability.start_time,
+      end_time: availability.end_time,
+      max_appointments: availability.max_appointments || 1
     });
   };
 
-  const handleDelete = (id) => {
-    toast.info(
-      <div>
-        <p>Are you sure you want to delete this slot?</p>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginTop: '10px' }}>
-          <button 
-            onClick={async () => {
-              toast.dismiss();
-              try {
-                const userData = JSON.parse(localStorage.getItem("user"));
-                await axios.delete(`http://localhost:8000/api/availability/slots/${id}/`, {
-                  headers: {
-                    Authorization: `Bearer ${userData.token}`,
-                  },
-                });
-                toast.success("Slot deleted successfully");
-                fetchSlots(userData.token);
-              } catch (error) {
-                console.error("Error deleting slot:", error);
-                toast.error(error.response?.data?.detail || "Error deleting slot");
-              }
-            }}
-            style={{
-              background: '#dc3545',
-              color: 'white',
-              border: 'none',
-              padding: '5px 15px',
-              borderRadius: '4px',
-              cursor: 'pointer'
-            }}
-          >
-            Yes, Delete
-          </button>
-          <button 
-            onClick={() => toast.dismiss()}
-            style={{
-              background: '#6c757d',
-              color: 'white',
-              border: 'none',
-              padding: '5px 15px',
-              borderRadius: '4px',
-              cursor: 'pointer'
-            }}
-          >
-            Cancel
-          </button>
-        </div>
-      </div>,
-      {
-        autoClose: false,
-        closeButton: false,
-        closeOnClick: false,
-      }
-    );
-  };
-  const daysOfWeek = [
-    { value: "0", label: "Sunday" },
-    { value: "1", label: "Monday" },
-    { value: "2", label: "Tuesday" },
-    { value: "3", label: "Wednesday" },
-    { value: "4", label: "Thursday" },
-    { value: "5", label: "Friday" },
-    { value: "6", label: "Saturday" },
-  ];
+  const handleDelete = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this availability date?')) {
+      return;
+    }
 
-  const englishDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    try {
+      const token = localStorage.getItem('access');
+      await axios.delete(`http://127.0.0.1:8000/api/medical/availability/${id}/`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      toast.success('Availability date deleted successfully');
+      fetchAvailableDates(token);
+    } catch (error) {
+      console.error('Error deleting availability:', error);
+      toast.error('Failed to delete availability date');
+    }
+  };
+
+  const handleCancel = () => {
+    setEditingId(null);
+    setFormData({
+      date: '',
+      start_time: '',
+      end_time: '',
+      max_appointments: 1
+    });
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
 
   if (isLoading) {
     return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
+      <div className="min-vh-100 bg-light">
+        <CustomNavbar />
+        <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '50vh' }}>
+          <div className="spinner-border text-primary" style={{width: '3rem', height: '3rem'}} role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="availability-container">
-      <ToastContainer />
-      <h1 className="availability-header">Manage Availability Slots</h1>
+    <div className="min-vh-100 bg-light">
+      <CustomNavbar />
+      <div className="container py-5">
+        <ToastContainer />
+        
+        <div className="row">
+          <div className="col-lg-8 mx-auto">
+            <h1 className="mb-4 text-center">Manage Available Dates</h1>
+            <p className="text-muted text-center mb-4">
+              Set your available dates and times for patient appointments
+            </p>
 
-      <form onSubmit={handleSubmit} className="availability-form">
-        <div className="form-grid">
-          <div className="form-group">
-            <label className="form-label">Day</label>
-            <select
-              name="day_of_week"
-              value={formData.day_of_week}
-              onChange={(e) => setFormData({ ...formData, day_of_week: e.target.value })}
-              className={`form-select ${errors.day_of_week ? "border-red-500" : ""}`}
-            >
-              <option value="">Select Day</option>
-              {daysOfWeek.map((day) => (
-                <option key={day.value} value={day.value}>
-                  {day.label}
-                </option>
-              ))}
-            </select>
-            {errors.day_of_week && <p className="text-red-600 text-sm mt-1">{errors.day_of_week}</p>}
-          </div>
+            {/* Add/Edit Form */}
+            <div className="card shadow-sm mb-4">
+              <div className="card-body">
+                <h5 className="card-title mb-3">
+                  {editingId ? 'Edit Available Date' : 'Add New Available Date'}
+                </h5>
+                
+                <form onSubmit={handleSubmit}>
+                  <div className="row g-3">
+                    <div className="col-md-6">
+                      <label className="form-label">Date *</label>
+                      <input
+                        type="date"
+                        className="form-control"
+                        value={formData.date}
+                        onChange={(e) => setFormData({...formData, date: e.target.value})}
+                        min={new Date().toISOString().split('T')[0]}
+                        required
+                      />
+                    </div>
+                    
+                    <div className="col-md-3">
+                      <label className="form-label">Start Time *</label>
+                      <input
+                        type="time"
+                        className="form-control"
+                        value={formData.start_time}
+                        onChange={(e) => setFormData({...formData, start_time: e.target.value})}
+                        required
+                      />
+                    </div>
+                    
+                    <div className="col-md-3">
+                      <label className="form-label">End Time *</label>
+                      <input
+                        type="time"
+                        className="form-control"
+                        value={formData.end_time}
+                        onChange={(e) => setFormData({...formData, end_time: e.target.value})}
+                        required
+                      />
+                    </div>
+                    
+                    <div className="col-md-6">
+                      <label className="form-label">Max Appointments</label>
+                      <input
+                        type="number"
+                        className="form-control"
+                        value={formData.max_appointments}
+                        onChange={(e) => setFormData({...formData, max_appointments: parseInt(e.target.value)})}
+                        min="1"
+                        max="20"
+                      />
+                      <div className="form-text">Maximum number of appointments for this time slot</div>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-3">
+                    <button 
+                      type="submit" 
+                      className="btn btn-primary me-2"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? 'Saving...' : (editingId ? 'Update' : 'Add Date')}
+                    </button>
+                    {editingId && (
+                      <button 
+                        type="button" 
+                        className="btn btn-secondary"
+                        onClick={handleCancel}
+                        disabled={isSubmitting}
+                      >
+                        Cancel
+                      </button>
+                    )}
+                  </div>
+                </form>
+              </div>
+            </div>
 
-          <div className="form-group">
-            <label className="form-label">Start Time</label>
-            <input
-              type="time"
-              value={formData.start_time}
-              onChange={(e) => setFormData({ ...formData, start_time: e.target.value })}
-              className={`form-input ${errors.start_time ? "border-red-500" : ""}`}
-            />
-            {errors.start_time && <p className="text-red-600 text-sm mt-1">{errors.start_time}</p>}
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">End Time</label>
-            <input
-              type="time"
-              value={formData.end_time}
-              onChange={(e) => setFormData({ ...formData, end_time: e.target.value })}
-              className={`form-input ${errors.end_time ? "border-red-500" : ""}`}
-            />
-            {errors.end_time && <p className="text-red-600 text-sm mt-1">{errors.end_time}</p>}
+            {/* Available Dates List */}
+            <div className="card shadow-sm">
+              <div className="card-body">
+                <h5 className="card-title mb-3">Your Available Dates</h5>
+                
+                {availableDates.length === 0 ? (
+                  <div className="text-center py-4">
+                    <p className="text-muted">No available dates set yet.</p>
+                    <p className="text-muted">Add your first available date above to start accepting appointments.</p>
+                  </div>
+                ) : (
+                  <div className="row g-3">
+                    {availableDates.map((availability) => (
+                      <div key={availability.id} className="col-md-6">
+                        <div className="card border">
+                          <div className="card-body">
+                            <h6 className="card-title text-primary">
+                              {formatDate(availability.date)}
+                            </h6>
+                            <p className="card-text mb-2">
+                              <strong>Time:</strong> {availability.start_time} - {availability.end_time}
+                            </p>
+                            <p className="card-text mb-3">
+                              <strong>Max Appointments:</strong> {availability.max_appointments}
+                            </p>
+                            <div className="d-flex gap-2">
+                              <button 
+                                onClick={() => handleEdit(availability)}
+                                className="btn btn-sm btn-outline-primary"
+                              >
+                                Edit
+                              </button>
+                              <button 
+                                onClick={() => handleDelete(availability.id)}
+                                className="btn btn-sm btn-outline-danger"
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
-
-        <div className="form-actions">
-          <button type="submit" className="submit-btn">
-            {editingSlotId ? "Update Slot" : "Add Slot"}
-          </button>
-          {editingSlotId && (
-            <button
-              type="button"
-              onClick={() => {
-                setEditingSlotId(null);
-                setFormData({ day_of_week: "", start_time: "", end_time: "" });
-                setErrors({});
-              }}
-              className="cancel-btn"
-            >
-              Cancel
-            </button>
-          )}
-        </div>
-      </form>
-
-      <div className="slots-section">
-        <h2 className="slots-header">Current Availability Slots</h2>
-        {slots.length === 0 ? (
-          <p className="no-slots">No slots available</p>
-        ) : (
-          <ul className="slots-list">
-            {slots.map((slot) => (
-              <li key={slot.id} className="slot-card">
-                <div className="slot-info">
-                  <span className="slot-day">
-                    {englishDays[slot.day || slot.day_of_week]}
-                  </span>
-                  <span className="slot-time">
-                    From {slot.start_time} to {slot.end_time}
-                  </span>
-                </div>
-                <div className="slot-actions">
-                  <button onClick={() => handleEdit(slot)} className="edit-btn">
-                    Edit
-                  </button>
-                  <button onClick={() => handleDelete(slot.id)} className="delete-btn">
-                    Delete
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
       </div>
     </div>
   );
-}
+};
+
+export default AvailabilityPage;

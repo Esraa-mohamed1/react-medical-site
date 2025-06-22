@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FiCalendar, FiClock, FiUser, FiSearch, FiInbox, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import debounce from 'lodash.debounce';
+import CustomNavbar from '../../../components/Navbar';
 
 const AppointmentsList = () => {
   const [appointments, setAppointments] = useState([]);
@@ -12,6 +13,7 @@ const AppointmentsList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const appointmentsPerPage = 6;
   const [isLoading, setIsLoading] = useState(true);
+  const [updatingStatus, setUpdatingStatus] = useState({});
 
   const navigate = useNavigate();
   
@@ -54,6 +56,39 @@ const AppointmentsList = () => {
     };
   }, [searchTerm, debouncedFetchAppointments]);
 
+  const handleStatusUpdate = async (appointmentId, newStatus) => {
+    try {
+      setUpdatingStatus(prev => ({ ...prev, [appointmentId]: true }));
+      const token = localStorage.getItem("access");
+      
+      await axios.patch(
+        `http://127.0.0.1:8000/api/medical/appointments/${appointmentId}/update/`,
+        { status: newStatus },
+        {
+          headers: { 
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      // Update the appointment in the local state
+      setAppointments(prev => 
+        prev.map(appointment => 
+          appointment.id === appointmentId 
+            ? { ...appointment, status: newStatus }
+            : appointment
+        )
+      );
+
+      toast.success(`Appointment status updated to ${newStatus}`);
+    } catch (error) {
+      console.error("Error updating appointment status:", error);
+      toast.error(error.response?.data?.detail || "Failed to update appointment status");
+    } finally {
+      setUpdatingStatus(prev => ({ ...prev, [appointmentId]: false }));
+    }
+  };
 
   const indexOfLastAppointment = currentPage * appointmentsPerPage;
   const indexOfFirstAppointment = indexOfLastAppointment - appointmentsPerPage;
@@ -68,20 +103,26 @@ const AppointmentsList = () => {
   const getStatusBadge = (status) => {
     if (!status) return 'bg-secondary';
     switch(status.toLowerCase()) {
-      case 'pending':
+      case 'scheduled':
         return 'bg-warning text-dark';
-      case 'confirmed':
-        return 'bg-success';
-      case 'canceled':
-        return 'bg-danger';
       case 'completed':
-        return 'bg-info';
+        return 'bg-success';
+      case 'cancelled':
+        return 'bg-danger';
       default:
         return 'bg-secondary';
     }
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem('loggedUser');
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
+    navigate('/login');
+    toast.success("You have been logged out.");
+  };
   
-  if (isLoading) {
+  if (isLoading && appointments.length === 0) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
         <div className="spinner-border text-primary" style={{width: '3rem', height: '3rem'}} role="status">
@@ -92,8 +133,9 @@ const AppointmentsList = () => {
   }
 
   return (
-    <div className="bg-light min-vh-100 py-5">
-      <div className="container">
+    <div className="min-vh-100 bg-light">
+      <CustomNavbar />
+      <div className="container py-5">
         {/* Header */}
         <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4">
           <div>
@@ -126,17 +168,14 @@ const AppointmentsList = () => {
             <div className="row g-4">
               {currentAppointments.map(appointment => (
                 <div className="col-md-6 col-lg-4" key={appointment.id}>
-                  <div 
-                    className="card h-100 shadow-sm border-0 rounded-3 cursor-pointer"
-                    onClick={() => goToDetails(appointment.id)}
-                  >
+                  <div className="card h-100 shadow-sm border-0 rounded-3">
                     <div className="card-body d-flex flex-column">
                       <div className="d-flex justify-content-between align-items-start mb-3">
                         <h5 className="card-title fw-bold text-dark">
                           {appointment.patient_data?.name || 'Walk-in'}
                         </h5>
                         <span className={`badge rounded-pill ${getStatusBadge(appointment.status)}`}>
-                          {appointment.status || 'Unknown'}
+                          {appointment.status || 'Scheduled'}
                         </span>
                       </div>
                       <div className="text-muted">
@@ -153,10 +192,29 @@ const AppointmentsList = () => {
                           <span>Appointment #{appointment.id}</span>
                         </p>
                       </div>
-                      <div className="mt-auto text-end">
-                        <span className="fw-bold text-primary">
+                      
+                      {/* Status Update Section */}
+                      <div className="mt-3 mb-3">
+                        <label className="form-label small text-muted mb-1">Update Status:</label>
+                        <select
+                          className="form-select form-select-sm"
+                          value={appointment.status || 'scheduled'}
+                          onChange={(e) => handleStatusUpdate(appointment.id, e.target.value)}
+                          disabled={updatingStatus[appointment.id]}
+                        >
+                          <option value="scheduled">Scheduled</option>
+                          <option value="completed">Completed</option>
+                          <option value="cancelled">Cancelled</option>
+                        </select>
+                      </div>
+                      
+                      <div className="mt-auto">
+                        <button 
+                          className="btn btn-outline-primary btn-sm w-100"
+                          onClick={() => goToDetails(appointment.id)}
+                        >
                           View Details &rarr;
-                        </span>
+                        </button>
                       </div>
                     </div>
                   </div>
