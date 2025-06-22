@@ -13,10 +13,12 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
   });
 
   const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setErrors({ ...errors, [e.target.name]: '' }); 
+    setTouched({ ...touched, [e.target.name]: true });
   };
 
   const handleSubmit = (e) => {
@@ -92,9 +94,10 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
             type="text"
             name="name"
             placeholder={isLogin ? "Username or Email" : "Username"}
-            className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+            className={`form-control ${touched.name ? (errors.name ? 'is-invalid' : 'is-valid') : ''}`}
             value={formData.name}
             onChange={handleChange}
+            onBlur={() => setTouched({ ...touched, name: true })}
           />
           {errors.name && <div className="invalid-feedback" style={{ display: 'block', color: 'red' }}>{errors.name}</div>}
         </div>
@@ -105,9 +108,10 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
                 type="text"
                 name="full_name"
                 placeholder="Full Name"
-                className={`form-control ${errors.full_name ? 'is-invalid' : ''}`}
+                className={`form-control ${touched.full_name ? (errors.full_name ? 'is-invalid' : 'is-valid') : ''}`}
                 value={formData.full_name}
                 onChange={handleChange}
+                onBlur={() => setTouched({ ...touched, full_name: true })}
               />
               {errors.full_name && <div className="invalid-feedback" style={{ display: 'block', color: 'red' }}>{errors.full_name}</div>}
             </div>
@@ -116,9 +120,10 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
                 type="email"
                 name="email"
                 placeholder="Email"
-                className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                className={`form-control ${touched.email ? (errors.email ? 'is-invalid' : 'is-valid') : ''}`}
                 value={formData.email}
                 onChange={handleChange}
+                onBlur={() => setTouched({ ...touched, email: true })}
               />
               {errors.email && <div className="invalid-feedback" style={{ display: 'block', color: 'red' }}>{errors.email}</div>}
             </div>
@@ -129,9 +134,10 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
             type="password"
             name="password"
             placeholder="Password"
-            className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+            className={`form-control ${touched.password ? (errors.password ? 'is-invalid' : 'is-valid') : ''}`}
             value={formData.password}
             onChange={handleChange}
+            onBlur={() => setTouched({ ...touched, password: true })}
           />
           {errors.password && <div className="invalid-feedback" style={{ display: 'block', color: 'red' }}>{errors.password}</div>}
         </div>
@@ -141,9 +147,10 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
               type="password"
               name="confirmPassword"
               placeholder="Confirm password"
-              className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
+              className={`form-control ${touched.confirmPassword ? (errors.confirmPassword ? 'is-invalid' : 'is-valid') : ''}`}
               value={formData.confirmPassword}
               onChange={handleChange}
+              onBlur={() => setTouched({ ...touched, confirmPassword: true })}
             />
             {errors.confirmPassword && (
               <div className="invalid-feedback" style={{ display: 'block', color: 'red' }}>{errors.confirmPassword}</div>

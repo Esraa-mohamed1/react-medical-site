@@ -15,6 +15,10 @@ import AccountSettingsPage from './pages/AccountSettingsPage';
 import GoogleAuthRedirect from './pages/GoogleAuthRedirect';
 import HomePage from './features/homePage/homePage';
 import PrivateRoute from './components/PrivateRoute';
+import AvailabilityPage from "./features/doctors/pages/AvailabilityPage";
+import AppointmentDetails from "./features/doctors/pages/AppointmentDetails";
+import AppointmentsList from './features/doctors/pages/AppointmentsList';
+import DoctorProfile2 from './features/doctors/components/DoctorProfile2';
 
 import ErrorBoundary from './ErrorBoundary';
 
@@ -40,6 +44,35 @@ function App() {
           <Route path="/doctor-register" element={<DoctorRegister />} />
           <Route path="/doctors/:doctor_id" element={<DoctorPage />} />
           <Route path="/settings" element={<AccountSettingsPage />} />
+          
+          {/* Doctor Routes */}
+          {/* <Route path="/doctor/dashboard" element={
+            <PrivateRoute role="doctor">
+              <DoctorDashboard />
+            </PrivateRoute>
+          } /> */}
+
+          <Route path="/doctor/appointments" element={
+            <PrivateRoute role="doctor">
+              <AppointmentsList />
+            </PrivateRoute>
+          } />
+          <Route path="/doctor/availability" element={
+            <PrivateRoute role="doctor">
+              <AvailabilityPage />
+            </PrivateRoute>
+          } />
+          <Route path="/doctor/appointments/:id" element={
+            <PrivateRoute role="doctor">
+              <AppointmentDetails />
+            </PrivateRoute>
+          } />
+          <Route path="/doctor/profile" element={
+            <PrivateRoute role="doctor">
+              <DoctorProfile2 />
+            </PrivateRoute>
+          } />
+
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </Router>

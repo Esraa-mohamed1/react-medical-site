@@ -51,7 +51,7 @@ const CustomNavbar = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/" className="text-dark mx-2 fw-medium">Home</Nav.Link>
-            <Nav.Link as={Link} to="/doctors-list" className="text-dark mx-2 fw-medium">Doctors</Nav.Link>
+            <Nav.Link as={Link} to={loggedUser?.role === 'doctor' ? "/doctor/appointments" : "/doctors-list"} className="text-dark mx-2 fw-medium">Doctors</Nav.Link>
             <Nav.Link as={Link} to="/artical" className="text-dark mx-2 fw-medium">Articles</Nav.Link>
           </Nav>
           {loggedUser && loggedUser.role && loggedUser.id ? (
