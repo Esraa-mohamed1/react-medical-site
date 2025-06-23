@@ -393,7 +393,7 @@ const PatientDetailsPage = () => {
                         <div style={styles.section}>
                             <h2 style={styles.sectionTitle}>📞 Contact Information</h2>
                             <div style={styles.grid}>
-                                {renderField('Email', 'email', 'email')}
+                                {renderField('Email', 'email', 'email', false)}
                                 {renderField('Phone', 'phone')}
                                 {renderField('Address', 'address')}
                                 {renderField('City', 'city')}

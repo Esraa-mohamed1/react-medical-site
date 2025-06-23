@@ -269,6 +269,7 @@ const styles = {
 };
 
 const DoctorDetailsPage = () => {
+    const nonEditableFields = ['email'];
     const [doctor, setDoctor] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -350,7 +351,7 @@ const DoctorDetailsPage = () => {
     if (!doctor) return <div style={styles.notFound}>Doctor not found</div>;
 
     const renderValue = (field, label) => {
-        if (isEditing) {
+        if (isEditing && !nonEditableFields.includes(field)) {
             return (
                 <input
                     type="text"
@@ -473,44 +474,35 @@ const DoctorDetailsPage = () => {
                             </div>
                         </div>
 
-                        <div style={{ margin: '2rem 0' }}>
+                        {/* <div style={{ margin: '2rem 0' }}>
                             <h3 style={styles.sectionTitle}>Book Appointment</h3>
                             {doctor && doctor.doctor_id && (
                                 <AppointmentBooking doctorId={doctor.doctor_id} />
                             )}
+                        </div> */}
+
+                        <div>
+                            <div style={styles.infoSection}>
+                                <h3 style={styles.sectionTitle}>Clinic Details</h3>
+                                <div style={styles.infoGrid}>
+                                    <div style={styles.infoItem}>
+                                        <span style={styles.label}>Clinic Name:</span>
+                                        {renderValue('clinic_name', 'Clinic Name')}
+                                    </div>
+                                    <div style={styles.infoItem}>
+                                        <span style={styles.label}>City:</span>
+                                        {renderValue('city', 'City')}
+                                    </div>
+                                    <div style={styles.infoItem}>
+                                        <span style={styles.label}>Address:</span>
+                                        {renderValue('clinic_address', 'Clinic Address')}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         {isEditing && (
                             <>
-                                <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-                                    <button
-                                        onClick={handleCancel}
-                                        style={{ ...styles.saveButton, backgroundColor: '#dc3545' }}
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button onClick={handleSave} style={styles.saveButton}>
-                                        Save Changes
-                                    </button>
-                                    <div style={styles.infoSection}>
-                                        <h3 style={styles.sectionTitle}>Clinic Details</h3>
-                                        <div style={styles.infoGrid}>
-                                            <div style={styles.infoItem}>
-                                                <span style={styles.label}>Clinic Name:</span>
-                                                {renderValue('clinic_name', 'Clinic Name')}
-                                            </div>
-                                            <div style={styles.infoItem}>
-                                                <span style={styles.label}>City:</span>
-                                                {renderValue('city', 'City')}
-                                            </div>
-                                            <div style={styles.infoItem}>
-                                                <span style={styles.label}>Address:</span>
-                                                {renderValue('clinic_address', 'Clinic Address')}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
                                     <button
                                         onClick={handleCancel}

@@ -12,7 +12,7 @@ const CustomNavbar = () => {
   let profileUrl = '';
   if (loggedUser && loggedUser.role && loggedUser.id) {
     if (loggedUser.role === 'doctor') {
-      profileUrl = `/doctors/${loggedUser.id}`;
+      profileUrl = `/doctors-list/${loggedUser.id}`;
     } else if (loggedUser.role === 'patient') {
       profileUrl = `/patients-list/${loggedUser.id}`;
     }
@@ -58,7 +58,7 @@ const CustomNavbar = () => {
             <Dropdown align="end" show={showDropdown} onToggle={handleDropdownToggle}>
               <Dropdown.Toggle variant="primary" className="d-flex align-items-center">
                 <FaUser className="me-2" />
-                {loggedUser['name'] || 'User'}
+                {loggedUser['full_name'] || 'User'}
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item onClick={handleProfileClick} disabled={!profileUrl}>
