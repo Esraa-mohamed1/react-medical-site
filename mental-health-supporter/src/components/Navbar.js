@@ -79,7 +79,7 @@ const CustomNavbar = () => {
           ) : (
             <Nav>
               <Nav.Link as={Link} to="/login" className="text-dark mx-2 fw-medium">Login</Nav.Link>
-              <Nav.Link as={Link} to="/register" className="text-dark mx-2 fw-medium">Register</Nav.Link>
+              <Nav.Link as={Link} to="/register-select" className="text-dark mx-2 fw-medium">Register</Nav.Link>
             </Nav>
           )}
         </Navbar.Collapse>
