@@ -125,7 +125,7 @@ const SearchFilters = ({ onSearch, onFilterChange }) => {
         <button
           className="clear-filters-button"
           onClick={clearAllFilters}
-          disabled={!filters.specialty && !filters.city && !filters.area && !filters.insurance && !searchInput}
+          disabled={!filters.specialization && !filters.city && !filters.available && !searchInput}
         >
           Clear All Filters
         </button>
