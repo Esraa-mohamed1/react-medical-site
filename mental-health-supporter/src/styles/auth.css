@@ -212,12 +212,12 @@
 .auth-switch a {
   font-weight: 600;
   text-decoration: underline;
-  color: inherit;
+  color: #67B1B6;
   transition: opacity 0.3s ease;
 }
 
 .auth-switch a:hover {
-  opacity: 0.9;
+  /* opacity: 0.9; */
 }
 
 .google-login-btn img {
