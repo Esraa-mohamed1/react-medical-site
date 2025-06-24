@@ -1,0 +1,186 @@
+PatientDetailsPage.css
+
+.container {
+  padding: 2rem;
+  background-color: #f0f7ff;
+  min-height: 100vh;
+}
+
+.card {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(149, 157, 165, 0.2);
+  overflow: hidden;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  background: linear-gradient(135deg, #6B8DD6 0%, #8E37D7 100%);
+  color: white;
+  padding: 2.5rem;
+  position: relative;
+}
+
+.buttonsContainer {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.profileSection {
+  display: flex;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.avatar {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  object-fit: cover;
+}
+
+.profileInfo {
+  flex: 1;
+}
+
+.name {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.created {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 0.5rem;
+}
+
+.mainContent {
+  padding: 2rem;
+}
+
+.section {
+  background-color: #f8fafc;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  color: #1e293b;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.field {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.label {
+  color: #64748b;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.value {
+  color: #0f172a;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  font-size: 1rem;
+}
+
+.button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.editButton {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.saveButton {
+  background-color: #10b981;
+  color: white;
+}
+
+.cancelButton {
+  background-color: #ef4444;
+  color: white;
+}
+
+.imageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+}
+
+.changePhotoOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+  cursor: pointer;
+  font-size: 1.1rem;
+  z-index: 2;
+}
+
+.imageContainerHover {
+  opacity: 1;
+}
+
+.cameraIcon {
+  font-size: 2rem;
+  margin-bottom: 0.3rem;
+}
+
+.statusMessage {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+}
+
+.statusMessage.error {
+  color: #ef4444;
+}
