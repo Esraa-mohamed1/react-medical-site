@@ -211,6 +211,10 @@ const DoctorRegister = () => {
                         {step < 3 && <button type="button" onClick={nextStep} className="btn-primary">Next</button>}
                         {step === 3 && <button type="submit" disabled={isSubmitting} className="btn-primary">{isSubmitting ? 'Submitting...' : 'Register'}</button>}
                     </div>
+
+                    <p className="auth-switch text-center">
+                          <>Already have an account? <a href="/login">Log in</a></>
+                    </p>
                 </form>
             </div>
         </div>
