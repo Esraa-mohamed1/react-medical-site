@@ -93,7 +93,7 @@ const PatientDetailsPage = () => {
   return (
     <>
       <CustomNavbar />
-      <div className="container">
+      <div className="containerr">
         <div className="card">
           <div className="header">
             <div className="buttonsContainer">
@@ -141,7 +141,7 @@ const PatientDetailsPage = () => {
 
           <div className="mainContent">
             <div className="section">
-              <h2 className="sectionTitle">👤 Basic Information</h2>
+              <h2 className="sectionTitle">Basic Information</h2>
               <div className="grid">
                 {renderField('Full Name', 'full_name')}
                 {renderField('Member Since', 'created_at', 'datetime-local', false)}
@@ -149,7 +149,7 @@ const PatientDetailsPage = () => {
             </div>
 
             <div className="section">
-              <h2 className="sectionTitle">📞 Contact Information</h2>
+              <h2 className="sectionTitle">Contact Information</h2>
               <div className="grid">
                 {renderField('Email', 'email', 'email', false)}
                 {renderField('Phone', 'phone')}

@@ -1,25 +1,33 @@
-PatientDetailsPage.css
+/* PatientDetailsPage.css - DoctorDetailsPage Color Scheme */
 
-.container {
+.containerr {
   padding: 2rem;
-  background-color: #f0f7ff;
+  width: 100%;
   min-height: 100vh;
+  background: radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden;
+  position: relative;
 }
 
 .card {
-  background-color: white;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(149, 157, 165, 0.2);
-  overflow: hidden;
+  background: radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  overflow: hidden;
 }
 
 .header {
-  background: linear-gradient(135deg, #6B8DD6 0%, #8E37D7 100%);
-  color: white;
+  background: radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2);
+  color: #2d3748;
   padding: 2.5rem;
   position: relative;
+  border-radius: 20px 20px 0 0;
 }
 
 .buttonsContainer {
@@ -40,8 +48,9 @@ PatientDetailsPage.css
   width: 180px;
   height: 180px;
   border-radius: 50%;
-  border: 4px solid rgba(255, 255, 255, 0.3);
+  border: 6px solid white;
   object-fit: cover;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .profileInfo {
@@ -52,11 +61,12 @@ PatientDetailsPage.css
   font-size: 2.5rem;
   font-weight: 700;
   margin: 0 0 0.5rem 0;
+  color: #2d3748;
 }
 
 .created {
   font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(45, 55, 72, 0.7);
   margin-top: 0.5rem;
 }
 
@@ -65,17 +75,22 @@ PatientDetailsPage.css
 }
 
 .section {
-  background-color: #f8fafc;
+  background-color: rgba(255, 255, 255, 0.25);
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 2rem;
   margin-bottom: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .sectionTitle {
-  font-size: 1.25rem;
-  color: #1e293b;
+  font-size: 1.5rem;
+  color: #333;
   font-weight: 600;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #f0f0f0;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -83,35 +98,41 @@ PatientDetailsPage.css
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
 }
 
 .field {
-  background-color: white;
+  background-color: #f8f9fa;
   padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+  transition: transform 0.2s;
+}
+
+.field:hover {
+  transform: translateY(-2px);
 }
 
 .label {
-  color: #64748b;
-  font-size: 0.875rem;
-  margin-bottom: 0.5rem;
+  color: #666;
+  font-size: 0.9rem;
 }
 
 .value {
-  color: #0f172a;
-  font-size: 1rem;
+  color: #2d3748;
+  font-size: 1.2rem;
   font-weight: 500;
 }
 
 .input {
   width: 100%;
-  padding: 0.75rem;
-  border-radius: 6px;
-  border: 1px solid #cbd5e1;
+  padding: 0.5rem;
   font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(4px);
 }
 
 .button {
@@ -121,23 +142,59 @@ PatientDetailsPage.css
   cursor: pointer;
   font-size: 0.875rem;
   font-weight: 500;
+  transition: all 0.2s;
 }
 
 .editButton {
-  background-color: rgba(255, 255, 255, 0.2);
+  padding: 0.8rem 1rem;
+  background: linear-gradient(to right, #37ECBA, #72AFD3);
   color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(114, 175, 211, 0.3);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Buttons */
 .saveButton {
-  background-color: #10b981;
+  padding: 0.8rem 1rem;
+  background: linear-gradient(to right, #37ECBA, #72AFD3);
   color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(114, 175, 211, 0.3);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+.saveButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(114, 175, 211, 0.4);
+}
+
 
 .cancelButton {
-  background-color: #ef4444;
+  padding: 0.8rem 1rem;
+  background: linear-gradient(to right, #37ECBA, #72AFD3);
   color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(114, 175, 211, 0.3);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.cancelButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(114, 175, 211, 0.4);
+}
 .imageContainer {
   display: flex;
   flex-direction: column;
@@ -182,5 +239,5 @@ PatientDetailsPage.css
 }
 
 .statusMessage.error {
-  color: #ef4444;
+  color: #d32f2f;
 }
