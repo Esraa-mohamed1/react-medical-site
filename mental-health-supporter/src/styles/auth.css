@@ -189,9 +189,12 @@
   background: linear-gradient(to right, #67B1B6, #72AFD3);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text; /* Optional: for broader browser support */
+  color: transparent;     /* Fallback for older browsers */
   transition: opacity 0.3s ease, transform 0.3s ease;
   opacity: 0.95;
 }
+
 
 .google-login-text:hover {
   opacity: 1;
@@ -206,18 +209,17 @@
   background: linear-gradient(to right, #67B1B6, #72AFD3);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text; /* non-prefixed for wider support */
+  color: transparent;     /* fallback */
   font-weight: 500;
 }
+
 
 .auth-switch a {
   font-weight: 600;
   text-decoration: underline;
   color: #67B1B6;
   transition: opacity 0.3s ease;
-}
-
-.auth-switch a:hover {
-  /* opacity: 0.9; */
 }
 
 .google-login-btn img {
