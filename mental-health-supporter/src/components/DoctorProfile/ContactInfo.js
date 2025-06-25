@@ -26,7 +26,7 @@ const ContactInfo = ({ contact }) => {
           <ListGroup variant="flush" className="mb-4">
             <ListGroup.Item className="d-flex align-items-center py-3 border-bottom">
               <div className="icon-container me-3">
-                <FaPhone size={20} style={{ color: 'var(--primary-teal)' }} />
+                <FaPhone size={20} style={{ color: 'var(--success-teal)' }} />
               </div>
               <div>
                 <h6 className="mb-1 fw-bold">Phone Number</h6>
@@ -44,7 +44,7 @@ const ContactInfo = ({ contact }) => {
 
             <ListGroup.Item className="d-flex align-items-center py-3 border-bottom">
               <div className="icon-container me-3">
-                <FaEnvelope size={20} style={{ color: 'var(--primary-teal)' }} />
+                <FaEnvelope size={20} style={{ color: 'var(--success-teal)' }} />
               </div>
               <div>
                 <h6 className="mb-1 fw-bold">Email Address</h6>
@@ -62,7 +62,7 @@ className="p-0 text-decoration-none" style={{ color: '#2A5C5F' }}
 
             <ListGroup.Item className="d-flex align-items-center py-3">
               <div className="icon-container me-3">
-                <FaMapMarkerAlt size={20} style={{ color: 'var(--primary-teal)' }} />
+                <FaMapMarkerAlt size={20} style={{ color: 'var(--success-teal)' }} />
               </div>
               <div>
                 <h6 className="mb-1 fw-bold">Clinic Address</h6>
@@ -85,28 +85,28 @@ className="p-0 text-decoration-none" style={{ color: '#2A5C5F' }}
             </h6>
             <div className="d-flex justify-content-start gap-3">
               <Button
-                variant="outline-primary"
+                variant="outline-success"
                 className="rounded-circle p-2 d-flex align-items-center justify-content-center" style={{ color: '#2A5C5F' }}
                 onClick={() => window.open(contact.socialMedia.facebook, '_blank')}
               >
                 <FaFacebook size={20} />
               </Button>
               <Button
-                variant="outline-primary"
+                variant="outline-success"
                 className="rounded-circle p-2 d-flex align-items-center justify-content-center" style={{ color: '#2A5C5F' }}
                 onClick={() => window.open(contact.socialMedia.twitter, '_blank')}
               >
                 <FaTwitter size={20} />
               </Button>
               <Button
-                variant="outline-primary"
+                variant="outline-success"
                 className="rounded-circle p-2 d-flex align-items-center justify-content-center" style={{ color: '#2A5C5F' }}
                 onClick={() => window.open(contact.socialMedia.instagram, '_blank')}
               >
                 <FaInstagram size={20} />
               </Button>
               <Button
-                variant="outline-primary"
+                variant="outline-success"
                 className="rounded-circle p-2 d-flex align-items-center justify-content-center" style={{ color: '#2A5C5F' }}
                 onClick={() => window.open(contact.socialMedia.whatsapp, '_blank')}
               >

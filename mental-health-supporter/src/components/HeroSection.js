@@ -39,7 +39,7 @@ const HeroSection = ({ doctor }) => {
                     className={`fas fa-star ${i < doctor.rating ? 'text-warning' : 'text-light opacity-25'}`}
                   ></i>
                 ))}
-                <span className="me-2">({doctor.reviewsCount}+ reviews)</span>
+                <span className="me-2"   style={{ color: '  #2A5C5F' }} >({doctor.reviewsCount}+ reviews)</span>
               </div>
             </motion.div>
 
@@ -62,6 +62,7 @@ const HeroSection = ({ doctor }) => {
                 href="#booking" 
                 variant="light" 
                 className="fw-semibold d-flex align-items-center"
+                style={{ color: '  #2A5C5F' }}  
               >
                 <FaCalendarAlt className="ms-2" />
                 Book Appointment
@@ -69,8 +70,9 @@ const HeroSection = ({ doctor }) => {
               <Button 
                 variant="outline-light" 
                 className="d-flex align-items-center"
+                style={{ color: '  #2A5C5F' }}   
               >
-                <FaPhoneAlt className="ms-2" />
+                <FaPhoneAlt className="ms-2"/>
                 Contact Doctor
               </Button>
             </motion.div>
