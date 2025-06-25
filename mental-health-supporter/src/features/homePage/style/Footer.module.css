@@ -1,6 +1,6 @@
 @import url("../../../styles/global.css");
 .footer {
-    background: linear-gradient(135deg, #cee3f8 0%, #fcfdff 100%);
+    background: linear-gradient(to right, #37ECBA, #72AFD3);
     padding: 4rem 0 2rem;
     border-top: 1px solid rgba(226, 232, 240, 0.8);
   }

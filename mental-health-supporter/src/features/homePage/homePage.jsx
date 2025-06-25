@@ -86,26 +86,27 @@ export default function HomePage() {
         </div>
         <div className={styles.section} style={{ display: 'flex', justifyContent: 'center', gap: '2rem', margin: '2rem 0' }}>
           <button
-            onClick={() => window.location.href = '/artical'}
-            style={{
-              padding: '1rem 2rem',
-              background: '#6e8efb',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              fontWeight: 'bold',
-              fontSize: '1.1rem',
-              cursor: 'pointer',
-              boxShadow: '0 2px 8px rgba(110, 142, 251, 0.15)'
-            }}
-          >
-            Mental Health Articles
-          </button>
+  onClick={() => window.location.href = '/artical'}
+  style={{
+    padding: '1rem 2rem',
+    background: 'linear-gradient(to right, #37ECBA, #72AFD3)',
+    color: 'white',
+    border: 'none',
+    borderRadius: '8px',
+    fontWeight: 'bold',
+    fontSize: '1.1rem',
+    cursor: 'pointer',
+    boxShadow: '0 2px 8px rgba(110, 142, 251, 0.15)'
+  }}
+>
+  Mental Health Articles
+</button>
+
           <button
             onClick={() => window.location.href = '/doctors-list'}
             style={{
               padding: '1rem 2rem',
-              background: '#274760',
+    background: 'linear-gradient(to right, #37ECBA, #72AFD3)',
               color: 'white',
               border: 'none',
               borderRadius: '8px',
