@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import CustomNavbar from './../components/Navbar';
 import '../styles/article.css';
 
 const ArticalPage = ({ clientData = {} }) => {
@@ -163,6 +164,8 @@ const ArticalPage = ({ clientData = {} }) => {
   };
 
   return (
+  <>
+     <CustomNavbar />
     <div className="article-container">
       {/* Header */}
       <header className="article-header">
@@ -435,6 +438,7 @@ const ArticalPage = ({ clientData = {} }) => {
         </div>
       )}
     </div>
+    </>
   );
 };
 
