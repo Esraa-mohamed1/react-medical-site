@@ -3,6 +3,8 @@ import { FaUserEdit, FaKey } from 'react-icons/fa';
 import { postData } from '../services/api';
 import CustomNavbar from '../components/Navbar';
 import './AccountSettingsPage.css'; // ✅ Import the new CSS
+import Footer from "./../features/homePage/components/Footer";
+
 
 const usernameMinLength = 3;
 const passwordMinLength = 8;
@@ -196,6 +198,7 @@ const AccountSettingsPage = () => {
                     </form>
                 </div>
             </div>
+            <Footer />
         </>
     );
 };

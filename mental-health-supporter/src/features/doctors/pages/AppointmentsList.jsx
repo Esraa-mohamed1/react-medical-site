@@ -125,7 +125,7 @@ const AppointmentsList = () => {
   if (isLoading && appointments.length === 0) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
-        <div className="spinner-border text-primary" style={{width: '3rem', height: '3rem'}} role="status">
+        <div className="spinner-border" style={{width: '3rem', height: '3rem', color: '#2A5C5F'}} role="status">
           <span className="visually-hidden">Loading...</span>
         </div>
       </div>
@@ -159,7 +159,7 @@ const AppointmentsList = () => {
         {/* Appointments Grid */}
         {isLoading ? (
           <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '50vh' }}>
-            <div className="spinner-border text-primary" style={{width: '3rem', height: '3rem'}} role="status">
+            <div className="spinner-border " style={{width: '3rem', height: '3rem', color: '#2A5C5F'}} role="status">
               <span className="visually-hidden">Loading...</span>
             </div>
           </div>
@@ -180,15 +180,15 @@ const AppointmentsList = () => {
                       </div>
                       <div className="text-muted">
                         <p className="d-flex align-items-center mb-2">
-                          <FiCalendar className="text-primary me-2" />
+                          <FiCalendar className="  me-2" />
                           <span>{appointment.date || 'No date'}</span>
                         </p>
                         <p className="d-flex align-items-center mb-2">
-                          <FiClock className="text-primary me-2" />
+                          <FiClock className="  me-2" />
                           <span>{appointment.time || 'No time'}</span>
                         </p>
                         <p className="d-flex align-items-center">
-                          <FiUser className="text-primary me-2" />
+                          <FiUser className="  me-2" />
                           <span>Appointment #{appointment.id}</span>
                         </p>
                       </div>

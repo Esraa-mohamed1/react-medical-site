@@ -37,6 +37,7 @@ code {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--dark-purple);
+  background: var(--extra-light-teal);
 }
+
 

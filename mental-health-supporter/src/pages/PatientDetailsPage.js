@@ -5,6 +5,8 @@ import { getPatientById, updatePatient } from './../services/patients/PatientSer
 import patientPlaceholder from './../components/DoctorsListComponent/images/doctor-placeholder.jpg';
 import CustomNavbar from './../components/Navbar';
 import './PatientDetailsPage.css';
+import Footer from "./../features/homePage/components/Footer";
+
 
 const PatientDetailsPage = () => {
   const navigate = useNavigate();
@@ -160,6 +162,7 @@ const PatientDetailsPage = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };

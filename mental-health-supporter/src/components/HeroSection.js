@@ -31,7 +31,7 @@ const HeroSection = ({ doctor }) => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
             >
-              <span className="badge bg-light text-primary fs-6 ms-3">{doctor.specialty}</span>
+              <span className="badge bg-light fs-6 ms-3" style={{ color: '#2A5C5F' }}>{doctor.specialty}</span>
               <div className="rating">
                 {[...Array(5)].map((_, i) => (
                   <i 

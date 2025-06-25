@@ -6,12 +6,12 @@
 
 /* Hero Section */
 .hero-section {
-  background: linear-gradient(135deg, var(--light-gray), var(--dark-purple));
+  background: linear-gradient(135deg, var(--light-gray), var(--extra-light-teal));
   position: relative;
   overflow: hidden;
 }
 .hero-section.py-5{
-  background: linear-gradient(135deg, var(--light-gray), var(--dark-purple));
+  background: linear-gradient(135deg, var(--light-gray), var(--extra-light-teal));
 }
 
 .hero-section::before {

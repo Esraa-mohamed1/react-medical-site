@@ -2,6 +2,8 @@ import React from 'react';
 // import { useNavigate } from 'react-router-dom';
 import DoctorsListComponent from '../components/DoctorsListComponent/DoctorsList';
 import CustomNavbar from './../components/Navbar';
+import Footer from "./../features/homePage/components/Footer";
+
 
 export default function DoctorsListPage() {
   //   const navigate = useNavigate();
@@ -16,6 +18,7 @@ export default function DoctorsListPage() {
     <div>
       <CustomNavbar />
       <DoctorsListComponent onSelectDoctor={handleDoctorSelect} />
+      <Footer />
     </div>
   );
 }

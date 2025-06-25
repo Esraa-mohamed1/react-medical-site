@@ -39,15 +39,15 @@ const DoctorInfo = ({ doctor }) => {
 
             {/* Content aligned left */}
             <div className="text-start w-100">
-              <h2 className="mb-2" style={{ color: 'var(--primary-purple)' }}>{name}</h2>
+              <h2 className="mb-2" style={{ color: 'var(--primary-teal)' }}>{name}</h2>
               <h5 className="text-muted mb-3">{specialty}</h5>
 
               <div className="d-flex flex-wrap justify-content-center justify-content-md-start gap-2 mb-3">
-                <Badge pill bg="light" text="primary" className="px-3 py-2 d-flex align-items-center">
-                  <FaAward className="me-1" /> {experience} years experience
+                <Badge pill bg="light" className="px-3 py-2 d-flex align-items-center" style={{ color: '#2A5C5F'}}>
+                  <FaAward className="me-1" style={{ color: '#2A5C5F' }}/> {experience} years experience
                 </Badge>
-                <Badge pill bg="light" text="primary" className="px-3 py-2 d-flex align-items-center">
-                  <FaStar className="me-1 text-warning" /> {rating} ({reviewsCount}+ reviews)
+                <Badge pill bg="light" className="px-3 py-2 d-flex align-items-center" style={{ color: '#2A5C5F'}}>
+                  <FaStar className="me-1" style={{ color: '#2A5C5F' }}/> {rating} ({reviewsCount}+ reviews)
                 </Badge>
               </div>
             </div>
@@ -60,7 +60,7 @@ const DoctorInfo = ({ doctor }) => {
             <div className="row">
               <div className="col-md-6 mb-3 text-start">
                 <h6 className="fw-bold d-flex align-items-center">
-                  <FaGraduationCap className="me-2" style={{ color: 'var(--primary-purple)' }} />
+                  <FaGraduationCap className="me-2" style={{ color: 'var(--primary-teal)' }} />
                   Specialization
                 </h6>
                 <div className="ps-3 mb-2">
@@ -84,12 +84,12 @@ const DoctorInfo = ({ doctor }) => {
               </div>
               <div className="col-md-6 mb-3 text-start">
                 <h6 className="fw-bold d-flex align-items-center">
-                  <FaLanguage className="me-2" style={{ color: 'var(--primary-purple)' }} />
+                  <FaLanguage className="me-2" style={{ color: 'var(--primary-teal)' }} />
                   Languages Spoken
                 </h6>
                 <div className="d-flex flex-wrap gap-2">
                   {languages.map((lang, index) => (
-                    <Badge key={index} pill bg="light" text="primary" className="px-3 py-2">
+                    <Badge key={index} pill bg="light" style={{ color: '#2A5C5F'}} className="px-3 py-2">
                       {lang}
                     </Badge>
                   ))}

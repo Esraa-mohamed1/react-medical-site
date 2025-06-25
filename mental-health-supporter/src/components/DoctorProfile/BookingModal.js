@@ -107,7 +107,7 @@ const BookingModal = ({ show, onHide, selectedSlot, doctorId }) => {
 
   return (
     <Modal show={show} onHide={onHide} centered className="purple-modal">
-      <Modal.Header closeButton style={{ borderBottom: '1px solid var(--light-purple)' }}>
+      <Modal.Header closeButton style={{ borderBottom: '1px solid var(--light-teal)' }}>
         <Modal.Title className="w-100 text-center" style={{ color: 'var(--primary-purple)' }}>
           <FaCalendarDay className="me-2" />
           Confirm Appointment
@@ -123,7 +123,7 @@ const BookingModal = ({ show, onHide, selectedSlot, doctorId }) => {
         )}
 
         <div className="text-start mb-4 p-3 bg-light rounded">
-          <h5 style={{ color: 'var(--secondary-purple)' }}>
+          <h5 style={{ color: 'var(--secondary-teal)' }}>
             {selectedSlot && selectedSlot.dateTime
               ? `${selectedSlot.dateTime}`
               : 'No slot selected'}

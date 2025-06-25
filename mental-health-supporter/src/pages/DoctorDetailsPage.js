@@ -6,6 +6,8 @@ import doctorImage from './../components/DoctorsListComponent/images/doctor.png'
 // import AppointmentBooking from '../components/DoctorProfile/AppointmentBooking';
 import CustomNavbar from './../components/Navbar';
 import './DoctorDetailsPage.css';
+import Footer from "./../features/homePage/components/Footer";
+
 
 const DoctorDetailsPage = () => {
     const nonEditableFields = ['email'];
@@ -211,6 +213,7 @@ const DoctorDetailsPage = () => {
                     </div>
                 </div>
             </div>
+            <Footer />
         </>
     );
 };

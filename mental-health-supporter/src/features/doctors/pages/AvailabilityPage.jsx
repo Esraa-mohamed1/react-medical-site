@@ -165,7 +165,7 @@ const AvailabilityPage = () => {
       <div className="min-vh-100 bg-light">
         <CustomNavbar />
         <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '50vh' }}>
-          <div className="spinner-border text-primary" style={{width: '3rem', height: '3rem'}} role="status">
+          <div className="spinner-border " style={{width: '3rem', height: '3rem', color: '#2A5C5F'}} role="status">
             <span className="visually-hidden">Loading...</span>
           </div>
         </div>
@@ -282,7 +282,7 @@ const AvailabilityPage = () => {
                       <div key={availability.id} className="col-md-6">
                         <div className="card border">
                           <div className="card-body">
-                            <h6 className="card-title text-primary">
+                            <h6 className="card-title   ">
                               {formatDate(availability.date)}
                             </h6>
                             <p className="card-text mb-2">
