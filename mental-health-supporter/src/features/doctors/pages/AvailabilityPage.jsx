@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CustomNavbar from '../../../components/Navbar';
+import { FiCalendar, FiClock, FiUsers, FiPlus, FiEdit2, FiTrash2, FiCheck, FiX } from 'react-icons/fi';
 
 const AvailabilityPage = () => {
   const [availableDates, setAvailableDates] = useState([]);
@@ -16,6 +17,7 @@ const AvailabilityPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingId, setEditingId] = useState(null);
+  const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,7 +36,7 @@ const AvailabilityPage = () => {
   const fetchAvailableDates = async (token) => {
     try {
       setIsLoading(true);
-      const response = await axios.get('http://127.0.0.1:8000/api/medical/availability/', {
+      const response = await axios.get('http://127.0.0.1:8000/api/medical/time-slots/available/', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -66,9 +68,8 @@ const AvailabilityPage = () => {
       const token = localStorage.getItem('access');
       
       if (editingId) {
-        // Update existing availability
         await axios.put(
-          `http://127.0.0.1:8000/api/medical/availability/${editingId}/`,
+          `http://127.0.0.1:8000/api/medical/time-slots/available/${editingId}/update/`,
           formData,
           {
             headers: {
@@ -77,11 +78,10 @@ const AvailabilityPage = () => {
             }
           }
         );
-        toast.success('Availability updated successfully');
+        toast.success('Time slot updated successfully');
       } else {
-        // Create new availability
         await axios.post(
-          'http://127.0.0.1:8000/api/medical/availability/',
+          'http://127.0.0.1:8000/api/medical/time-slots/available/create/',
           formData,
           {
             headers: {
@@ -90,21 +90,14 @@ const AvailabilityPage = () => {
             }
           }
         );
-        toast.success('Availability date added successfully');
+        toast.success('Time slot added successfully');
       }
       
-      // Reset form and refresh data
-      setFormData({
-        date: '',
-        start_time: '',
-        end_time: '',
-        max_appointments: 1
-      });
-      setEditingId(null);
+      resetForm();
       fetchAvailableDates(token);
     } catch (error) {
-      console.error('Error saving availability:', error);
-      toast.error(error.response?.data?.detail || 'Failed to save availability');
+      console.error('Error saving time slot:', error);
+      toast.error(error.response?.data?.detail || 'Failed to save time slot');
     } finally {
       setIsSubmitting(false);
     }
@@ -118,39 +111,50 @@ const AvailabilityPage = () => {
       end_time: availability.end_time,
       max_appointments: availability.max_appointments || 1
     });
+    setShowForm(true);
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this availability date?')) {
+    if (!window.confirm('Are you sure you want to delete this time slot?')) {
       return;
     }
 
     try {
       const token = localStorage.getItem('access');
-      await axios.delete(`http://127.0.0.1:8000/api/medical/availability/${id}/`, {
+      await axios.delete(`http://127.0.0.1:8000/api/medical/time-slots/available/${id}/delete/`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
-      toast.success('Availability date deleted successfully');
+      toast.success('Time slot deleted successfully');
       fetchAvailableDates(token);
     } catch (error) {
-      console.error('Error deleting availability:', error);
-      toast.error('Failed to delete availability date');
+      console.error('Error deleting time slot:', error);
+      toast.error('Failed to delete time slot');
     }
   };
 
-  const handleCancel = () => {
-    setEditingId(null);
+  const resetForm = () => {
     setFormData({
       date: '',
       start_time: '',
       end_time: '',
       max_appointments: 1
     });
+    setEditingId(null);
+    setShowForm(false);
   };
 
   const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  const formatFullDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
       weekday: 'long',
@@ -158,6 +162,16 @@ const AvailabilityPage = () => {
       month: 'long',
       day: 'numeric'
     });
+  };
+
+  const getStatusColor = (dateString) => {
+    const date = new Date(dateString);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    if (date < today) return 'text-muted';
+    if (date.getTime() === today.getTime()) return 'text-success';
+    return 'text-primary';
   };
 
   if (isLoading) {
@@ -179,136 +193,169 @@ const AvailabilityPage = () => {
       <div className="container py-5">
         <ToastContainer />
         
-        <div className="row">
-          <div className="col-lg-8 mx-auto">
-            <h1 className="mb-4 text-center">Manage Available Dates</h1>
-            <p className="text-muted text-center mb-4">
-              Set your available dates and times for patient appointments
-            </p>
+        {/* Header Section */}
+        <div className="row mb-5">
+          <div className="col-lg-8 mx-auto text-center">
+            <h1 className="fw-bold text-dark mb-2">
+              <FiCalendar className="me-2 text-primary" />Manage Your Time Slots
+            </h1>
+            <p className="text-muted">Set your available dates and times for patient appointments</p>
+            <div className="d-flex justify-content-center gap-3 mt-4">
+              <button 
+                className="btn btn-primary btn-lg"
+                onClick={() => setShowForm(true)}
+              >
+                <FiPlus className="me-2" />Add New Time Slot
+              </button>
+            </div>
+          </div>
+        </div>
 
-            {/* Add/Edit Form */}
-            <div className="card shadow-sm mb-4">
-              <div className="card-body">
-                <h5 className="card-title mb-3">
-                  {editingId ? 'Edit Available Date' : 'Add New Available Date'}
-                </h5>
-                
-                <form onSubmit={handleSubmit}>
-                  <div className="row g-3">
-                    <div className="col-md-6">
-                      <label className="form-label">Date *</label>
-                      <input
-                        type="date"
-                        className="form-control"
-                        value={formData.date}
-                        onChange={(e) => setFormData({...formData, date: e.target.value})}
-                        min={new Date().toISOString().split('T')[0]}
-                        required
-                      />
+        {/* Add/Edit Form */}
+        {showForm && (
+          <div className="row justify-content-center mb-5">
+            <div className="col-lg-8">
+              <div className="card shadow-sm border-0 rounded-3">
+                <div className="card-body">
+                  <h5 className="fw-bold text-dark mb-3">{editingId ? 'Edit Time Slot' : 'Add New Time Slot'}</h5>
+                  <form onSubmit={handleSubmit}>
+                    <div className="row g-3 mb-3">
+                      <div className="col-md-3">
+                        <label className="form-label fw-semibold">Date *</label>
+                        <input
+                          type="date"
+                          className="form-control form-control-lg"
+                          value={formData.date}
+                          onChange={(e) => setFormData({...formData, date: e.target.value})}
+                          required
+                        />
+                      </div>
+                      <div className="col-md-3">
+                        <label className="form-label fw-semibold"><FiClock className="me-2 text-primary" />Start Time *</label>
+                        <input
+                          type="time"
+                          className="form-control form-control-lg"
+                          value={formData.start_time}
+                          onChange={(e) => setFormData({...formData, start_time: e.target.value})}
+                          required
+                        />
+                      </div>
+                      <div className="col-md-3">
+                        <label className="form-label fw-semibold"><FiClock className="me-2 text-primary" />End Time *</label>
+                        <input
+                          type="time"
+                          className="form-control form-control-lg"
+                          value={formData.end_time}
+                          onChange={(e) => setFormData({...formData, end_time: e.target.value})}
+                          required
+                        />
+                      </div>
+                      <div className="col-md-3">
+                        <label className="form-label fw-semibold"><FiUsers className="me-2 text-primary" />Max Appointments</label>
+                        <input
+                          type="number"
+                          className="form-control form-control-lg"
+                          value={formData.max_appointments}
+                          onChange={(e) => setFormData({...formData, max_appointments: parseInt(e.target.value)})}
+                          min="1"
+                          max="20"
+                        />
+                        <div className="form-text">Maximum number of appointments for this time slot</div>
+                      </div>
                     </div>
-                    
-                    <div className="col-md-3">
-                      <label className="form-label">Start Time *</label>
-                      <input
-                        type="time"
-                        className="form-control"
-                        value={formData.start_time}
-                        onChange={(e) => setFormData({...formData, start_time: e.target.value})}
-                        required
-                      />
-                    </div>
-                    
-                    <div className="col-md-3">
-                      <label className="form-label">End Time *</label>
-                      <input
-                        type="time"
-                        className="form-control"
-                        value={formData.end_time}
-                        onChange={(e) => setFormData({...formData, end_time: e.target.value})}
-                        required
-                      />
-                    </div>
-                    
-                    <div className="col-md-6">
-                      <label className="form-label">Max Appointments</label>
-                      <input
-                        type="number"
-                        className="form-control"
-                        value={formData.max_appointments}
-                        onChange={(e) => setFormData({...formData, max_appointments: parseInt(e.target.value)})}
-                        min="1"
-                        max="20"
-                      />
-                      <div className="form-text">Maximum number of appointments for this time slot</div>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-3">
-                    <button 
-                      type="submit" 
-                      className="btn btn-primary me-2"
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? 'Saving...' : (editingId ? 'Update' : 'Add Date')}
-                    </button>
-                    {editingId && (
-                      <button 
-                        type="button" 
-                        className="btn btn-secondary"
-                        onClick={handleCancel}
-                        disabled={isSubmitting}
-                      >
+                    <div className="d-flex gap-3 mt-3">
+                      <button type="submit" className="btn btn-primary px-4" disabled={isSubmitting}>
+                        {isSubmitting ? 'Saving...' : (editingId ? 'Update Slot' : 'Add Slot')}
+                      </button>
+                      <button type="button" className="btn btn-outline-secondary px-4" onClick={resetForm} disabled={isSubmitting}>
                         Cancel
                       </button>
-                    )}
-                  </div>
-                </form>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
+          </div>
+        )}
 
-            {/* Available Dates List */}
-            <div className="card shadow-sm">
-              <div className="card-body">
-                <h5 className="card-title mb-3">Your Available Dates</h5>
-                
+        {/* Time Slots Table */}
+        <div className="row">
+          <div className="col-lg-10 mx-auto">
+            <div className="card border-0 shadow-lg">
+              <div className="card-header bg-white border-bottom">
+                <h4 className="mb-0 text-dark">
+                  <FiCalendar className="me-2 text-primary" />Your Available Time Slots
+                </h4>
+              </div>
+              <div className="card-body p-0">
                 {availableDates.length === 0 ? (
-                  <div className="text-center py-4">
-                    <p className="text-muted">No available dates set yet.</p>
-                    <p className="text-muted">Add your first available date above to start accepting appointments.</p>
+                  <div className="text-center py-5">
+                    <div className="mb-4">
+                      <FiCalendar size={64} className="text-muted" />
+                    </div>
+                    <h5 className="text-muted mb-2">No time slots set yet</h5>
+                    <p className="text-muted mb-4">Add your first time slot to start accepting patient appointments</p>
+                    <button 
+                      className="btn btn-primary"
+                      onClick={() => setShowForm(true)}
+                    >
+                      <FiPlus className="me-2" />Add Your First Time Slot
+                    </button>
                   </div>
                 ) : (
-                  <div className="row g-3">
-                    {availableDates.map((availability) => (
-                      <div key={availability.id} className="col-md-6">
-                        <div className="card border">
-                          <div className="card-body">
-                            <h6 className="card-title text-primary">
-                              {formatDate(availability.date)}
-                            </h6>
-                            <p className="card-text mb-2">
-                              <strong>Time:</strong> {availability.start_time} - {availability.end_time}
-                            </p>
-                            <p className="card-text mb-3">
-                              <strong>Max Appointments:</strong> {availability.max_appointments}
-                            </p>
-                            <div className="d-flex gap-2">
-                              <button 
-                                onClick={() => handleEdit(availability)}
-                                className="btn btn-sm btn-outline-primary"
-                              >
-                                Edit
-                              </button>
-                              <button 
-                                onClick={() => handleDelete(availability.id)}
-                                className="btn btn-sm btn-outline-danger"
-                              >
-                                Delete
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                  <div className="table-responsive">
+                    <table className="table table-hover mb-0">
+                      <thead className="table-light">
+                        <tr>
+                          <th className="border-0 ps-4">Date</th>
+                          <th className="border-0">Time Slot</th>
+                          <th className="border-0">Max Appointments</th>
+                          <th className="border-0 text-end pe-4">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {availableDates.map((availability) => (
+                          <tr key={availability.id} className="border-bottom">
+                            <td className="ps-4">
+                              <div className="d-flex align-items-center">
+                                <div className={`fw-semibold ${getStatusColor(availability.date)}`}>{formatFullDate(availability.date)}</div>
+                                <span className="badge bg-light text-dark ms-2">{formatDate(availability.date)}</span>
+                              </div>
+                            </td>
+                            <td>
+                              <div className="d-flex align-items-center">
+                                <FiClock className="text-primary me-2" />
+                                <span className="fw-medium">{availability.start_time} - {availability.end_time}</span>
+                              </div>
+                            </td>
+                            <td>
+                              <div className="d-flex align-items-center">
+                                <FiUsers className="text-primary me-2" />
+                                <span className="fw-medium">{availability.max_appointments}</span>
+                              </div>
+                            </td>
+                            <td className="text-end pe-4">
+                              <div className="btn-group" role="group">
+                                <button 
+                                  onClick={() => handleEdit(availability)}
+                                  className="btn btn-outline-primary btn-sm"
+                                  title="Edit"
+                                >
+                                  <FiEdit2 />
+                                </button>
+                                <button 
+                                  onClick={() => handleDelete(availability.id)}
+                                  className="btn btn-outline-danger btn-sm"
+                                  title="Delete"
+                                >
+                                  <FiTrash2 />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 )}
               </div>

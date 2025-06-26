@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { FiCalendar, FiClock, FiUser, FiSearch, FiInbox, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiCalendar, FiClock, FiUser, FiSearch, FiInbox, FiChevronLeft, FiChevronRight, FiFilter } from 'react-icons/fi';
 import debounce from 'lodash.debounce';
 import CustomNavbar from '../../../components/Navbar';
 
@@ -14,6 +14,7 @@ const AppointmentsList = () => {
   const appointmentsPerPage = 6;
   const [isLoading, setIsLoading] = useState(true);
   const [updatingStatus, setUpdatingStatus] = useState({});
+  const [statusFilter, setStatusFilter] = useState('all');
 
   const navigate = useNavigate();
   
@@ -94,11 +95,25 @@ const AppointmentsList = () => {
   const indexOfFirstAppointment = indexOfLastAppointment - appointmentsPerPage;
   const currentAppointments = appointments.slice(indexOfFirstAppointment, indexOfLastAppointment);
 
+  // Filtered appointments by status
+  const filteredAppointments = statusFilter === 'all'
+    ? appointments
+    : appointments.filter(a => (a.status || 'scheduled').toLowerCase() === statusFilter);
+
+  const filteredCurrentAppointments = filteredAppointments.slice(indexOfFirstAppointment, indexOfLastAppointment);
+
+  // Helper for avatar/initials
+  const getInitials = (name) => {
+    if (!name) return 'U';
+    const parts = name.split(' ');
+    return parts.length > 1 ? parts[0][0] + parts[1][0] : parts[0][0];
+  };
+
   const goToDetails = (id) => {
     navigate(`/doctor/appointments/${id}`);
   };
 
-  const totalPages = Math.ceil(appointments.length / appointmentsPerPage);
+  const totalPages = Math.ceil(filteredAppointments.length / appointmentsPerPage);
 
   const getStatusBadge = (status) => {
     if (!status) return 'bg-secondary';
@@ -122,7 +137,7 @@ const AppointmentsList = () => {
     toast.success("You have been logged out.");
   };
   
-  if (isLoading && appointments.length === 0) {
+  if (isLoading && filteredAppointments.length === 0) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
         <div className="spinner-border text-primary" style={{width: '3rem', height: '3rem'}} role="status">
@@ -136,26 +151,51 @@ const AppointmentsList = () => {
     <div className="min-vh-100 bg-light">
       <CustomNavbar />
       <div className="container py-5">
-        {/* Header */}
-        <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4">
-          <div>
-            <h1 className="fw-bold text-dark">My Appointments</h1>
-            <p className="text-muted">
-              You have {appointments.length} appointments.
-            </p>
-          </div>
-          <div className="input-group mt-3 mt-sm-0" style={{ maxWidth: '300px' }}>
-            <span className="input-group-text bg-white"><FiSearch /></span>
-            <input
-              type="text"
-              placeholder="Search appointments..."
-              className="form-control"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+        {/* Summary & Filter */}
+        <div className="row mb-4">
+          <div className="col-lg-8 mx-auto d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+            <div>
+              <h1 className="fw-bold text-dark display-5 mb-1">My Appointments</h1>
+              <p className="text-muted mb-0">
+                Total: <span className="fw-bold text-primary">{filteredAppointments.length}</span> appointments
+              </p>
+            </div>
+            <div className="d-flex align-items-center gap-2 mt-3 mt-md-0">
+              <FiFilter className="text-primary" />
+              <select
+                className="form-select form-select-sm"
+                style={{ minWidth: 140 }}
+                value={statusFilter}
+                onChange={e => setStatusFilter(e.target.value)}
+                aria-label="Filter by status"
+              >
+                <option value="all">All Statuses</option>
+                <option value="scheduled">Scheduled</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
           </div>
         </div>
-
+        {/* Search Card */}
+        <div className="card shadow-sm border-0 rounded-4 mb-4 p-4 bg-white">
+          <div className="row align-items-center g-3">
+            <div className="col-12 col-md-6 mx-auto">
+              <div className="input-group">
+                <span className="input-group-text bg-white"><FiSearch /></span>
+                <input
+                  type="text"
+                  placeholder="Search appointments..."
+                  className="form-control rounded-end"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  style={{ boxShadow: 'none' }}
+                  aria-label="Search appointments"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
         {/* Appointments Grid */}
         {isLoading ? (
           <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '50vh' }}>
@@ -163,55 +203,84 @@ const AppointmentsList = () => {
               <span className="visually-hidden">Loading...</span>
             </div>
           </div>
-        ) : currentAppointments.length > 0 ? (
+        ) : filteredCurrentAppointments.length > 0 ? (
           <>
             <div className="row g-4">
-              {currentAppointments.map(appointment => (
+              {filteredCurrentAppointments.map(appointment => (
                 <div className="col-md-6 col-lg-4" key={appointment.id}>
-                  <div className="card h-100 shadow-sm border-0 rounded-3">
-                    <div className="card-body d-flex flex-column">
-                      <div className="d-flex justify-content-between align-items-start mb-3">
-                        <h5 className="card-title fw-bold text-dark">
+                  <div
+                    className="card h-100 border-0 rounded-4 shadow-sm bg-blue-50 position-relative appointment-card transition"
+                    style={{
+                      background: 'linear-gradient(135deg, #eaf3fb 0%, #f6fafd 100%)',
+                      transition: 'transform 0.18s cubic-bezier(.4,2,.6,1), box-shadow 0.18s',
+                      cursor: 'pointer',
+                    }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.transform = 'scale(1.025)';
+                      e.currentTarget.style.boxShadow = '0 8px 32px rgba(49,123,196,0.10)';
+                      e.currentTarget.style.background = 'linear-gradient(135deg, #d0e6fa 0%, #eaf3fb 100%)';
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.transform = 'scale(1)';
+                      e.currentTarget.style.boxShadow = '0 2px 8px rgba(49,123,196,0.08)';
+                      e.currentTarget.style.background = 'linear-gradient(135deg, #eaf3fb 0%, #f6fafd 100%)';
+                    }}
+                  >
+                    <div className="card-header bg-white border-0 rounded-top-4 d-flex align-items-center gap-3 mb-2" style={{minHeight: 56}}>
+                      <div className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style={{width: 40, height: 40, fontSize: 18}}>
+                        {appointment.patient_data?.avatarUrl ? (
+                          <img src={appointment.patient_data.avatarUrl} alt="Avatar" className="rounded-circle" style={{width: 40, height: 40, objectFit: 'cover'}} />
+                        ) : getInitials(appointment.patient_data?.name)}
+                      </div>
+                      <div className="flex-grow-1">
+                        <h5 className="card-title fw-bold text-dark mb-0 fs-6">
                           {appointment.patient_data?.name || 'Walk-in'}
                         </h5>
-                        <span className={`badge rounded-pill ${getStatusBadge(appointment.status)}`}>
-                          {appointment.status || 'Scheduled'}
-                        </span>
+                        <span className="text-muted small">Patient</span>
                       </div>
-                      <div className="text-muted">
-                        <p className="d-flex align-items-center mb-2">
+                      <span className={`badge rounded-pill px-3 py-2 fs-6 ${getStatusBadge(appointment.status)}`}
+                        title={appointment.status || 'Scheduled'}
+                        aria-label={`Status: ${appointment.status || 'Scheduled'}`}
+                      >
+                        {appointment.status || 'Scheduled'}
+                      </span>
+                    </div>
+                    <div className="card-body d-flex flex-column pt-0">
+                      <div className="text-muted mb-3">
+                        <p className="d-flex align-items-center mb-2 fs-6">
                           <FiCalendar className="text-primary me-2" />
                           <span>{appointment.date || 'No date'}</span>
                         </p>
-                        <p className="d-flex align-items-center mb-2">
+                        <p className="d-flex align-items-center mb-2 fs-6">
                           <FiClock className="text-primary me-2" />
                           <span>{appointment.time || 'No time'}</span>
                         </p>
-                        <p className="d-flex align-items-center">
+                        <p className="d-flex align-items-center fs-6">
                           <FiUser className="text-primary me-2" />
                           <span>Appointment #{appointment.id}</span>
                         </p>
                       </div>
-                      
                       {/* Status Update Section */}
-                      <div className="mt-3 mb-3">
+                      <div className="mt-2 mb-3">
                         <label className="form-label small text-muted mb-1">Update Status:</label>
                         <select
                           className="form-select form-select-sm"
                           value={appointment.status || 'scheduled'}
                           onChange={(e) => handleStatusUpdate(appointment.id, e.target.value)}
                           disabled={updatingStatus[appointment.id]}
+                          aria-label="Update appointment status"
                         >
                           <option value="scheduled">Scheduled</option>
                           <option value="completed">Completed</option>
                           <option value="cancelled">Cancelled</option>
                         </select>
                       </div>
-                      
                       <div className="mt-auto">
                         <button 
                           className="btn btn-outline-primary btn-sm w-100"
                           onClick={() => goToDetails(appointment.id)}
+                          aria-label="View appointment details"
+                          title="View Details"
                         >
                           View Details &rarr;
                         </button>
@@ -221,26 +290,25 @@ const AppointmentsList = () => {
                 </div>
               ))}
             </div>
-
             {/* Pagination Controls */}
             {totalPages > 1 && (
               <div className="d-flex justify-content-center mt-5">
                 <nav>
                   <ul className="pagination">
                     <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                      <button className="page-link" onClick={() => setCurrentPage(p => p - 1)}>
+                      <button className="page-link" onClick={() => setCurrentPage(p => p - 1)} aria-label="Previous page">
                         <FiChevronLeft />
                       </button>
                     </li>
                     {Array.from({ length: totalPages }, (_, i) => (
                       <li key={i + 1} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
-                        <button className="page-link" onClick={() => setCurrentPage(i + 1)}>
+                        <button className="page-link" onClick={() => setCurrentPage(i + 1)} aria-label={`Go to page ${i + 1}`}>
                           {i + 1}
                         </button>
                       </li>
                     ))}
                     <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-                      <button className="page-link" onClick={() => setCurrentPage(p => p + 1)}>
+                      <button className="page-link" onClick={() => setCurrentPage(p => p + 1)} aria-label="Next page">
                         <FiChevronRight />
                       </button>
                     </li>

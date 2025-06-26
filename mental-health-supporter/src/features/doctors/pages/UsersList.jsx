@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import CustomNavbar from '../../../components/Navbar';
+import { FiUser, FiSearch, FiInbox } from 'react-icons/fi';
 
 export default function UsersList() {
   const [users, setUsers] = useState(null);
@@ -86,129 +88,107 @@ export default function UsersList() {
 
   if (users === null) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <p className="text-xl font-bold text-gray-700">Loading users...</p>
+      <div className="min-vh-100 bg-light d-flex justify-content-center align-items-center">
+        <div className="spinner-border text-primary" style={{width: '3rem', height: '3rem'}} role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-7xl">
-      {/* Header and Search */}
-      <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Patients Management</h1>
-        <input
-          type="text"
-          placeholder="Search patients..."
-          className="w-full md:w-96 px-4 py-2 border border-gray-300 rounded-lg 
-                     focus:outline-none focus:ring-2 focus:ring-blue-500 
-                     placeholder-gray-400 text-base"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
-
-      {/* Users Grid */}
-      {filteredUsers.length === 0 ? (
-        <div className="flex justify-center items-center h-64">
-          <p className="text-xl font-bold text-gray-700">
-            {searchTerm ? "No matching patients found." : "No patients available."}
-          </p>
-        </div>
-      ) : (
-        <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {currentUsers.map(user => {
-              const patientInfo = patientsData.find(p => p.id === user.id) || {};
-              const latestAppointment = patientInfo.latestAppointment;
-              
-              return (
-                <div
-                key={user.id}
-                className="bg-white rounded-lg shadow-md px-6 py-8 cursor-pointer hover:shadow-lg border border-gray-200 transition space-y-2"
-
-                onClick={() => handleClick(user.id)}
-              >
-              
-                  <h2 className="text-xl font-semibold text-gray-900 mb-2 truncate">
-                    {user.username}
-                  </h2>
-                  <p className="text-gray-700 mb-1">
-                    <span className="font-medium">Email:</span> {user.email}
-                  </p>
-                  <p className={`mb-1 font-semibold ${
-                    user.is_approved ? "text-green-600" : "text-red-600"
-                  }`}>
-                    Status: {user.is_approved ? "Approved" : "Pending"}
-                  </p>
-                  {latestAppointment && (
-                    <p className={`text-sm ${
-                      latestAppointment.status === 'approved' ? 'text-green-600' : 
-                      latestAppointment.status === 'rejected' ? 'text-red-600' : 
-                      'text-yellow-600'
-                    }`}>
-                      Last Appointment: {latestAppointment.status.charAt(0).toUpperCase() + latestAppointment.status.slice(1)}
-                      {latestAppointment.date && (
-                        <span className="ml-1 text-gray-500">({new Date(latestAppointment.date).toLocaleDateString()})</span>
-                      )}
-                    </p>
-                  )}
-                </div>
-              );
-            })}
+    <div className="min-vh-100 bg-light">
+      <CustomNavbar />
+      <div className="container py-5">
+        {/* Header and Search */}
+        <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4 gap-3">
+          <div>
+            <h1 className="fw-bold text-dark mb-1">Patients Management</h1>
+            <p className="text-muted mb-0">Manage and view your patients</p>
           </div>
-
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex justify-center mt-6">
-              <nav className="inline-flex rounded-md shadow-sm -space-x-px">
-                <button
-                  onClick={() => paginate(currentPage - 1)}
-                  disabled={currentPage === 1}
-                  className="px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
-                >
-                  Previous
-                </button>
-                
-                {Array.from({ length: Math.min(5, totalPages) }).map((_, index) => {
-                  let pageNum;
-                  if (totalPages <= 5) {
-                    pageNum = index + 1;
-                  } else if (currentPage <= 3) {
-                    pageNum = index + 1;
-                  } else if (currentPage >= totalPages - 2) {
-                    pageNum = totalPages - 4 + index;
-                  } else {
-                    pageNum = currentPage - 2 + index;
-                  }
-
-                  return (
-                    <button
-                      key={index}
-                      onClick={() => paginate(pageNum)}
-                      className={`px-4 py-2 border border-gray-300 text-sm font-medium ${
-                        currentPage === pageNum
-                          ? "bg-blue-600 text-white border-blue-600"
-                          : "bg-white text-gray-700 hover:bg-gray-50"
-                      }`}
-                    >
-                      {pageNum}
-                    </button>
-                  );
-                })}
-                
-                <button
-                  onClick={() => paginate(currentPage + 1)}
-                  disabled={currentPage === totalPages}
-                  className="px-4 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
-                >
-                  Next
-                </button>
-              </nav>
+          <div className="input-group" style={{ maxWidth: '300px' }}>
+            <span className="input-group-text bg-white"><FiSearch /></span>
+            <input
+              type="text"
+              placeholder="Search patients..."
+              className="form-control"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
+        {/* Users Grid */}
+        {filteredUsers.length === 0 ? (
+          <div className="card shadow-sm p-5 text-center">
+            <FiInbox className="mx-auto h1 text-muted" style={{fontSize: '4rem'}}/>
+            <h3 className="mt-4 fw-bold text-dark">{searchTerm ? "No matching patients found." : "No patients available."}</h3>
+            <p className="mt-2 text-muted">{searchTerm ? `No patients match your search for "${searchTerm}".` : "When you have patients, they will show up here."}</p>
+          </div>
+        ) : (
+          <>
+            <div className="row g-4 mb-4">
+              {currentUsers.map(user => {
+                const patientInfo = patientsData.find(p => p.id === user.id) || {};
+                const latestAppointment = patientInfo.latestAppointment;
+                return (
+                  <div key={user.id} className="col-md-6 col-lg-4">
+                    <div className="card h-100 shadow-sm border-0 rounded-3 cursor-pointer hover-shadow" onClick={() => handleClick(user.id)}>
+                      <div className="card-body d-flex flex-column">
+                        <h5 className="card-title fw-bold text-dark mb-2 truncate"><FiUser className="me-2 text-primary" />{user.username}</h5>
+                        <p className="text-muted mb-1"><span className="fw-semibold">Email:</span> {user.email}</p>
+                        <p className={`mb-1 fw-semibold ${user.is_approved ? "text-success" : "text-danger"}`}>Status: {user.is_approved ? "Approved" : "Pending"}</p>
+                        {latestAppointment && (
+                          <p className={`text-sm mb-1 ${
+                            latestAppointment.status === 'approved' ? 'text-success' : 
+                            latestAppointment.status === 'rejected' ? 'text-danger' : 
+                            'text-warning'
+                          }`}>
+                            Last Appointment: {latestAppointment.status.charAt(0).toUpperCase() + latestAppointment.status.slice(1)}
+                            {latestAppointment.date && (
+                              <span className="ms-1 text-muted">({new Date(latestAppointment.date).toLocaleDateString()})</span>
+                            )}
+                          </p>
+                        )}
+                        <div className="mt-auto">
+                          <button className="btn btn-outline-primary btn-sm w-100 mt-2" onClick={e => {e.stopPropagation(); handleClick(user.id);}}>
+                            View Appointments &rarr;
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          )}
-        </>
-      )}
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="d-flex justify-content-center mt-5">
+                <nav>
+                  <ul className="pagination">
+                    <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                      <button className="page-link" onClick={() => paginate(currentPage - 1)}>
+                        Previous
+                      </button>
+                    </li>
+                    {Array.from({ length: totalPages }, (_, i) => (
+                      <li key={i + 1} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
+                        <button className="page-link" onClick={() => paginate(i + 1)}>
+                          {i + 1}
+                        </button>
+                      </li>
+                    ))}
+                    <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                      <button className="page-link" onClick={() => paginate(currentPage + 1)}>
+                        Next
+                      </button>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 }
