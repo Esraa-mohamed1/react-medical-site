@@ -8,18 +8,18 @@ export default function HeroSection() {
   const handleAppointmentClick = () => {
     // Check if user is logged in
     const user = JSON.parse(localStorage.getItem('loggedUser'))
-    
+
     if (!user) {
       navigate('/login')
       return
     }
-    
+
     if (user.role === 'patient') {
       navigate('/doctors-list')
     }
   }
 
-  const user = JSON.parse(localStorage.getItem('user'))
+  const user = JSON.parse(localStorage.getItem('loggedUser'))
   const showAppointmentButton = !user || user.role === 'patient'
 
   return (
@@ -31,22 +31,22 @@ export default function HeroSection() {
           <h1 className={styles.title}>
             Your Health <span className={styles.titleBlock}>Is Our Priority</span>
           </h1>
-          <div className={styles.buttonGroup}>
-            {showAppointmentButton && (
-              <button 
+          {showAppointmentButton && (
+            <div className={styles.buttonGroup}>
+              <button
                 className={styles.primaryButton}
                 onClick={handleAppointmentClick}
               >
                 Search for Doctors
               </button>
-            )}
-            <button 
-              className={styles.secondaryButton}
-              onClick={() => navigate('/artical')}
-            >
-              Read Articles
-            </button>
-          </div>
+              <button
+                className={styles.secondaryButton}
+                onClick={() => navigate('/artical')}
+              >
+                Read Articles
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </section>
