@@ -4,6 +4,8 @@ import Swal from 'sweetalert2';
 import { registerDoctor } from '../../services/api';
 import MapPicker from './MapPicker';
 import './DoctorRegister.css'; // Ensure the CSS is imported
+import CustomNavbar from '../Navbar'; 
+import Footer from "../../features/homePage/components/Footer";
 
 const DoctorRegister = () => {
     const navigate = useNavigate();
@@ -195,6 +197,8 @@ const DoctorRegister = () => {
     };
 
     return (
+        <>
+        <CustomNavbar />
         <div className="doctor-register-page">
             <div className="doctor-register-card">
                 <div className="progress-bar">
@@ -218,6 +222,8 @@ const DoctorRegister = () => {
                 </form>
             </div>
         </div>
+              <Footer />
+        </>
     );
 };
 

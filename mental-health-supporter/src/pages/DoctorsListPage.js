@@ -1,7 +1,7 @@
 import React from 'react';
 // import { useNavigate } from 'react-router-dom';
 import DoctorsListComponent from '../components/DoctorsListComponent/DoctorsList';
-import CustomNavbar from './../components/Navbar';
+import CustomNavbar from './../components/Navbar'; 
 import Footer from "./../features/homePage/components/Footer";
 
 

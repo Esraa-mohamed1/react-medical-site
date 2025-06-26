@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/auth.css';
+import CustomNavbar from './../components/Navbar'; 
+import Footer from "./../features/homePage/components/Footer";
 
 export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
   const isLogin = variant === 'login';
@@ -86,6 +88,8 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
   };
 
   return (
+    <>
+                <CustomNavbar />
     <div className="auth-page">
       <form className="auth-card" onSubmit={handleSubmit} noValidate>
         <h2 className="auth-title">{isLogin ? 'Log in' : 'Create account'}</h2>
@@ -228,5 +232,7 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
         </p>
       </form>
     </div>
+          <Footer />
+    </>
   );
 }
