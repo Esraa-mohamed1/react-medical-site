@@ -1,6 +1,6 @@
 {
   "navbar": {
-    "brand": "بيرلا",
+  "brand": "بيرلا",
   "home": "الرئيسية",
   "doctors": "الأطباء",
   "articles": "المقالات",
@@ -10,7 +10,9 @@
   "accountSettings": "إعدادات الحساب",
   "logout": "تسجيل الخروج",
   "login": "تسجيل الدخول",
-  "register": "إنشاء حساب"
+  "register": "إنشاء حساب",
+  "Appointments":"المواعيد",
+  "SetTimes":"تحديد الأوقات"
   },
   "doctorDetails": {
     "loading": "جاري تحميل بيانات الطبيب",

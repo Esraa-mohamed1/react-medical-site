@@ -1,6 +1,6 @@
 {
   "navbar": {
-    "brand": "Pearla",
+  "brand": "Pearla",
   "home": "Home",
   "doctors": "Doctors",
   "articles": "Articles",
@@ -10,7 +10,9 @@
   "accountSettings": "Account Settings",
   "logout": "Logout",
   "login": "Login",
-  "register": "Register"
+  "register": "Register",
+  "Appointments":"Appointments",
+  "SetTimes":"Set Times"
   },
   "doctorDetails": {
     "loading": "Loading doctor details",

@@ -70,8 +70,8 @@ const CustomNavbar = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className={changeMarginDirection('auto')}>
             <Nav.Link as={Link} to="/" className="text-dark mx-2 fw-medium">{t('navbar.home')}</Nav.Link>
-            <Nav.Link as={Link} to={loggedUser?.role === 'doctor' ? "/doctor/appointments" : "/doctors-list"} className="text-dark mx-2 fw-medium">{loggedUser?.role === 'doctor' ? 'Appointments' : t('navbar.doctors')}</Nav.Link>
-            <Nav.Link as={Link} to={loggedUser?.role === 'doctor' ? "/doctor/availability" : "/artical"} className="text-dark mx-2 fw-medium">{loggedUser?.role === 'doctor' ? 'Set Times' : t('navbar.articles')}</Nav.Link>
+            <Nav.Link as={Link} to={loggedUser?.role === 'doctor' ? "/doctor/appointments" : "/doctors-list"} className="text-dark mx-2 fw-medium">{loggedUser?.role === 'doctor' ? t('navbar.Appointments') : t('navbar.doctors')}</Nav.Link>
+            <Nav.Link as={Link} to={loggedUser?.role === 'doctor' ? "/doctor/availability" : "/artical"} className="text-dark mx-2 fw-medium">{loggedUser?.role === 'doctor' ? t('navbar.SetTimes') : t('navbar.articles')}</Nav.Link>
           </Nav>
 
           {/* Language Switcher */}
