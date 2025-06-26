@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { Navbar, Container, Nav, Dropdown } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaUser, FaClinicMedical, FaSignOutAlt, FaCog } from 'react-icons/fa';
+import { FaUser, FaClinicMedical, FaSignOutAlt, FaCog, FaGlobe } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 import './Navbar.css';
 
 const CustomNavbar = () => {
   const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
+  const { i18n, t } = useTranslation();
+  const [language, setLanguage] = useState(i18n.language);
 
   let profileUrl = '';
   if (loggedUser && loggedUser.role && loggedUser.id) {
@@ -16,6 +19,22 @@ const CustomNavbar = () => {
     } else if (loggedUser.role === 'patient') {
       profileUrl = `/patients-list/${loggedUser.id}`;
     }
+  }
+
+  const changeLanguage = (lng) => {
+    document.body.dir = lng === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = lng;
+    i18n.changeLanguage(lng);
+    setLanguage(lng);
+  };
+
+  /**
+   * changeMarginDirection: set margin direction based on current language
+   * @param {margin value of right / left margins} marginVal 
+   * @returns 
+   */
+  const changeMarginDirection = (marginVal) => {
+    return i18n.language === 'en' ? `me-${marginVal}` : `ms-${marginVal}`
   }
 
   const handleLogout = () => {
@@ -41,37 +60,50 @@ const CustomNavbar = () => {
   };
 
   return (
-    <Navbar expand="lg" className="shadow-sm py-3" bg="white" dir="ltr">
+    <Navbar expand="lg" className="shadow-sm py-3" bg="white">
       <Container>
         <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
-          <FaClinicMedical className="me-2" size={28} color="#6a0dad" />
+          <FaClinicMedical className={changeMarginDirection(2)} size={28} color="#6a0dad" />
           <span className="text-purple fw-bold fs-3">Pearla</span>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
+          <Nav className={changeMarginDirection('auto')}>
             <Nav.Link as={Link} to="/" className="text-dark mx-2 fw-medium">Home</Nav.Link>
             <Nav.Link as={Link} to={loggedUser?.role === 'doctor' ? "/doctor/appointments" : "/doctors-list"} className="text-dark mx-2 fw-medium">Doctors</Nav.Link>
             <Nav.Link as={Link} to={loggedUser?.role === 'doctor' ? "/doctor/availability" : "/artical"} className="text-dark mx-2 fw-medium">Articles</Nav.Link>
           </Nav>
+
+          {/* Language Switcher */}
+          <Dropdown align="end" className={changeMarginDirection(3)}>
+            <Dropdown.Toggle variant="outline-secondary" className="d-flex align-items-center">
+              <FaGlobe className={changeMarginDirection(2)} />
+              {language.toUpperCase()}
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={() => changeLanguage('en')}>English</Dropdown.Item>
+              <Dropdown.Item onClick={() => changeLanguage('ar')}>العربية</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+
           {loggedUser && loggedUser.role && loggedUser.id ? (
             <Dropdown align="end" show={showDropdown} onToggle={handleDropdownToggle}>
               <Dropdown.Toggle variant="primary" className="d-flex align-items-center">
-                <FaUser className="me-2" />
+                <FaUser className={changeMarginDirection(2)} />
                 {loggedUser['full_name'] || 'User'}
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item onClick={handleProfileClick} disabled={!profileUrl}>
-                  <FaUser className="me-2" />
+                  <FaUser className={changeMarginDirection(2)} />
                   View Profile
                 </Dropdown.Item>
                 <Dropdown.Item onClick={handleAccountSettings}>
-                  <FaCog className="me-2" />
+                  <FaCog className={changeMarginDirection(2)} />
                   Account Settings
                 </Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item onClick={handleLogout} className="text-danger">
-                  <FaSignOutAlt className="me-2" />
+                  <FaSignOutAlt className={changeMarginDirection(2)} />
                   Logout
                 </Dropdown.Item>
               </Dropdown.Menu>
