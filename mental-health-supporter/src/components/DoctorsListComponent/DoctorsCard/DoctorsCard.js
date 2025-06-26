@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import './DoctorsCard.css';
 import doctorPlaceholder from '../images/doctor-placeholder.jpg';
 import doctorImage from '../images/doctor.png';
-import { FaStar, FaUserFriends, FaMapMarkerAlt, FaMoneyBillWave, FaClock, FaPhone, FaUser, FaCalendarAlt } from 'react-icons/fa';
+import { FaStar, FaUserFriends, FaMapMarkerAlt, FaMoneyBillWave, FaClock, FaPhone, FaUser, FaCalendarAlt, FaUserMd} from 'react-icons/fa';
 
 const DoctorsCard = ({ doctor }) => {
   const navigate = useNavigate();
@@ -25,18 +25,20 @@ const DoctorsCard = ({ doctor }) => {
           </h3>
           <p className="doctor-title">{doctor.specialization}</p>
         </div>
-        <div className="doctor-rating">
+        {/* <div className="doctor-rating">
           <span className="rating-value">
             <FaStar className="star-icon" /> {doctor.rating}
           </span>
           <span className="rating-count">
             <FaUserFriends className="icon" /> Overall Rating From {doctor.ratingCount ?? 3} Visitors
           </span>
-        </div>
+        </div> */}
       </div>
 
       <div className="doctor-specialty">
-        <p>{doctor.specialty}</p>
+        <p>
+          <FaUserMd className="icon" /> {doctor.specialization}
+        </p>  
       </div>
 
       <div className="doctor-location">
@@ -45,20 +47,20 @@ const DoctorsCard = ({ doctor }) => {
         </p>
       </div>
 
-      <div className="doctor-details">
-        <div className="detail-item">
+      {/* <div className="doctor-details"> */}
+        {/* <div className="detail-item">
           <span className="detail-label">
             <FaMoneyBillWave className="icon" /> Fees:
           </span>
           <span className="detail-value">{doctor.fee ?? 'Free'}</span>
-        </div>
-        <div className="detail-item">
+        </div> */}
+        {/* <div className="detail-item">
           <span className="detail-label">
             <FaClock className="icon" /> Waiting Time:
           </span>
           <span className="detail-value">{doctor.waitingTime ?? '+3 hours'}</span>
-        </div>
-      </div>
+        </div> */}
+      {/* </div> */}
 
       <div className="doctor-call-cost">
         <p>

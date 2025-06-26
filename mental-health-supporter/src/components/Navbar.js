@@ -64,14 +64,14 @@ const CustomNavbar = () => {
       <Container>
         <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
           <FaClinicMedical className={changeMarginDirection(2)} size={28} color="#6a0dad" />
-          <span className="text-purple fw-bold fs-3">Pearla</span>
+          <span className="text-purple fw-bold fs-3">{t('navbar.brand')}</span>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className={changeMarginDirection('auto')}>
-            <Nav.Link as={Link} to="/" className="text-dark mx-2 fw-medium">Home</Nav.Link>
-            <Nav.Link as={Link} to={loggedUser?.role === 'doctor' ? "/doctor/appointments" : "/doctors-list"} className="text-dark mx-2 fw-medium">Doctors</Nav.Link>
-            <Nav.Link as={Link} to={loggedUser?.role === 'doctor' ? "/doctor/availability" : "/artical"} className="text-dark mx-2 fw-medium">Articles</Nav.Link>
+            <Nav.Link as={Link} to="/" className="text-dark mx-2 fw-medium">{t('navbar.home')}</Nav.Link>
+            <Nav.Link as={Link} to={loggedUser?.role === 'doctor' ? "/doctor/appointments" : "/doctors-list"} className="text-dark mx-2 fw-medium">{t('navbar.doctors')}</Nav.Link>
+            <Nav.Link as={Link} to={loggedUser?.role === 'doctor' ? "/doctor/availability" : "/artical"} className="text-dark mx-2 fw-medium">{t('navbar.articles')}</Nav.Link>
           </Nav>
 
           {/* Language Switcher */}
@@ -81,8 +81,8 @@ const CustomNavbar = () => {
               {language.toUpperCase()}
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item onClick={() => changeLanguage('en')}>English</Dropdown.Item>
-              <Dropdown.Item onClick={() => changeLanguage('ar')}>العربية</Dropdown.Item>
+              <Dropdown.Item onClick={() => changeLanguage('en')}>{t('navbar.english')}</Dropdown.Item>
+              <Dropdown.Item onClick={() => changeLanguage('ar')}>{t('navbar.arabic')}</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
 
@@ -95,23 +95,23 @@ const CustomNavbar = () => {
               <Dropdown.Menu>
                 <Dropdown.Item onClick={handleProfileClick} disabled={!profileUrl}>
                   <FaUser className={changeMarginDirection(2)} />
-                  View Profile
+                  {t('navbar.viewProfile')}
                 </Dropdown.Item>
                 <Dropdown.Item onClick={handleAccountSettings}>
                   <FaCog className={changeMarginDirection(2)} />
-                  Account Settings
+                  {t('navbar.accountSettings')}
                 </Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item onClick={handleLogout} className="text-danger">
                   <FaSignOutAlt className={changeMarginDirection(2)} />
-                  Logout
+                  {t('navbar.logout')}
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           ) : (
             <Nav>
-              <Nav.Link as={Link} to="/login" className="text-dark mx-2 fw-medium">Login</Nav.Link>
-              <Nav.Link as={Link} to="/register-select" className="text-dark mx-2 fw-medium">Register</Nav.Link>
+              <Nav.Link as={Link} to="/login" className="text-dark mx-2 fw-medium">{t('navbar.login')}</Nav.Link>
+              <Nav.Link as={Link} to="/register-select" className="text-dark mx-2 fw-medium">{t('navbar.register')}</Nav.Link>
             </Nav>
           )}
         </Navbar.Collapse>

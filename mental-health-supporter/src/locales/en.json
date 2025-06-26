@@ -1,12 +1,16 @@
 {
   "navbar": {
-    "home": "Home",
-    "doctors": "Doctors",
-    "contactUs": "Contact",
-    "settings": "settings",
-    "logout": "logout",
-    "viewProfile": "View Profile",
-    "accountSettings": "Account Settings"
+    "brand": "Pearla",
+  "home": "Home",
+  "doctors": "Doctors",
+  "articles": "Articles",
+  "english": "English",
+  "arabic": "Arabic",
+  "viewProfile": "View Profile",
+  "accountSettings": "Account Settings",
+  "logout": "Logout",
+  "login": "Login",
+  "register": "Register"
   },
   "doctorDetails": {
     "loading": "Loading doctor details",
@@ -185,3 +189,4 @@
     "city": "City"
   }
 }
+ 

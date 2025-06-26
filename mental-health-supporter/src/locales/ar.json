@@ -1,12 +1,16 @@
 {
   "navbar": {
-    "home": "الرئيسية",
-    "doctors": "الأطباء",
-    "contactUs": "تواصل معنا",
-    "settings": "إعدادات الحساب",
-    "logout": "نسجيل الخروج",
-    "viewProfile": "عرض الملف الشخصي",
-    "accountSettings": "إعدادات الحساب"
+    "brand": "بيرلا",
+  "home": "الرئيسية",
+  "doctors": "الأطباء",
+  "articles": "المقالات",
+  "english": "الإنجليزية",
+  "arabic": "العربية",
+  "viewProfile": "عرض الملف الشخصي",
+  "accountSettings": "إعدادات الحساب",
+  "logout": "تسجيل الخروج",
+  "login": "تسجيل الدخول",
+  "register": "إنشاء حساب"
   },
   "doctorDetails": {
     "loading": "جاري تحميل بيانات الطبيب",
@@ -185,3 +189,4 @@
     "city": "المدينة"
   }
 }
+ 
