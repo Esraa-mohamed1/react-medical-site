@@ -11,7 +11,7 @@ const passwordMinLength = 8;
 
 const AccountSettingsPage = () => {
     const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
-    const [username, setUsername] = useState(loggedUser?.name || '');
+    const [username, setUsername] = useState(loggedUser?.username || '');
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');

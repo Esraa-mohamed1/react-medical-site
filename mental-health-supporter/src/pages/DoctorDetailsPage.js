@@ -11,6 +11,7 @@ import Footer from "./../features/homePage/components/Footer";
 
 const DoctorDetailsPage = () => {
     const nonEditableFields = ['email'];
+    const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
     const [doctor, setDoctor] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -147,6 +148,7 @@ const DoctorDetailsPage = () => {
                                 </div>
                                 <div className="doctorBasicInfo">
                                     <h1 className="title">{renderValue('full_name', 'Full Name')}</h1>
+                                    <h1 className="created">@{loggedUser['username']}</h1>
                                     <h2 className="subtitle">{renderValue('specialization', 'Specialization')}</h2>
                                     <div className="availabilityBadge">
                                         {isEditing ? (

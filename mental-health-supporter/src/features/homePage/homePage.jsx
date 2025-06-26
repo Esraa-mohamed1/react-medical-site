@@ -84,7 +84,7 @@ export default function HomePage() {
         <div className={styles.section}>
           <HeroSection />
         </div>
-        <div className={styles.section} style={{ display: 'flex', justifyContent: 'center', gap: '2rem', margin: '2rem 0' }}>
+        {/* <div className={styles.section} style={{ display: 'flex', justifyContent: 'center', gap: '2rem', margin: '2rem 0' }}>
           <button
   onClick={() => window.location.href = '/artical'}
   style={{
@@ -118,12 +118,12 @@ export default function HomePage() {
           >
             Search for doctors
           </button>
+        </div> */}
+        <div className={styles.section}>
+          <DoctorsSection />
         </div>
         <div className={styles.section}>
           <ServicesSection />
-        </div>
-        <div className={styles.section}>
-          <DoctorsSection />
         </div>
         <div className={styles.section}>
           <TipsAndFaqSection />

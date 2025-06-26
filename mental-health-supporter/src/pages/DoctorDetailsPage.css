@@ -59,8 +59,8 @@
 
 .changePhotoOverlay {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 35px;
+  left: 35px;
   width: 250px;
   height: 250px;
   border-radius: 50%;
@@ -269,4 +269,10 @@
 
 .notFound {
   color: #666;
+}
+
+.created {
+  font-size: 0.875rem;
+  color: rgba(45, 55, 72, 0.7);
+  margin-top: 0.5rem;
 }

@@ -14,7 +14,7 @@ const DoctorsCard = ({ doctor }) => {
       <div className="doctor-header">
         <div className="doctor-photo-container">
           <img
-            src={doctorImage || doctorPlaceholder}
+            src={doctor.profile_image || doctorImage || doctorPlaceholder}
             alt={doctor.full_name ?? 'Prof.'}
             className="doctor-photo"
           />
@@ -43,7 +43,7 @@ const DoctorsCard = ({ doctor }) => {
 
       <div className="doctor-location">
         <p>
-          <FaMapMarkerAlt className="icon" /> {doctor.clinic_name}, {doctor.clinic_address}
+          <FaMapMarkerAlt className="icon" /> {doctor.clinic_name}, {doctor.clinic_address}, {doctor.city}
         </p>
       </div>
 

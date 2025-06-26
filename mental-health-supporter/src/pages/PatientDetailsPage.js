@@ -9,6 +9,7 @@ import Footer from "./../features/homePage/components/Footer";
 
 
 const PatientDetailsPage = () => {
+  const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
   const navigate = useNavigate();
   const [patient, setPatient] = useState(null);
   const [editedPatient, setEditedPatient] = useState(null);
@@ -136,6 +137,7 @@ const PatientDetailsPage = () => {
               </div>
               <div className="profileInfo">
                 <h1 className="name">{patient.full_name}</h1>
+                <div className="created">@{loggedUser['username']}</div>
                 <div className="created">Member since: {new Date(patient.created_at).toLocaleDateString()}</div>
               </div>
             </div>

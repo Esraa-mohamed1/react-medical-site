@@ -98,7 +98,7 @@
   .doctorName {
     font-size: 1.25rem;
     font-weight: 700;
-    margin-bottom: 0.5rem;
+    margin: 1rem 0 0.5rem 0;
     color: #1f2937;
     letter-spacing: -0.025em;
   }
@@ -133,7 +133,8 @@
   .filterContainer {
     margin: 25px 0;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
   }
   
   .filterDropdown {

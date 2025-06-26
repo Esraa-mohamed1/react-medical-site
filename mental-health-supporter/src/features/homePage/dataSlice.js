@@ -8,8 +8,8 @@ const handleApiError = async (response) => {
   return response.json();
 };
 
-export const fetchAllDoctors = async () => {
-  const response = await fetch(`${API_URL}/doctors/`);
+export const fetchAllDoctors = async (filters) => {
+  const response = await fetch(`${API_URL}/medical/doctors/?${filters.join('&')}`);
   return handleApiError(response);
 };
 

@@ -7,7 +7,7 @@ export default function HeroSection() {
 
   const handleAppointmentClick = () => {
     // Check if user is logged in
-    const user = JSON.parse(localStorage.getItem('user'))
+    const user = JSON.parse(localStorage.getItem('loggedUser'))
     
     if (!user) {
       navigate('/login')
@@ -37,7 +37,7 @@ export default function HeroSection() {
                 className={styles.primaryButton}
                 onClick={handleAppointmentClick}
               >
-                Book An Appointment
+                Search for Doctors
               </button>
             )}
             <button 
