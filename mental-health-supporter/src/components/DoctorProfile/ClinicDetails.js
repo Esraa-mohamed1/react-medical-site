@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 const ClinicDetails = ({ clinic }) => {
   const { t } = useTranslation();
 
-  const address = clinic?.address || '';
+  const address = `${clinic?.clinic_address}, ${clinic.city}` || '';
   const openingHours = clinic?.openingHours || '';
   const fees = clinic?.fees || '';
   const services = Array.isArray(clinic?.services)
