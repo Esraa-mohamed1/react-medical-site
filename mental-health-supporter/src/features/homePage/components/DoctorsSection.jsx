@@ -21,15 +21,15 @@ export default function DoctorsSection() {
 
   useEffect(() => {
     setAllSpecialties([
-      { id: "Clinical Psychology", name: "Clinical Psychology" },
-      { id: "Psychiatry", name: "Psychiatry" },
-      { id: "Psychotherapy", name: "Psychotherapy" },
-      { id: "Counseling Psychology", name: "Counseling Psychology" },
-      { id: "Behavioral Therapy", name: "Behavioral Therapy" },
+      { id: "Clinical Psychology", name: t("doctorsSection.clinicalPsychology") },
+      { id: "Psychiatry", name: t("doctorsSection.psychiatry") },
+      { id: "Psychotherapy", name: t("doctorsSection.psychotherapy") },
+      { id: "Counseling Psychology", name: t("doctorsSection.counselingPsychology") },
+      { id: "Behavioral Therapy", name: t("doctorsSection.behavioralTherapy") },
     ]);
 
     fetchData();
-  }, []);
+  }, [t]);
 
   const fetchData = async (filters = ["limit=10"]) => {
     try {

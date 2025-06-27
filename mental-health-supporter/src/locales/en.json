@@ -26,7 +26,12 @@
     "allSpecialties": "All Specialties",
     "seeMore": "See More...",
     "errorLoading": "Unable to load doctors at this time. Please try again later.",
-    "readMore": "READ MORE"
+    "readMore": "READ MORE",
+    "clinicalPsychology": "Clinical Psychology",
+    "psychiatry": "Psychiatry",
+    "psychotherapy": "Psychotherapy",
+    "counselingPsychology": "Counseling Psychology",
+    "behavioralTherapy": "Behavioral Therapy"
   },
   "heroSection": {
     "feelTheDifference": "FEEL THE DIFFERENCE WITH US",
@@ -36,21 +41,21 @@
     "readArticles": "Read Articles"
   },
   "servicesSection": {
-    "whyChoose": "WHY CHOOSE HOPE MEDICAL",
+    "whyChoose": "WHY CHOOSE Mental Health Support",
     "theBestForHealth": "The Best",
-    "forYourHealth": "For Your Health",
-    "medicalCounselingTitle": "MEDICAL COUNSELING",
-    "medicalCounselingDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit vero. Donec ultri sollicitudin lacus",
-    "topLevelDoctorsTitle": "TOP LEVEL DOCTORS",
-    "topLevelDoctorsDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit vero. Donec ultri sollicitudin lacus",
-    "medicalFacilitesTitle": "MEDICAL FACILITIES",
-    "medicalFacilitesDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit vero. Donec ultri sollicitudin lacus",
-    "twentyFourHoursServicesTitle": "24 HOURS SERVICES",
-    "twentyFourHoursServicesDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit vero. Donec ultri sollicitudin lacus",
-    "personalServicesTitle": "PERSONAL SERVICES",
-    "personalServicesDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit vero. Donec ultri sollicitudin lacus",
+    "forYourHealth": "For Your Mental Health",
+    "medicalCounselingTitle": "MENTAL HEALTH COUNSELING",
+    "medicalCounselingDescription": "Get expert support for anxiety, depression, and stress through confidential counseling sessions with certified therapists.",
+    "topLevelDoctorsTitle": "EXPERT THERAPISTS",
+    "topLevelDoctorsDescription": "Our licensed psychologists and psychiatrists are highly experienced in treating a wide range of mental health conditions.",
+    "medicalFacilitesTitle": "SECURE ONLINE SESSIONS",
+    "medicalFacilitesDescription": "Access safe, private video consultations from the comfort of your home with encrypted communication.",
+    "twentyFourHoursServicesTitle": "24/7 SUPPORT",
+    "twentyFourHoursServicesDescription": "Our mental health support team is available around the clock to assist you anytime you need help.",
+    "personalServicesTitle": "PERSONALIZED TREATMENT PLANS",
+    "personalServicesDescription": "Each patient receives a customized care plan based on their specific mental health needs and progress.",
     "dedicatedPatientCareTitle": "DEDICATED PATIENT CARE",
-    "dedicatedPatientCareDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit vero. Donec ultri sollicitudin lacus"
+    "dedicatedPatientCareDescription": "We follow up with every patient to ensure continuous care, long-term healing, and emotional wellbeing."
   },
   "tipsAndFaqSection": {
     "tipsAndTricksTitle": "Tips & Tricks",

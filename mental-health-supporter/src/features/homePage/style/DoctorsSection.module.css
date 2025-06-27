@@ -187,24 +187,24 @@
     background: #a8a8a8;
   }
   .readMoreButton {
-    border: 2px solid var(--color-icon-light);
+    border: 2px solid #398673;
     background: white;
     border-radius: 12px;
     padding: 12px 24px;
     font-size: 0.875rem;
     font-weight: 600;
-    color: #374151;
+    color: #398673;
     cursor: pointer;
     transition: all 0.3s ease;
     letter-spacing: 0.025em;
   }
   
   .readMoreButton:hover {
-    background: var(--color-primary-dark);
+    background: #398673;
     color: white;
-    border-color: var(--color-primary-dark);
+    border-color: #398673;
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(39, 71, 96, 0.2);
+    box-shadow: 0 8px 25px rgba(65, 211, 158, 0.2);
   }
   
   .pagination {
@@ -225,7 +225,7 @@
   }
   
   .paginationDot.active {
-    background: var(--color-primary-dark);
+    background: #398673;
     transform: scale(1.2);
   }
   
@@ -234,7 +234,7 @@
   }
   
   .paginationDot:hover {
-    background: var(--color-primary-dark);
+    background: #398673;
     transform: scale(1.1);
   }
   
