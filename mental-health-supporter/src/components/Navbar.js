@@ -78,7 +78,7 @@ const CustomNavbar = () => {
           <Dropdown align="end" className={changeMarginDirection(3)}>
             <Dropdown.Toggle variant="outline-light" className={`d-flex align-items-center text-success custom-dropdown-toggle`}>
               <FaGlobe className={changeMarginDirection(2)} />
-              {language.toUpperCase()}
+              {i18n.language === 'ar' ? 'ع' : language.toUpperCase()}
             </Dropdown.Toggle>
             <Dropdown.Menu className='text-success'>
               <Dropdown.Item className='text-success' onClick={() => changeLanguage('en')}>{t('navbar.english')}</Dropdown.Item>

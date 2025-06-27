@@ -50,10 +50,11 @@ const SearchFilters = ({ onSearch, onFilterChange }) => {
             value={filters.specialization}
           >
             <option value="">All Specialties</option>
-            <option value="General Surgeon">General Surgeon</option>
-            <option value="Cardiology">Cardiology</option>
-            <option value="Dermatology">Dermatology</option>
-            <option value="Surgery">Surgery</option>
+            <option value="Clinical Psychology">Clinical Psychology</option>
+            <option value="Psychiatry">Psychiatry</option>
+            <option value="Psychotherapy">Psychotherapy</option>
+            <option value="Counseling Psychology">Counseling Psychology</option>
+            <option value="Behavioral Therapy">Behavioral Therapy</option>
           </select>
         </div>
 

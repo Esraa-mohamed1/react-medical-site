@@ -21,10 +21,11 @@ export default function DoctorsSection() {
 
   useEffect(() => {
     setAllSpecialties([
-      { id: "General Surgeon", name: "General Surgeon" },
-      { id: "Cardiology", name: "Cardiology" },
-      { id: "Dermatology", name: "Dermatology" },
-      { id: "Surgery", name: "Surgery" },
+      { id: "Clinical Psychology", name: "Clinical Psychology" },
+      { id: "Psychiatry", name: "Psychiatry" },
+      { id: "Psychotherapy", name: "Psychotherapy" },
+      { id: "Counseling Psychology", name: "Counseling Psychology" },
+      { id: "Behavioral Therapy", name: "Behavioral Therapy" },
     ]);
 
     fetchData();
