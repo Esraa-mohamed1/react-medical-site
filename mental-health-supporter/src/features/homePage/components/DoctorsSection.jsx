@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { fetchAllDoctors, fetchAllSpecialties } from "../dataSlice";
 import styles from "../style/DoctorsSection.module.css";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 export default function DoctorsSection() {
   const [currentPage, setCurrentPage] = useState(0);
@@ -12,6 +13,7 @@ export default function DoctorsSection() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const { t } = useTranslation();  // Use translation hook
 
   // Get user role from localStorage
   const user = JSON.parse(localStorage.getItem('loggedUser'));
@@ -36,37 +38,9 @@ export default function DoctorsSection() {
       const doctors = await fetchAllDoctors(filters);
 
       setCombinedDoctors(doctors.results);
-      // setAllSpecialties(specialties);
     } catch (error) {
       console.error("Failed to fetch data:", error);
-      setError("Unable to load doctors at this time. Please try again later.");
-      // Set some placeholder data for demonstration
-      // setCombinedDoctors([
-      //   {
-      //     id: 1,
-      //     username: "Dr. Sarah Johnson",
-      //     specialtyName: "Psychiatry",
-      //     bio: "Experienced psychiatrist specializing in anxiety and depression treatment.",
-      //     years_of_experience: 8,
-      //     phone: "+1 (555) 123-4567"
-      //   },
-      //   {
-      //     id: 2,
-      //     username: "Dr. Michael Chen",
-      //     specialtyName: "Psychology",
-      //     bio: "Clinical psychologist with expertise in cognitive behavioral therapy.",
-      //     years_of_experience: 12,
-      //     phone: "+1 (555) 234-5678"
-      //   },
-      //   {
-      //     id: 3,
-      //     username: "Dr. Emily Rodriguez",
-      //     specialtyName: "Counseling",
-      //     bio: "Licensed counselor helping individuals with stress management and life transitions.",
-      //     years_of_experience: 6,
-      //     phone: "+1 (555) 345-6789"
-      //   }
-      // ]);
+      setError(t('doctorsSection.errorLoading'));
     } finally {
       setLoading(false);
     }
@@ -97,12 +71,12 @@ export default function DoctorsSection() {
       <section className={styles.section}>
         <div className={styles.container}>
           <div className={styles.header}>
-            <p className={styles.subtitle}>MEET OUR DOCTORS</p>
+            <p className={styles.subtitle}>{t('doctorsSection.meetOurDoctors')}</p>
             <h2 className={styles.title}>
-              <span className={styles.titleHighlight}>Professional</span> & Enthusiastic
+              <span className={styles.titleHighlight}>{t('doctorsSection.professional')}</span> & <span className="text-success">{t('doctorsSection.enthusiastic')}</span>
             </h2>
           </div>
-          <div className={styles.loading}>Loading doctors...</div>
+          <div className={styles.loading}>{t('doctorsSection.loadingDoctors')}</div>
         </div>
       </section>
     );
@@ -112,9 +86,11 @@ export default function DoctorsSection() {
     <section className={styles.section}>
       <div className={styles.container}>
         <div className={styles.header}>
-          <p className={styles.subtitle}>MEET OUR DOCTORS ({filteredDoctors.length} Total)</p>
+          <p className={styles.subtitle}>
+            {t('doctorsSection.meetOurDoctors')} ({filteredDoctors.length} {t('doctorsSection.totalDoctors')})
+          </p>
           <h2 className={styles.title}>
-<span className={`${styles.titleHighlight} text-success`}>Professional</span> <span className="text-success">&</span> <span className="text-success">Enthusiastic</span>
+            <span className={`${styles.titleHighlight} text-success`}>{t('doctorsSection.professional')}</span> <span className="text-success">&</span> <span className="text-success">{t('doctorsSection.enthusiastic')}</span>
           </h2>
 
           {error && <p className={styles.error}>{error}</p>}
@@ -126,15 +102,15 @@ export default function DoctorsSection() {
               onChange={async(e) => {
                 setSelectedSpecialty(e.target.value);
                 setCurrentPage(0); // Reset to first page when filter changes
-                if (e.target.value !== ""){
-                  await fetchData([`specialization=${e.target.value}`, "limit=10"])
+                if (e.target.value !== "") {
+                  await fetchData([`specialization=${e.target.value}`, "limit=10"]);
                 } else {
-                  await fetchData()
+                  await fetchData();
                 }
               }}
               className={styles.filterDropdown}
             >
-              <option value="">All Specialties</option>
+              <option value="">{t('doctorsSection.allSpecialties')}</option>
               {allSpecialties.map(specialty => (
                 <option key={specialty.id} value={specialty.name}>
                   {specialty.name}
@@ -142,9 +118,11 @@ export default function DoctorsSection() {
               ))}
             </select>
 
-            {!isDoctor &&
-<a href="/doctors-list" className={styles.customLink}>See More...</a>
-            }
+            {!isDoctor && (
+              <a href="/doctors-list" className={styles.customLink}>
+                {t('doctorsSection.seeMore')}
+              </a>
+            )}
           </div>
         </div>
 
@@ -172,7 +150,6 @@ export default function DoctorsSection() {
                 <p className={styles.specialty}>{doctor.specialization}</p>
                 <p className={styles.bio}>{doctor.bio}</p>
                 <div className={styles.details}>
-                  {/* <p>{doctor.years_of_experience} years of experience</p> */}
                   <p>{doctor.phone}</p>
                 </div>
                 {!isDoctor && (
@@ -180,7 +157,7 @@ export default function DoctorsSection() {
                     onClick={() => handleReadMore(doctor.doctor_id)}
                     className={styles.readMoreButton}
                   >
-                    READ MORE
+                    {t('doctorsSection.readMore')}
                   </button>
                 )}
               </div>
@@ -195,8 +172,7 @@ export default function DoctorsSection() {
               <button
                 key={index}
                 onClick={() => setCurrentPage(index)}
-                className={`${styles.paginationDot} ${index === currentPage ? styles.active : ""
-                  }`}
+                className={`${styles.paginationDot} ${index === currentPage ? styles.active : ""}`}
               >
               </button>
             ))}

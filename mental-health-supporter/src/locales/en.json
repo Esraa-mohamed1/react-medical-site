@@ -14,6 +14,64 @@
   "Appointments":"Appointments",
   "SetTimes":"Set Times"
   },
+  "footer": {
+    "copyright": "Mental Health Support | © 2025 All rights are reserved"
+  },
+   "doctorsSection": {
+    "meetOurDoctors": "MEET OUR DOCTORS",
+    "professional": "Professional",
+    "enthusiastic": "Enthusiastic",
+    "loadingDoctors": "Loading doctors...",
+    "totalDoctors": "Total",
+    "allSpecialties": "All Specialties",
+    "seeMore": "See More...",
+    "errorLoading": "Unable to load doctors at this time. Please try again later.",
+    "readMore": "READ MORE"
+  },
+  "heroSection": {
+    "feelTheDifference": "FEEL THE DIFFERENCE WITH US",
+    "yourHealthPriority": "Your Health",
+    "isOurPriority": "Is Our Priority",
+    "searchForDoctors": "Search for Doctors",
+    "readArticles": "Read Articles"
+  },
+  "servicesSection": {
+    "whyChoose": "WHY CHOOSE HOPE MEDICAL",
+    "theBestForHealth": "The Best",
+    "forYourHealth": "For Your Health",
+    "medicalCounselingTitle": "MEDICAL COUNSELING",
+    "medicalCounselingDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit vero. Donec ultri sollicitudin lacus",
+    "topLevelDoctorsTitle": "TOP LEVEL DOCTORS",
+    "topLevelDoctorsDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit vero. Donec ultri sollicitudin lacus",
+    "medicalFacilitesTitle": "MEDICAL FACILITIES",
+    "medicalFacilitesDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit vero. Donec ultri sollicitudin lacus",
+    "twentyFourHoursServicesTitle": "24 HOURS SERVICES",
+    "twentyFourHoursServicesDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit vero. Donec ultri sollicitudin lacus",
+    "personalServicesTitle": "PERSONAL SERVICES",
+    "personalServicesDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit vero. Donec ultri sollicitudin lacus",
+    "dedicatedPatientCareTitle": "DEDICATED PATIENT CARE",
+    "dedicatedPatientCareDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit vero. Donec ultri sollicitudin lacus"
+  },
+  "tipsAndFaqSection": {
+    "tipsAndTricksTitle": "Tips & Tricks",
+    "faqTitle": "FAQs",
+    "problemWithSocialInsurance": "Problems About Social Insurance For Truck Drivers",
+    "coachingSecrets": "5 Secrets To Coaching Your Employees To Greatness",
+    "strategyPlanning": "5 Steps To Build Strategy Planning",
+    "canGetDivorce": "Can I Get A Divorce Without A Consultant?",
+    "divorceAnswer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur consectetur elit lacinia ornare. In volutpat rutrum molestie. Vivamus efficitur orci, ac gravida eros bibendum non. Nullam auctor varius faucibus ante ipsum primis in faucibus orci luctus et ultrices.",
+    "technicalSupportQuestion": "I Have A Technical Problem Or Support Issue I Need Resolved, Who Do I Email?",
+    "technicalSupportAnswer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur consectetur elit lacinia ornare.",
+    "compatibleServicesQuestion": "What Other Services Are You Compatible With?",
+    "compatibleServicesAnswer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur consectetur elit lacinia ornare.",
+    "hiringQuestion": "Are You Hiring?",
+    "hiringAnswer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur consectetur elit lacinia ornare."
+  },
+
+
+
+
+
   "doctorDetails": {
     "loading": "Loading doctor details",
     "doctorNotFound": "Doctor not found",

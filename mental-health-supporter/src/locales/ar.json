@@ -14,6 +14,63 @@
   "Appointments":"المواعيد",
   "SetTimes":"تحديد الأوقات"
   },
+  "footer": {
+    "copyright": "دعم الصحة النفسية | © 2025 جميع الحقوق محفوظة"
+  },
+  "doctorsSection": {
+    "meetOurDoctors": "قابل أطبائنا",
+    "professional": "محترف",
+    "enthusiastic": "متفائل",
+    "loadingDoctors": "جاري تحميل الأطباء...",
+    "totalDoctors": "مجموع",
+    "allSpecialties": "جميع التخصصات",
+    "seeMore": "شاهد المزيد...",
+    "errorLoading": "تعذر تحميل الأطباء في الوقت الحالي. يرجى المحاولة لاحقًا.",
+    "readMore": "اقرأ المزيد"
+  },
+  "heroSection": {
+    "feelTheDifference": "اشعر بالفرق معنا",
+    "yourHealthPriority": "صحتك",
+    "isOurPriority": "هي أولويتنا",
+    "searchForDoctors": "ابحث عن الأطباء",
+    "readArticles": "اقرأ المقالات"
+  },
+  "servicesSection": {
+    "whyChoose": "لماذا تختار هوب ميديكال",
+    "theBestForHealth": "الأفضل",
+    "forYourHealth": "من أجل صحتك",
+    "medicalCounselingTitle": "الاستشارات الطبية",
+    "medicalCounselingDescription": "لوريم إيبسوم دولور سيت أميت، كونسيتتور أديبيسيسينغ إليت فيرو. دونيك أولتري سوليسيتيودين لاكوس",
+    "topLevelDoctorsTitle": "أفضل الأطباء",
+    "topLevelDoctorsDescription": "لوريم إيبسوم دولور سيت أميت، كونسيتتور أديبيسيسينغ إليت فيرو. دونيك أولتري سوليسيتيودين لاكوس",
+    "medicalFacilitesTitle": "المرافق الطبية",
+    "medicalFacilitesDescription": "لوريم إيبسوم دولور سيت أميت، كونسيتتور أديبيسيسينغ إليت فيرو. دونيك أولتري سوليسيتيودين لاكوس",
+    "twentyFourHoursServicesTitle": "خدمات على مدار 24 ساعة",
+    "twentyFourHoursServicesDescription": "لوريم إيبسوم دولور سيت أميت، كونسيتتور أديبيسيسينغ إليت فيرو. دونيك أولتري سوليسيتيودين لاكوس",
+    "personalServicesTitle": "الخدمات الشخصية",
+    "personalServicesDescription": "لوريم إيبسوم دولور سيت أميت، كونسيتتور أديبيسيسينغ إليت فيرو. دونيك أولتري سوليسيتيودين لاكوس",
+    "dedicatedPatientCareTitle": "رعاية المرضى المخصصة",
+    "dedicatedPatientCareDescription": "لوريم إيبسوم دولور سيت أميت، كونسيتتور أديبيسيسينغ إليت فيرو. دونيك أولتري سوليسيتيودين لاكوس"
+  },
+   "tipsAndFaqSection": {
+    "tipsAndTricksTitle": "نصائح وحيل",
+    "faqTitle": "الأسئلة الشائعة",
+    "problemWithSocialInsurance": "مشاكل حول التأمين الاجتماعي لسائقي الشاحنات",
+    "coachingSecrets": "5 أسرار لتدريب موظفيك على العظمة",
+    "strategyPlanning": "5 خطوات لبناء التخطيط الاستراتيجي",
+    "canGetDivorce": "هل يمكنني الحصول على الطلاق دون مستشار؟",
+    "divorceAnswer": "لوريم إيبسوم دولور سيت أميت، كونسيتتور أديبيسيسينغ إليت فيرو. دونيك أولتري سوليسيتيودين لاكوس. في فولبوتات روتروم موليستي.",
+    "technicalSupportQuestion": "لدي مشكلة فنية أو دعم يجب حله، من يجب أن أرسل إليه البريد الإلكتروني؟",
+    "technicalSupportAnswer": "لوريم إيبسوم دولور سيت أميت، كونسيتتور أديبيسيسينغ إليت فيرو.",
+    "compatibleServicesQuestion": "ما هي الخدمات الأخرى التي تدعمها؟",
+    "compatibleServicesAnswer": "لوريم إيبسوم دولور سيت أميت، كونسيتتور أديبيسيسينغ إليت فيرو.",
+    "hiringQuestion": "هل تقومون بالتوظيف؟",
+    "hiringAnswer": "لوريم إيبسوم دولور سيت أميت، كونسيتتور أديبيسيسينغ إليت فيرو."
+  },
+
+
+
+
   "doctorDetails": {
     "loading": "جاري تحميل بيانات الطبيب",
     "doctorNotFound": "الطبيب غير موجود",

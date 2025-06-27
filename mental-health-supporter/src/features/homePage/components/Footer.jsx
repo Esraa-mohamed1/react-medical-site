@@ -121,20 +121,24 @@
 //   )
 // }
 
-import { useState } from "react"
-import styles from "../style/Footer.module.css"
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import styles from "../style/Footer.module.css";
 
 export default function Footer() {
+  const { t } = useTranslation();
+
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
         <div className={styles.copyright}>
           <p className={styles.copyrightText}>
-            Mental Health Support | © 2025 All rights Are reserved
+            {t('footer.copyright')}
           </p>
         </div>
       </div>
     </footer>
-  )
+  );
 }
+
 

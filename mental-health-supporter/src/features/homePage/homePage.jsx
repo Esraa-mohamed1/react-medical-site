@@ -71,7 +71,7 @@ import Navbar from "../../components/Navbar";
 import HeroSection from "./components/HeroSection";
 import ServicesSection from "./components/ServicesSection";
 import DoctorsSection from "./components/DoctorsSection";
-import TipsAndFaqSection from "./components/TipsAndFaqSection";
+// import TipsAndFaqSection from "./components/TipsAndFaqSection";
 import Footer from "./components/Footer";
 import styles from "./style/HomePage.module.css";
 import { Link } from "react-router-dom";
@@ -125,8 +125,11 @@ export default function HomePage() {
         <div className={styles.section}>
           <ServicesSection />
         </div>
-        <div className={styles.section}>
+        {/* <div className={styles.section}>
           <TipsAndFaqSection />
+        </div> */}
+        <div className="">
+
         </div>
         <Footer />
       </main>
