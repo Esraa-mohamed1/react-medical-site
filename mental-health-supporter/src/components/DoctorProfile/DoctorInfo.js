@@ -9,7 +9,7 @@ const DoctorInfo = ({ doctor }) => {
 
   const name = doctor.name || doctor.full_name || doctor.username || '';
   const specialty = doctor.specialty || doctor.specialization || '';
-  const profilePicture = doctor.profilePicture || '/images/1.jpeg';
+  const profilePicture = doctor.profile_image || '/images/doctor.png';
   const experience = doctor.experience || 0;
   const rating = doctor.rating || 0;
   const reviewsCount = doctor.reviewsCount || 0;
@@ -27,7 +27,7 @@ const DoctorInfo = ({ doctor }) => {
         <Card.Body className="p-4">
           <div className="d-flex flex-column flex-md-row align-items-center text-center text-md-start">
             <motion.img
-              src={profilePicture || null}
+              src={ profilePicture || null}
               alt={name}
               className="rounded-circle mb-3 mb-md-0 me-md-4 doctor-img"
               whileHover={{ scale: 1.05 }}

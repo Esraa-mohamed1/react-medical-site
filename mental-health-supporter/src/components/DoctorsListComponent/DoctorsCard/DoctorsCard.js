@@ -77,7 +77,7 @@ alt={doctor.full_name ?? t('doctorCard.defaultName')}
         <button onClick={() => navigate(`/doctors/${doctor.doctor_id}`)} className="view-doctor-button">
 <FaUser className="icon" /> {t('doctorCard.viewDoctor')}
         </button>
-        <button className="book-button">
+        <button onClick={() => navigate(`/doctors/${doctor.doctor_id}`)} className="book-button">
 <FaCalendarAlt className="icon" /> {t('doctorCard.book')}
         </button>
       </div>
