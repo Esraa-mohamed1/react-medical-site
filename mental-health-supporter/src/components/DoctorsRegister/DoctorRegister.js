@@ -4,6 +4,8 @@ import Swal from 'sweetalert2';
 import { registerDoctor } from '../../services/api';
 import MapPicker from './MapPicker';
 import './DoctorRegister.css'; // Ensure the CSS is imported
+import CustomNavbar from '../Navbar'; 
+import Footer from "../../features/homePage/components/Footer";
 
 const DoctorRegister = () => {
     const navigate = useNavigate();
@@ -195,6 +197,8 @@ const DoctorRegister = () => {
     };
 
     return (
+        <>
+        <CustomNavbar />
         <div className="doctor-register-page">
             <div className="doctor-register-card">
                 <div className="progress-bar">
@@ -211,9 +215,15 @@ const DoctorRegister = () => {
                         {step < 3 && <button type="button" onClick={nextStep} className="btn-primary">Next</button>}
                         {step === 3 && <button type="submit" disabled={isSubmitting} className="btn-primary">{isSubmitting ? 'Submitting...' : 'Register'}</button>}
                     </div>
+
+                    <p className="auth-switch text-center">
+                          <>Already have an account? <a href="/login">Log in</a></>
+                    </p>
                 </form>
             </div>
         </div>
+              <Footer />
+        </>
     );
 };
 

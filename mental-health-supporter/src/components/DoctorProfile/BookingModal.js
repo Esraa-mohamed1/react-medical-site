@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form, Row, Col, Alert } from 'react-bootstrap';
 import { FaUser, FaPhone, FaEnvelope, FaCalendarDay, FaInfoCircle } from 'react-icons/fa';
-import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
-import { createAppointment } from '../../services/doctors/AppointmentService';
+import axios from 'axios';
 import Swal from 'sweetalert2';
 
 const BookingModal = ({ show, onHide, selectedSlot, doctorId }) => {
@@ -15,6 +14,20 @@ const BookingModal = ({ show, onHide, selectedSlot, doctorId }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  // Get patient name from localStorage
+  let patientName = '';
+  try {
+    const userDataRaw = localStorage.getItem('loggedUser');
+    if (userDataRaw) {
+      const userData = JSON.parse(userDataRaw);
+      if (userData && typeof userData === 'object') {
+        patientName = userData.name || userData.full_name || userData.username || '';
+      }
+    }
+  } catch (e) {
+    patientName = '';
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,7 +53,16 @@ const BookingModal = ({ show, onHide, selectedSlot, doctorId }) => {
         notes: formData.notes,
         paypal_transaction_id: transactionId
       };
-      await createAppointment(appointmentData, accessToken);
+      await axios.post(
+        'http://127.0.0.1:8000/api/users/appointments/create/',
+        appointmentData,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
       setSuccess('Appointment booked successfully!');
       setSubmitStatus({
         type: 'success',
@@ -79,7 +101,16 @@ const BookingModal = ({ show, onHide, selectedSlot, doctorId }) => {
         appointment_date: selectedSlot && selectedSlot.dateTime ? selectedSlot.dateTime : '',
         notes: formData.notes
       };
-      await createAppointment(appointmentData, accessToken);
+      await axios.post(
+        'http://127.0.0.1:8000/api/users/appointments/create/',
+        appointmentData,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
       setSuccess('Appointment booked successfully!');
       setSubmitStatus({
         type: 'success',
@@ -107,7 +138,7 @@ const BookingModal = ({ show, onHide, selectedSlot, doctorId }) => {
 
   return (
     <Modal show={show} onHide={onHide} centered className="purple-modal">
-      <Modal.Header closeButton style={{ borderBottom: '1px solid var(--light-purple)' }}>
+      <Modal.Header closeButton style={{ borderBottom: '1px solid var(--light-teal)' }}>
         <Modal.Title className="w-100 text-center" style={{ color: 'var(--primary-purple)' }}>
           <FaCalendarDay className="me-2" />
           Confirm Appointment
@@ -115,6 +146,13 @@ const BookingModal = ({ show, onHide, selectedSlot, doctorId }) => {
       </Modal.Header>
 
       <Modal.Body className="text-start">
+        {/* Show patient name */}
+        {patientName && (
+          <div className="mb-3 d-flex align-items-center">
+            <FaUser className="me-2 text-primary" />
+            <span className="fw-bold" style={{ color: 'var(--primary-purple)' }}>Patient: {patientName}</span>
+          </div>
+        )}
         {submitStatus && (
           <Alert variant={submitStatus.type} className="d-flex align-items-center">
             <FaInfoCircle className="me-2" />
@@ -123,7 +161,7 @@ const BookingModal = ({ show, onHide, selectedSlot, doctorId }) => {
         )}
 
         <div className="text-start mb-4 p-3 bg-light rounded">
-          <h5 style={{ color: 'var(--secondary-purple)' }}>
+          <h5 style={{ color: 'var(--secondary-teal)' }}>
             {selectedSlot && selectedSlot.dateTime
               ? `${selectedSlot.dateTime}`
               : 'No slot selected'}
@@ -148,7 +186,8 @@ const BookingModal = ({ show, onHide, selectedSlot, doctorId }) => {
           </Form.Group>
         </Form>
 
-        {!paymentCompleted && (
+        {/* Remove PayPal button from modal */}
+        {/* {!paymentCompleted && (
           <div className="mt-4">
             <PayPalScriptProvider options={{ "client-id": "AaJOaVlRFMUDizYhEvaYNeNv4Ewm_VUprTaeVqnPTA6yFFnsybdEIdHcVRdVupPRjluzJKDrP-dfVugd" }}>
               <PayPalButtons
@@ -164,7 +203,7 @@ const BookingModal = ({ show, onHide, selectedSlot, doctorId }) => {
               />
             </PayPalScriptProvider>
           </div>
-        )}
+        )} */}
 
         <Form noValidate validated={validated} onSubmit={handleSubmit}>
           <div className="d-grid gap-2 mt-3">

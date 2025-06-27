@@ -1,183 +1,156 @@
-/* RegisterSelectionPage.css */
-
 /* — Layout — */
 .register-selection-page {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-image: url("/public/images/auth.png");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden;
+  position: relative;
 }
 
-/* overlay */
+/* — Overlay — */
 .register-selection-page::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(5, 19, 83, 0.4) 0%, rgba(3, 19, 77, 0.6) 100%);
-    z-index: 0;
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(5, 19, 83, 0.4), rgba(3, 19, 77, 0.6));
+  opacity: 0.3;
+  z-index: 0;
 }
 
 /* — Card — */
 .register-selection-card {
   position: relative;
   z-index: 1;
-  background: rgba(173, 216, 230, 0.3); /* Light transparent blue */
-  border-radius: 24px;
-  box-shadow: 
-    0 12px 24px rgba(2, 118, 253, 0.15),
-    0 6px 12px rgba(2, 118, 253, 0.1),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.4);
-  padding: 3rem 4rem;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  padding: 3rem 2.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: fit-content;
-  max-width: 90vw;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  width: 100%;
+  max-width: 420px;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
 }
 
 .register-selection-card:hover {
-  background: rgba(173, 216, 230, 0.4);
-  box-shadow: 
-    0 16px 32px rgba(2, 118, 253, 0.2),
-    0 8px 16px rgba(2, 118, 253, 0.15),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
-  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.18);
+  transform: translateY(-2px);
 }
 
+/* — Title — */
 .register-selection-title {
-  color: white;
-  font-weight: 700;
-  font-size: 2.25rem;
-  margin-bottom: 2.5rem;
   text-align: center;
-  letter-spacing: -0.5px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  white-space: pre; /* This ensures spaces are preserved */
+  color: #67B1B6;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  letter-spacing: -0.25px;
 }
 
-/* — Form Elements — */
+/* — Form — */
 .register-selection-form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.2rem;
   width: 100%;
 }
 
+/* — Input Group — */
 .register-selection-input-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .register-selection-input-group label {
-  font-size: 0.9rem;
-  color: white;
-  font-weight: 500;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font-size: 0.92rem;
+  color: #274760;
+  font-weight: 600;
+  padding-left: 2px;
 }
 
 .register-selection-input-group input {
-  padding: 0.85rem 1rem;
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.85);
+  border: none;
+  border-bottom: 2px solid #67B1B6;
+  border-radius: 10px;
   font-size: 1rem;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  color: #274760;
+  transition: all 0.3s ease;
+  outline: none;
 }
 
 .register-selection-input-group input:focus {
-  background: white;
-  border-color: rgba(66, 153, 225, 0.5);
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+  border-color: #37ECBA;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(55, 236, 186, 0.2);
 }
 
-/* — Buttons — */
+/* — Button — */
 .register-selection-btn {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.9) 0%, rgba(29, 78, 216, 0.9) 100%);
-  color: white;
+  background: linear-gradient(to right, #37ECBA, #72AFD3);
+  color: #fff;
   border: none;
-  border-radius: 12px;
-  padding: 1.25rem 2.75rem;
-  font-size: 1.125rem;
-  font-weight: 600;
+  border-radius: 30px;
+  padding: 0.9rem 2.5rem;
+  font-size: 1.05rem;
+  font-weight: bold;
   cursor: pointer;
-  box-shadow: 
-    0 4px 12px rgba(59, 130, 246, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  z-index: 1;
-  min-width: 220px;
-  text-align: center;
-  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(114, 175, 211, 0.35);
+  transition: all 0.3s ease;
   margin-top: 1rem;
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
-}
-
-.register-selection-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.9) 0%, rgba(30, 64, 175, 0.9) 100%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: -1;
+  min-height: 48px;
+  text-align: center;
 }
 
 .register-selection-btn:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 
-    0 6px 16px rgba(59, 130, 246, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
-
-.register-selection-btn:hover::before {
-  opacity: 1;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(114, 175, 211, 0.45);
 }
 
 /* — Footer — */
 .register-selection-footer {
   text-align: center;
   margin-top: 2rem;
-  font-size: 0.9rem;
-  color: white;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font-size: 0.95rem;
+  background: linear-gradient(to right, #67B1B6, #72AFD3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 500;
 }
 
 .register-selection-footer a {
-  color: white;
-  text-decoration: none;
   font-weight: 600;
-  border-bottom: 1px dashed white;
+  text-decoration: underline;
+  color: inherit;
+  transition: opacity 0.3s ease;
 }
 
 .register-selection-footer a:hover {
-  border-bottom-style: solid;
+  opacity: 0.85;
 }
 
+/* — Responsive — */
 @media (max-width: 768px) {
   .register-selection-card {
-    padding: 2rem;
+    padding: 2rem 1.5rem;
     max-width: 95vw;
   }
-  
+
   .register-selection-btn {
-    padding: 1rem 2rem;
-    min-width: 180px;
+    padding: 0.75rem 2rem;
   }
 }

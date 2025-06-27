@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { FaUserEdit, FaKey } from 'react-icons/fa';
 import { postData } from '../services/api';
 import CustomNavbar from '../components/Navbar';
+import './AccountSettingsPage.css'; // ✅ Import the new CSS
+import Footer from "./../features/homePage/components/Footer";
+
 
 const usernameMinLength = 3;
 const passwordMinLength = 8;
@@ -16,16 +19,12 @@ const AccountSettingsPage = () => {
     const [passwordMsg, setPasswordMsg] = useState('');
     const [loading, setLoading] = useState(false);
 
-    // Validation states
     const [usernameTouched, setUsernameTouched] = useState(false);
     const [currentPasswordTouched, setCurrentPasswordTouched] = useState(false);
     const [newPasswordTouched, setNewPasswordTouched] = useState(false);
     const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
 
-    // Username validation
     const usernameValid = username.length >= usernameMinLength && /^[a-zA-Z0-9_]+$/.test(username);
-
-    // Password validations
     const newPasswordValid = newPassword.length >= passwordMinLength;
     const newPasswordHasNumber = /\d/.test(newPassword);
     const newPasswordHasUpper = /[A-Z]/.test(newPassword);
@@ -33,7 +32,6 @@ const AccountSettingsPage = () => {
     const newPasswordHasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(newPassword);
     const passwordsMatch = newPassword === confirmPassword;
 
-    // Update username handler
     const handleUsernameChange = async (e) => {
         e.preventDefault();
         setUsernameMsg('');
@@ -44,10 +42,7 @@ const AccountSettingsPage = () => {
         setLoading(true);
         try {
             await postData(`/users/change-username/`, { username });
-            localStorage.setItem(
-                'loggedUser',
-                JSON.stringify({ ...loggedUser, name: username })
-            );
+            localStorage.setItem('loggedUser', JSON.stringify({ ...loggedUser, name: username }));
             setUsernameMsg('Username updated successfully.');
         } catch (err) {
             setUsernameMsg(`Failed to update username. ${err.response.data.username[0]}`);
@@ -55,7 +50,6 @@ const AccountSettingsPage = () => {
         setLoading(false);
     };
 
-    // Reset password handler
     const handlePasswordChange = async (e) => {
         e.preventDefault();
         setPasswordMsg('');
@@ -93,117 +87,118 @@ const AccountSettingsPage = () => {
     return (
         <>
             <CustomNavbar />
-            <div style={{ maxWidth: 500, margin: '2rem auto', padding: 24, background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px #eee' }}>
-                <h2 className="mb-4" style={{ textAlign: 'center' }}>
-                    <FaUserEdit className="me-2" /> Account Settings
-                </h2>
+            <div className="accountSettingsPage">
+                <div className="accountCard">
+                    <h2 className="accountTitle">
+                        <FaUserEdit /> Account Settings
+                    </h2>
 
-                {/* Username Change */}
-                <form onSubmit={handleUsernameChange} style={{ marginBottom: 32 }}>
-                    <label className="form-label fw-bold">Change Username</label>
-                    <input
-                        type="text"
-                        className="form-control mb-2"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        onBlur={() => setUsernameTouched(true)}
-                        required
-                        disabled={loading}
-                    />
-                    <div style={{ fontSize: 13, color: usernameTouched && !usernameValid ? 'red' : '#888' }}>
-                        Username must be at least {usernameMinLength} characters, only letters, numbers, and underscores.
-                    </div>
-                    {usernameMsg && (
-                        <div className="mt-2" style={{ color: usernameMsg.includes('success') ? 'green' : 'red' }}>
-                            {usernameMsg}
+                    <form onSubmit={handleUsernameChange}>
+                        <label className="form-label fw-bold classchangeusername">Change Username</label>
+                        <input
+                            type="text"
+                            className="accountInput"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            onBlur={() => setUsernameTouched(true)}
+                            required
+                            disabled={loading}
+                        />
+                        <div className={`validationMsg ${usernameTouched && !usernameValid ? 'validationError' : ''}`}>
+                            Username must be at least {usernameMinLength} characters, only letters, numbers, and underscores.
                         </div>
-                    )}
-                    <button type="submit" className="btn btn-primary mt-2" disabled={loading || !usernameValid}>
-                        Save Username
-                    </button>
-                </form>
+                        {usernameMsg && (
+                            <div className={`feedbackMsg ${usernameMsg.includes('success') ? 'feedbackSuccess' : ''}`}>
+                                {usernameMsg}
+                            </div>
+                        )}
+                        <button type="submit" className="accountButton" disabled={loading || !usernameValid}>
+                            Save Username
+                        </button>
+                    </form>
 
-                {/* Password Change */}
-                <form onSubmit={handlePasswordChange}>
-                    <label className="form-label fw-bold">Reset Password</label>
-                    <input
-                        type="password"
-                        className="form-control mb-2"
-                        placeholder="Current Password"
-                        value={currentPassword}
-                        onChange={(e) => setCurrentPassword(e.target.value)}
-                        onBlur={() => setCurrentPasswordTouched(true)}
-                        required
-                        disabled={loading}
-                    />
-                    <div style={{ fontSize: 13, color: currentPasswordTouched && !currentPassword ? 'red' : '#888' }}>
-                        Enter your current password.
-                    </div>
-                    <input
-                        type="password"
-                        className="form-control mb-2"
-                        placeholder="New Password"
-                        value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
-                        onBlur={() => setNewPasswordTouched(true)}
-                        required
-                        disabled={loading}
-                    />
-                    <div style={{ fontSize: 13 }}>
-                        <div style={{ color: newPasswordTouched && !newPasswordValid ? 'red' : '#888' }}>
-                            Minimum {passwordMinLength} characters.
+                    <form onSubmit={handlePasswordChange} style={{ marginTop: '2rem' }}>
+                        <label className="form-label fw-bold classchangeusername">Reset Password</label>
+                        <input
+                            type="password"
+                            className="accountInput"
+                            placeholder="Current Password"
+                            value={currentPassword}
+                            onChange={(e) => setCurrentPassword(e.target.value)}
+                            onBlur={() => setCurrentPasswordTouched(true)}
+                            required
+                            disabled={loading}
+                        />
+                        <div className={`validationMsg ${currentPasswordTouched && !currentPassword ? 'validationError' : ''}`}>
+                            Enter your current password.
                         </div>
-                        <div style={{ color: newPasswordTouched && !newPasswordHasNumber ? 'red' : '#888' }}>
-                            At least one number.
+                        <input
+                            type="password"
+                            className="accountInput"
+                            placeholder="New Password"
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                            onBlur={() => setNewPasswordTouched(true)}
+                            required
+                            disabled={loading}
+                        />
+                        <div className="validationMsg">
+                            <div className={newPasswordTouched && !newPasswordValid ? 'validationError' : ''}>
+                                Minimum {passwordMinLength} characters.
+                            </div>
+                            <div className={newPasswordTouched && !newPasswordHasNumber ? 'validationError' : ''}>
+                                At least one number.
+                            </div>
+                            <div className={newPasswordTouched && !newPasswordHasUpper ? 'validationError' : ''}>
+                                At least one uppercase letter.
+                            </div>
+                            <div className={newPasswordTouched && !newPasswordHasLower ? 'validationError' : ''}>
+                                At least one lowercase letter.
+                            </div>
+                            <div className={newPasswordTouched && !newPasswordHasSpecial ? 'validationError' : ''}>
+                                At least one special character.
+                            </div>
                         </div>
-                        <div style={{ color: newPasswordTouched && !newPasswordHasUpper ? 'red' : '#888' }}>
-                            At least one uppercase letter.
+                        <input
+                            type="password"
+                            className="accountInput"
+                            placeholder="Confirm New Password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            onBlur={() => setConfirmPasswordTouched(true)}
+                            required
+                            disabled={loading}
+                        />
+                        <div className={`validationMsg ${confirmPasswordTouched && !passwordsMatch ? 'validationError' : ''}`}>
+                            {confirmPasswordTouched && !passwordsMatch
+                                ? 'Passwords do not match.'
+                                : 'Repeat the new password.'}
                         </div>
-                        <div style={{ color: newPasswordTouched && !newPasswordHasLower ? 'red' : '#888' }}>
-                            At least one lowercase letter.
-                        </div>
-                        <div style={{ color: newPasswordTouched && !newPasswordHasSpecial ? 'red' : '#888' }}>
-                            At least one special character.
-                        </div>
-                    </div>
-                    <input
-                        type="password"
-                        className="form-control mb-2"
-                        placeholder="Confirm New Password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        onBlur={() => setConfirmPasswordTouched(true)}
-                        required
-                        disabled={loading}
-                    />
-                    <div style={{ fontSize: 13, color: confirmPasswordTouched && !passwordsMatch ? 'red' : '#888' }}>
-                        {confirmPasswordTouched && !passwordsMatch
-                            ? 'Passwords do not match.'
-                            : 'Repeat the new password.'}
-                    </div>
-                    {passwordMsg && (
-                        <div className="mt-2" style={{ color: passwordMsg.includes('success') ? 'green' : 'red' }}>
-                            {passwordMsg}
-                        </div>
-                    )}
-                    <button
-                        type="submit"
-                        className="btn btn-primary mt-2"
-                        disabled={
-                            loading ||
-                            !currentPassword ||
-                            !newPasswordValid ||
-                            !newPasswordHasNumber ||
-                            !newPasswordHasUpper ||
-                            !newPasswordHasLower ||
-                            !newPasswordHasSpecial ||
-                            !passwordsMatch
-                        }
-                    >
-                        <FaKey className="me-2" /> Reset Password
-                    </button>
-                </form>
+                        {passwordMsg && (
+                            <div className={`feedbackMsg ${passwordMsg.includes('success') ? 'feedbackSuccess' : ''}`}>
+                                {passwordMsg}
+                            </div>
+                        )}
+                        <button
+                            type="submit"
+                            className="accountButton"
+                            disabled={
+                                loading ||
+                                !currentPassword ||
+                                !newPasswordValid ||
+                                !newPasswordHasNumber ||
+                                !newPasswordHasUpper ||
+                                !newPasswordHasLower ||
+                                !newPasswordHasSpecial ||
+                                !passwordsMatch
+                            }
+                        >
+                            <FaKey /> Reset Password
+                        </button>
+                    </form>
+                </div>
             </div>
+            <Footer />
         </>
     );
 };

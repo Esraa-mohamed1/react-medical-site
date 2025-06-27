@@ -4,15 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CustomNavbar from '../../../components/Navbar';
-import { FiCalendar, FiClock, FiUsers, FiPlus, FiEdit2, FiTrash2, FiCheck, FiX } from 'react-icons/fi';
+import { FiCalendar, FiClock, FiPlus, FiEdit2, FiTrash2 } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 
 const AvailabilityPage = () => {
   const [availableDates, setAvailableDates] = useState([]);
   const [formData, setFormData] = useState({
     date: '',
-    start_time: '',
-    end_time: '',
-    max_appointments: 1
+    time: ''
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -36,7 +35,8 @@ const AvailabilityPage = () => {
   const fetchAvailableDates = async (token) => {
     try {
       setIsLoading(true);
-      const response = await axios.get('http://127.0.0.1:8000/api/medical/time-slots/available/', {
+      // Fetch only the slots created by the logged-in doctor
+      const response = await axios.get('http://localhost:8000/api/time_slots/available/my/', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -52,24 +52,43 @@ const AvailabilityPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!formData.date || !formData.start_time || !formData.end_time) {
-      toast.error('Please fill in all required fields');
+
+    // Prevent previous date
+    const todayStr = new Date().toISOString().split('T')[0];
+    if (!formData.date || formData.date < todayStr) {
+      toast.error('Please select a valid date (today or future)');
       return;
     }
-
-    if (formData.end_time <= formData.start_time) {
-      toast.error('End time must be after start time');
+    // Prevent previous time if today
+    if (formData.date === todayStr) {
+      const now = new Date();
+      const [inputHour, inputMinute] = formData.time.split(':').map(Number);
+      if (
+        inputHour < now.getHours() ||
+        (inputHour === now.getHours() && inputMinute < now.getMinutes())
+      ) {
+        toast.error('Please select a valid time (not in the past)');
+        return;
+      }
+    }
+    // Prevent duplicate slot (same date and time)
+    const isDuplicate = availableDates.some(slot => slot.date === formData.date && slot.time === formData.time && slot.id !== editingId);
+    if (isDuplicate) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Duplicate Slot',
+        text: 'A slot with this date and time already exists.'
+      });
       return;
     }
 
     try {
       setIsSubmitting(true);
       const token = localStorage.getItem('access');
-      
+
       if (editingId) {
         await axios.put(
-          `http://127.0.0.1:8000/api/medical/time-slots/available/${editingId}/update/`,
+          `http://localhost:8000/api/time_slots/available/my/${editingId}/update/`,
           formData,
           {
             headers: {
@@ -78,10 +97,14 @@ const AvailabilityPage = () => {
             }
           }
         );
-        toast.success('Time slot updated successfully');
+        Swal.fire({
+          icon: 'success',
+          title: 'Updated!',
+          text: 'Time slot updated successfully.'
+        });
       } else {
         await axios.post(
-          'http://127.0.0.1:8000/api/medical/time-slots/available/create/',
+          'http://localhost:8000/api/medical/time-slots/available/create/',
           formData,
           {
             headers: {
@@ -90,9 +113,13 @@ const AvailabilityPage = () => {
             }
           }
         );
-        toast.success('Time slot added successfully');
+        Swal.fire({
+          icon: 'success',
+          title: 'Added!',
+          text: 'Time slot added successfully.'
+        });
       }
-      
+
       resetForm();
       fetchAvailableDates(token);
     } catch (error) {
@@ -107,39 +134,46 @@ const AvailabilityPage = () => {
     setEditingId(availability.id);
     setFormData({
       date: availability.date,
-      start_time: availability.start_time,
-      end_time: availability.end_time,
-      max_appointments: availability.max_appointments || 1
+      time: availability.time
     });
     setShowForm(true);
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this time slot?')) {
-      return;
-    }
-
-    try {
-      const token = localStorage.getItem('access');
-      await axios.delete(`http://127.0.0.1:8000/api/medical/time-slots/available/${id}/delete/`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      toast.success('Time slot deleted successfully');
-      fetchAvailableDates(token);
-    } catch (error) {
-      console.error('Error deleting time slot:', error);
-      toast.error('Failed to delete time slot');
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to delete this time slot?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+      if (!result.isConfirmed) return;
+      try {
+        const token = localStorage.getItem('access');
+        await axios.delete(`http://localhost:8000/api/time_slots/available/my/${id}/delete/`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        Swal.fire({
+          icon: 'success',
+          title: 'Deleted!',
+          text: 'Time slot deleted successfully.'
+        });
+        fetchAvailableDates(token);
+      } catch (error) {
+        console.error('Error deleting time slot:', error);
+        toast.error(error.response?.data?.detail || 'Failed to delete time slot');
+      }
+    });
   };
 
   const resetForm = () => {
     setFormData({
       date: '',
-      start_time: '',
-      end_time: '',
-      max_appointments: 1
+      time: ''
     });
     setEditingId(null);
     setShowForm(false);
@@ -179,7 +213,7 @@ const AvailabilityPage = () => {
       <div className="min-vh-100 bg-light">
         <CustomNavbar />
         <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '50vh' }}>
-          <div className="spinner-border text-primary" style={{width: '3rem', height: '3rem'}} role="status">
+          <div className="spinner-border " style={{width: '3rem', height: '3rem', color: '#2A5C5F'}} role="status">
             <span className="visually-hidden">Loading...</span>
           </div>
         </div>
@@ -220,47 +254,27 @@ const AvailabilityPage = () => {
                   <h5 className="fw-bold text-dark mb-3">{editingId ? 'Edit Time Slot' : 'Add New Time Slot'}</h5>
                   <form onSubmit={handleSubmit}>
                     <div className="row g-3 mb-3">
-                      <div className="col-md-3">
+                      <div className="col-md-6">
                         <label className="form-label fw-semibold">Date *</label>
                         <input
                           type="date"
                           className="form-control form-control-lg"
                           value={formData.date}
+                          min={new Date().toISOString().split('T')[0]}
                           onChange={(e) => setFormData({...formData, date: e.target.value})}
                           required
                         />
                       </div>
-                      <div className="col-md-3">
-                        <label className="form-label fw-semibold"><FiClock className="me-2 text-primary" />Start Time *</label>
+                      <div className="col-md-6">
+                        <label className="form-label fw-semibold"><FiClock className="me-2 text-primary" />Time *</label>
                         <input
                           type="time"
                           className="form-control form-control-lg"
-                          value={formData.start_time}
-                          onChange={(e) => setFormData({...formData, start_time: e.target.value})}
+                          value={formData.time}
+                          min={formData.date === new Date().toISOString().split('T')[0] ? new Date().toLocaleTimeString('en-GB', { hour12: false }).slice(0,5) : undefined}
+                          onChange={(e) => setFormData({...formData, time: e.target.value})}
                           required
                         />
-                      </div>
-                      <div className="col-md-3">
-                        <label className="form-label fw-semibold"><FiClock className="me-2 text-primary" />End Time *</label>
-                        <input
-                          type="time"
-                          className="form-control form-control-lg"
-                          value={formData.end_time}
-                          onChange={(e) => setFormData({...formData, end_time: e.target.value})}
-                          required
-                        />
-                      </div>
-                      <div className="col-md-3">
-                        <label className="form-label fw-semibold"><FiUsers className="me-2 text-primary" />Max Appointments</label>
-                        <input
-                          type="number"
-                          className="form-control form-control-lg"
-                          value={formData.max_appointments}
-                          onChange={(e) => setFormData({...formData, max_appointments: parseInt(e.target.value)})}
-                          min="1"
-                          max="20"
-                        />
-                        <div className="form-text">Maximum number of appointments for this time slot</div>
                       </div>
                     </div>
                     <div className="d-flex gap-3 mt-3">
@@ -303,60 +317,85 @@ const AvailabilityPage = () => {
                     </button>
                   </div>
                 ) : (
-                  <div className="table-responsive">
-                    <table className="table table-hover mb-0">
-                      <thead className="table-light">
-                        <tr>
-                          <th className="border-0 ps-4">Date</th>
-                          <th className="border-0">Time Slot</th>
-                          <th className="border-0">Max Appointments</th>
-                          <th className="border-0 text-end pe-4">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {availableDates.map((availability) => (
-                          <tr key={availability.id} className="border-bottom">
-                            <td className="ps-4">
-                              <div className="d-flex align-items-center">
-                                <div className={`fw-semibold ${getStatusColor(availability.date)}`}>{formatFullDate(availability.date)}</div>
-                                <span className="badge bg-light text-dark ms-2">{formatDate(availability.date)}</span>
-                              </div>
-                            </td>
-                            <td>
-                              <div className="d-flex align-items-center">
-                                <FiClock className="text-primary me-2" />
-                                <span className="fw-medium">{availability.start_time} - {availability.end_time}</span>
-                              </div>
-                            </td>
-                            <td>
-                              <div className="d-flex align-items-center">
-                                <FiUsers className="text-primary me-2" />
-                                <span className="fw-medium">{availability.max_appointments}</span>
-                              </div>
-                            </td>
-                            <td className="text-end pe-4">
-                              <div className="btn-group" role="group">
+                  <>
+                    <div className="table-responsive">
+                      <table className="table table-hover mb-0">
+                        <thead className="table-light">
+                          <tr>
+                            <th className="border-0 ps-4">Date</th>
+                            <th className="border-0">Time Slot</th>
+                            <th className="border-0 text-end pe-4">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {availableDates.map((availability) => (
+                            <tr key={availability.id} className="border-bottom">
+                              <td className="ps-4">
+                                <div className="d-flex align-items-center">
+                                  <div className={`fw-semibold ${getStatusColor(availability.date)}`}>{formatFullDate(availability.date)}</div>
+                                  <span className="badge bg-light text-dark ms-2">{formatDate(availability.date)}</span>
+                                </div>
+                              </td>
+                              <td>
+                                <div className="d-flex align-items-center">
+                                  <FiClock className="text-primary me-2" />
+                                  <span className="fw-medium">{availability.time}</span>
+                                </div>
+                              </td>
+                              <td className="text-end pe-4">
+                                <div className="btn-group" role="group">
+                                  <button 
+                                    onClick={() => handleEdit(availability)}
+                                    className="btn btn-outline-primary btn-sm"
+                                    title="Edit"
+                                  >
+                                    <FiEdit2 />
+                                  </button>
+                                  <button 
+                                    onClick={() => handleDelete(availability.id)}
+                                    className="btn btn-outline-danger btn-sm"
+                                    title="Delete"
+                                  >
+                                    <FiTrash2 />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="row g-3 mt-3">
+                      {availableDates.map((availability) => (
+                        <div key={availability.id} className="col-md-6">
+                          <div className="card border">
+                            <div className="card-body">
+                              <h6 className="card-title">
+                                {formatDate(availability.date)}
+                              </h6>
+                              <p className="card-text mb-2">
+                                <strong>Time:</strong> {availability.time}
+                              </p>
+                              <div className="d-flex gap-2">
                                 <button 
                                   onClick={() => handleEdit(availability)}
-                                  className="btn btn-outline-primary btn-sm"
-                                  title="Edit"
+                                  className="btn btn-sm btn-outline-primary"
                                 >
-                                  <FiEdit2 />
+                                  Edit
                                 </button>
                                 <button 
                                   onClick={() => handleDelete(availability.id)}
-                                  className="btn btn-outline-danger btn-sm"
-                                  title="Delete"
+                                  className="btn btn-sm btn-outline-danger"
                                 >
-                                  <FiTrash2 />
+                                  Delete
                                 </button>
                               </div>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
                 )}
               </div>
             </div>

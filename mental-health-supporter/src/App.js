@@ -19,6 +19,7 @@ import AvailabilityPage from "./features/doctors/pages/AvailabilityPage";
 import AppointmentDetails from "./features/doctors/pages/AppointmentDetails";
 import AppointmentsList from './features/doctors/pages/AppointmentsList';
 import DoctorProfile2 from './features/doctors/components/DoctorProfile2';
+import PaymentPage from './pages/PaymentPage';
 
 import ErrorBoundary from './ErrorBoundary';
 
@@ -44,6 +45,8 @@ function App() {
           <Route path="/doctor-register" element={<DoctorRegister />} />
           <Route path="/doctors/:doctor_id" element={<DoctorPage />} />
           <Route path="/settings" element={<AccountSettingsPage />} />
+          <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/payment/:appointment_id" element={<PaymentPage />} />
           
           {/* Doctor Routes */}
           {/* <Route path="/doctor/dashboard" element={

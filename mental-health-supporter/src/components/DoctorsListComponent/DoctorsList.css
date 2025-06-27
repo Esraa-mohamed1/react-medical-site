@@ -48,12 +48,13 @@
   position: relative;
   left: 50%;
   right: 50%;
-  margin-left: -50vw;
+  margin-left: -47vw;
   margin-right: -50vw;
   background-color: white;
   padding: 1rem 0;
   border-top: 1px solid #e2e8f0;
   margin-top: 2rem;
+  border-radius: 10px;
 }
 
 /* Full-width pagination controls */

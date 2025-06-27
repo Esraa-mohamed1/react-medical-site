@@ -181,9 +181,9 @@ export const postData = async (endpoint, data) => {
 };
 
 // PATCH request
-export const patchData = async (endpoint, data) => {
+export const patchData = async (endpoint, data, config = {}) => {
   try {
-    const response = await api.patch(endpoint, data);
+    const response = await api.patch(endpoint, data, config);
     return response.data;
   } catch (error) {
     console.error('Error patching data:', error);

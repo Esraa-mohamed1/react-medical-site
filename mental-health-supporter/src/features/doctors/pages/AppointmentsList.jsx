@@ -37,8 +37,8 @@ const AppointmentsList = () => {
           params: { search: search }
         }
       );
-      
-      setAppointments(response.data);
+      const data = Array.isArray(response.data) ? response.data : (response.data.results || []);
+      setAppointments(data);
       setCurrentPage(1); // Reset to first page on new search
     } catch (error) {
       console.error("Error fetching appointments:", error);
@@ -103,11 +103,30 @@ const AppointmentsList = () => {
   const filteredCurrentAppointments = filteredAppointments.slice(indexOfFirstAppointment, indexOfLastAppointment);
 
   // Helper for avatar/initials
-  const getInitials = (name) => {
-    if (!name) return 'U';
-    const parts = name.split(' ');
-    return parts.length > 1 ? parts[0][0] + parts[1][0] : parts[0][0];
+  const getInitials = (username) => {
+    if (!username) return 'U';
+    return username.slice(0, 2).toUpperCase();
   };
+
+  // Map fields directly from API response
+  const getDisplayDate = (appointment) => {
+    if (!appointment?.appointment_date) return 'No date';
+    const date = new Date(appointment.appointment_date);
+    return date.toLocaleDateString();
+  };
+  const getDisplayTime = (appointment) => {
+    if (!appointment?.appointment_date) return 'No time';
+    const date = new Date(appointment.appointment_date);
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+  const getDisplayPatient = (appointment) => {
+    if (!appointment?.patient_info) return 'Walk-in';
+    const { first_name, last_name, username } = appointment.patient_info;
+    if (first_name || last_name) return `${first_name} ${last_name}`.trim();
+    return username;
+  };
+  const getDisplayEmail = (appointment) => appointment.patient_info?.email || 'Not available';
+  const getDisplayNotes = (appointment) => appointment.notes || '';
 
   const goToDetails = (id) => {
     navigate(`/doctor/appointments/${id}`);
@@ -140,7 +159,7 @@ const AppointmentsList = () => {
   if (isLoading && filteredAppointments.length === 0) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
-        <div className="spinner-border text-primary" style={{width: '3rem', height: '3rem'}} role="status">
+        <div className="spinner-border" style={{width: '3rem', height: '3rem', color: '#2A5C5F'}} role="status">
           <span className="visually-hidden">Loading...</span>
         </div>
       </div>
@@ -199,7 +218,7 @@ const AppointmentsList = () => {
         {/* Appointments Grid */}
         {isLoading ? (
           <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '50vh' }}>
-            <div className="spinner-border text-primary" style={{width: '3rem', height: '3rem'}} role="status">
+            <div className="spinner-border " style={{width: '3rem', height: '3rem', color: '#2A5C5F'}} role="status">
               <span className="visually-hidden">Loading...</span>
             </div>
           </div>
@@ -228,36 +247,32 @@ const AppointmentsList = () => {
                   >
                     <div className="card-header bg-white border-0 rounded-top-4 d-flex align-items-center gap-3 mb-2" style={{minHeight: 56}}>
                       <div className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style={{width: 40, height: 40, fontSize: 18}}>
-                        {appointment.patient_data?.avatarUrl ? (
-                          <img src={appointment.patient_data.avatarUrl} alt="Avatar" className="rounded-circle" style={{width: 40, height: 40, objectFit: 'cover'}} />
-                        ) : getInitials(appointment.patient_data?.name)}
+                        {appointment.patient_info ? getInitials(appointment.patient_info.username) : 'U'}
                       </div>
                       <div className="flex-grow-1">
                         <h5 className="card-title fw-bold text-dark mb-0 fs-6">
-                          {appointment.patient_data?.name || 'Walk-in'}
+                          {getDisplayPatient(appointment)}
                         </h5>
                         <span className="text-muted small">Patient</span>
                       </div>
-                      <span className={`badge rounded-pill px-3 py-2 fs-6 ${getStatusBadge(appointment.status)}`}
-                        title={appointment.status || 'Scheduled'}
-                        aria-label={`Status: ${appointment.status || 'Scheduled'}`}
-                      >
-                        {appointment.status || 'Scheduled'}
-                      </span>
-                    </div>
-                    <div className="card-body d-flex flex-column pt-0">
-                      <div className="text-muted mb-3">
-                        <p className="d-flex align-items-center mb-2 fs-6">
-                          <FiCalendar className="text-primary me-2" />
-                          <span>{appointment.date || 'No date'}</span>
+                      <div className="text-muted">
+                        <p className="d-flex align-items-center mb-2">
+                          <FiCalendar className="me-2" />
+                          <span>{getDisplayDate(appointment)}</span>
                         </p>
-                        <p className="d-flex align-items-center mb-2 fs-6">
-                          <FiClock className="text-primary me-2" />
-                          <span>{appointment.time || 'No time'}</span>
+                        <p className="d-flex align-items-center mb-2">
+                          <FiClock className="me-2" />
+                          <span>{getDisplayTime(appointment)}</span>
                         </p>
-                        <p className="d-flex align-items-center fs-6">
-                          <FiUser className="text-primary me-2" />
+                        <p className="d-flex align-items-center">
+                          <FiUser className="me-2" />
                           <span>Appointment #{appointment.id}</span>
+                        </p>
+                        <p className="d-flex align-items-center">
+                          <span className="fw-semibold">Title:</span> {appointment.title}
+                        </p>
+                        <p className="d-flex align-items-center">
+                          <span className="fw-semibold">Payment Status:</span> {appointment.payment_status}
                         </p>
                       </div>
                       {/* Status Update Section */}

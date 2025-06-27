@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import AuthForm from '../components/AuthForm';
 import { registerUser } from '../services/api';
 import Swal from 'sweetalert2';
+// import CustomNavbar from '../components/Navbar'; 
+// import Footer from "./../features/homePage/components/Footer";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -35,7 +37,9 @@ export default function RegisterPage() {
 
   return (
     <div>
+      {/* <CustomNavbar /> */}
       <AuthForm variant="register" onSubmit={handleRegister} serverError={serverError} />
+      {/* <Footer /> */}
     </div>
   );
 }

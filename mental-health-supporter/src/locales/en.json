@@ -1,0 +1,192 @@
+{
+  "navbar": {
+    "brand": "Pearla",
+  "home": "Home",
+  "doctors": "Doctors",
+  "articles": "Articles",
+  "english": "English",
+  "arabic": "Arabic",
+  "viewProfile": "View Profile",
+  "accountSettings": "Account Settings",
+  "logout": "Logout",
+  "login": "Login",
+  "register": "Register"
+  },
+  "doctorDetails": {
+    "loading": "Loading doctor details",
+    "doctorNotFound": "Doctor not found",
+    "available": "Available",
+    "unavailable": "Unavailable",
+    "changePhoto": "Change photo",
+    "notSpecified": "Not specified",
+
+    "fullName": "Full Name",
+    "specialization": "Specialization",
+
+    "contactInformation": "Contact Information",
+    "email": "Email",
+    "phone": "Phone",
+
+    "bookAppointment": "Book Appointment",
+
+    "clinicDetails": "Clinic Details",
+    "clinicName": "Clinic Name",
+    "city": "City",
+    "clinicAddress": "Clinic Address",
+
+    "saveChanges": "Save Changes",
+    "cancel": "Cancel"
+  },
+  "doctorCard": {
+    "availableToday": "Available Today",
+    "reviews": "reviews",
+    "yearsExperience": "years experience",
+    "nextAvailable": "Next available",
+    "bookAppointment": "Book Appointment",
+    "viewProfile": "View Profile",
+    "overallRating": "Overall Rating From",
+    "visitors": "Visitors",
+    "fees": "Fees",
+    "free": "Free",
+    "waitingTime": "Waiting Time",
+    "viewDoctor": "View Doctor",
+    "book": "Book"
+  },
+  "hero": {
+    "title": "Best Doctors in Egypt",
+    "subtitle": "Book online or call 16676",
+    "stats": "15000 Doctors - 9000 Professors and Consultants - More than 40 Specialties"
+  },
+  "filters": {
+    "specialty": "Select a specialty",
+    "allSpecialties": "All Specialties",
+    "generalSurgeon": "General Surgeon",
+    "cardiology": "Cardiology",
+    "dermatology": "Dermatology",
+    "surgery": "Surgery",
+
+    "city": "In this city",
+    "allCities": "All Cities",
+    "cairo": "Cairo",
+    "alexandria": "Alexandria",
+    "minya": "Minya",
+
+    "availability": "Availability",
+    "available": "Available",
+    "notAvailable": "Not Available",
+
+    "clearAll": "Clear All Filters"
+  },
+  "doctorsList": {
+    "searchPlaceholder": "Search by full name",
+    "searchButton": "Search",
+    "noResults": "No doctors match your search criteria."
+  },
+  "doctorPage": {
+    "loading": "Loading doctor information...",
+    "error": "An error occurred: {{error}}",
+    "footer": "© 2025 HeartCare Specialists. All rights reserved."
+  },
+  "doctorInfo": {
+    "yearsExperience": "{{count}} years experience",
+    "ratingWithReviews": "{{rating}} ({{count}}+ reviews)",
+    "aboutDoctor": "About Dr. {{name}}",
+    "specialization": "Specialization",
+    "noSpecialization": "No specialization listed",
+    "education": "Education",
+    "languages": "Languages Spoken"
+  },
+  "contactInfo": {
+    "title": "Contact Information",
+    "phone": "Phone Number",
+    "callNow": "Call Now",
+    "email": "Email Address",
+    "sendMessage": "Send Message",
+    "address": "Clinic Address",
+    "viewMap": "View on Map",
+    "socialMedia": "Social Media"
+  },
+  "clinicDetails": {
+    "title": "Clinic Information",
+    "address": "Clinic Address",
+    "viewMap": "View on Map",
+    "hours": "Working Hours",
+    "fees": "Consultation Fee",
+    "feesNote": "(Price may vary based on service)",
+    "services": "Available Services"
+  },
+  "bookingModal": {
+    "title": "Confirm Appointment",
+    "slotNone": "No slot selected",
+    "notes": "Notes",
+    "notesPlaceholder": "Discuss symptoms, etc.",
+    "notesInvalid": "Please provide notes for the appointment.",
+    "confirm": "Confirm Booking",
+    "cancel": "Cancel",
+    "paymentCompleted": "Payment completed by {{name}}",
+    "bookingSuccess": "Appointment booked successfully!",
+    "swalTitle": "Success!",
+    "swalText": "Your appointment has been booked successfully.",
+    "paypalAmount": "10.00"
+  },
+  "appointmentBooking": {
+    "title": "Book Appointment",
+    "loading": "Loading available times...",
+    "fetchError": "Failed to fetch available times",
+    "available": "Available",
+    "noTimes": "No available times for this doctor."
+  },
+  "reviews": {
+    "title": "Patient Reviews",
+    "addReview": "Add Review",
+    "cancel": "Cancel",
+    "fullName": "Full Name",
+    "comment": "Review",
+    "rating": "Rating",
+    "submit": "Publish Review",
+    "response": "Clinic Response"
+  },
+  "account": {
+    "settings": "Account Settings",
+    "changeUsername": "Change Username",
+    "invalidUsername": "Please enter a valid username.",
+    "usernameUpdated": "Username updated successfully.",
+    "usernameFailed": "Failed to update username. {{error}}",
+    "usernameRequirements": "Username must be at least {{min}} characters, only letters, numbers, and underscores.",
+    "saveUsername": "Save Username",
+    "resetPassword": "Reset Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password",
+    "enterCurrentPassword": "Please enter your current password.",
+    "passwordInvalid": "New password does not meet requirements.",
+    "passwordsMismatch": "New passwords do not match.",
+    "passwordUpdated": "Password updated successfully.",
+    "passwordFailed": "Failed to update password. Please check your current password.",
+    "minChars": "Minimum {{min}} characters.",
+    "hasNumber": "At least one number.",
+    "hasUpper": "At least one uppercase letter.",
+    "hasLower": "At least one lowercase letter.",
+    "hasSpecial": "At least one special character.",
+    "repeatPassword": "Repeat the new password."
+  },
+  "patient": {
+    "loading": "Loading...",
+    "fetchError": "Failed to fetch patient details",
+    "updateError": "Failed to update patient details",
+    "notFound": "Patient not found",
+    "edit": "Edit Profile",
+    "cancel": "Cancel",
+    "save": "Save Changes",
+    "changePhoto": "Change Photo",
+    "memberSince": "Member since",
+    "basicInfo": "Basic Information",
+    "contactInfo": "Contact Information",
+    "fullName": "Full Name",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "city": "City"
+  }
+}
+ 

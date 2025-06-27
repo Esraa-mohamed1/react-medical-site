@@ -3,6 +3,7 @@ import { Card, Button, Pagination, Form } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { FaUserCircle, FaStar, FaComment } from 'react-icons/fa';
 
+
 const PatientReviews = ({ reviews: initialReviews }) => {
   const [reviews, setReviews] = useState(initialReviews);
   const [activePage, setActivePage] = useState(1);
@@ -47,7 +48,7 @@ const PatientReviews = ({ reviews: initialReviews }) => {
         <Card.Body className="p-4">
           <div className="d-flex justify-content-between align-items-center mb-4 flex-row-reverse">
             <h4 className="section-title mb-0">Patient Reviews</h4>
-            <Button variant="outline-primary" size="sm" onClick={() => setShowForm(!showForm)}>
+            <Button style={{ backgroundColor: '#2A5C5F', borderColor: '#2A5C5F', color: '#fff' }} size="sm" onClick={() => setShowForm(!showForm)}>
               <FaComment className="ms-2" />
               {showForm ? 'Cancel' : 'Add Review'}
             </Button>

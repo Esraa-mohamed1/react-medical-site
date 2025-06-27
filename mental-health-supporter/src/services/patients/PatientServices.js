@@ -1,4 +1,4 @@
-import { getData, updateData } from '../api';
+import { getData, patchData } from '../api';
 
 export const getPatients = async () => {
     try {
@@ -34,7 +34,7 @@ export const updatePatient = async (patientId, patientData) => {
                 }
             }
         }
-        const updatedPatient = await updateData(
+        const updatedPatient = await patchData(
             `/medical/patients/${patientId}/update/`,
             formData,
             { headers: { 'Content-Type': 'multipart/form-data' } }

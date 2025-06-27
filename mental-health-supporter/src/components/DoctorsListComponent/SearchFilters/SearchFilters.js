@@ -80,7 +80,7 @@ const SearchFilters = ({ onSearch, onFilterChange }) => {
             onChange={(e) => handleFilterChange('available', e.target.value)}
             value={filters.area}
           >
-            <option value=""></option>
+            <option value="">Availability</option>
             <option value="true">Available</option>
             <option value="false">Not Available</option>
           </select>
@@ -125,7 +125,7 @@ const SearchFilters = ({ onSearch, onFilterChange }) => {
         <button
           className="clear-filters-button"
           onClick={clearAllFilters}
-          disabled={!filters.specialty && !filters.city && !filters.area && !filters.insurance && !searchInput}
+          disabled={!filters.specialization && !filters.city && !filters.available && !searchInput}
         >
           Clear All Filters
         </button>

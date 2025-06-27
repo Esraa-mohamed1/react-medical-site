@@ -30,7 +30,7 @@ const ClinicDetails = ({ clinic }) => {
                 <p className="mb-0 text-muted">{address}</p>
                 <a 
                   href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} 
-                  className="text-primary small" 
+                  className="small" style={{ color: '#2A5C5F' }} 
                   target="_blank" 
                   rel="noopener noreferrer"
                 >

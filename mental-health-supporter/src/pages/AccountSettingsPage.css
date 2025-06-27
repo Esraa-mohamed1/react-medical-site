@@ -1,0 +1,102 @@
+/* AccountSettingsPage.css */
+
+.accountSettingsPage {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden;
+  position: relative;
+  padding: 2rem;
+}
+
+.accountCard {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.accountTitle {
+  text-align: center;
+  color: #67B1B6;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.accountInput {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #67B1B6;
+  padding: 0.2rem 0;
+  font-size: 1rem;
+  color: #274760;
+  outline: none;
+  transition: border-color 0.3s ease;
+  width: 100%;
+  margin-bottom: 0.45rem;
+}
+
+.accountInput::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.accountInput:focus {
+  border-bottom-color: #37ECBA;
+}
+
+.validationMsg {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 0.5rem;
+}
+
+.validationError {
+  color: red;
+}
+
+.feedbackMsg {
+  font-size: 14px;
+  margin-top: 0.75rem;
+  color: red;
+}
+
+.feedbackSuccess {
+  color: green;
+}
+
+.accountButton {
+  border: none;
+  padding: 0.8rem 1rem;
+  border-radius: 30px;
+  font-weight: bold;
+  font-size: 1.05rem;
+  color: white;
+  background: linear-gradient(to right, #37ECBA, #72AFD3);
+  box-shadow: 0 4px 12px rgba(114, 175, 211, 0.3);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  margin-top: 0.75rem;
+}
+
+.accountButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(114, 175, 211, 0.4);
+}
+
+
+.classchangeusername {
+      color: #67B1B6 !important;
+}

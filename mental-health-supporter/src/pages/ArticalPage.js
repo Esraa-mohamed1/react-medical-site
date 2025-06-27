@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import CustomNavbar from './../components/Navbar';
 import '../styles/article.css';
+import Footer from "./../features/homePage/components/Footer";
+
 
 const ArticalPage = ({ clientData = {} }) => {
   // Enhanced default values
@@ -163,6 +166,8 @@ const ArticalPage = ({ clientData = {} }) => {
   };
 
   return (
+  <>
+     <CustomNavbar />
     <div className="article-container">
       {/* Header */}
       <header className="article-header">
@@ -435,6 +440,8 @@ const ArticalPage = ({ clientData = {} }) => {
         </div>
       )}
     </div>
+    <Footer/>
+    </>
   );
 };
 

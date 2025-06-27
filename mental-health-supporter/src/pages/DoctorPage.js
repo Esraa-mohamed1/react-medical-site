@@ -9,6 +9,8 @@ import AppointmentBooking from '../components/DoctorProfile/AppointmentBooking';
 import PatientReviews from '../components/DoctorProfile/PatientReviews';
 import ContactInfo from '../components/DoctorProfile/ContactInfo';
 import { fetchDoctorById } from '../services/api';
+import Footer from "./../features/homePage/components/Footer";
+
 
 const DoctorPage = () => {
   const { doctor_id } = useParams();
@@ -61,13 +63,14 @@ const DoctorPage = () => {
           </Col>
         </Row>
       </Container>
-      <footer className="bg-dark text-white py-4">
+      {/* <footer className="bg-dark text-white py-4">
         <Container>
           <div className="text-center">
             <p className="mb-0">© 2025 HeartCare Specialists. All rights reserved.</p>
           </div>
         </Container>
-      </footer>
+      </footer> */}
+      <Footer />
     </div>
   );
 };

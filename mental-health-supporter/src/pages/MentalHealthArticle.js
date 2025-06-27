@@ -6,6 +6,8 @@ import TriggerList from '../components/articalComponents/TriggerList';
 import CopingStrategies from '../components/articalComponents/CopingStrategies';
 import MoodTracker from '../components/articalComponents/MoodTracker';
 import '../styles/MentalHealthArticle.css';
+import Footer from "./../features/homePage/components/Footer";
+
 
 
 const MentalHealthArticle = ({ clientData = {} }) => {
@@ -72,6 +74,7 @@ const MentalHealthArticle = ({ clientData = {} }) => {
         </p>
       </footer>
     </div>
+    <Footer />
     </div>
   );
 };
