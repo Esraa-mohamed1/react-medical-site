@@ -1,5 +1,6 @@
 import { FileText, Users, Microscope, Clock, User, Heart } from "lucide-react"
 import styles from "../style/ServicesSection.module.css"
+// import mentalHealthImage from '../../images/mental-health-image.jpg';
 
 const services = [
   {
@@ -43,7 +44,7 @@ export default function ServicesSection() {
           <div>
             <p className={styles.subtitle}>WHY CHOOSE HOPE MEDICAL</p>
             <h2 className={styles.title}>
-              <span className={styles.titleHighlight}>The Best</span> For Your Health
+              <span className={styles.titleHighlight}>The Best</span> <span className="text-light">For Your Health</span>
             </h2>
 
             <div className={styles.servicesGrid}>
@@ -74,7 +75,17 @@ export default function ServicesSection() {
               color: '#6b7280',
               fontSize: '1.5rem'
             }}>
-              Medical Services Image
+              <img
+  src="/images/mental-health-banner-choose-wellness-260nw-2480281739.jpg"  // Absolute path starting from the public folder
+  alt="Mental Health"
+  style={{
+    width: "850px",  // Fixed width of 800px
+    height: "auto",  // Height adjusts automatically based on width to maintain aspect ratio
+    borderRadius: "10px"
+  }}
+/>
+
+
             </div>
           </div>
         </div>

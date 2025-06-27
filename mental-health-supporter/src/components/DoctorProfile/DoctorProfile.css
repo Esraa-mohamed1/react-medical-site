@@ -146,7 +146,7 @@
 .hero-section h1,
 .hero-section p,
 .hero-section .btn {
-  text-align: left !important;
+  text-align: center !important;
   justify-content: flex-start !important;
   margin-left: 0 !important;
   padding-left: 0 !important;

@@ -114,7 +114,7 @@ export default function DoctorsSection() {
         <div className={styles.header}>
           <p className={styles.subtitle}>MEET OUR DOCTORS ({filteredDoctors.length} Total)</p>
           <h2 className={styles.title}>
-            <span className={styles.titleHighlight}>Professional</span> & Enthusiastic
+<span className={`${styles.titleHighlight} text-success`}>Professional</span> <span className="text-success">&</span> <span className="text-success">Enthusiastic</span>
           </h2>
 
           {error && <p className={styles.error}>{error}</p>}
@@ -143,7 +143,7 @@ export default function DoctorsSection() {
             </select>
 
             {!isDoctor &&
-              <a href="/doctors-list">See More...</a>
+<a href="/doctors-list" className={styles.customLink}>See More...</a>
             }
           </div>
         </div>

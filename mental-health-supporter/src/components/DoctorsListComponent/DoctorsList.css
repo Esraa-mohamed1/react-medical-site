@@ -1,8 +1,8 @@
 /* Main layout container */
 .doctors-list-page {
-  max-width: 100%;
+  max-width: 100% !important;
   margin: 0 auto;
-  padding: 0 2rem 2rem;
+  padding: 0 0.5rem 0.5rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -42,31 +42,27 @@
   margin-bottom: 2rem;
 }
 
-/* Full-width pagination container */
+/* Fixed pagination container */
 .pagination-container {
   width: 100%;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -47vw;
-  margin-right: -50vw;
-  background-color: white;
-  padding: 1rem 0;
-  border-top: 1px solid #e2e8f0;
   margin-top: 2rem;
+  background-color: white;
+  padding: 0.5rem 0; /* Reduced padding to reduce height */
+  border-top: 1px solid #e2e8f0;
   border-radius: 10px;
+  display: flex;
+  justify-content: center; /* Center the pagination content */
 }
 
 /* Full-width pagination controls */
 .pagination {
-  width: 100%;
-  max-width: 1200px; /* Adjust this to match your content width */
-  margin: 0 auto;
   display: flex;
   justify-content: center;
   gap: 0.5rem;
   flex-wrap: wrap;
-  padding: 0 2rem;
+  padding: 0 1rem;
+  max-width: 1200px; /* Adjust max-width to match content area */
+  width: 100%; /* Full width within its container */
 }
 
 /* Responsive adjustments */

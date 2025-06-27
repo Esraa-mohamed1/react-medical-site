@@ -24,12 +24,12 @@
   }
   
   .subtitle {
-    color: #6b7280;
+    color: white;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     font-size: 0.875rem;
     margin-bottom: 1rem;
-    font-weight: 600;
+    font-weight: 800;
   }
   
   .title {
@@ -48,7 +48,8 @@
   }
   
   .titleHighlight {
-    color: var( --color-primary-dark);
+    /* color: var( --color-primary-dark); */
+    color: white;
   }
   
   .servicesGrid {
