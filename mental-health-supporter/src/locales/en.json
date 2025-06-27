@@ -168,7 +168,72 @@
   "phone": "Phone",
   "address": "Address",
   "city": "City"
+},
+"appointmentBooking": {
+  "title": "Book Appointment",
+  "loading": "Loading available times...",
+  "fetchError": "Failed to fetch available times",
+  "available": "Available",
+  "noTimes": "No available times for this doctor."
+},
+"bookingModal": {
+  "confirmAppointment": "Confirm Appointment",
+  "paymentSuccess": "Payment completed by {{name}}",
+  "consultation": "Consultation",
+  "bookedFor": "Appointment successfully booked for {{date}}",
+  "success": "Appointment booked successfully!",
+  "failed": "Failed to book appointment.",
+  "successTitle": "Success!",
+  "successText": "Your appointment has been booked successfully.",
+  "notes": "Notes",
+  "notesPlaceholder": "Discuss symptoms, etc.",
+  "notesRequired": "Please provide notes for the appointment.",
+  "noSlot": "No slot selected",
+  "confirmBooking": "Confirm Booking",
+  "cancel": "Cancel"
+},
+"clinicDetails": {
+  "title": "Clinic Information",
+  "addressTitle": "Clinic Address",
+  "viewOnMap": "View on Map",
+  "workingHours": "Working Hours",
+  "consultationFee": "Consultation Fee",
+  "feeNote": "(Price may vary based on service)",
+  "availableServices": "Available Services"
+},
+"contactInfo": {
+  "title": "Contact Information",
+  "phone": "Phone Number",
+  "email": "Email Address",
+  "address": "Clinic Address",
+  "callNow": "Call Now",
+  "sendMessage": "Send Message",
+  "viewMap": "View on Map",
+  "social": "Social Media"
+},
+"doctorInfo": {
+  "arabic": "Arabic",
+  "english": "English",
+  "yearsExperience": "years experience",
+  "reviews": "reviews",
+  "aboutDr": "About Dr.",
+  "specialization": "Specialization",
+  "noSpecialization": "No specialization listed",
+  "education": "Education",
+  "languages": "Languages Spoken"
+},
+"patientReviews": {
+  "title": "Patient Reviews",
+  "addReview": "Add Review",
+  "cancel": "Cancel",
+  "fullName": "Full Name",
+  "review": "Review",
+  "rating": "Rating",
+  "publish": "Publish Review",
+  "response": "Clinic Response"
 }
+
+
 
 
 }

@@ -4,8 +4,11 @@ import { motion } from 'framer-motion';
 import BookingModal from './BookingModal';
 import { FaCalendarAlt } from 'react-icons/fa';
 import { getAvailableTimes } from '../../services/doctors/AvailableTimeService';
+import { useTranslation } from 'react-i18next';
 
 const AppointmentBooking = ({ doctorId }) => {
+  const { t } = useTranslation();
+
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [availableTimes, setAvailableTimes] = useState([]);
@@ -17,15 +20,15 @@ const AppointmentBooking = ({ doctorId }) => {
       setLoading(true);
       getAvailableTimes(doctorId)
         .then(setAvailableTimes)
-        .catch(() => setError('Failed to fetch available times'))
+        .catch(() => setError(t('appointmentBooking.fetchError')))
         .finally(() => setLoading(false));
     }
-  }, [doctorId]);
+  }, [doctorId, t]);
 
   const handleBookClick = (slot) => {
     setSelectedSlot({
       ...slot,
-      dateTime: slot.date_time || slot.dateTime || `${slot.date}T${slot.time}` // ensure ISO format
+      dateTime: slot.date_time || slot.dateTime || `${slot.date}T${slot.time}`
     });
     setShowModal(true);
   };
@@ -41,10 +44,12 @@ const AppointmentBooking = ({ doctorId }) => {
         <Card className="border-0 shadow-sm sticky-top" style={{ top: '20px' }} id="booking">
           <Card.Body className="p-4">
             <div className="d-flex align-items-center mb-4 justify-content-end">
-              <h4 className="mb-0 ms-2" style={{ color: 'var(--primary-purple)' }}>Book Appointment</h4>
+              <h4 className="mb-0 ms-2" style={{ color: 'var(--primary-purple)' }}>
+                {t('appointmentBooking.title')}
+              </h4>
               <FaCalendarAlt size={24} style={{ color: 'var(--primary-purple)' }} />
             </div>
-            {loading && <div>Loading available times...</div>}
+            {loading && <div>{t('appointmentBooking.loading')}</div>}
             {error && <div className="text-danger">{error}</div>}
             <div className="d-grid gap-2 mt-2">
               {availableTimes.length > 0 ? availableTimes.map((slot) => (
@@ -55,9 +60,11 @@ const AppointmentBooking = ({ doctorId }) => {
                   onClick={() => handleBookClick(slot)}
                 >
                   <span>{slot.time}</span>
-                  <Badge bg="light" text="primary" pill>Available</Badge>
+                  <Badge bg="light" text="primary" pill>
+                    {t('appointmentBooking.available')}
+                  </Badge>
                 </Button>
-              )) : !loading && <div>No available times for this doctor.</div>}
+              )) : !loading && <div>{t('appointmentBooking.noTimes')}</div>}
             </div>
           </Card.Body>
         </Card>

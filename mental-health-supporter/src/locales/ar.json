@@ -168,7 +168,71 @@
   "phone": "رقم الهاتف",
   "address": "العنوان",
   "city": "المدينة"
+},
+"appointmentBooking": {
+  "title": "حجز موعد",
+  "loading": "جارٍ تحميل المواعيد المتاحة...",
+  "fetchError": "فشل في جلب المواعيد المتاحة",
+  "available": "متاح",
+  "noTimes": "لا توجد مواعيد متاحة لهذا الطبيب."
+},
+"bookingModal": {
+  "confirmAppointment": "تأكيد الموعد",
+  "paymentSuccess": "تم الدفع بواسطة {{name}}",
+  "consultation": "استشارة",
+  "bookedFor": "تم حجز الموعد بنجاح في {{date}}",
+  "success": "تم حجز الموعد بنجاح!",
+  "failed": "فشل في حجز الموعد.",
+  "successTitle": "تم بنجاح!",
+  "successText": "تم حجز الموعد الخاص بك بنجاح.",
+  "notes": "ملاحظات",
+  "notesPlaceholder": "ناقش الأعراض، إلخ.",
+  "notesRequired": "يرجى تقديم ملاحظات للموعد.",
+  "noSlot": "لم يتم تحديد موعد",
+  "confirmBooking": "تأكيد الحجز",
+  "cancel": "إلغاء"
+},
+"clinicDetails": {
+  "title": "معلومات العيادة",
+  "addressTitle": "عنوان العيادة",
+  "viewOnMap": "عرض على الخريطة",
+  "workingHours": "ساعات العمل",
+  "consultationFee": "رسوم الاستشارة",
+  "feeNote": "(قد تختلف الأسعار حسب الخدمة)",
+  "availableServices": "الخدمات المتوفرة"
+},
+"contactInfo": {
+  "title": "معلومات الاتصال",
+  "phone": "رقم الهاتف",
+  "email": "البريد الإلكتروني",
+  "address": "عنوان العيادة",
+  "callNow": "اتصل الآن",
+  "sendMessage": "أرسل رسالة",
+  "viewMap": "عرض على الخريطة",
+  "social": "وسائل التواصل الاجتماعي"
+},
+"doctorInfo": {
+  "arabic": "العربية",
+  "english": "الإنجليزية",
+  "yearsExperience": "سنوات من الخبرة",
+  "reviews": "تقييم",
+  "aboutDr": "عن الدكتور",
+  "specialization": "التخصص",
+  "noSpecialization": "لا يوجد تخصص مدرج",
+  "education": "التعليم",
+  "languages": "اللغات المحكية"
+},
+"patientReviews": {
+  "title": "تقييمات المرضى",
+  "addReview": "إضافة تقييم",
+  "cancel": "إلغاء",
+  "fullName": "الاسم الكامل",
+  "review": "التقييم",
+  "rating": "التقييم بالنجوم",
+  "publish": "نشر التقييم",
+  "response": "رد العيادة"
 }
+
 
 
 }
