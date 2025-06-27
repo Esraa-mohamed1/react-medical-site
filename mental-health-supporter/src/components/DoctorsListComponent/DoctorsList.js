@@ -6,8 +6,12 @@ import DoctorsCard from './DoctorsCard/DoctorsCard';
 import Pagination from './Pagination/Pagination';
 import './DoctorsList.css';
 import { getDoctors } from './../../services/doctors/DoctorServices';
+import { useTranslation } from 'react-i18next';
+
 
 const DoctorsList = () => {
+  const { t } = useTranslation();
+
   const [filteredDoctors, setFilteredDoctors] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
@@ -115,7 +119,7 @@ const DoctorsList = () => {
         <div className="search-input-container">
           <input
             type="text"
-            placeholder="Search by full name"
+placeholder={t('doctorsList.searchPlaceholder')}
             className="search-input"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -125,7 +129,8 @@ const DoctorsList = () => {
             className="search-button"
             onClick={() => handleSearch(searchTerm)}
           >
-            Search
+            {t('doctorsList.searchButton')}
+
           </button>
         </div>
       </div>
@@ -155,7 +160,7 @@ const DoctorsList = () => {
               </div>
             ))
           ) : (
-            <div className="no-results">No doctors match your search criteria.</div>
+            <div className="no-results">{t('doctorsList.noResults')}</div>
           )}
         </div>
       </div>

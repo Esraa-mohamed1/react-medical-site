@@ -1,5 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
 
 import './DoctorsCard.css';
 import doctorPlaceholder from '../images/doctor-placeholder.jpg';
@@ -7,6 +9,8 @@ import doctorImage from '../images/doctor.png';
 import { FaStar, FaUserFriends, FaMapMarkerAlt, FaMoneyBillWave, FaClock, FaPhone, FaUser, FaCalendarAlt, FaUserMd} from 'react-icons/fa';
 
 const DoctorsCard = ({ doctor }) => {
+  const { t } = useTranslation();
+
   const navigate = useNavigate();
 
   return (
@@ -14,14 +18,15 @@ const DoctorsCard = ({ doctor }) => {
       <div className="doctor-header">
         <div className="doctor-photo-container">
           <img
-            src={doctorImage || doctorPlaceholder}
-            alt={doctor.full_name ?? 'Prof.'}
+            src={doctor.profile_image || doctorImage || doctorPlaceholder}
+alt={doctor.full_name ?? t('doctorCard.defaultName')}
             className="doctor-photo"
           />
         </div>
         <div className="doctor-titles">
           <h3 className="doctor-name">
-            <FaUser className="icon" /> {doctor.full_name ?? 'Martha'}
+            <FaUser className="icon" /> {doctor.full_name ?? t('doctorCard.defaultName')}
+
           </h3>
           <p className="doctor-title">{doctor.specialization}</p>
         </div>
@@ -43,7 +48,7 @@ const DoctorsCard = ({ doctor }) => {
 
       <div className="doctor-location">
         <p>
-          <FaMapMarkerAlt className="icon" /> {doctor.clinic_name}, {doctor.clinic_address}
+          <FaMapMarkerAlt className="icon" /> {doctor.clinic_name}, {doctor.clinic_address}, {doctor.city}
         </p>
       </div>
 
@@ -70,10 +75,10 @@ const DoctorsCard = ({ doctor }) => {
 
       <div className="doctor-actions">
         <button onClick={() => navigate(`/doctors/${doctor.doctor_id}`)} className="view-doctor-button">
-          <FaUser className="icon" /> View Doctor
+<FaUser className="icon" /> {t('doctorCard.viewDoctor')}
         </button>
-        <button className="book-button">
-          <FaCalendarAlt className="icon" /> Book
+        <button onClick={() => navigate(`/doctors/${doctor.doctor_id}`)} className="book-button">
+<FaCalendarAlt className="icon" /> {t('doctorCard.book')}
         </button>
       </div>
     </div>

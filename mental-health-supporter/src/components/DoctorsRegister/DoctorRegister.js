@@ -149,10 +149,11 @@ const DoctorRegister = () => {
                         <div className="form-group">
                             <label>Specialization</label>
                             <select name="specialization" value={formData.specialization} onChange={handleChange} className={errors.specialization ? 'is-invalid' : ''}>
-                                <option>Psychiatrist</option>
-                                <option>Psychologist</option>
-                                <option>Counselor</option>
-                                <option>Therapist</option>
+                                <option>Clinical Psychology</option>
+                                <option>Psychiatry</option>
+                                <option>Psychotherapy</option>
+                                <option>Counseling Psychology</option>
+                                <option>Behavioral Therapy</option>
                             </select>
                             {errors.specialization && <div className="invalid-feedback">{errors.specialization}</div>}
                         </div>

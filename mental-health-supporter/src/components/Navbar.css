@@ -2,7 +2,7 @@
   position: sticky;
   top: 0;
   z-index: 999;
-  background: linear-gradient(90deg, #6a11cb, #8e44ad);
+  /* background: linear-gradient(90deg, #6a11cb, #8e44ad); */
   padding: 15px 40px;
   display: flex;
   justify-content: space-between;
@@ -50,3 +50,19 @@
 .dropdown-menu {
   z-index: 2000 !important;
 }
+
+.custom-dropdown-toggle {
+  border: 1px solid #28a745; /* Outline color matching success text color */
+  border-radius: 8px; /* Optional: To make the corners rounded */
+  transition: all 0.3s ease;
+}
+
+.custom-dropdown-toggle:focus {
+  outline: none; /* Remove default outline */
+  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.4); /* Light green focus box-shadow */
+}
+
+.custom-dropdown-toggle:hover {
+  border-color: #218838; /* Darker green on hover */
+}
+

@@ -71,7 +71,7 @@ import Navbar from "../../components/Navbar";
 import HeroSection from "./components/HeroSection";
 import ServicesSection from "./components/ServicesSection";
 import DoctorsSection from "./components/DoctorsSection";
-import TipsAndFaqSection from "./components/TipsAndFaqSection";
+// import TipsAndFaqSection from "./components/TipsAndFaqSection";
 import Footer from "./components/Footer";
 import styles from "./style/HomePage.module.css";
 import { Link } from "react-router-dom";
@@ -84,7 +84,7 @@ export default function HomePage() {
         <div className={styles.section}>
           <HeroSection />
         </div>
-        <div className={styles.section} style={{ display: 'flex', justifyContent: 'center', gap: '2rem', margin: '2rem 0' }}>
+        {/* <div className={styles.section} style={{ display: 'flex', justifyContent: 'center', gap: '2rem', margin: '2rem 0' }}>
           <button
   onClick={() => window.location.href = '/artical'}
   style={{
@@ -118,15 +118,18 @@ export default function HomePage() {
           >
             Search for doctors
           </button>
-        </div>
-        <div className={styles.section}>
-          <ServicesSection />
-        </div>
+        </div> */}
         <div className={styles.section}>
           <DoctorsSection />
         </div>
         <div className={styles.section}>
+          <ServicesSection />
+        </div>
+        {/* <div className={styles.section}>
           <TipsAndFaqSection />
+        </div> */}
+        <div className="">
+
         </div>
         <Footer />
       </main>
