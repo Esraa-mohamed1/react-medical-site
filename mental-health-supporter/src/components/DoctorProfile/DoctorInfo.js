@@ -40,9 +40,9 @@ const DoctorInfo = ({ doctor }) => {
               <h5 className="text-muted mb-3">{specialty}</h5>
 
               <div className="d-flex flex-wrap justify-content-center justify-content-md-start gap-2 mb-3">
-                <Badge pill bg="light" className="px-3 py-2 d-flex align-items-center" style={{ color: '#2A5C5F'}}>
-                  <FaAward className="me-1" style={{ color: '#2A5C5F' }}/> {experience} {t('doctorInfo.yearsExperience')}
-                </Badge>
+                {/* <Badge pill bg="light" className="px-3 py-2 d-flex align-items-center" style={{ color: '#2A5C5F'}}> */}
+                  {/* <FaAward className="me-1" style={{ color: '#2A5C5F' }}/> {experience} {t('doctorInfo.yearsExperience')} */}
+                {/* </Badge> */}
                 <Badge pill bg="light" className="px-3 py-2 d-flex align-items-center" style={{ color: '#2A5C5F'}}>
                   <FaStar className="me-1" style={{ color: '#2A5C5F' }}/> {rating} ({reviewsCount}+ {t('doctorInfo.reviews')})
                 </Badge>
