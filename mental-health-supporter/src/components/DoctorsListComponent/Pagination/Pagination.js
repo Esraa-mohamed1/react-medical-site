@@ -1,7 +1,11 @@
 import React from 'react';
 import './Pagination.css';
+import { useTranslation } from 'react-i18next';
+
 
 const Pagination = ({ currentPage, totalPages, paginate }) => {
+  const { t } = useTranslation();
+
   const getPageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 5;
@@ -43,7 +47,7 @@ const Pagination = ({ currentPage, totalPages, paginate }) => {
         disabled={currentPage === 1}
         onClick={() => paginate(currentPage - 1)}
       >
-        &lt; Previous
+        &lt; {t('pagination.previous')}
       </button>
       
       {getPageNumbers().map((number, index) => (
@@ -65,7 +69,7 @@ const Pagination = ({ currentPage, totalPages, paginate }) => {
         disabled={currentPage === totalPages}
         onClick={() => paginate(currentPage + 1)}
       >
-        Next &gt;
+        {t('pagination.next')} &gt;
       </button>
     </div>
   );

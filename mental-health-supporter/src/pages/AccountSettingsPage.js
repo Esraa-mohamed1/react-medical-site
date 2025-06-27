@@ -4,12 +4,16 @@ import { postData } from '../services/api';
 import CustomNavbar from '../components/Navbar';
 import './AccountSettingsPage.css'; // ✅ Import the new CSS
 import Footer from "./../features/homePage/components/Footer";
+import { useTranslation } from 'react-i18next';
+
 
 
 const usernameMinLength = 3;
 const passwordMinLength = 8;
 
 const AccountSettingsPage = () => {
+    const { t } = useTranslation();
+
     const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
     const [username, setUsername] = useState(loggedUser?.username || '');
     const [currentPassword, setCurrentPassword] = useState('');
@@ -36,16 +40,18 @@ const AccountSettingsPage = () => {
         e.preventDefault();
         setUsernameMsg('');
         if (!usernameValid) {
-            setUsernameMsg('Please enter a valid username.');
+            setUsernameMsg(t('accountSettings.Pleaseenteravalidusername'));
             return;
         }
         setLoading(true);
         try {
             await postData(`/users/change-username/`, { username });
             localStorage.setItem('loggedUser', JSON.stringify({ ...loggedUser, name: username }));
-            setUsernameMsg('Username updated successfully.');
+            setUsernameMsg(t('accountSettings.usernameUpdated'));
         } catch (err) {
-            setUsernameMsg(`Failed to update username. ${err.response.data.username[0]}`);
+            // setUsernameMsg(`Failed to update username. ${err.response.data.username[0]}`);
+            setUsernameMsg(t('accountSettings.usernameFailed') + err.response.data.username[0]);
+
         }
         setLoading(false);
     };
@@ -54,15 +60,16 @@ const AccountSettingsPage = () => {
         e.preventDefault();
         setPasswordMsg('');
         if (!currentPassword) {
-            setPasswordMsg('Please enter your current password.');
+            setPasswordMsg(t('accountSettings.enterCurrentPassword'));
+
             return;
         }
         if (!newPasswordValid || !newPasswordHasNumber || !newPasswordHasUpper || !newPasswordHasLower || !newPasswordHasSpecial) {
-            setPasswordMsg('New password does not meet requirements.');
+            setPasswordMsg(t('accountSettings.passwordRequirements'));
             return;
         }
         if (!passwordsMatch) {
-            setPasswordMsg('New passwords do not match.');
+            setPasswordMsg(t('accountSettings.passwordsNotMatch'));
             return;
         }
         setLoading(true);
@@ -71,7 +78,7 @@ const AccountSettingsPage = () => {
                 old_password: currentPassword,
                 new_password: newPassword,
             });
-            setPasswordMsg('Password updated successfully.');
+            setPasswordMsg(t('accountSettings.passwordUpdated'));
             setCurrentPassword('');
             setNewPassword('');
             setConfirmPassword('');
@@ -79,7 +86,7 @@ const AccountSettingsPage = () => {
             setCurrentPasswordTouched(false);
             setConfirmPasswordTouched(false);
         } catch (err) {
-            setPasswordMsg('Failed to update password. Please check your current password.');
+            setPasswordMsg(t('accountSettings.passwordFailed'));
         }
         setLoading(false);
     };
@@ -90,11 +97,11 @@ const AccountSettingsPage = () => {
             <div className="accountSettingsPage">
                 <div className="accountCard">
                     <h2 className="accountTitle">
-                        <FaUserEdit /> Account Settings
+                        <FaUserEdit /> {t('accountSettings.title')}
                     </h2>
 
                     <form onSubmit={handleUsernameChange}>
-                        <label className="form-label fw-bold classchangeusername">Change Username</label>
+                        <label className="form-label fw-bold classchangeusername">{t('accountSettings.changeUsername')}</label>
                         <input
                             type="text"
                             className="accountInput"
@@ -104,25 +111,25 @@ const AccountSettingsPage = () => {
                             required
                             disabled={loading}
                         />
-                        <div className={`validationMsg ${usernameTouched && !usernameValid ? 'validationError' : ''}`}>
-                            Username must be at least {usernameMinLength} characters, only letters, numbers, and underscores.
-                        </div>
+                       <div className={`validationMsg ${usernameTouched && !usernameValid ? 'validationError' : ''}`}>
+  {t('accountSettings.usernameValidation', { count: usernameMinLength })}
+</div>
                         {usernameMsg && (
                             <div className={`feedbackMsg ${usernameMsg.includes('success') ? 'feedbackSuccess' : ''}`}>
                                 {usernameMsg}
                             </div>
                         )}
                         <button type="submit" className="accountButton" disabled={loading || !usernameValid}>
-                            Save Username
+                            {t('accountSettings.saveUsername')}
                         </button>
                     </form>
 
                     <form onSubmit={handlePasswordChange} style={{ marginTop: '2rem' }}>
-                        <label className="form-label fw-bold classchangeusername">Reset Password</label>
+                        <label className="form-label fw-bold classchangeusername">{t('accountSettings.resetPassword')}</label>
                         <input
                             type="password"
                             className="accountInput"
-                            placeholder="Current Password"
+placeholder={t('accountSettings.currentPassword')}
                             value={currentPassword}
                             onChange={(e) => setCurrentPassword(e.target.value)}
                             onBlur={() => setCurrentPasswordTouched(true)}
@@ -130,12 +137,12 @@ const AccountSettingsPage = () => {
                             disabled={loading}
                         />
                         <div className={`validationMsg ${currentPasswordTouched && !currentPassword ? 'validationError' : ''}`}>
-                            Enter your current password.
-                        </div>
+  {t('accountSettings.enterCurrentPassword')}
+</div>
                         <input
                             type="password"
                             className="accountInput"
-                            placeholder="New Password"
+placeholder={t('accountSettings.newPassword')}
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
                             onBlur={() => setNewPasswordTouched(true)}
@@ -143,26 +150,27 @@ const AccountSettingsPage = () => {
                             disabled={loading}
                         />
                         <div className="validationMsg">
-                            <div className={newPasswordTouched && !newPasswordValid ? 'validationError' : ''}>
-                                Minimum {passwordMinLength} characters.
-                            </div>
-                            <div className={newPasswordTouched && !newPasswordHasNumber ? 'validationError' : ''}>
-                                At least one number.
-                            </div>
-                            <div className={newPasswordTouched && !newPasswordHasUpper ? 'validationError' : ''}>
-                                At least one uppercase letter.
-                            </div>
-                            <div className={newPasswordTouched && !newPasswordHasLower ? 'validationError' : ''}>
-                                At least one lowercase letter.
-                            </div>
-                            <div className={newPasswordTouched && !newPasswordHasSpecial ? 'validationError' : ''}>
-                                At least one special character.
-                            </div>
-                        </div>
+  <div className={newPasswordTouched && !newPasswordValid ? 'validationError' : ''}>
+    {t('accountSettings.minimumCharacters', { count: passwordMinLength })}
+  </div>
+  <div className={newPasswordTouched && !newPasswordHasNumber ? 'validationError' : ''}>
+    {t('accountSettings.atLeastOneNumber')}
+  </div>
+  <div className={newPasswordTouched && !newPasswordHasUpper ? 'validationError' : ''}>
+    {t('accountSettings.atLeastOneUpper')}
+  </div>
+  <div className={newPasswordTouched && !newPasswordHasLower ? 'validationError' : ''}>
+    {t('accountSettings.atLeastOneLower')}
+  </div>
+  <div className={newPasswordTouched && !newPasswordHasSpecial ? 'validationError' : ''}>
+    {t('accountSettings.atLeastOneSpecial')}
+  </div>
+</div>
+
                         <input
                             type="password"
                             className="accountInput"
-                            placeholder="Confirm New Password"
+placeholder={t('accountSettings.confirmPassword')}
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
                             onBlur={() => setConfirmPasswordTouched(true)}
@@ -170,10 +178,10 @@ const AccountSettingsPage = () => {
                             disabled={loading}
                         />
                         <div className={`validationMsg ${confirmPasswordTouched && !passwordsMatch ? 'validationError' : ''}`}>
-                            {confirmPasswordTouched && !passwordsMatch
-                                ? 'Passwords do not match.'
-                                : 'Repeat the new password.'}
-                        </div>
+  {confirmPasswordTouched && !passwordsMatch
+    ? t('accountSettings.passwordsDoNotMatch')
+    : t('accountSettings.repeatNewPassword')}
+</div>
                         {passwordMsg && (
                             <div className={`feedbackMsg ${passwordMsg.includes('success') ? 'feedbackSuccess' : ''}`}>
                                 {passwordMsg}
@@ -193,7 +201,7 @@ const AccountSettingsPage = () => {
                                 !passwordsMatch
                             }
                         >
-                            <FaKey /> Reset Password
+                            <FaKey /> {t('accountSettings.resetPasswordButton')}
                         </button>
                     </form>
                 </div>

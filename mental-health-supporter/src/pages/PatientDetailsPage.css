@@ -30,10 +30,18 @@
   border-radius: 20px 20px 0 0;
 }
 
-.buttonsContainer {
+.buttonsContainer-en {
   position: absolute;
   top: 1rem;
   right: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.buttonsContainer-ar {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
   display: flex;
   gap: 0.5rem;
 }

@@ -1,4 +1,3 @@
-// PatientDetailsPage.js
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getPatientById, updatePatient } from './../services/patients/PatientServices';
@@ -6,9 +5,10 @@ import patientPlaceholder from './../components/DoctorsListComponent/images/doct
 import CustomNavbar from './../components/Navbar';
 import './PatientDetailsPage.css';
 import Footer from "./../features/homePage/components/Footer";
-
+import { useTranslation } from 'react-i18next';
 
 const PatientDetailsPage = () => {
+  const { t, i18n } = useTranslation();
   const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
   const navigate = useNavigate();
   const [patient, setPatient] = useState(null);
@@ -28,14 +28,14 @@ const PatientDetailsPage = () => {
         setEditedPatient(data);
         setImagePreview(null);
       } catch (err) {
-        setError('Failed to fetch patient details');
+        setError(t('patientDetails.fetchError'));
         console.error('Error:', err);
       } finally {
         setLoading(false);
       }
     };
     fetchPatientDetails();
-  }, [id]);
+  }, [id, t]);
 
   const handleEdit = () => setIsEditing(true);
   const handleCancel = () => {
@@ -51,7 +51,7 @@ const PatientDetailsPage = () => {
       setIsEditing(false);
       setImagePreview(null);
     } catch (err) {
-      setError('Failed to update patient details');
+      setError(t('patientDetails.updateError'));
     }
   };
 
@@ -67,13 +67,13 @@ const PatientDetailsPage = () => {
     }
   };
 
-  if (loading) return <div className="statusMessage">Loading...</div>;
+  if (loading) return <div className="statusMessage">{t('patientDetails.loading')}</div>;
   if (error) return <div className="statusMessage error">{error}</div>;
-  if (!patient) return <div className="statusMessage">Patient not found</div>;
+  if (!patient) return <div className="statusMessage">{t('patientDetails.notFound')}</div>;
 
-  const renderField = (label, field, type = 'text', editable = true) => (
+  const renderField = (labelKey, field, type = 'text', editable = true) => (
     <div className="field">
-      <div className="label">{label}</div>
+      <div className="label">{t(`patientDetails.${labelKey}`)}</div>
       {isEditing && editable ? (
         <input
           type={type}
@@ -99,7 +99,7 @@ const PatientDetailsPage = () => {
       <div className="containerr">
         <div className="card">
           <div className="header">
-            <div className="buttonsContainer">
+            <div className={`buttonsContainer-${i18n.language}`}>
               {isEditing ? (
                 <>
                   <button onClick={handleCancel} className="button cancelButton">❎</button>
@@ -120,7 +120,7 @@ const PatientDetailsPage = () => {
                       <img src={profileImageSrc} alt={patient.full_name} className="avatar" />
                       <div className={`changePhotoOverlay ${isHoveringImage ? 'imageContainerHover' : ''}`}>
                         <span className="cameraIcon">📷</span>
-                        <span>Change Photo</span>
+                        <span>{t('patientDetails.changePhoto')}</span>
                       </div>
                     </label>
                     <input
@@ -138,27 +138,27 @@ const PatientDetailsPage = () => {
               <div className="profileInfo">
                 <h1 className="name">{patient.full_name}</h1>
                 <div className="created">@{loggedUser['username']}</div>
-                <div className="created">Member since: {new Date(patient.created_at).toLocaleDateString()}</div>
+                <div className="created">{t('patientDetails.memberSince')}: {new Date(patient.created_at).toLocaleDateString()}</div>
               </div>
             </div>
           </div>
 
           <div className="mainContent">
             <div className="section">
-              <h2 className="sectionTitle">Basic Information</h2>
+              <h2 className="sectionTitle">{t('patientDetails.basicInfo')}</h2>
               <div className="grid">
-                {renderField('Full Name', 'full_name')}
-                {renderField('Member Since', 'created_at', 'datetime-local', false)}
+                {renderField('fullName', 'full_name')}
+                {renderField('memberSince', 'created_at', 'datetime-local', false)}
               </div>
             </div>
 
             <div className="section">
-              <h2 className="sectionTitle">Contact Information</h2>
+              <h2 className="sectionTitle">{t('patientDetails.contactInfo')}</h2>
               <div className="grid">
-                {renderField('Email', 'email', 'email', false)}
-                {renderField('Phone', 'phone')}
-                {renderField('Address', 'address')}
-                {renderField('City', 'city')}
+                {renderField('email', 'email', 'email', false)}
+                {renderField('phone', 'phone')}
+                {renderField('address', 'address')}
+                {renderField('city', 'city')}
               </div>
             </div>
           </div>
