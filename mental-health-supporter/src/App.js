@@ -19,6 +19,7 @@ import AvailabilityPage from "./features/doctors/pages/AvailabilityPage";
 import AppointmentDetails from "./features/doctors/pages/AppointmentDetails";
 import AppointmentsList from './features/doctors/pages/AppointmentsList';
 import DoctorProfile2 from './features/doctors/components/DoctorProfile2';
+import ChatPage from './pages/ChatPage';
 
 import ErrorBoundary from './ErrorBoundary';
 
@@ -72,6 +73,7 @@ function App() {
               <DoctorProfile2 />
             </PrivateRoute>
           } />
+          <Route path="/chat/:doctorId" element={<ChatPage />} />
 
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
