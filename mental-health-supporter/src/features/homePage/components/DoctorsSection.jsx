@@ -88,7 +88,9 @@ export default function DoctorsSection() {
       <div className={styles.container}>
         <div className={styles.header}>
           <p className={styles.subtitle}>
-            {t('doctorsSection.meetOurDoctors')} ({filteredDoctors.length} {t('doctorsSection.totalDoctors')})
+            {/* {t('doctorsSection.meetOurDoctors')} ({filteredDoctors.length} {t('doctorsSection.totalDoctors')}) */}
+            {t('doctorsSection.meetOurDoctors')}
+
           </p>
           <h2 className={styles.title}>
             <span className={`${styles.titleHighlight} text-success`}>{t('doctorsSection.professional')}</span> <span className="text-success">&</span> <span className="text-success">{t('doctorsSection.enthusiastic')}</span>

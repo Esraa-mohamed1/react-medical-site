@@ -72,6 +72,12 @@ const CustomNavbar = () => {
             <Nav.Link as={Link} to="/" className="text-success mx-2 fw-medium">{t('navbar.home')}</Nav.Link>
             <Nav.Link as={Link} to={loggedUser?.role === 'doctor' ? "/doctor/appointments" : "/doctors-list"} className="text-success mx-2 fw-medium">{loggedUser?.role === 'doctor' ? t('navbar.Appointments') : t('navbar.doctors')}</Nav.Link>
             <Nav.Link as={Link} to={loggedUser?.role === 'doctor' ? "/doctor/availability" : "/artical"} className="text-success mx-2 fw-medium">{loggedUser?.role === 'doctor' ? t('navbar.SetTimes') : t('navbar.articles')}</Nav.Link>
+            {/* Doctor chat link - only for doctors */}
+            {loggedUser?.role === 'doctor' && (
+              <Nav.Link as={Link} to="/doctor-chats" className="text-success mx-2 fw-medium">
+                {t('navbar.chats') || 'Chats'}
+              </Nav.Link>
+            )}
           </Nav>
 
           {/* Language Switcher */}

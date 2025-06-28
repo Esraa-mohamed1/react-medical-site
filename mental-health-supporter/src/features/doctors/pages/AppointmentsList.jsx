@@ -6,6 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FiCalendar, FiClock, FiUser, FiSearch, FiInbox, FiChevronLeft, FiChevronRight, FiFilter } from 'react-icons/fi';
 import debounce from 'lodash.debounce';
 import CustomNavbar from '../../../components/Navbar';
+import Footer from "../../homePage/components/Footer";
+
 
 const AppointmentsList = () => {
   const [appointments, setAppointments] = useState([]);
@@ -167,7 +169,9 @@ const AppointmentsList = () => {
   }
 
   return (
-    <div className="min-vh-100 bg-light">
+    <>
+      <div style={{ background: 'radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2)', minHeight: '100vh', width: '100vw', zIndex: 0 }}>
+    <div className="min-vh-100">
       <CustomNavbar />
       <div className="container py-5">
         {/* Summary & Filter */}
@@ -343,6 +347,10 @@ const AppointmentsList = () => {
         )}
       </div>
     </div>
+
+    </div>
+              <Footer />
+</>
   );
 };
 

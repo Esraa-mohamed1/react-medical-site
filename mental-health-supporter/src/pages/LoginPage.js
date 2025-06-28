@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import AuthForm from '../components/AuthForm';
 import { loginUser } from '../services/api';
 import Swal from 'sweetalert2';
+import ChatWithDoctor from '../components/ChatWithDoctor';
 
 export default function LoginPage() {
   const navigate = useNavigate();
