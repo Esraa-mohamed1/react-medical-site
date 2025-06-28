@@ -2,6 +2,7 @@ import React from 'react';
 import ChatWithDoctor from '../components/ChatWithDoctor';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import CustomNavbar from '../components/Navbar';
 
 export default function ChatPage() {
   // Assume patient is the logged-in user
@@ -13,10 +14,13 @@ export default function ChatPage() {
   if (!user.profile_id) return <div>Patient profile_id missing. Please re-login or contact support.</div>;
 
   return (
+    <>
+    <CustomNavbar />
     <div style={{padding:'2rem 0'}}>
       <h2 style={{textAlign:'center',color:'#00bf6f'}}>Chat with Doctor</h2>
       {/* doctorId should be doctor.doctor_id, patientId should be user.profile_id */}
       <ChatWithDoctor doctorId={doctorId} patientId={user.profile_id} />
     </div>
+    </>
   );
 }

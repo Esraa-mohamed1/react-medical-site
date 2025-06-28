@@ -2,8 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
 import ReactPaginate from 'react-paginate';
+import CustomNavbar from '../components/Navbar';
+// import Footer from "./../features/homePage/components/Footer";
+
 
 const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:8000/api/chat';
 
@@ -53,7 +55,7 @@ export default function DoctorChatsPage() {
 
   return (
     <>
-      <Navbar />
+      <CustomNavbar />
       <div style={{ maxWidth: 800, margin: '40px auto', padding: '0 16px' }}>
         <h2 style={{ textAlign: 'center', marginBottom: 24 }}>Doctor Chats</h2>
         {paginatedRooms.length === 0 ? (
@@ -125,6 +127,7 @@ export default function DoctorChatsPage() {
           </div>
         )}
       </div>
+      {/* <Footer /> */}
     </>
   );
 }

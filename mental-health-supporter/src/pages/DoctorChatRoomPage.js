@@ -2,6 +2,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import CustomNavbar from '../components/Navbar';
+import Footer from "./../features/homePage/components/Footer";
+
 
 const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:8000/api/chat';
 
@@ -76,7 +79,9 @@ export default function DoctorChatRoomPage() {
   const patientName = room?.patient?.full_name || '---';
 
   return (
-    <div style={{background:'#CCFFFF',minHeight:'100vh',width:'100vw',position:'fixed',top:0,left:0,zIndex:0}}>
+    <>
+    <CustomNavbar />
+    <div style={{background:'#CCFFFF',minHeight:'100vh',width:'100vw',zIndex:0}}>
       <div className="chat-box" style={{width:'100%',maxWidth:600,minWidth:320,height:'100vh',margin:'0 auto',display:'flex',flexDirection:'column',background:'#f0f0f0',boxShadow:'0 0 8px rgba(0,0,0,0.1)'}}>
         {/* Header with Back Button */}
         <div style={{background:'#075e54',color:'#fff',padding:'16px 16px',fontSize:20,fontWeight:'bold',display:'flex',alignItems:'center',width:'100%',borderBottom:'2px solid #ddd'}}>
@@ -143,5 +148,7 @@ export default function DoctorChatRoomPage() {
         </form>
       </div>
     </div>
+    <Footer />
+    </>
   );
 }

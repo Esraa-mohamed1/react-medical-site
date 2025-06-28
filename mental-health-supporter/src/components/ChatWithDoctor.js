@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import CustomNavbar from '../components/Navbar';
+
 
 const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:8000/api/chat';
 
@@ -135,13 +137,12 @@ export default function ChatWithDoctor({ doctorId, patientId }) {
   }
 
   return (
-    <div style={{
+    <>
+      <CustomNavbar />
+      <div style={{
       background: '#CCFFFF',
-      minHeight: '100vh',
+      // minHeight: '100vh',
       width: '100vw',
-      position: 'fixed',
-      top: 0,
-      left: 0,
       zIndex: 0
     }}>
       <div className="chat-box" style={{
@@ -279,5 +280,6 @@ export default function ChatWithDoctor({ doctorId, patientId }) {
         </form>
       </div>
     </div>
+    </>
   );
 }
