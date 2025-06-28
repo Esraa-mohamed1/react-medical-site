@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getDoctorById, updateDoctor } from './../services/doctors/DoctorServices';
 import doctorPlaceholder from './../components/DoctorsListComponent/images/doctor-placeholder.jpg';
 import doctorImage from './../components/DoctorsListComponent/images/doctor.png';
@@ -14,6 +14,7 @@ const DoctorDetailsPage = () => {
 
   const nonEditableFields = ['email'];
   const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
+  const userRole = loggedUser ? loggedUser['role'] : null;
   const [doctor, setDoctor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -22,7 +23,7 @@ const DoctorDetailsPage = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [isHoveringImage, setIsHoveringImage] = useState(false);
   const { id } = useParams();
-  const userRole = JSON.parse(localStorage.getItem('loggedUser'))['role'];
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchDoctorDetails = async () => {

@@ -12,7 +12,8 @@
   "login": "Login",
   "register": "Register",
   "Appointments":"Appointments",
-  "SetTimes":"Set Times"
+  "SetTimes":"Set Times",
+  "chats": "Chats"
   },
   "footer": {
     "copyright": "Mental Health Support | © 2025 All rights are reserved"

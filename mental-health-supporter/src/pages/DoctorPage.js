@@ -53,6 +53,25 @@ const DoctorPage = () => {
           <Col lg={8}>
             <DoctorInfo doctor={doctorData} />
             <ClinicDetails clinic={doctorData} />
+            {/* زر الدردشة يظهر فقط للمريض */}
+            {(() => {
+              const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
+              const userRole = loggedUser ? loggedUser['role'] : null;
+              if (userRole === 'patient') {
+                return (
+                  <div style={{ margin: '1.5rem 0', textAlign: 'center' }}>
+                    <button
+                      className="book-button"
+                      style={{ background: 'linear-gradient(to right, #37ECBA, #72AFD3)', color: 'white', fontWeight: 'bold', border: 'none', borderRadius: 30, padding: '0.8rem 2rem', fontSize: '1rem', cursor: 'pointer', boxShadow: '0 4px 12px rgba(114, 175, 211, 0.3)' }}
+                      onClick={() => window.location.href = `/chat/${doctorData.doctor_id}`}
+                    >
+                      💬 Chat with Doctor
+                    </button>
+                  </div>
+                );
+              }
+              return null;
+            })()}
             <PatientReviews reviews={reviews} />
             <ContactInfo contact={contactInfo} />
           </Col>
@@ -63,13 +82,6 @@ const DoctorPage = () => {
           </Col>
         </Row>
       </Container>
-      {/* <footer className="bg-dark text-white py-4">
-        <Container>
-          <div className="text-center">
-            <p className="mb-0">© 2025 HeartCare Specialists. All rights reserved.</p>
-          </div>
-        </Container>
-      </footer> */}
       <Footer />
     </div>
   );

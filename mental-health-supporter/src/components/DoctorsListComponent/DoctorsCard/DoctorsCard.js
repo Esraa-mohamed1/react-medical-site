@@ -75,11 +75,28 @@ alt={doctor.full_name ?? t('doctorCard.defaultName')}
 
       <div className="doctor-actions">
         <button onClick={() => navigate(`/doctors/${doctor.doctor_id}`)} className="view-doctor-button">
-<FaUser className="icon" /> {t('doctorCard.viewDoctor')}
+          <FaUser className="icon" /> {t('doctorCard.viewDoctor')}
         </button>
         <button onClick={() => navigate(`/doctors/${doctor.doctor_id}`)} className="book-button">
-<FaCalendarAlt className="icon" /> {t('doctorCard.book')}
+          <FaCalendarAlt className="icon" /> {t('doctorCard.book')}
         </button>
+        {/* زر الدردشة يظهر فقط للمريض
+        {(() => {
+          const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
+          const userRole = loggedUser ? loggedUser['role'] : null;
+          if (userRole === 'patient') {
+            return (
+              <button
+                className="book-button"
+                style={{ marginTop: 8, background: 'linear-gradient(to right, #37ECBA, #72AFD3)', color: 'white', fontWeight: 'bold', border: 'none', borderRadius: 30, padding: '0.6rem 1.5rem', fontSize: '1rem', cursor: 'pointer', boxShadow: '0 4px 12px rgba(114, 175, 211, 0.3)' }}
+                onClick={() => navigate(`/chat/${doctor.doctor_id}`)}
+              >
+                💬 {t('doctorDetails.chatWithDoctor') || 'تشات مع الدكتور'}
+              </button>
+            );
+          }
+          return null;
+        })()} */}
       </div>
     </div>
   );
