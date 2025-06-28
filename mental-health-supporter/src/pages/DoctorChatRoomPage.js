@@ -81,17 +81,17 @@ export default function DoctorChatRoomPage() {
   return (
     <>
     <CustomNavbar />
-    <div style={{background:'#CCFFFF',minHeight:'100vh',width:'100vw',zIndex:0}}>
+<div style={{  background: 'radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2)', minHeight: '100vh', width: '100vw', zIndex: 0}}>
       <div className="chat-box" style={{width:'100%',maxWidth:600,minWidth:320,height:'100vh',margin:'0 auto',display:'flex',flexDirection:'column',background:'#f0f0f0',boxShadow:'0 0 8px rgba(0,0,0,0.1)'}}>
         {/* Header with Back Button */}
-        <div style={{background:'#075e54',color:'#fff',padding:'16px 16px',fontSize:20,fontWeight:'bold',display:'flex',alignItems:'center',width:'100%',borderBottom:'2px solid #ddd'}}>
-          <button onClick={() => window.history.back()} style={{background:'transparent',border:'none',color:'#fff',fontSize:24,cursor:'pointer',marginRight:16}}>
+        <div style={{background: 'linear-gradient(to right, #37ECBA, #72AFD3)',color:'#fff',padding:'16px 16px',fontSize:20,fontWeight:'bold',display:'flex',alignItems:'center',width:'100%',borderBottom:'2px solid #ddd'}}>
+          <button onClick={() => window.history.back()} style={{background:'transparent',border:'none',color:'#fff',fontSize:40,cursor:'pointer',marginRight:16,fontWeight:'bolder'}}>
             ←
           </button>
           {patientName}
         </div>
         {/* Messages */}
-        <div className="chat-messages" style={{flex:1,width:'100%',overflowY:'auto',padding:24,background:'#e5ddd5'}}>
+        <div className="chat-messages" style={{flex:1,width:'100%',overflowY:'auto',padding:24,background: 'linear-gradient(to right, #37ECBA, #72AFD3)'}}>
           {messages.map(msg => {
             const senderId = typeof msg.sender === 'object' ? msg.sender.id : msg.sender;
             const patientUserId = room?.patient?.user_id;
@@ -142,9 +142,9 @@ export default function DoctorChatRoomPage() {
           <div ref={messagesEndRef} />
         </div>
         {/* Input */}
-        <form onSubmit={handleSend} style={{display:'flex',gap:8,padding:16,background:'#f0f0f0',borderTop:'1px solid #ccc',width:'100%',position:'sticky',bottom:0}}>
+        <form onSubmit={handleSend} style={{display:'flex',gap:8,padding:16,background: 'linear-gradient(to right, #37ECBA, #72AFD3)',borderTop:'1px solid #ccc',width:'100%',position:'sticky',bottom:0}}>
           <input value={text} onChange={e=>setText(e.target.value)} placeholder="Type a message..." style={{flex:1,padding:12,borderRadius:20,border:'1px solid #ccc',outline:'none',fontSize:16}} />
-          <button type="submit" style={{background:'#075e54',color:'#fff',border:'none',borderRadius:20,padding:'8px 24px',fontWeight:'bold',fontSize:16,cursor:'pointer'}}>Send</button>
+          <button type="submit" style={{background: 'linear-gradient(to right, #37ECBA, #72AFD3)',color:'#fff',border:'1px solid green',borderRadius:20,padding:'8px 24px',fontWeight:'bold',fontSize:16,cursor:'pointer'}}>Send</button>
         </form>
       </div>
     </div>

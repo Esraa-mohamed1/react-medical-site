@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CustomNavbar from '../../../components/Navbar';
+import Footer from "../../homePage/components/Footer";
 
 const AvailabilityPage = () => {
   const [availableDates, setAvailableDates] = useState([]);
@@ -174,7 +175,9 @@ const AvailabilityPage = () => {
   }
 
   return (
-    <div className="min-vh-100 bg-light">
+    <>
+      <div style={{ background: 'radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2)', minHeight: '100vh', width: '100vw', zIndex: 0 }}>
+    <div className="min-vh-100">
       <CustomNavbar />
       <div className="container py-5">
         <ToastContainer />
@@ -317,6 +320,9 @@ const AvailabilityPage = () => {
         </div>
       </div>
     </div>
+    </div>
+                  <Footer />
+    </>
   );
 };
 

@@ -54,6 +54,7 @@ export default function DoctorChatsPage() {
   if (error) return <div style={{ color: 'red', textAlign: 'center' }}>{error}</div>;
 
   return (
+  <div style={{ background: 'radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2)', minHeight: '100vh', width: '100vw', zIndex: 0 }}>
     <>
       <CustomNavbar />
       <div style={{ maxWidth: 800, margin: '40px auto', padding: '0 16px' }}>
@@ -129,5 +130,7 @@ export default function DoctorChatsPage() {
       </div>
       {/* <Footer /> */}
     </>
-  );
+  </div>
+);
+
 }
