@@ -52,7 +52,7 @@ const DoctorPage = () => {
         <Row>
           <Col lg={8}>
             <DoctorInfo doctor={doctorData} />
-            <ClinicDetails clinic={clinicData} />
+            <ClinicDetails clinic={doctorData} />
             <PatientReviews reviews={reviews} />
             <ContactInfo contact={contactInfo} />
           </Col>

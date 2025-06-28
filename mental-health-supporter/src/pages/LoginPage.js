@@ -33,12 +33,12 @@ export default function LoginPage() {
         localStorage.setItem('refresh', result.refresh);
         
         const userRole = result.role;
-        let loggedUser = { role: userRole };
+        let loggedUser = { role: userRole, username: result.username };
 
         if (userRole === 'doctor' && result.user.doctor_id) {
-          loggedUser = { ...result.user, role: userRole, id: result.user.doctor_id };
+          loggedUser = { ...loggedUser, ...result.user, id: result.user.doctor_id };
         } else if (userRole === 'patient' && result.user.patient_id) {
-          loggedUser = { ...result.user, role: userRole, id: result.user.patient_id };
+          loggedUser = { ...loggedUser, ...result.user, id: result.user.patient_id };
         }
         
         localStorage.setItem('loggedUser', JSON.stringify(loggedUser));

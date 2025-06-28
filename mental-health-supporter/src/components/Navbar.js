@@ -63,26 +63,26 @@ const CustomNavbar = () => {
     <Navbar expand="lg" className="shadow-sm py-3" bg="white">
       <Container>
         <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
-          <FaClinicMedical className={changeMarginDirection(2)} size={28} color="#6a0dad" />
-          <span className="text-purple fw-bold fs-3">{t('navbar.brand')}</span>
+          <FaClinicMedical className={changeMarginDirection(2)} size={28} color="green" />
+          <span className="text-success fw-bold fs-3">{t('navbar.brand')}</span>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className={changeMarginDirection('auto')}>
-            <Nav.Link as={Link} to="/" className="text-dark mx-2 fw-medium">{t('navbar.home')}</Nav.Link>
-            <Nav.Link as={Link} to={loggedUser?.role === 'doctor' ? "/doctor/appointments" : "/doctors-list"} className="text-dark mx-2 fw-medium">{t('navbar.doctors')}</Nav.Link>
-            <Nav.Link as={Link} to={loggedUser?.role === 'doctor' ? "/doctor/availability" : "/artical"} className="text-dark mx-2 fw-medium">{t('navbar.articles')}</Nav.Link>
+            <Nav.Link as={Link} to="/" className="text-success mx-2 fw-medium">{t('navbar.home')}</Nav.Link>
+            <Nav.Link as={Link} to={loggedUser?.role === 'doctor' ? "/doctor/appointments" : "/doctors-list"} className="text-success mx-2 fw-medium">{loggedUser?.role === 'doctor' ? t('navbar.Appointments') : t('navbar.doctors')}</Nav.Link>
+            <Nav.Link as={Link} to={loggedUser?.role === 'doctor' ? "/doctor/availability" : "/artical"} className="text-success mx-2 fw-medium">{loggedUser?.role === 'doctor' ? t('navbar.SetTimes') : t('navbar.articles')}</Nav.Link>
           </Nav>
 
           {/* Language Switcher */}
           <Dropdown align="end" className={changeMarginDirection(3)}>
-            <Dropdown.Toggle variant="outline-secondary" className="d-flex align-items-center">
+            <Dropdown.Toggle variant="outline-light" className={`d-flex align-items-center text-success custom-dropdown-toggle`}>
               <FaGlobe className={changeMarginDirection(2)} />
-              {language.toUpperCase()}
+              {i18n.language === 'ar' ? 'ع' : language.toUpperCase()}
             </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item onClick={() => changeLanguage('en')}>{t('navbar.english')}</Dropdown.Item>
-              <Dropdown.Item onClick={() => changeLanguage('ar')}>{t('navbar.arabic')}</Dropdown.Item>
+            <Dropdown.Menu className='text-success'>
+              <Dropdown.Item className='text-success' onClick={() => changeLanguage('en')}>{t('navbar.english')}</Dropdown.Item>
+              <Dropdown.Item className='text-success' onClick={() => changeLanguage('ar')}>{t('navbar.arabic')}</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
 
@@ -90,7 +90,7 @@ const CustomNavbar = () => {
             <Dropdown align="end" show={showDropdown} onToggle={handleDropdownToggle}>
               <Dropdown.Toggle variant="primary" className="d-flex align-items-center">
                 <FaUser className={changeMarginDirection(2)} />
-                {loggedUser['full_name'] || 'User'}
+                {loggedUser['username'] || 'User'}
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item onClick={handleProfileClick} disabled={!profileUrl}>
@@ -110,8 +110,8 @@ const CustomNavbar = () => {
             </Dropdown>
           ) : (
             <Nav>
-              <Nav.Link as={Link} to="/login" className="text-dark mx-2 fw-medium">{t('navbar.login')}</Nav.Link>
-              <Nav.Link as={Link} to="/register-select" className="text-dark mx-2 fw-medium">{t('navbar.register')}</Nav.Link>
+              <Nav.Link as={Link} to="/login" className="text-success mx-2 fw-medium">{t('navbar.login')}</Nav.Link>
+              <Nav.Link as={Link} to="/register-select" className="text-success mx-2 fw-medium">{t('navbar.register')}</Nav.Link>
             </Nav>
           )}
         </Navbar.Collapse>

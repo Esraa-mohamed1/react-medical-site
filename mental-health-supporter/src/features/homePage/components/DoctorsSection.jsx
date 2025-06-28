@@ -2,90 +2,55 @@ import { useState, useEffect } from "react";
 import { fetchAllDoctors, fetchAllSpecialties } from "../dataSlice";
 import styles from "../style/DoctorsSection.module.css";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 export default function DoctorsSection() {
   const [currentPage, setCurrentPage] = useState(0);
   const [doctorsPerPage] = useState(3);
   const [combinedDoctors, setCombinedDoctors] = useState([]);
   const [allSpecialties, setAllSpecialties] = useState([]);
-  const [selectedSpecialty, setSelectedSpecialty] = useState("all");
+  const [selectedSpecialty, setSelectedSpecialty] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const { t } = useTranslation();  // Use translation hook
 
   // Get user role from localStorage
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(localStorage.getItem('loggedUser'));
   const isDoctor = user?.role === 'doctor';
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        
-        const [doctors, specialties] = await Promise.all([
-          fetchAllDoctors(),
-          fetchAllSpecialties()
-        ]);
-
-        const enrichedDoctors = doctors.map(doctor => {
-          const specialty = specialties.find(s => s.id === doctor.specialty_id);
-          return {
-            ...doctor,
-            username: typeof doctor.user === 'object' ? doctor.user.username : doctor.user,
-            specialtyName: specialty?.name || "General"
-          };
-        });
-
-        setCombinedDoctors(enrichedDoctors);
-        setAllSpecialties(specialties);
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-        setError("Unable to load doctors at this time. Please try again later.");
-        // Set some placeholder data for demonstration
-        setCombinedDoctors([
-          {
-            id: 1,
-            username: "Dr. Sarah Johnson",
-            specialtyName: "Psychiatry",
-            bio: "Experienced psychiatrist specializing in anxiety and depression treatment.",
-            years_of_experience: 8,
-            phone: "+1 (555) 123-4567"
-          },
-          {
-            id: 2,
-            username: "Dr. Michael Chen",
-            specialtyName: "Psychology",
-            bio: "Clinical psychologist with expertise in cognitive behavioral therapy.",
-            years_of_experience: 12,
-            phone: "+1 (555) 234-5678"
-          },
-          {
-            id: 3,
-            username: "Dr. Emily Rodriguez",
-            specialtyName: "Counseling",
-            bio: "Licensed counselor helping individuals with stress management and life transitions.",
-            years_of_experience: 6,
-            phone: "+1 (555) 345-6789"
-          }
-        ]);
-        setAllSpecialties([
-          { id: 1, name: "Psychiatry" },
-          { id: 2, name: "Psychology" },
-          { id: 3, name: "Counseling" }
-        ]);
-      } finally {
-        setLoading(false);
-      }
-    };
+    setAllSpecialties([
+      { id: "Clinical Psychology", name: t("doctorsSection.clinicalPsychology") },
+      { id: "Psychiatry", name: t("doctorsSection.psychiatry") },
+      { id: "Psychotherapy", name: t("doctorsSection.psychotherapy") },
+      { id: "Counseling Psychology", name: t("doctorsSection.counselingPsychology") },
+      { id: "Behavioral Therapy", name: t("doctorsSection.behavioralTherapy") },
+    ]);
 
     fetchData();
-  }, []);
+  }, [t]);
+
+  const fetchData = async (filters = ["limit=10"]) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const doctors = await fetchAllDoctors(filters);
+
+      setCombinedDoctors(doctors.results);
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+      setError(t('doctorsSection.errorLoading'));
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Filter doctors by specialty
-  const filteredDoctors = selectedSpecialty === "all" 
-    ? combinedDoctors 
-    : combinedDoctors.filter(doctor => doctor.specialtyName === selectedSpecialty);
+  const filteredDoctors = selectedSpecialty === ""
+    ? combinedDoctors
+    : combinedDoctors.filter(doctor => doctor.specialization === selectedSpecialty);
 
   // Pagination logic
   const totalPages = Math.ceil(filteredDoctors.length / doctorsPerPage);
@@ -94,12 +59,12 @@ export default function DoctorsSection() {
     (currentPage + 1) * doctorsPerPage
   );
 
-  const handleReadMore = () => {
+  const handleReadMore = (doctorId) => {
     if (!user) {
       navigate('/login');
       return;
     }
-    navigate('/doctors-list');
+    navigate(`/doctors/${doctorId}`);
   };
 
   if (loading) {
@@ -107,12 +72,12 @@ export default function DoctorsSection() {
       <section className={styles.section}>
         <div className={styles.container}>
           <div className={styles.header}>
-            <p className={styles.subtitle}>MEET OUR DOCTORS</p>
+            <p className={styles.subtitle}>{t('doctorsSection.meetOurDoctors')}</p>
             <h2 className={styles.title}>
-              <span className={styles.titleHighlight}>Professional</span> & Enthusiastic
+              <span className={styles.titleHighlight}>{t('doctorsSection.professional')}</span> & <span className="text-success">{t('doctorsSection.enthusiastic')}</span>
             </h2>
           </div>
-          <div className={styles.loading}>Loading doctors...</div>
+          <div className={styles.loading}>{t('doctorsSection.loadingDoctors')}</div>
         </div>
       </section>
     );
@@ -122,36 +87,49 @@ export default function DoctorsSection() {
     <section className={styles.section}>
       <div className={styles.container}>
         <div className={styles.header}>
-          <p className={styles.subtitle}>MEET OUR DOCTORS ({filteredDoctors.length} Total)</p>
+          <p className={styles.subtitle}>
+            {t('doctorsSection.meetOurDoctors')} ({filteredDoctors.length} {t('doctorsSection.totalDoctors')})
+          </p>
           <h2 className={styles.title}>
-            <span className={styles.titleHighlight}>Professional</span> & Enthusiastic
+            <span className={`${styles.titleHighlight} text-success`}>{t('doctorsSection.professional')}</span> <span className="text-success">&</span> <span className="text-success">{t('doctorsSection.enthusiastic')}</span>
           </h2>
-          
+
           {error && <p className={styles.error}>{error}</p>}
-          
+
           {/* Specialty Filter Dropdown */}
           <div className={styles.filterContainer}>
             <select
               value={selectedSpecialty}
-              onChange={(e) => {
+              onChange={async(e) => {
                 setSelectedSpecialty(e.target.value);
                 setCurrentPage(0); // Reset to first page when filter changes
+                if (e.target.value !== "") {
+                  await fetchData([`specialization=${e.target.value}`, "limit=10"]);
+                } else {
+                  await fetchData();
+                }
               }}
               className={styles.filterDropdown}
             >
-              <option value="all">All Specialties</option>
+              <option value="">{t('doctorsSection.allSpecialties')}</option>
               {allSpecialties.map(specialty => (
                 <option key={specialty.id} value={specialty.name}>
                   {specialty.name}
                 </option>
               ))}
             </select>
+
+            {!isDoctor && (
+              <a href="/doctors-list" className={styles.customLink}>
+                {t('doctorsSection.seeMore')}
+              </a>
+            )}
           </div>
         </div>
 
         <div className={styles.doctorsGrid}>
           {currentDoctors.map((doctor) => (
-            <div key={doctor.id} className={styles.doctorCard}>
+            <div key={doctor.doctor_id} className={styles.doctorCard}>
               <div className={styles.cardContent}>
                 <div className={styles.doctorImage} style={{
                   width: '120px',
@@ -165,23 +143,22 @@ export default function DoctorsSection() {
                   fontSize: '2rem',
                   color: '#6b7280'
                 }}>
-                  {doctor.username?.charAt(0)?.toUpperCase() || 'D'}
+                  {doctor.full_name?.charAt(0)?.toUpperCase() || 'D'}
                 </div>
                 <h3 className={styles.doctorName}>
-                  <span className={styles.nameHighlight}>{doctor.username}</span>  
+                  <span className={styles.nameHighlight}>{doctor.full_name ?? "John Smith"}</span>
                 </h3>
-                <p className={styles.specialty}>{doctor.specialtyName}</p>
+                <p className={styles.specialty}>{doctor.specialization}</p>
                 <p className={styles.bio}>{doctor.bio}</p>
                 <div className={styles.details}>
-                  <p>{doctor.years_of_experience} years of experience</p>
                   <p>{doctor.phone}</p>
                 </div>
                 {!isDoctor && (
-                  <button 
-                    onClick={handleReadMore}
+                  <button
+                    onClick={() => handleReadMore(doctor.doctor_id)}
                     className={styles.readMoreButton}
                   >
-                    READ MORE
+                    {t('doctorsSection.readMore')}
                   </button>
                 )}
               </div>
@@ -196,9 +173,7 @@ export default function DoctorsSection() {
               <button
                 key={index}
                 onClick={() => setCurrentPage(index)}
-                className={`${styles.paginationDot} ${
-                  index === currentPage ? styles.active : ""
-                }`}
+                className={`${styles.paginationDot} ${index === currentPage ? styles.active : ""}`}
               >
               </button>
             ))}

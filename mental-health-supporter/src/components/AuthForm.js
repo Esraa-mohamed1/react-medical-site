@@ -218,7 +218,7 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
                 }}
               />
             </button>
-            <span class="google-login-text">
+            <span className="google-login-text">
               Continue with Google
             </span>
           </div>

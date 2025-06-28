@@ -4,8 +4,11 @@ import { motion } from 'framer-motion';
 import BookingModal from './BookingModal';
 import { FaCalendarAlt } from 'react-icons/fa';
 import { getAvailableTimes } from '../../services/doctors/AvailableTimeService';
+import { useTranslation } from 'react-i18next';
 
 const AppointmentBooking = ({ doctorId }) => {
+  const { t } = useTranslation();
+
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [availableTimes, setAvailableTimes] = useState([]);
@@ -17,15 +20,15 @@ const AppointmentBooking = ({ doctorId }) => {
       setLoading(true);
       getAvailableTimes(doctorId)
         .then(setAvailableTimes)
-        .catch(() => setError('Failed to fetch available times'))
+        .catch(() => setError(t('appointmentBooking.fetchError')))
         .finally(() => setLoading(false));
     }
-  }, [doctorId]);
+  }, [doctorId, t]);
 
   const handleBookClick = (slot) => {
     setSelectedSlot({
       ...slot,
-      dateTime: slot.date_time || slot.dateTime || `${slot.date}T${slot.time}` // ensure ISO format
+      dateTime: slot.date_time || slot.dateTime || `${slot.date}T${slot.time}`
     });
     setShowModal(true);
   };
@@ -38,14 +41,16 @@ const AppointmentBooking = ({ doctorId }) => {
         transition={{ duration: 0.5, delay: 0.2 }}
         dir="rtl"
       >
-        <Card className="border-0 shadow-sm sticky-top" style={{ top: '20px' }} id="booking">
+        <Card className="border-0 shadow-sm sticky-top" style={{ top: '20px', background: 'var(--light-teal)', borderColor: 'var(--secondary-teal)' }} id="booking">
           <Card.Body className="p-4">
             <div className="d-flex align-items-center mb-4 justify-content-end">
-              <h4 className="mb-0 ms-2" style={{ color: 'var(--primary-purple)' }}>Book Appointment</h4>
-              <FaCalendarAlt size={24} style={{ color: 'var(--primary-purple)' }} />
+              <h4 className="mb-0 ms-2" style={{ color: 'var(--secondary-teal)' }}>
+                {t('appointmentBooking.title')}
+              </h4>
+              <FaCalendarAlt size={24} style={{ color: 'var(--secondary-teal)' }} />
             </div>
-            {loading && <div>Loading available times...</div>}
-            {error && <div className="text-danger">{error}</div>}
+            {loading && <div style={{ color: 'var(--secondary-teal)' }}>{t('appointmentBooking.loading')}</div>}
+            {error && <div className="text-danger" style={{ color: 'var(--secondary-teal)' }}>{error}</div>}
             <div className="d-grid gap-2 mt-2">
               {availableTimes.length > 0 ? availableTimes.map((slot) => (
                 <Button
@@ -53,11 +58,14 @@ const AppointmentBooking = ({ doctorId }) => {
                   variant="outline-primary"
                   className="time-slot-btn d-flex justify-content-between align-items-center"
                   onClick={() => handleBookClick(slot)}
+                  style={{ background: 'var(--extra-light-teal)', color: 'var(--secondary-teal)', borderColor: 'var(--secondary-teal)', fontWeight: 600 }}
                 >
                   <span>{slot.time}</span>
-                  <Badge bg="light" text="primary" pill>Available</Badge>
+                  <Badge bg="light" text="primary" pill style={{ background: 'var(--secondary-teal)', color: '#fff', border: 'none' }}>
+                    {t('appointmentBooking.available')}
+                  </Badge>
                 </Button>
-              )) : !loading && <div>No available times for this doctor.</div>}
+              )) : !loading && <div style={{ color: 'var(--secondary-teal)' }}>{t('appointmentBooking.noTimes')}</div>}
             </div>
           </Card.Body>
         </Card>

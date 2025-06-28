@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { Card, Button, Pagination, Form } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { FaUserCircle, FaStar, FaComment } from 'react-icons/fa';
-
+import { useTranslation } from 'react-i18next';
 
 const PatientReviews = ({ reviews: initialReviews }) => {
+  const { t } = useTranslation();
   const [reviews, setReviews] = useState(initialReviews);
   const [activePage, setActivePage] = useState(1);
   const [showForm, setShowForm] = useState(false);
@@ -34,7 +35,7 @@ const PatientReviews = ({ reviews: initialReviews }) => {
     ]);
     setNewReview({ patientName: '', comment: '', rating: 0 });
     setShowForm(false);
-    setActivePage(1); // Go to first page to see the new review
+    setActivePage(1);
   };
 
   return (
@@ -47,36 +48,40 @@ const PatientReviews = ({ reviews: initialReviews }) => {
       <Card className="border-0 shadow-sm mb-4 text-end">
         <Card.Body className="p-4">
           <div className="d-flex justify-content-between align-items-center mb-4 flex-row-reverse">
-            <h4 className="section-title mb-0">Patient Reviews</h4>
-            <Button style={{ backgroundColor: '#2A5C5F', borderColor: '#2A5C5F', color: '#fff' }} size="sm" onClick={() => setShowForm(!showForm)}>
+            <h4 className="section-title mb-0">{t('patientReviews.title')}</h4>
+            <Button
+              style={{ backgroundColor: '#2A5C5F', borderColor: '#2A5C5F', color: '#fff' }}
+              size="sm"
+              onClick={() => setShowForm(!showForm)}
+            >
               <FaComment className="ms-2" />
-              {showForm ? 'Cancel' : 'Add Review'}
+              {showForm ? t('patientReviews.cancel') : t('patientReviews.addReview')}
             </Button>
           </div>
 
           {showForm && (
             <div className="mb-4 p-3 border rounded bg-light">
               <Form.Group className="mb-3">
-                <Form.Label>Full Name</Form.Label>
-                <Form.Control 
-                  type="text" 
-                  value={newReview.patientName} 
-                  onChange={e => setNewReview({ ...newReview, patientName: e.target.value })} 
+                <Form.Label>{t('patientReviews.fullName')}</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={newReview.patientName}
+                  onChange={e => setNewReview({ ...newReview, patientName: e.target.value })}
                 />
               </Form.Group>
 
               <Form.Group className="mb-3">
-                <Form.Label>Review</Form.Label>
-                <Form.Control 
-                  as="textarea" 
-                  rows={3} 
-                  value={newReview.comment} 
-                  onChange={e => setNewReview({ ...newReview, comment: e.target.value })} 
+                <Form.Label>{t('patientReviews.review')}</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={3}
+                  value={newReview.comment}
+                  onChange={e => setNewReview({ ...newReview, comment: e.target.value })}
                 />
               </Form.Group>
 
               <Form.Group className="mb-3">
-                <Form.Label>Rating</Form.Label>
+                <Form.Label>{t('patientReviews.rating')}</Form.Label>
                 <div className="d-flex justify-content-end">
                   {[...Array(5)].map((_, i) => (
                     <FaStar
@@ -92,7 +97,7 @@ const PatientReviews = ({ reviews: initialReviews }) => {
               </Form.Group>
 
               <Button onClick={handleSubmit} variant="primary">
-                Publish Review
+                {t('patientReviews.publish')}
               </Button>
             </div>
           )}
@@ -112,9 +117,9 @@ const PatientReviews = ({ reviews: initialReviews }) => {
                   <h6 className="mb-0">{review.patientName}</h6>
                   <div className="d-flex align-items-center flex-row-reverse">
                     {[...Array(5)].map((_, i) => (
-                      <FaStar 
-                        key={i} 
-                        className={i < review.rating ? "text-warning ms-1" : "text-muted ms-1"} 
+                      <FaStar
+                        key={i}
+                        className={i < review.rating ? 'text-warning ms-1' : 'text-muted ms-1'}
                         size={14}
                       />
                     ))}
@@ -125,7 +130,7 @@ const PatientReviews = ({ reviews: initialReviews }) => {
               <p className="mb-2 text-end">{review.comment}</p>
               {review.response && (
                 <div className="bg-light p-2 rounded mt-2 text-end">
-                  <small className="text-muted d-block mb-1">Clinic Response:</small>
+                  <small className="text-muted d-block mb-1">{t('patientReviews.response')}:</small>
                   <p className="mb-0 small">{review.response}</p>
                 </div>
               )}
@@ -135,8 +140,8 @@ const PatientReviews = ({ reviews: initialReviews }) => {
           {totalPages > 1 && (
             <div className="d-flex justify-content-center mt-4">
               <Pagination dir="ltr">
-                <Pagination.Prev 
-                  onClick={() => setActivePage(p => Math.max(p - 1, 1))} 
+                <Pagination.Prev
+                  onClick={() => setActivePage(p => Math.max(p - 1, 1))}
                   disabled={activePage === 1}
                 />
                 {[...Array(totalPages)].map((_, i) => (
@@ -148,8 +153,8 @@ const PatientReviews = ({ reviews: initialReviews }) => {
                     {i + 1}
                   </Pagination.Item>
                 ))}
-                <Pagination.Next 
-                  onClick={() => setActivePage(p => Math.min(p + 1, totalPages))} 
+                <Pagination.Next
+                  onClick={() => setActivePage(p => Math.min(p + 1, totalPages))}
                   disabled={activePage === totalPages}
                 />
               </Pagination>
