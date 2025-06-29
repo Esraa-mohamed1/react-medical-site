@@ -132,7 +132,7 @@ const DoctorDetailsPage = () => {
                     <>
                       <label htmlFor="doctor-image-upload" style={{ cursor: 'pointer', position: 'relative' }}>
                         <img src={profileImageSrc} alt={editedDoctor.full_name} className="doctorImage" />
-                        <div className={`changePhotoOverlay ${isHoveringImage ? 'imageContainerHover' : ''}`}>
+                        <div className={`changePhotoOverlayy ${isHoveringImage ? 'imageContainerHover' : ''}`}>
                           <span className="cameraIcon">📷</span>
                           <span>{t('doctorDetails.changePhoto')}</span>
                         </div>
