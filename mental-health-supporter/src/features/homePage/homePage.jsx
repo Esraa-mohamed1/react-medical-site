@@ -73,6 +73,7 @@ import ServicesSection from "./components/ServicesSection";
 import DoctorsSection from "./components/DoctorsSection";
 // import TipsAndFaqSection from "./components/TipsAndFaqSection";
 import Footer from "./components/Footer";
+import AIChatInterface from "../../components/AIChatInterface";
 import styles from "./style/HomePage.module.css";
 import { Link } from "react-router-dom";
 
@@ -133,6 +134,9 @@ export default function HomePage() {
         </div>
         <Footer />
       </main>
+      
+      {/* AI Chat Interface */}
+      <AIChatInterface />
     </div>
   );
 }
