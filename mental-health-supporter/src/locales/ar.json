@@ -1,0 +1,240 @@
+{
+  "navbar": {
+  "brand": "بيرلا",
+  "home": "الرئيسية",
+  "doctors": "الأطباء",
+  "articles": "المقالات",
+  "english": "الإنجليزية",
+  "arabic": "العربية",
+  "viewProfile": "عرض الملف الشخصي",
+  "accountSettings": "إعدادات الحساب",
+  "logout": "تسجيل الخروج",
+  "login": "تسجيل الدخول",
+  "register": "إنشاء حساب",
+  "Appointments":"المواعيد",
+  "SetTimes":"تحديد الأوقات",
+  "chats": "الدردشات"
+
+  },
+  "footer": {
+    "copyright": "دعم الصحة النفسية | © 2025 جميع الحقوق محفوظة"
+  },
+  "doctorsSection": {
+    "meetOurDoctors": "قابل أطبائنا",
+    "professional": "محترف",
+    "enthusiastic": "متفائل",
+    "loadingDoctors": "جاري تحميل الأطباء...",
+    "totalDoctors": "مجموع",
+    "allSpecialties": "جميع التخصصات",
+    "seeMore": "شاهد المزيد...",
+    "errorLoading": "تعذر تحميل الأطباء في الوقت الحالي. يرجى المحاولة لاحقًا.",
+    "readMore": "اقرأ المزيد",
+    "clinicalPsychology": "علم النفس الإكلينيكي",
+    "psychiatry": "الطب النفسي",
+    "psychotherapy": "العلاج النفسي",
+    "counselingPsychology": "الإرشاد النفسي",
+    "behavioralTherapy": "العلاج السلوكي"
+  },
+  "heroSection": {
+    "feelTheDifference": "اشعر بالفرق معنا",
+    "yourHealthPriority": "صحتك",
+    "isOurPriority": "هي أولويتنا",
+    "searchForDoctors": "ابحث عن الأطباء",
+    "readArticles": "اقرأ المقالات"
+  },
+  "servicesSection": {
+    "whyChoose": "لماذا تختار دعم الصحه النفسيه",
+    "theBestForHealth": "الأفضل",
+    "forYourHealth": "لصحتك النفسية",
+    "medicalCounselingTitle": "الاستشارات النفسية",
+    "medicalCounselingDescription": "احصل على دعم متخصص في القلق والاكتئاب والضغوط النفسية من خلال جلسات سرية مع معالجين معتمدين.",
+    "topLevelDoctorsTitle": "أطباء نفسيون محترفون",
+    "topLevelDoctorsDescription": "لدينا نخبة من الأطباء النفسيين والأخصائيين المعتمدين في علاج مختلف الاضطرابات النفسية.",
+    "medicalFacilitesTitle": "جلسات آمنة عبر الإنترنت",
+    "medicalFacilitesDescription": "استشارات نفسية مرئية آمنة وخاصة من منزلك باستخدام نظام تشفير لحماية بياناتك.",
+    "twentyFourHoursServicesTitle": "دعم على مدار الساعة",
+    "twentyFourHoursServicesDescription": "فريقنا للدعم النفسي متاح 24/7 لمساعدتك في أي وقت تحتاج فيه إلى المساندة.",
+    "personalServicesTitle": "خطط علاجية مخصصة",
+    "personalServicesDescription": "نقوم بتقديم خطة علاج فردية لكل مريض بناءً على حالته واحتياجاته النفسية.",
+    "dedicatedPatientCareTitle": "رعاية مخصصة للمرضى",
+    "dedicatedPatientCareDescription": "نتابع مع المرضى بشكل مستمر لضمان الشفاء على المدى الطويل وتحقيق التوازن النفسي."
+  },
+   "tipsAndFaqSection": {
+    "tipsAndTricksTitle": "نصائح وحيل",
+    "faqTitle": "الأسئلة الشائعة",
+    "problemWithSocialInsurance": "مشاكل حول التأمين الاجتماعي لسائقي الشاحنات",
+    "coachingSecrets": "5 أسرار لتدريب موظفيك على العظمة",
+    "strategyPlanning": "5 خطوات لبناء التخطيط الاستراتيجي",
+    "canGetDivorce": "هل يمكنني الحصول على الطلاق دون مستشار؟",
+    "divorceAnswer": "لوريم إيبسوم دولور سيت أميت، كونسيتتور أديبيسيسينغ إليت فيرو. دونيك أولتري سوليسيتيودين لاكوس. في فولبوتات روتروم موليستي.",
+    "technicalSupportQuestion": "لدي مشكلة فنية أو دعم يجب حله، من يجب أن أرسل إليه البريد الإلكتروني؟",
+    "technicalSupportAnswer": "لوريم إيبسوم دولور سيت أميت، كونسيتتور أديبيسيسينغ إليت فيرو.",
+    "compatibleServicesQuestion": "ما هي الخدمات الأخرى التي تدعمها؟",
+    "compatibleServicesAnswer": "لوريم إيبسوم دولور سيت أميت، كونسيتتور أديبيسيسينغ إليت فيرو.",
+    "hiringQuestion": "هل تقومون بالتوظيف؟",
+    "hiringAnswer": "لوريم إيبسوم دولور سيت أميت، كونسيتتور أديبيسيسينغ إليت فيرو."
+  },
+  "searchFilters": {
+  "selectSpecialty": "اختر التخصص",
+  "allSpecialties": "جميع التخصصات",
+  "clinicalPsychology": "علم النفس الإكلينيكي",
+  "psychiatry": "الطب النفسي",
+  "psychotherapy": "العلاج النفسي",
+  "counselingPsychology": "الإرشاد النفسي",
+  "behavioralTherapy": "العلاج السلوكي",
+  "inThisCity": "في هذه المدينة",
+  "allCities": "جميع المدن",
+  "cairo": "القاهرة",
+  "alexandria": "الإسكندرية",
+  "minya": "المنيا",
+  "availability": "مدى التوفر",
+  "available": "متاح",
+  "notAvailable": "غير متاح",
+  "clearAll": "مسح جميع الفلاتر"
+},
+"pagination": {
+  "previous": "السابق",
+  "next": "التالي"
+},
+"hero": {
+  "bestDoctors": "أفضل الأطباء في مصر",
+  "bookOnline": "احجز الأطباء عبر الإنترنت",
+  "qualifiedDoctors": "مكان يضم نخبة من الأطباء المؤهلين"
+},
+"doctorCard": {
+  "defaultName": "دكتور",
+  "viewDoctor": "عرض الطبيب",
+  "book": "احجز"
+},
+"doctorsList": {
+  "searchPlaceholder": "ابحث بالاسم الكامل",
+  "searchButton": "بحث",
+  "noResults": "لا يوجد أطباء يطابقون معايير البحث الخاصة بك."
+},
+"accountSettings": {
+  "title": "إعدادات الحساب",
+  "changeUsername": "تغيير اسم المستخدم",
+  "resetPassword": "إعادة تعيين كلمة المرور",
+  "currentPassword": "كلمة المرور الحالية",
+  "newPassword": "كلمة المرور الجديدة",
+  "confirmPassword": "تأكيد كلمة المرور الجديدة",
+  "saveUsername": "حفظ اسم المستخدم",
+  "resetPasswordButton": "إعادة تعيين كلمة المرور",
+  "usernameUpdated": "تم تحديث اسم المستخدم بنجاح.",
+  "usernameFailed": "فشل في تحديث اسم المستخدم. ",
+  "enterCurrentPassword": "يرجى إدخال كلمة المرور الحالية.",
+  "passwordRequirements": "كلمة المرور الجديدة لا تفي بالمتطلبات.",
+  "passwordsNotMatch": "كلمات المرور الجديدة غير متطابقة.",
+  "passwordUpdated": "تم تحديث كلمة المرور بنجاح.",
+  "passwordFailed": "فشل في تحديث كلمة المرور. يرجى التحقق من كلمة المرور الحالية.",
+  "Pleaseenteravalidusername": "يرجى إدخال اسم مستخدم صالح.",
+  "minimumCharacters": "الحد الأدنى 8 من الأحرف.",
+  "atLeastOneNumber": "يجب أن تحتوي على رقم واحد على الأقل.",
+  "atLeastOneUpper": "يجب أن تحتوي على حرف كبير واحد على الأقل.",
+  "atLeastOneLower": "يجب أن تحتوي على حرف صغير واحد على الأقل.",
+  "atLeastOneSpecial": "يجب أن تحتوي على رمز خاص واحد على الأقل.",
+   "usernameValidation": "يجب أن يتكون اسم المستخدم من 8 أحرف على الأقل، ويشمل الحروف والأرقام والشرطات السفلية فقط.",
+  "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين.",
+  "repeatNewPassword": "أعد إدخال كلمة المرور الجديدة."
+},
+"doctorDetails": {
+  "changePhoto": "تغيير الصورة",
+  "fullName": "الاسم الكامل",
+  "specialization": "التخصص",
+  "available": "متاح",
+  "unavailable": "غير متاح",
+  "contactInformation": "معلومات الاتصال",
+  "email": "البريد الإلكتروني",
+  "phone": "رقم الهاتف",
+  "clinicDetails": "تفاصيل العيادة",
+  "clinicName": "اسم العيادة",
+  "city": "المدينة",
+  "clinicAddress": "عنوان العيادة",
+  "cancel": "إلغاء",
+  "saveChanges": "حفظ التغييرات",
+  "loading": "جارٍ التحميل...",
+  "notFound": "لم يتم العثور على الطبيب",
+  "error": "فشل في جلب بيانات الطبيب"
+},
+"patientDetails": {
+  "loading": "جارٍ التحميل...",
+  "notFound": "لم يتم العثور على المريض",
+  "fetchError": "فشل في جلب تفاصيل المريض",
+  "updateError": "فشل في تحديث بيانات المريض",
+  "changePhoto": "تغيير الصورة",
+  "memberSince": "عضو منذ",
+  "basicInfo": "المعلومات الأساسية",
+  "contactInfo": "معلومات التواصل",
+  "fullName": "الاسم الكامل",
+  "email": "البريد الإلكتروني",
+  "phone": "رقم الهاتف",
+  "address": "العنوان",
+  "city": "المدينة"
+},
+"appointmentBooking": {
+  "title": "حجز موعد",
+  "loading": "جارٍ تحميل المواعيد المتاحة...",
+  "fetchError": "فشل في جلب المواعيد المتاحة",
+  "available": "متاح",
+  "noTimes": "لا توجد مواعيد متاحة لهذا الطبيب."
+},
+"bookingModal": {
+  "confirmAppointment": "تأكيد الموعد",
+  "paymentSuccess": "تم الدفع بواسطة {{name}}",
+  "consultation": "استشارة",
+  "bookedFor": "تم حجز الموعد بنجاح في {{date}}",
+  "success": "تم حجز الموعد بنجاح!",
+  "failed": "فشل في حجز الموعد.",
+  "successTitle": "تم بنجاح!",
+  "successText": "تم حجز الموعد الخاص بك بنجاح.",
+  "notes": "ملاحظات",
+  "notesPlaceholder": "ناقش الأعراض، إلخ.",
+  "notesRequired": "يرجى تقديم ملاحظات للموعد.",
+  "noSlot": "لم يتم تحديد موعد",
+  "confirmBooking": "تأكيد الحجز",
+  "cancel": "إلغاء"
+},
+"clinicDetails": {
+  "title": "معلومات العيادة",
+  "addressTitle": "عنوان العيادة",
+  "viewOnMap": "عرض على الخريطة",
+  "workingHours": "ساعات العمل",
+  "consultationFee": "رسوم الاستشارة",
+  "feeNote": "(قد تختلف الأسعار حسب الخدمة)",
+  "availableServices": "الخدمات المتوفرة"
+},
+"contactInfo": {
+  "title": "معلومات الاتصال",
+  "phone": "رقم الهاتف",
+  "email": "البريد الإلكتروني",
+  "address": "عنوان العيادة",
+  "callNow": "اتصل الآن",
+  "sendMessage": "أرسل رسالة",
+  "viewMap": "عرض على الخريطة",
+  "social": "وسائل التواصل الاجتماعي"
+},
+"doctorInfo": {
+  "arabic": "العربية",
+  "english": "الإنجليزية",
+  "yearsExperience": "سنوات من الخبرة",
+  "reviews": "تقييم",
+  "aboutDr": "عن الدكتور",
+  "specialization": "التخصص",
+  "noSpecialization": "لا يوجد تخصص مدرج",
+  "education": "التعليم",
+  "languages": "اللغات المحكية"
+},
+"patientReviews": {
+  "title": "تقييمات المرضى",
+  "addReview": "إضافة تقييم",
+  "cancel": "إلغاء",
+  "fullName": "الاسم الكامل",
+  "review": "التقييم",
+  "rating": "التقييم بالنجوم",
+  "publish": "نشر التقييم",
+  "response": "رد العيادة"
+}
+
+
+
+}

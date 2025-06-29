@@ -1,0 +1,98 @@
+.hero {
+  background: linear-gradient(to right, #37ECBA, #72AFD3);
+  padding: 3rem 1rem;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 1px solid #e2e8f0;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 250px; /* ✅ This enables vertical centering */
+}
+
+
+.hero-title,
+.hero-subtitle,
+.hero-stats {
+  text-align: center !important;
+  width: 100% !important;
+    color: #26767a;
+
+}
+
+
+/* Keep all your existing hero styles the same */
+.hero-title {
+  font-size: 2.5rem;
+  color: #26767a;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  /* text-align: center !important; */
+  /* text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8); */
+}
+
+/* ... rest of your existing hero styles ... */
+
+/* Add this to your main layout CSS (DoctorsList.css) */
+.doctors-list-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem 2rem; /* Remove top padding since hero is sticky */
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.content-area {
+  display: flex;
+  gap: 2rem;
+  padding-top: 2rem; /* Add padding to account for sticky hero */
+}
+
+/* Adjust responsive styles */
+@media (max-width: 1024px) {
+  .doctors-list-page {
+    padding: 0 1.5rem 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    position: static; /* Let hero scroll normally on mobile */
+    padding: 2.5rem 1rem;
+  background: linear-gradient(to right, #37ECBA, #72AFD3);
+
+  }
+  
+  .content-area {
+    flex-direction: column;
+    padding-top: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+  background: linear-gradient(to right, #37ECBA, #72AFD3);
+
+  }
+  
+  .hero-title {
+    font-size: 1.75rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .hero-stats {
+    font-size: 0.95rem;
+  }
+}

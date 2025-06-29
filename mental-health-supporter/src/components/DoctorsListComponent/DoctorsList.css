@@ -1,0 +1,111 @@
+/* Main layout container */
+.doctors-list-page {
+  max-width: 100% !important;
+  margin: 0 auto;
+  padding: 0 0.5rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Content area below hero */
+.content-area {
+  display: flex;
+  gap: 2rem;
+  padding-top: 1rem;
+  position: relative; /* Add this for sticky positioning context */
+}
+
+/* Filters section (left side) - Updated for sticky behavior */
+.filters-section {
+  flex: 0 0 320px;
+  align-self: flex-start;
+  height: fit-content;
+  position: sticky;
+  top: 1rem; /* Adjust this value based on your header height */
+  max-height: calc(100vh - 2rem); /* Prevent it from being taller than viewport */
+  overflow-y: auto; /* Add scroll if content is too tall */
+}
+
+/* Doctors list container (right side) */
+.doctors-list-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Doctors cards - one card per row */
+.doctors-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Fixed pagination container */
+.pagination-container {
+  width: 100%;
+  margin-top: 2rem;
+  background-color: white;
+  padding: 0.01rem 0; /* تقليل الـ padding ليصبح أقل */
+  border-top: 1px solid #e2e8f0;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center; /* Center the pagination content */
+}
+
+/* Full-width pagination controls */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.50rem; /* تقليل المسافة بين الأزرار */
+  flex-wrap: wrap;
+  padding: 0 1rem;
+  max-width: 1200px; /* Adjust max-width to match content area */
+  width: 100%; /* Full width within its container */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .pagination {
+    padding: 0 1rem;
+  }
+}
+
+/* Responsive layout */
+@media (max-width: 1024px) {
+  .doctors-list-page {
+    padding: 0 1.5rem 1.5rem;
+  }
+  
+  .content-area {
+    flex-direction: column;
+    padding-top: 0;
+  }
+  
+  .filters-section {
+    width: 100%;
+    margin-bottom: 2rem;
+    position: static; /* Remove sticky on tablet/mobile */
+    max-height: none;
+  }
+  
+  /* On mobile, pagination will naturally fall below cards */
+  .pagination-container {
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .doctors-list-page {
+    padding: 0 1rem 1rem;
+  }
+  
+  .doctors-cards {
+    gap: 1rem;
+  }
+  
+  .pagination {
+    gap: 0.35rem;
+  }
+}

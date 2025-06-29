@@ -1,0 +1,245 @@
+{
+  "navbar": {
+  "brand": "Pearla",
+  "home": "Home",
+  "doctors": "Doctors",
+  "articles": "Articles",
+  "english": "English",
+  "arabic": "Arabic",
+  "viewProfile": "View Profile",
+  "accountSettings": "Account Settings",
+  "logout": "Logout",
+  "login": "Login",
+  "register": "Register",
+  "Appointments":"Appointments",
+  "SetTimes":"Set Times",
+  "chats": "Chats"
+  },
+  "footer": {
+    "copyright": "Mental Health Support | © 2025 All rights are reserved"
+  },
+   "doctorsSection": {
+    "meetOurDoctors": "MEET OUR DOCTORS",
+    "professional": "Professional",
+    "enthusiastic": "Enthusiastic",
+    "loadingDoctors": "Loading doctors...",
+    "totalDoctors": "Total",
+    "allSpecialties": "All Specialties",
+    "seeMore": "See More...",
+    "errorLoading": "Unable to load doctors at this time. Please try again later.",
+    "readMore": "READ MORE",
+    "clinicalPsychology": "Clinical Psychology",
+    "psychiatry": "Psychiatry",
+    "psychotherapy": "Psychotherapy",
+    "counselingPsychology": "Counseling Psychology",
+    "behavioralTherapy": "Behavioral Therapy"
+  },
+  "heroSection": {
+    "feelTheDifference": "FEEL THE DIFFERENCE WITH US",
+    "yourHealthPriority": "Your Health",
+    "isOurPriority": "Is Our Priority",
+    "searchForDoctors": "Search for Doctors",
+    "readArticles": "Read Articles"
+  },
+  "servicesSection": {
+    "whyChoose": "WHY CHOOSE Mental Health Support",
+    "theBestForHealth": "The Best",
+    "forYourHealth": "For Your Mental Health",
+    "medicalCounselingTitle": "MENTAL HEALTH COUNSELING",
+    "medicalCounselingDescription": "Get expert support for anxiety, depression, and stress through confidential counseling sessions with certified therapists.",
+    "topLevelDoctorsTitle": "EXPERT THERAPISTS",
+    "topLevelDoctorsDescription": "Our licensed psychologists and psychiatrists are highly experienced in treating a wide range of mental health conditions.",
+    "medicalFacilitesTitle": "SECURE ONLINE SESSIONS",
+    "medicalFacilitesDescription": "Access safe, private video consultations from the comfort of your home with encrypted communication.",
+    "twentyFourHoursServicesTitle": "24/7 SUPPORT",
+    "twentyFourHoursServicesDescription": "Our mental health support team is available around the clock to assist you anytime you need help.",
+    "personalServicesTitle": "PERSONALIZED TREATMENT PLANS",
+    "personalServicesDescription": "Each patient receives a customized care plan based on their specific mental health needs and progress.",
+    "dedicatedPatientCareTitle": "DEDICATED PATIENT CARE",
+    "dedicatedPatientCareDescription": "We follow up with every patient to ensure continuous care, long-term healing, and emotional wellbeing."
+  },
+  "tipsAndFaqSection": {
+    "tipsAndTricksTitle": "Tips & Tricks",
+    "faqTitle": "FAQs",
+    "problemWithSocialInsurance": "Problems About Social Insurance For Truck Drivers",
+    "coachingSecrets": "5 Secrets To Coaching Your Employees To Greatness",
+    "strategyPlanning": "5 Steps To Build Strategy Planning",
+    "canGetDivorce": "Can I Get A Divorce Without A Consultant?",
+    "divorceAnswer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur consectetur elit lacinia ornare. In volutpat rutrum molestie. Vivamus efficitur orci, ac gravida eros bibendum non. Nullam auctor varius faucibus ante ipsum primis in faucibus orci luctus et ultrices.",
+    "technicalSupportQuestion": "I Have A Technical Problem Or Support Issue I Need Resolved, Who Do I Email?",
+    "technicalSupportAnswer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur consectetur elit lacinia ornare.",
+    "compatibleServicesQuestion": "What Other Services Are You Compatible With?",
+    "compatibleServicesAnswer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur consectetur elit lacinia ornare.",
+    "hiringQuestion": "Are You Hiring?",
+    "hiringAnswer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur consectetur elit lacinia ornare."
+  },
+  "searchFilters": {
+  "selectSpecialty": "Select a specialty",
+  "allSpecialties": "All Specialties",
+  "clinicalPsychology": "Clinical Psychology",
+  "psychiatry": "Psychiatry",
+  "psychotherapy": "Psychotherapy",
+  "counselingPsychology": "Counseling Psychology",
+  "behavioralTherapy": "Behavioral Therapy",
+  "inThisCity": "In this city",
+  "allCities": "All Cities",
+  "cairo": "Cairo",
+  "alexandria": "Alexandria",
+  "minya": "Minya",
+  "availability": "Availability",
+  "available": "Available",
+  "notAvailable": "Not Available",
+  "clearAll": "Clear All Filters"
+},
+"pagination": {
+  "previous": "Previous",
+  "next": "Next"
+},
+"hero": {
+  "bestDoctors": "Best Doctors in Egypt",
+  "bookOnline": "Book Doctors Online",
+  "qualifiedDoctors": "It is a place with highly qualified doctors"
+},
+"doctorCard": {
+  "defaultName": "Doctor",
+  "viewDoctor": "View Doctor",
+  "book": "Book"
+},
+"doctorsList": {
+  "searchPlaceholder": "Search by full name",
+  "searchButton": "Search",
+  "noResults": "No doctors match your search criteria."
+},
+"accountSettings": {
+  "title": "Account Settings",
+  "changeUsername": "Change Username",
+  "resetPassword": "Reset Password",
+  "currentPassword": "Current Password",
+  "newPassword": "New Password",
+  "confirmPassword": "Confirm New Password",
+  "saveUsername": "Save Username",
+  "resetPasswordButton": "Reset Password",
+  "usernameUpdated": "Username updated successfully.",
+  "usernameFailed": "Failed to update username. ",
+  "enterCurrentPassword": "Please enter your current password.",
+  "passwordRequirements": "New password does not meet requirements.",
+  "passwordsNotMatch": "New passwords do not match.",
+  "passwordUpdated": "Password updated successfully.",
+  "passwordFailed": "Failed to update password. Please check your current password.",
+  "Pleaseenteravalidusername": "Please enter a valid username.",
+   "minimumCharacters": "Minimum 8 characters.",
+  "atLeastOneNumber": "At least one number.",
+  "atLeastOneUpper": "At least one uppercase letter.",
+  "atLeastOneLower": "At least one lowercase letter.",
+  "atLeastOneSpecial": "At least one special character.",
+  "usernameValidation": "Username must be at least {{count}} characters, only letters, numbers, and underscores.",
+  "passwordsDoNotMatch": "Passwords do not match.",
+  "repeatNewPassword": "Repeat the new password."
+},
+"doctorDetails": {
+  "changePhoto": "Change Photo",
+  "fullName": "Full Name",
+  "specialization": "Specialization",
+  "available": "Available",
+  "unavailable": "Unavailable",
+  "contactInformation": "Contact Information",
+  "email": "Email",
+  "phone": "Phone",
+  "clinicDetails": "Clinic Details",
+  "clinicName": "Clinic Name",
+  "city": "City",
+  "clinicAddress": "Clinic Address",
+  "cancel": "Cancel",
+  "saveChanges": "Save Changes",
+  "loading": "Loading...",
+  "notFound": "Doctor not found",
+  "error": "Failed to fetch doctor details"
+},
+"patientDetails": {
+  "loading": "Loading...",
+  "notFound": "Patient not found",
+  "fetchError": "Failed to fetch patient details",
+  "updateError": "Failed to update patient details",
+  "changePhoto": "Change Photo",
+  "memberSince": "Member since",
+  "basicInfo": "Basic Information",
+  "contactInfo": "Contact Information",
+  "fullName": "Full Name",
+  "email": "Email",
+  "phone": "Phone",
+  "address": "Address",
+  "city": "City"
+},
+"appointmentBooking": {
+  "title": "Book Appointment",
+  "loading": "Loading available times...",
+  "fetchError": "Failed to fetch available times",
+  "available": "Available",
+  "noTimes": "No available times for this doctor."
+},
+"bookingModal": {
+  "confirmAppointment": "Confirm Appointment",
+  "paymentSuccess": "Payment completed by {{name}}",
+  "consultation": "Consultation",
+  "bookedFor": "Appointment successfully booked for {{date}}",
+  "success": "Appointment booked successfully!",
+  "failed": "Failed to book appointment.",
+  "successTitle": "Success!",
+  "successText": "Your appointment has been booked successfully.",
+  "notes": "Notes",
+  "notesPlaceholder": "Discuss symptoms, etc.",
+  "notesRequired": "Please provide notes for the appointment.",
+  "noSlot": "No slot selected",
+  "confirmBooking": "Confirm Booking",
+  "cancel": "Cancel"
+},
+"clinicDetails": {
+  "title": "Clinic Information",
+  "addressTitle": "Clinic Address",
+  "viewOnMap": "View on Map",
+  "workingHours": "Working Hours",
+  "consultationFee": "Consultation Fee",
+  "feeNote": "(Price may vary based on service)",
+  "availableServices": "Available Services"
+},
+"contactInfo": {
+  "title": "Contact Information",
+  "phone": "Phone Number",
+  "email": "Email Address",
+  "address": "Clinic Address",
+  "callNow": "Call Now",
+  "sendMessage": "Send Message",
+  "viewMap": "View on Map",
+  "social": "Social Media"
+},
+"doctorInfo": {
+  "arabic": "Arabic",
+  "english": "English",
+  "yearsExperience": "years experience",
+  "reviews": "reviews",
+  "aboutDr": "About Dr.",
+  "specialization": "Specialization",
+  "noSpecialization": "No specialization listed",
+  "education": "Education",
+  "languages": "Languages Spoken"
+},
+"patientReviews": {
+  "title": "Patient Reviews",
+  "addReview": "Add Review",
+  "cancel": "Cancel",
+  "fullName": "Full Name",
+  "review": "Review",
+  "rating": "Rating",
+  "publish": "Publish Review",
+  "response": "Clinic Response"
+}
+
+
+
+
+}
+
+
+
+
+

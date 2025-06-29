@@ -1,0 +1,177 @@
+/* General Styles */
+.doctor-profile-page {
+  background-color: var(--light-gray);
+  min-height: 100vh;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, var(--light-gray), var(--extra-light-teal));
+  position: relative;
+  overflow: hidden;
+}
+.hero-section.py-5{
+  background: linear-gradient(135deg, var(--light-gray), var(--extra-light-teal));
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  background-color: #4449ad;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/public/images/1.jpeg');
+
+  background-size: 400px;
+  opacity: 0.1;
+  z-index: 0;
+}
+
+.doctor-image {
+  width: 100%;
+  max-width: 350px;
+  height: auto;
+  border: 5px solid white;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Cards */
+.card {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 10px 25px rgba(106, 13, 173, 0.15);
+}
+
+/* Icons */
+.icon-container {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(106, 13, 173, 0.1);
+  border-radius: 50%;
+}
+
+/* Time Slots */
+.time-slot-btn {
+  border-radius: 8px;
+  padding: 10px 15px;
+  text-align: right;
+  transition: all 0.2s;
+}
+
+.time-slot-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Review Cards */
+.review-card {
+  background-color: white;
+  border-radius: 8px;
+  border-left: 4px solid var(--primary-purple);
+  transition: all 0.3s ease;
+}
+
+.review-card:hover {
+  box-shadow: 0 5px 15px rgba(106, 13, 173, 0.1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  .doctor-img {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .hero-section {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+  
+  .hero-section h1 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .doctor-image {
+    max-width: 250px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .section-title {
+    font-size: 1.25rem;
+  }
+}
+
+/* Animation Classes */
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Remove any remaining padding/margins */
+.hero-section {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+.hero-section .container-fluid {
+  padding-right: 0;
+  margin-right: 0;
+}
+
+/* Force all text to stick left */
+.hero-section h1,
+.hero-section p,
+.hero-section .btn {
+  text-align: center !important;
+  justify-content: flex-start !important;
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* Remove Bootstrap's default column padding */
+.col-lg-7 {
+  padding-left: 0 !important;
+}
+
+.custom-dots {
+  list-style-position: inside;
+  padding-right: 1rem;
+  text-align: right;
+}
+
+.custom-dots li {
+  text-align: right;
+  display: block;
+  padding-right: 1.5rem;
+  position: relative;
+}
+
+.custom-dots li::before {
+  content: "•";
+  position: absolute;
+  right: 0;
+}

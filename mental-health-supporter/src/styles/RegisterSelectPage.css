@@ -1,0 +1,158 @@
+/* — Layout — */
+.register-selection-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+    background: radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2);
+
+  /* background: radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2); */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+/* — Overlay — */
+.register-selection-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* background: linear-gradient(180deg, rgba(5, 19, 83, 0.4), rgba(3, 19, 77, 0.6)); */
+  opacity: 0.3;
+  z-index: 0;
+}
+
+/* — Card — */
+.register-selection-card {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  padding: 3rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 420px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
+}
+
+.register-selection-card:hover {
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.18);
+  transform: translateY(-2px);
+}
+
+/* — Title — */
+.register-selection-title {
+  text-align: center;
+  color: #67B1B6;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  letter-spacing: -0.25px;
+}
+
+/* — Form — */
+.register-selection-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  width: 100%;
+}
+
+/* — Input Group — */
+.register-selection-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.register-selection-input-group label {
+  font-size: 0.92rem;
+  color: #274760;
+  font-weight: 600;
+  padding-left: 2px;
+}
+
+.register-selection-input-group input {
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.85);
+  border: none;
+  border-bottom: 2px solid #67B1B6;
+  border-radius: 10px;
+  font-size: 1rem;
+  color: #274760;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.register-selection-input-group input:focus {
+  border-color: #37ECBA;
+  background: #ffffff;
+  /* box-shadow: 0 2px 6px rgba(55, 236, 186, 0.2); */
+}
+
+/* — Button — */
+.register-selection-btn {
+  background: linear-gradient(to right, #37ECBA, #72AFD3);
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 0.9rem 2.5rem;
+  font-size: 1.05rem;
+  font-weight: bold;
+  cursor: pointer;
+  /* box-shadow: 0 4px 12px rgba(114, 175, 211, 0.35); */
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+  min-height: 48px;
+  text-align: center;
+}
+
+.register-selection-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(114, 175, 211, 0.45);
+}
+
+/* — Footer — */
+.register-selection-footer {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.95rem;
+  background: linear-gradient(to right, #67B1B6, #72AFD3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 500;
+}
+
+.register-selection-footer a {
+  font-weight: 600;
+  text-decoration: underline;
+  color: inherit;
+  transition: opacity 0.3s ease;
+}
+
+.register-selection-footer a:hover {
+  opacity: 0.85;
+}
+
+/* — Responsive — */
+@media (max-width: 768px) {
+  .register-selection-card {
+    padding: 2rem 1.5rem;
+    max-width: 95vw;
+  }
+
+  .register-selection-btn {
+    padding: 0.75rem 2rem;
+  }
+}

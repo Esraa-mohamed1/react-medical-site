@@ -1,0 +1,155 @@
+.doctor-register-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background-color: rgb(151, 191, 237);
+}
+
+.doctor-register-container {
+  width: 100%;
+  max-width: 800px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(60, 64, 67, 0.15);
+  overflow: hidden;
+}
+
+.doctor-register-container .form-header {
+  background: linear-gradient(to right, #5998eb, #477dcf);
+  color: white;
+  padding: 2rem;
+  text-align: center;
+}
+
+.doctor-register-container .form-header h2 {
+  font-size: 2rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.doctor-register-container .form-header p {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.doctor-register-container .doctor-form {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.doctor-register-container .form-row {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.doctor-register-container .form-row .form-group {
+  flex: 1;
+}
+
+.doctor-register-container .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.doctor-register-container .form-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #202124;
+}
+
+.doctor-register-container .form-group input,
+.doctor-register-container .form-group select,
+.doctor-register-container .form-group textarea {
+  padding: 0.75rem 1rem;
+  border: 1px solid #dadce0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.doctor-register-container .form-group input:focus,
+.doctor-register-container .form-group select:focus,
+.doctor-register-container .form-group textarea:focus {
+  border-color: #5998eb;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+}
+
+.doctor-register-container .form-group input.error,
+.doctor-register-container .form-group select.error {
+  border-color: #d32f2f;
+}
+
+.doctor-register-container .error-message {
+  color: #d32f2f;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.doctor-register-container .form-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.doctor-register-container .form-footer button {
+  background: linear-gradient(to right, #5998eb, #477dcf);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.doctor-register-container .form-footer button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 10px rgba(60, 64, 67, 0.15);
+}
+
+.doctor-register-container .form-footer button:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.doctor-register-container .disclaimer {
+  font-size: 0.75rem;
+  color: #5f6368;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.doctor-register-container textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+@media (max-width: 768px) {
+  .doctor-register-container .form-row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .doctor-register-container {
+    margin: 1rem;
+  }
+  
+  .doctor-register-container .form-header {
+    padding: 1.5rem;
+  }
+  
+  .doctor-register-container .doctor-form {
+    padding: 1.5rem;
+  }
+}

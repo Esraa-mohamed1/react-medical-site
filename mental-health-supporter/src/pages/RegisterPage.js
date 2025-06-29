@@ -1,14 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthForm from '../components/AuthForm';
+import { registerUser } from '../services/api';
+import Swal from 'sweetalert2';
+// import CustomNavbar from '../components/Navbar'; 
+// import Footer from "./../features/homePage/components/Footer";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
+  const [serverError, setServerError] = useState('');
 
-  const handleRegister = (data) => {
-    console.log('Register data:', data);
-    navigate('/artical');
+  const handleRegister = async (data, setFieldErrors) => {
+    try {
+      await registerUser(data);
+      Swal.fire({
+        icon: 'success',
+        title: 'Registration Successful!',
+        text: 'You can now log in with your new account.',
+        timer: 3000,
+        showConfirmButton: false,
+      });
+      setTimeout(() => navigate('/login'), 3000);
+    } catch (error) {
+      const errorData = error.response?.data;
+      if (errorData) {
+        if (errorData.detail) {
+          setServerError(errorData.detail);
+        } else {
+          setFieldErrors(errorData);
+        }
+      } else {
+        setServerError('An unexpected error occurred. Please try again.');
+      }
+    }
   };
 
-  return <AuthForm variant="register" onSubmit={handleRegister} />;
+  return (
+    <div>
+      {/* <CustomNavbar /> */}
+      <AuthForm variant="register" onSubmit={handleRegister} serverError={serverError} />
+      {/* <Footer /> */}
+    </div>
+  );
 }

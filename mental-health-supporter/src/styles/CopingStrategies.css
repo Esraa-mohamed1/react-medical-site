@@ -1,0 +1,113 @@
+.personalized-tips {
+  background: white;
+  border-radius: 12px;
+  padding: 0.5rem;
+  /* margin: 2rem 0; */
+}
+
+.section-description {
+  color: #6c757d;
+  margin-bottom: 0.5rem;
+}
+
+.tip-card {
+  background: white;
+  padding: .5rem;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.tip-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.tip-icon {
+  font-size: 2rem;
+  margin-bottom: 0.2rem;
+  text-align: center;
+}
+
+.tip-card p {
+  margin-bottom: 0.3rem;
+}
+
+.try-button {
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  color: white;
+  border: none;
+  padding: 0.2rem 0.8rem;
+  font-size: 0.85rem;
+  border-radius: 20px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.try-button:hover {
+  background: linear-gradient(135deg, #5a7df4, #9b5de5);
+  transform: translateY(-2px);
+}
+
+.popup-overlay {
+  position: fixed;
+  /* top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0; */
+  background: rgba(255,255,255,0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background: white;
+  /* padding: 2rem; */
+  border-radius: 15px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  border: 1px solid #e9ecef;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.popup-content h3 {
+  color: #6e8efb;
+  /* margin-bottom: 1rem; */
+}
+
+.strategy-steps {
+  /* margin: 1.5rem 0; */
+  list-style-type: none;
+}
+
+.strategy-steps li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.popup-close {
+  background: #6e8efb;
+  color: white;
+  border: none;
+  /* padding: 0.8rem 1.5rem; */
+  border-radius: 8px;
+  /* margin-top: 1rem; */
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.popup-close:hover {
+  background: #5a7df4;
+}
