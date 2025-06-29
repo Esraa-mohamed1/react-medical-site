@@ -23,6 +23,7 @@ import PaymentPage from './pages/PaymentPage';
 import ChatPage from './pages/ChatPage';
 import DoctorChatsPage from './pages/DoctorChatsPage';
 import DoctorChatRoomPage from './pages/DoctorChatRoomPage';
+import AIChatInterface from './components/AIChatInterface';
 
 import ErrorBoundary from './ErrorBoundary';
 
@@ -36,6 +37,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/register-select" element={<RegisterSelectPage />} />
           <Route path="/artical" element={<ArticalPage />} />
+          <Route path="/ai-chat" element={<AIChatInterface />} />
           <Route path="/google-auth-redirect" element={<GoogleAuthRedirect />} />
           <Route path="/social/complete/google-oauth2/" element={<GoogleAuthRedirect />} />
           <Route path="/doctors/login" element={<BaseLoginPage userType={'Doctor'} />} />
