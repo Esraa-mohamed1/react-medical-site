@@ -193,7 +193,7 @@ export default function ChatWithDoctor({ doctorId, patientId }) {
   width: '100%',
   overflowY: 'auto',
   padding: 24,
-  background: 'linear-gradient(to right, #37ECBA, #72AFD3)'
+  background: 'darkcyan'
 }}>
 
         {messages.map(msg => {

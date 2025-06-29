@@ -17,7 +17,7 @@ export default function ChatPage() {
     <>
     <CustomNavbar />
     <div style={{padding:'2rem 0'}}>
-      <h2 style={{textAlign:'center',color:'#00bf6f'}}>Chat with Doctor</h2>
+      {/* <h2 style={{textAlign:'center',color:'#00bf6f'}}>Chat with Doctor</h2> */}
       {/* doctorId should be doctor.doctor_id, patientId should be user.profile_id */}
       <ChatWithDoctor doctorId={doctorId} patientId={user.profile_id} />
     </div>
