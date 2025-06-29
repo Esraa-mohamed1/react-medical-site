@@ -23,6 +23,16 @@ export default function LoginPage() {
         return;
       }
 
+      if (result.role === 'doctor' && result.user && result.user.approval_status !== 'approved') {
+        Swal.fire({
+          icon: 'info',
+          title: 'Account Not Approved',
+          text: 'Admin must approve your account before you can log in.',
+          confirmButtonText: 'OK',
+        });
+        return;
+      }
+
       Swal.fire({
         icon: 'success',
         title: 'Login Successful!',

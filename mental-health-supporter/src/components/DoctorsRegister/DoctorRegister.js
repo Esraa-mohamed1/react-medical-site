@@ -87,11 +87,11 @@ const DoctorRegister = () => {
             Swal.fire({
                 icon: 'success',
                 title: 'Registration Successful!',
-                text: 'Your application has been submitted for review.',
-                timer: 3000,
-                showConfirmButton: false,
+                text: 'Admin must approve your account before you can log in.',
+                confirmButtonText: 'OK',
+            }).then(() => {
+                navigate('/login');
             });
-            setTimeout(() => navigate('/login'), 3000);
         } catch (error) {
             const apiErrors = error.response?.data || {};
             const formattedErrors = {};
