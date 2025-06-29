@@ -152,7 +152,16 @@ const DoctorDetailsPage = () => {
                 <div className="doctorBasicInfo">
                   <h1 className="title">{renderValue('full_name', 'fullName')}</h1>
                   <h1 className="created">@{loggedUser['username']}</h1>
-                  <h2 className="subtitle">{renderValue('specialization', 'specialization')}</h2>
+                  {/* renderValue('specialization', 'specialization') */}
+                  <h2 className="subtitle">{isEditing ? (
+                    <select name="specialization" value={editedDoctor.specialization} onChange={e => handleChange('specialization', e.target.value)} className="editInput">
+                      <option>Clinical Psychology</option>
+                      <option>Psychiatry</option>
+                      <option>Psychotherapy</option>
+                      <option>Counseling Psychology</option>
+                      <option>Behavioral Therapy</option>
+                    </select>
+                  ) : (<span className="value">{doctor.specialization}</span>)}</h2>
                   <div className="availabilityBadge">
                     {isEditing ? (
                       <select
