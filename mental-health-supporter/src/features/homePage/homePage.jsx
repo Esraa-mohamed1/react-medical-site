@@ -89,8 +89,7 @@ export default function HomePage() {
             <button
               style={{
                 padding: '1rem 2rem',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                color: 'white',
+                background: 'linear-gradient(135deg, rgb(55, 236, 186) 0%, rgb(114, 175, 211) 100%)',                color: 'white',
                 border: 'none',
                 borderRadius: '12px',
                 fontWeight: 'bold',
