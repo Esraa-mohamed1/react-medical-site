@@ -8,6 +8,7 @@ import "../../../styles/global.css";
 import CustomNavbar from '../../../components/Navbar';
 import { FiUser, FiCalendar, FiClock, FiChevronLeft, FiCheckCircle, FiEdit2, FiFileText } from 'react-icons/fi';
 import { Tooltip } from 'react-tooltip';
+import Footer from '../../homePage/components/Footer';
 
 export default function AppointmentDetails() {
   const { id } = useParams();
@@ -318,6 +319,7 @@ export default function AppointmentDetails() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
