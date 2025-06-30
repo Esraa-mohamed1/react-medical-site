@@ -1,6 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { aiChatService } from '../services/aiChatService';
 import './AIChatInterface.css';
+import Footer from "./../features/homePage/components/Footer";
+import CustomNavbar from './../components/Navbar';
+
 
 const AIChatInterface = () => {
   const [messages, setMessages] = useState([
@@ -95,6 +98,8 @@ const AIChatInterface = () => {
   };
 
   return (
+    <>
+    <CustomNavbar />
     <div className="ai-chat-room">
       {/* Chat Room Header */}
       <div className="chat-room-header">
@@ -205,6 +210,8 @@ const AIChatInterface = () => {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 };
 
