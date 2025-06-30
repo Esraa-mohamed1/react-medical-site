@@ -203,7 +203,7 @@ export default function ChatWithDoctor({ doctorId, patientId }) {
   width: '100%',
   overflowY: 'auto',
   padding: 24,
-  background: 'darkcyan'
+  background: 'seashell',
 }}>
 
         {messages.map(msg => {

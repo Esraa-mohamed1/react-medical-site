@@ -8,6 +8,7 @@ import "../../../styles/global.css";
 import CustomNavbar from '../../../components/Navbar';
 import { FiUser, FiCalendar, FiClock, FiChevronLeft, FiCheckCircle, FiEdit2, FiFileText } from 'react-icons/fi';
 import { Tooltip } from 'react-tooltip';
+import Footer from '../../homePage/components/Footer';
 
 export default function AppointmentDetails() {
   const { id } = useParams();
@@ -144,7 +145,7 @@ export default function AppointmentDetails() {
 
   if (isLoading) return (
     <div className="min-vh-100 bg-light d-flex justify-content-center align-items-center">
-      <div className="spinner-border text-primary" style={{width: '3rem', height: '3rem'}} role="status">
+      <div className="spinner-border text-success" style={{width: '3rem', height: '3rem'}} role="status">
         <span className="visually-hidden">Loading...</span>
       </div>
     </div>
@@ -154,7 +155,7 @@ export default function AppointmentDetails() {
       <div className="card shadow-sm p-5 text-center">
         <h3 className="fw-bold text-dark mb-3">Unable to load appointment details</h3>
         <p className="text-muted">Please try again later.</p>
-        <button className="btn btn-outline-primary mt-3" onClick={() => navigate('/doctor/appointments')}>
+        <button className="btn btn-outline-success mt-3" onClick={() => navigate('/doctor/appointments')}>
           <FiChevronLeft className="me-2" />Back to Appointments
         </button>
       </div>
@@ -177,8 +178,8 @@ export default function AppointmentDetails() {
                 {appointment.status || 'Scheduled'}
               </span>
               <span className="text-muted d-flex align-items-center gap-2">
-                <FiCalendar className="text-primary" />
-                {getDisplayDate(appointment)} <FiClock className="ms-2 text-primary" /> {getDisplayTime(appointment)}
+                <FiCalendar className="text-success" />
+                {getDisplayDate(appointment)} <FiClock className="ms-2 text-success" /> {getDisplayTime(appointment)}
               </span>
             </div>
             <h1 className="fw-bold text-dark mb-1">Appointment Details</h1>
@@ -192,11 +193,11 @@ export default function AppointmentDetails() {
               {statusSteps.map((step, idx) => (
                 <div key={step.value} className="d-flex flex-column align-items-center">
                   <div className={`rounded-circle d-flex align-items-center justify-content-center mb-1 ${
-                    appointment.status === step.value ? 'bg-primary text-white' : 'bg-light text-secondary border'
+                    appointment.status === step.value ? 'bg-success text-white' : 'bg-light text-secondary border'
                   }`} style={{ width: 40, height: 40, fontSize: 20 }} title={step.label}>
                     {step.icon}
                   </div>
-                  <span className={`small ${appointment.status === step.value ? 'text-primary fw-bold' : 'text-muted'}`}>{step.label}</span>
+                  <span className={`small ${appointment.status === step.value ? 'text-success fw-bold' : 'text-muted'}`}>{step.label}</span>
                   {idx < statusSteps.length - 1 && (
                     <div style={{ width: 40, height: 2, background: '#e0e0e0', margin: '0 0 0 20px' }} />
                   )}
@@ -210,11 +211,11 @@ export default function AppointmentDetails() {
           <div className="col-md-6">
             <div className="card h-100 shadow-sm border-0 rounded-3 position-relative hover-shadow transition">
               <div className="card-header bg-white border-bottom d-flex align-items-center gap-3">
-                <div className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style={{width: 48, height: 48, fontSize: 22}}>
+                <div className="rounded-circle bg-success text-white d-flex align-items-center justify-content-center" style={{width: 48, height: 48, fontSize: 22}}>
                   {appointment.patient_info ? getInitials(appointment.patient_info.username) : 'U'}
                 </div>
                 <div>
-                  <h5 className="fw-bold text-dark mb-0"><FiUser className="me-2 text-primary" />Patient</h5>
+                  <h5 className="fw-bold text-dark mb-0"><FiUser className="me-2 text-success" />Patient</h5>
                   <span className="text-muted small">Patient Information</span>
                 </div>
               </div>
@@ -236,7 +237,7 @@ export default function AppointmentDetails() {
           <div className="col-md-6">
             <div className="card h-100 shadow-sm border-0 rounded-3 position-relative hover-shadow transition">
               <div className="card-header bg-white border-bottom d-flex align-items-center gap-3">
-                <div className="rounded-circle bg-info text-white d-flex align-items-center justify-content-center" style={{width: 48, height: 48, fontSize: 22}}>
+                <div className="rounded-circle bg-success text-white d-flex align-items-center justify-content-center" style={{width: 48, height: 48, fontSize: 22}}>
                   <FiCalendar />
                 </div>
                 <div>
@@ -262,11 +263,11 @@ export default function AppointmentDetails() {
           </div>
         </div>
         {/* Sticky Action Bar */}
-        <div className="row justify-content-center sticky-bottom" style={{zIndex: 10}}>
+        <div className="row justify-content-center" style={{zIndex: 10}}>
           <div className="col-lg-8">
             <div className="card shadow-sm border-0 rounded-3 mb-4">
               <div className="card-body">
-                <h5 className="fw-bold text-dark mb-3"><FiEdit2 className="me-2 text-primary" />Update Appointment</h5>
+                <h5 className="fw-bold text-dark mb-3"><FiEdit2 className="me-2 text-success" />Update Appointment</h5>
                 <div className="row g-3 align-items-end">
                   <div className="col-md-6">
                     <label className="form-label fw-semibold">Update Status</label>
@@ -298,7 +299,7 @@ export default function AppointmentDetails() {
                 <div className="d-flex gap-3 mt-4 justify-content-end">
                   <button 
                     onClick={handleUpdate} 
-                    className="btn btn-primary px-4"
+                    className="btn btn-success px-4"
                     disabled={isUpdating}
                     title="Save changes"
                   >
@@ -318,6 +319,7 @@ export default function AppointmentDetails() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
