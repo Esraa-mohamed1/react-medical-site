@@ -91,7 +91,7 @@ export default function DoctorChatRoomPage() {
           {patientName}
         </div>
         {/* Messages */}
-        <div className="chat-messages" style={{flex:1,width:'100%',overflowY:'auto',padding:24,background: 'darkcyan'}}>
+        <div className="chat-messages" style={{flex:1,width:'100%',overflowY:'auto',padding:24,background: 'seashell'}}>
           {messages.map(msg => {
             const senderId = typeof msg.sender === 'object' ? msg.sender.id : msg.sender;
             const patientUserId = room?.patient?.user_id;

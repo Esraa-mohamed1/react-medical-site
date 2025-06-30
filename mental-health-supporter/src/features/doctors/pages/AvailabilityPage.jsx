@@ -206,7 +206,7 @@ const AvailabilityPage = () => {
     
     if (date < today) return 'text-muted';
     if (date.getTime() === today.getTime()) return 'text-success';
-    return 'text-primary';
+    return 'text-success';
   };
 
   if (isLoading) {
@@ -234,12 +234,12 @@ const AvailabilityPage = () => {
         <div className="row mb-5">
           <div className="col-lg-8 mx-auto text-center">
             <h1 className="fw-bold text-dark mb-2">
-              <FiCalendar className="me-2 text-primary" />Manage Your Time Slots
+              <FiCalendar className="me-2 text-success" />Manage Your Time Slots
             </h1>
             <p className="text-muted">Set your available dates and times for patient appointments</p>
             <div className="d-flex justify-content-center gap-3 mt-4">
               <button 
-                className="btn btn-primary btn-lg"
+                className="btn btn-success btn-lg"
                 onClick={() => setShowForm(true)}
               >
                 <FiPlus className="me-2" />Add New Time Slot
@@ -269,7 +269,7 @@ const AvailabilityPage = () => {
                         />
                       </div>
                       <div className="col-md-6">
-                        <label className="form-label fw-semibold"><FiClock className="me-2 text-primary" />Time *</label>
+                        <label className="form-label fw-semibold"><FiClock className="me-2 text-success" />Time *</label>
                         <input
                           type="time"
                           className="form-control form-control-lg"
@@ -281,7 +281,7 @@ const AvailabilityPage = () => {
                       </div>
                     </div>
                     <div className="d-flex gap-3 mt-3">
-                      <button type="submit" className="btn btn-primary px-4" disabled={isSubmitting}>
+                      <button type="submit" className="btn btn-success px-4" disabled={isSubmitting}>
                         {isSubmitting ? 'Saving...' : (editingId ? 'Update Slot' : 'Add Slot')}
                       </button>
                       <button type="button" className="btn btn-outline-secondary px-4" onClick={resetForm} disabled={isSubmitting}>
@@ -301,7 +301,7 @@ const AvailabilityPage = () => {
             <div className="card border-0 shadow-lg">
               <div className="card-header bg-white border-bottom">
                 <h4 className="mb-0 text-dark">
-                  <FiCalendar className="me-2 text-primary" />Your Available Time Slots
+                  <FiCalendar className="me-2 text-success" />Your Available Time Slots
                 </h4>
               </div>
               <div className="card-body p-0">
@@ -313,7 +313,7 @@ const AvailabilityPage = () => {
                     <h5 className="text-muted mb-2">No time slots set yet</h5>
                     <p className="text-muted mb-4">Add your first time slot to start accepting patient appointments</p>
                     <button 
-                      className="btn btn-primary"
+                      className="btn btn-success"
                       onClick={() => setShowForm(true)}
                     >
                       <FiPlus className="me-2" />Add Your First Time Slot
@@ -341,7 +341,7 @@ const AvailabilityPage = () => {
                               </td>
                               <td>
                                 <div className="d-flex align-items-center">
-                                  <FiClock className="text-primary me-2" />
+                                  <FiClock className="text-success me-2" />
                                   <span className="fw-medium">{availability.time}</span>
                                 </div>
                               </td>
@@ -349,7 +349,7 @@ const AvailabilityPage = () => {
                                 <div className="btn-group" role="group">
                                   <button 
                                     onClick={() => handleEdit(availability)}
-                                    className="btn btn-outline-primary btn-sm"
+                                    className="btn btn-outline-success btn-sm"
                                     title="Edit"
                                   >
                                     <FiEdit2 />
@@ -382,7 +382,7 @@ const AvailabilityPage = () => {
                               <div className="d-flex gap-2">
                                 <button 
                                   onClick={() => handleEdit(availability)}
-                                  className="btn btn-sm btn-outline-primary"
+                                  className="btn btn-sm btn-outline-success"
                                 >
                                   Edit
                                 </button>
