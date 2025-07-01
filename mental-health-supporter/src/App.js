@@ -27,6 +27,7 @@ import AIChatInterface from './components/AIChatInterface';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CalendarPage from './features/doctors/pages/CalendarPage';
+import DoctorPaidPatients from './features/doctors/pages/DoctorPaidPatients';
 
 import ErrorBoundary from './ErrorBoundary';
 
@@ -90,6 +91,11 @@ function App() {
           <Route path="/doctor/calendar" element={
             <PrivateRoute role="doctor">
               <CalendarPage />
+            </PrivateRoute>
+          } />
+          <Route path="/doctor/paid-patients" element={
+            <PrivateRoute role="doctor">
+              <DoctorPaidPatients />
             </PrivateRoute>
           } />
 

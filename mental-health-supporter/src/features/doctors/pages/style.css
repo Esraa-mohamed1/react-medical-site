@@ -315,5 +315,65 @@
     border-color: #317BC4;
   }
 
+/* Enhanced styles for records history in PatientDetailsModal */
+
+.records-list {
+  max-height: 350px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.records-list .card {
+  background: linear-gradient(135deg, #e0f7fa 80%, #e8eaf6 100%);
+  border-radius: 18px;
+  box-shadow: 0 2px 12px 0 rgba(44, 62, 80, 0.07);
+  margin-bottom: 18px;
+  transition: box-shadow 0.2s;
+}
+
+.records-list .card:hover {
+  box-shadow: 0 4px 24px 0 rgba(44, 62, 80, 0.13);
+}
+
+.records-list .card-body {
+  padding: 1.2rem 1.5rem;
+}
+
+.records-list .fw-bold {
+  color: #2a5c5f;
+}
+
+.records-list .text-primary {
+  color: #5c6bc0 !important;
+}
+
+.records-list .btn-outline-primary {
+  border-radius: 20px;
+  font-size: 0.95rem;
+}
+
+.records-list .btn-outline-danger {
+  border-radius: 20px;
+  font-size: 0.95rem;
+}
+
+.records-list .mb-1, .records-list .mb-2 {
+  margin-bottom: 0.5rem !important;
+}
+
+.records-list .text-muted {
+  color: #7b8a8b !important;
+}
+
+/* Scrollbar styling for records list */
+.records-list::-webkit-scrollbar {
+  width: 7px;
+  background: #e0f7fa;
+  border-radius: 10px;
+}
+.records-list::-webkit-scrollbar-thumb {
+  background: #b2dfdb;
+  border-radius: 10px;
+}
 
   

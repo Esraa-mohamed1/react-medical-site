@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthForm from '../components/AuthForm';
 import { loginUser } from '../services/api';
@@ -8,6 +8,14 @@ import ChatWithDoctor from '../components/ChatWithDoctor';
 export default function LoginPage() {
   const navigate = useNavigate();
   const [serverError, setServerError] = useState('');
+
+  useEffect(() => {
+    const access = localStorage.getItem('access');
+    const loggedUser = localStorage.getItem('loggedUser');
+    if (access && loggedUser) {
+      navigate('/');
+    }
+  }, [navigate]);
 
   const handleLogin = async (data, setFieldErrors) => {
     setServerError('');
@@ -19,6 +27,16 @@ export default function LoginPage() {
           icon: 'error',
           title: 'Login Failed',
           text: 'Your account is blocked. Please contact support.',
+        });
+        return;
+      }
+
+      if (result.role === 'doctor' && result.user && result.user.approval_status !== 'approved') {
+        Swal.fire({
+          icon: 'info',
+          title: 'Account Not Approved',
+          text: 'Admin must approve your account before you can log in.',
+          confirmButtonText: 'OK',
         });
         return;
       }
