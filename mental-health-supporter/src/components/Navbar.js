@@ -78,6 +78,12 @@ const CustomNavbar = () => {
                 {t('navbar.chats') || 'Chats'}
               </Nav.Link>
             )}
+            {/* Doctor paid patients link - only for doctors */}
+            {loggedUser?.role === 'doctor' && (
+              <Nav.Link as={Link} to="/doctor/paid-patients" className="text-success mx-2 fw-medium">
+                {t('navbar.myPatients') || 'My Patients'}
+              </Nav.Link>
+            )}
           </Nav>
 
           {/* Language Switcher */}

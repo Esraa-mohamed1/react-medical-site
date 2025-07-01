@@ -24,6 +24,7 @@ import ChatPage from './pages/ChatPage';
 import DoctorChatsPage from './pages/DoctorChatsPage';
 import DoctorChatRoomPage from './pages/DoctorChatRoomPage';
 import AIChatInterface from './components/AIChatInterface';
+import DoctorPaidPatients from './features/doctors/pages/DoctorPaidPatients';
 
 import ErrorBoundary from './ErrorBoundary';
 
@@ -83,6 +84,11 @@ function App() {
           <Route path="/chat/:doctorId" element={<ChatPage />} />
           <Route path="/doctor-chats" element={<DoctorChatsPage />} />
           <Route path="/doctor-chat/:roomId" element={<DoctorChatRoomPage />} />
+          <Route path="/doctor/paid-patients" element={
+            <PrivateRoute role="doctor">
+              <DoctorPaidPatients />
+            </PrivateRoute>
+          } />
 
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
