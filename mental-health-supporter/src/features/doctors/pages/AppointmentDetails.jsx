@@ -8,6 +8,23 @@ import "../../../styles/global.css";
 import CustomNavbar from '../../../components/Navbar';
 import { FiUser, FiCalendar, FiClock, FiChevronLeft, FiCheckCircle, FiEdit2, FiFileText } from 'react-icons/fi';
 import { Tooltip } from 'react-tooltip';
+import DoctorSidebar from '../components/DoctorSidebar';
+import '../../../features/doctors/style/style.css';
+
+// Add getStatusBadge helper
+const getStatusBadge = (status) => {
+  if (!status) return 'bg-secondary';
+  switch(status.toLowerCase()) {
+    case 'scheduled':
+      return 'bg-warning text-dark';
+    case 'completed':
+      return 'bg-success';
+    case 'cancelled':
+      return 'bg-danger';
+    default:
+      return 'bg-secondary';
+  }
+};
 
 export default function AppointmentDetails() {
   const { id } = useParams();
@@ -143,177 +160,116 @@ export default function AppointmentDetails() {
   const getDisplayNotes = (appointment) => appointment.notes || '';
 
   if (isLoading) return (
-    <div className="min-vh-100 bg-light d-flex justify-content-center align-items-center">
-      <div className="spinner-border text-primary" style={{width: '3rem', height: '3rem'}} role="status">
-        <span className="visually-hidden">Loading...</span>
+    <div className="doctor-dashboard-bg">
+      <DoctorSidebar />
+      <div className="doctor-dashboard-main enhanced-main-container">
+        <div className="enhanced-main-card d-flex justify-content-center align-items-center" style={{ minHeight: '60vh' }}>
+          <div className="spinner-border text-primary" style={{width: '3rem', height: '3rem'}} role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
       </div>
     </div>
   );
   if (!appointment) return (
-    <div className="min-vh-100 bg-light d-flex justify-content-center align-items-center">
-      <div className="card shadow-sm p-5 text-center">
-        <h3 className="fw-bold text-dark mb-3">Unable to load appointment details</h3>
-        <p className="text-muted">Please try again later.</p>
-        <button className="btn btn-outline-primary mt-3" onClick={() => navigate('/doctor/appointments')}>
-          <FiChevronLeft className="me-2" />Back to Appointments
-        </button>
+    <div className="doctor-dashboard-bg">
+      <DoctorSidebar />
+      <div className="doctor-dashboard-main enhanced-main-container">
+        <div className="enhanced-main-card text-center p-5">
+          <h3 className="fw-bold text-dark mb-3">Unable to load appointment details</h3>
+          <p className="text-muted">Please try again later.</p>
+          <button className="edit-btn mt-3" onClick={() => navigate('/doctor/appointments')}>
+            <FiChevronLeft className="me-2" />Back to Appointments
+          </button>
+        </div>
       </div>
     </div>
   );
 
   return (
-    <div className="min-vh-100 bg-light">
-      <CustomNavbar />
-      <div className="container py-5">
-        {/* Summary Section */}
-        <div className="row mb-4">
-          <div className="col-lg-8 mx-auto text-center">
-            <div className="d-flex flex-column flex-md-row align-items-center justify-content-center gap-3 mb-2">
-              <span className={`badge rounded-pill px-3 py-2 fs-6 ${
-                appointment.status === 'scheduled' ? 'bg-warning text-dark' :
-                appointment.status === 'completed' ? 'bg-success' :
-                appointment.status === 'cancelled' ? 'bg-danger' : 'bg-secondary'
-              }`} title="Current Status">
-                {appointment.status || 'Scheduled'}
-              </span>
-              <span className="text-muted d-flex align-items-center gap-2">
-                <FiCalendar className="text-primary" />
-                {getDisplayDate(appointment)} <FiClock className="ms-2 text-primary" /> {getDisplayTime(appointment)}
-              </span>
-            </div>
-            <h1 className="fw-bold text-dark mb-1">Appointment Details</h1>
-            <p className="text-muted mb-0">Review and update appointment information</p>
+    <div className="doctor-dashboard-bg">
+      <DoctorSidebar />
+      <div className="doctor-dashboard-main enhanced-main-container">
+        <div className="enhanced-main-card">
+          <div className="section-header mb-4">Appointment Details</div>
+          <div className="d-flex flex-column flex-md-row align-items-center gap-3 mb-4">
+            <span className={`badge rounded-pill px-3 py-2 fs-6 ${
+              appointment.status === 'scheduled' ? 'bg-warning text-dark' :
+              appointment.status === 'completed' ? 'bg-success' :
+              appointment.status === 'cancelled' ? 'bg-danger' : 'bg-secondary'
+            }`} title="Current Status">
+              {appointment.status || 'Scheduled'}
+            </span>
+            <span className="text-muted d-flex align-items-center gap-2">
+              <FiCalendar className="text-primary" />
+              {getDisplayDate(appointment)} <FiClock className="ms-2 text-primary" /> {getDisplayTime(appointment)}
+            </span>
           </div>
-        </div>
-        {/* Status Stepper */}
-        <div className="row mb-4">
-          <div className="col-lg-8 mx-auto">
-            <div className="d-flex justify-content-center align-items-center gap-4">
-              {statusSteps.map((step, idx) => (
-                <div key={step.value} className="d-flex flex-column align-items-center">
-                  <div className={`rounded-circle d-flex align-items-center justify-content-center mb-1 ${
-                    appointment.status === step.value ? 'bg-primary text-white' : 'bg-light text-secondary border'
-                  }`} style={{ width: 40, height: 40, fontSize: 20 }} title={step.label}>
-                    {step.icon}
-                  </div>
-                  <span className={`small ${appointment.status === step.value ? 'text-primary fw-bold' : 'text-muted'}`}>{step.label}</span>
-                  {idx < statusSteps.length - 1 && (
-                    <div style={{ width: 40, height: 2, background: '#e0e0e0', margin: '0 0 0 20px' }} />
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-        {/* Info Cards */}
-        <div className="row g-4 mb-4">
-          <div className="col-md-6">
-            <div className="card h-100 shadow-sm border-0 rounded-3 position-relative hover-shadow transition">
-              <div className="card-header bg-white border-bottom d-flex align-items-center gap-3">
-                <div className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style={{width: 48, height: 48, fontSize: 22}}>
-                  {appointment.patient_info ? getInitials(appointment.patient_info.username) : 'U'}
-                </div>
-                <div>
-                  <h5 className="fw-bold text-dark mb-0"><FiUser className="me-2 text-primary" />Patient</h5>
-                  <span className="text-muted small">Patient Information</span>
-                </div>
+          <div className="section-card enhanced-section-card mb-4">
+            <div className="section-header mb-3">Patient Information</div>
+            <div className="d-flex flex-column flex-md-row align-items-center gap-4">
+              <div className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style={{width: 64, height: 64, fontSize: 28}}>
+                {appointment.patient_info ? getInitials(appointment.patient_info.username) : 'U'}
               </div>
-              <div className="card-body">
-                {appointment.patient_info ? (
-                  <>
-                    <p className="mb-2"><span className="fw-semibold">Username:</span> {appointment.patient_info.username}</p>
-                    <p className="mb-2"><span className="fw-semibold">Email:</span> {getDisplayEmail(appointment)}</p>
-                  </>
-                ) : (
-                  <div className="text-muted">
-                    <p className="mb-1">Walk-in Appointment</p>
-                    <p className="mb-0">No patient information available</p>
-                  </div>
-                )}
+              <div>
+                <div className="fw-bold fs-5 mb-1">{getDisplayPatient(appointment)}</div>
+                <div className="text-muted mb-1"><FiUser className="me-2" />{getDisplayEmail(appointment)}</div>
               </div>
             </div>
           </div>
-          <div className="col-md-6">
-            <div className="card h-100 shadow-sm border-0 rounded-3 position-relative hover-shadow transition">
-              <div className="card-header bg-white border-bottom d-flex align-items-center gap-3">
-                <div className="rounded-circle bg-info text-white d-flex align-items-center justify-content-center" style={{width: 48, height: 48, fontSize: 22}}>
-                  <FiCalendar />
-                </div>
-                <div>
-                  <h5 className="fw-bold text-dark mb-0">Appointment</h5>
-                  <span className="text-muted small">Appointment Information</span>
-                </div>
+          <div className="section-card enhanced-section-card mb-4">
+            <div className="section-header mb-3">Appointment Information</div>
+            <div className="row g-3">
+              <div className="col-md-6">
+                <div className="mb-2"><span className="fw-semibold">Date:</span> {getDisplayDate(appointment)}</div>
+                <div className="mb-2"><span className="fw-semibold">Time:</span> {getDisplayTime(appointment)}</div>
+                <div className="mb-2"><span className="fw-semibold">Status:</span> <span className={`badge rounded-pill px-3 py-2 ${getStatusBadge(appointment.status)}`}>{appointment.status || 'Scheduled'}</span></div>
+                <div className="mb-2"><span className="fw-semibold">Appointment ID:</span> #{appointment.id}</div>
+                <div className="mb-2"><span className="fw-semibold">Title:</span> {appointment.title}</div>
+                <div className="mb-2"><span className="fw-semibold">Payment Status:</span> {appointment.payment_status}</div>
               </div>
-              <div className="card-body">
-                <p className="mb-2"><span className="fw-semibold">Date:</span> {getDisplayDate(appointment)}</p>
-                <p className="mb-2"><span className="fw-semibold">Time:</span> {getDisplayTime(appointment)}</p>
-                <p className="mb-2"><span className="fw-semibold">Status:</span> <span className={`badge rounded-pill px-3 py-2 ${
-                  appointment.status === 'scheduled' ? 'bg-warning text-dark' :
-                  appointment.status === 'completed' ? 'bg-success' :
-                  appointment.status === 'cancelled' ? 'bg-danger' : 'bg-secondary'
-                }`} title="Current Status">
-                  {appointment.status || 'Scheduled'}
-                </span></p>
-                <p className="mb-0"><span className="fw-semibold">Appointment ID:</span> #{appointment.id}</p>
-                <p className="mb-0"><span className="fw-semibold">Title:</span> {appointment.title}</p>
-                <p className="mb-0"><span className="fw-semibold">Payment Status:</span> {appointment.payment_status}</p>
+              <div className="col-md-6">
+                <label className="form-label fw-semibold">Doctor Notes</label>
+                <textarea
+                  value={notes || getDisplayNotes(appointment)}
+                  onChange={(e) => setNotes(e.target.value)}
+                  className="form-control"
+                  placeholder="Add your notes here..."
+                  rows={4}
+                  disabled={isUpdating}
+                  title="Add notes for this appointment"
+                />
+                <label className="form-label fw-semibold mt-3">Update Status</label>
+                <select
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                  className="form-select"
+                  disabled={isUpdating || appointment.payment_status === 'paid'}
+                  title="Change appointment status"
+                >
+                  <option value="scheduled">Scheduled</option>
+                  <option value="completed">Completed</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
               </div>
             </div>
-          </div>
-        </div>
-        {/* Sticky Action Bar */}
-        <div className="row justify-content-center sticky-bottom" style={{zIndex: 10}}>
-          <div className="col-lg-8">
-            <div className="card shadow-sm border-0 rounded-3 mb-4">
-              <div className="card-body">
-                <h5 className="fw-bold text-dark mb-3"><FiEdit2 className="me-2 text-primary" />Update Appointment</h5>
-                <div className="row g-3 align-items-end">
-                  <div className="col-md-6">
-                    <label className="form-label fw-semibold">Update Status</label>
-                    <select
-                      value={status}
-                      onChange={(e) => setStatus(e.target.value)}
-                      className="form-select form-select-lg"
-                      disabled={isUpdating}
-                      title="Change appointment status"
-                    >
-                      <option value="scheduled">Scheduled</option>
-                      <option value="completed">Completed</option>
-                      <option value="cancelled">Cancelled</option>
-                    </select>
-                  </div>
-                  <div className="col-md-6">
-                    <label className="form-label fw-semibold">Doctor Notes</label>
-                    <textarea
-                      value={notes || getDisplayNotes(appointment)}
-                      onChange={(e) => setNotes(e.target.value)}
-                      className="form-control form-control-lg"
-                      placeholder="Add your notes here..."
-                      rows={4}
-                      disabled={isUpdating}
-                      title="Add notes for this appointment"
-                    />
-                  </div>
-                </div>
-                <div className="d-flex gap-3 mt-4 justify-content-end">
-                  <button 
-                    onClick={handleUpdate} 
-                    className="btn btn-primary px-4"
-                    disabled={isUpdating}
-                    title="Save changes"
-                  >
-                    {isUpdating ? 'Updating...' : 'Update Appointment'}
-                  </button>
-                  <button 
-                    onClick={() => navigate('/doctor/appointments')} 
-                    className="btn btn-outline-secondary px-4"
-                    disabled={isUpdating}
-                    title="Back to appointments"
-                  >
-                    <FiChevronLeft className="me-2" />Back to Appointments
-                  </button>
-                </div>
-              </div>
+            <div className="d-flex gap-3 mt-4 justify-content-end">
+              <button 
+                onClick={handleUpdate} 
+                className="review-btn px-4"
+                disabled={isUpdating || appointment.payment_status === 'paid'}
+                title="Save changes"
+              >
+                {isUpdating ? 'Updating...' : 'Update Appointment'}
+              </button>
+              <button 
+                onClick={() => navigate('/doctor/appointments')} 
+                className="edit-btn px-4"
+                disabled={isUpdating}
+                title="Back to appointments"
+              >
+                <FiChevronLeft className="me-2" />Back to Appointments
+              </button>
             </div>
           </div>
         </div>
