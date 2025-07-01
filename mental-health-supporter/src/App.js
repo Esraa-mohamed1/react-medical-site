@@ -24,6 +24,9 @@ import ChatPage from './pages/ChatPage';
 import DoctorChatsPage from './pages/DoctorChatsPage';
 import DoctorChatRoomPage from './pages/DoctorChatRoomPage';
 import AIChatInterface from './components/AIChatInterface';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import CalendarPage from './features/doctors/pages/CalendarPage';
 
 import ErrorBoundary from './ErrorBoundary';
 
@@ -31,6 +34,7 @@ function App() {
   return (
     <ErrorBoundary>
       <Router>
+        <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -83,6 +87,11 @@ function App() {
           <Route path="/chat/:doctorId" element={<ChatPage />} />
           <Route path="/doctor-chats" element={<DoctorChatsPage />} />
           <Route path="/doctor-chat/:roomId" element={<DoctorChatRoomPage />} />
+          <Route path="/doctor/calendar" element={
+            <PrivateRoute role="doctor">
+              <CalendarPage />
+            </PrivateRoute>
+          } />
 
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>

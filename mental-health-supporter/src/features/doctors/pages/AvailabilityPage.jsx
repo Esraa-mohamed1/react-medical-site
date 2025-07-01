@@ -7,18 +7,22 @@ import CustomNavbar from '../../../components/Navbar';
 import { FiCalendar, FiClock, FiPlus, FiEdit2, FiTrash2 } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import Footer from "../../homePage/components/Footer";
+import { useDispatch } from 'react-redux';
+import { addAvailability } from '../availabilitySlice';
 
 const AvailabilityPage = () => {
   const [availableDates, setAvailableDates] = useState([]);
   const [formData, setFormData] = useState({
     date: '',
-    time: ''
+    startTime: '',
+    endTime: ''
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem('loggedUser'));
@@ -54,31 +58,37 @@ const AvailabilityPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Prevent previous date
     const todayStr = new Date().toISOString().split('T')[0];
     if (!formData.date || formData.date < todayStr) {
       toast.error('Please select a valid date (today or future)');
       return;
     }
-    // Prevent previous time if today
+    if (!formData.startTime || !formData.endTime) {
+      toast.error('Please select both start and end times');
+      return;
+    }
+    if (formData.startTime >= formData.endTime) {
+      toast.error('End time must be after start time');
+      return;
+    }
     if (formData.date === todayStr) {
       const now = new Date();
-      const [inputHour, inputMinute] = formData.time.split(':').map(Number);
+      const [startHour, startMinute] = formData.startTime.split(':').map(Number);
       if (
-        inputHour < now.getHours() ||
-        (inputHour === now.getHours() && inputMinute < now.getMinutes())
+        startHour < now.getHours() ||
+        (startHour === now.getHours() && startMinute < now.getMinutes())
       ) {
-        toast.error('Please select a valid time (not in the past)');
+        toast.error('Please select a valid start time (not in the past)');
         return;
       }
     }
-    // Prevent duplicate slot (same date and time)
-    const isDuplicate = availableDates.some(slot => slot.date === formData.date && slot.time === formData.time && slot.id !== editingId);
+    // Prevent duplicate slot (same date and time range)
+    const isDuplicate = availableDates.some(slot => slot.date === formData.date && slot.startTime === formData.startTime && slot.endTime === formData.endTime && slot.id !== editingId);
     if (isDuplicate) {
       Swal.fire({
         icon: 'warning',
         title: 'Duplicate Slot',
-        text: 'A slot with this date and time already exists.'
+        text: 'A slot with this date and time range already exists.'
       });
       return;
     }
@@ -86,11 +96,15 @@ const AvailabilityPage = () => {
     try {
       setIsSubmitting(true);
       const token = localStorage.getItem('access');
-
+      const payload = {
+        date: formData.date,
+        start_time: formData.startTime, // always snake_case for backend
+        end_time: formData.endTime
+      };
       if (editingId) {
         await axios.put(
           `http://localhost:8000/api/time_slots/available/my/${editingId}/update/`,
-          formData,
+          payload,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -104,23 +118,14 @@ const AvailabilityPage = () => {
           text: 'Time slot updated successfully.'
         });
       } else {
-        await axios.post(
-          'http://localhost:8000/api/medical/time-slots/available/create/',
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json'
-            }
-          }
-        );
+        // Use Redux thunk to add availability with correct keys
+        await dispatch(addAvailability(payload));
         Swal.fire({
           icon: 'success',
           title: 'Added!',
           text: 'Time slot added successfully.'
         });
       }
-
       resetForm();
       fetchAvailableDates(token);
     } catch (error) {
@@ -135,7 +140,8 @@ const AvailabilityPage = () => {
     setEditingId(availability.id);
     setFormData({
       date: availability.date,
-      time: availability.time
+      startTime: availability.startTime,
+      endTime: availability.endTime
     });
     setShowForm(true);
   };
@@ -174,7 +180,8 @@ const AvailabilityPage = () => {
   const resetForm = () => {
     setFormData({
       date: '',
-      time: ''
+      startTime: '',
+      endTime: ''
     });
     setEditingId(null);
     setShowForm(false);
@@ -257,7 +264,7 @@ const AvailabilityPage = () => {
                   <h5 className="fw-bold text-dark mb-3">{editingId ? 'Edit Time Slot' : 'Add New Time Slot'}</h5>
                   <form onSubmit={handleSubmit}>
                     <div className="row g-3 mb-3">
-                      <div className="col-md-6">
+                      <div className="col-md-4">
                         <label className="form-label fw-semibold">Date *</label>
                         <input
                           type="date"
@@ -268,14 +275,25 @@ const AvailabilityPage = () => {
                           required
                         />
                       </div>
-                      <div className="col-md-6">
-                        <label className="form-label fw-semibold"><FiClock className="me-2 text-primary" />Time *</label>
+                      <div className="col-md-4">
+                        <label className="form-label fw-semibold"><FiClock className="me-2 text-primary" />Start Time *</label>
                         <input
                           type="time"
                           className="form-control form-control-lg"
-                          value={formData.time}
+                          value={formData.startTime}
                           min={formData.date === new Date().toISOString().split('T')[0] ? new Date().toLocaleTimeString('en-GB', { hour12: false }).slice(0,5) : undefined}
-                          onChange={(e) => setFormData({...formData, time: e.target.value})}
+                          onChange={(e) => setFormData({...formData, startTime: e.target.value})}
+                          required
+                        />
+                      </div>
+                      <div className="col-md-4">
+                        <label className="form-label fw-semibold">End Time *</label>
+                        <input
+                          type="time"
+                          className="form-control form-control-lg"
+                          value={formData.endTime}
+                          min={formData.startTime}
+                          onChange={(e) => setFormData({...formData, endTime: e.target.value})}
                           required
                         />
                       </div>
@@ -326,7 +344,8 @@ const AvailabilityPage = () => {
                         <thead className="table-light">
                           <tr>
                             <th className="border-0 ps-4">Date</th>
-                            <th className="border-0">Time Slot</th>
+                            <th className="border-0">Start Time</th>
+                            <th className="border-0">End Time</th>
                             <th className="border-0 text-end pe-4">Actions</th>
                           </tr>
                         </thead>
@@ -342,7 +361,13 @@ const AvailabilityPage = () => {
                               <td>
                                 <div className="d-flex align-items-center">
                                   <FiClock className="text-primary me-2" />
-                                  <span className="fw-medium">{availability.time}</span>
+                                  <span className="fw-medium">{availability.startTime}</span>
+                                </div>
+                              </td>
+                              <td>
+                                <div className="d-flex align-items-center">
+                                  <FiClock className="text-primary me-2" />
+                                  <span className="fw-medium">{availability.endTime}</span>
                                 </div>
                               </td>
                               <td className="text-end pe-4">
@@ -377,7 +402,8 @@ const AvailabilityPage = () => {
                                 {formatDate(availability.date)}
                               </h6>
                               <p className="card-text mb-2">
-                                <strong>Time:</strong> {availability.time}
+                                <strong>Start Time:</strong> {availability.startTime}<br/>
+                                <strong>End Time:</strong> {availability.endTime}
                               </p>
                               <div className="d-flex gap-2">
                                 <button 

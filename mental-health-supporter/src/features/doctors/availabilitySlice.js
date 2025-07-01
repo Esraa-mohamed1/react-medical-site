@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/availabilitySlots';
+const API_URL = 'http://127.0.0.1:8000/api/medical/time-slots/available/create/';
 
 // Fetch
 export const fetchAvailability = createAsyncThunk('availability/fetch', async () => {
@@ -11,7 +11,17 @@ export const fetchAvailability = createAsyncThunk('availability/fetch', async ()
 
 // Add
 export const addAvailability = createAsyncThunk('availability/add', async (data) => {
-  const res = await axios.post(API_URL, data);
+  const token = localStorage.getItem('access');
+  const res = await axios.post(API_URL, {
+    date: data.date,
+    start_time: data.start_time || data.startTime,
+    end_time: data.end_time || data.endTime
+  }, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  });
   return res.data;
 });
 
