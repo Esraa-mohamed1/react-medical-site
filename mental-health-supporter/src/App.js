@@ -28,6 +28,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CalendarPage from './features/doctors/pages/CalendarPage';
 import DoctorPaidPatients from './features/doctors/pages/DoctorPaidPatients';
+import DocumentsPage from './features/doctors/pages/DocumentsPage.jsx';
 
 import ErrorBoundary from './ErrorBoundary';
 
@@ -96,6 +97,11 @@ function App() {
           <Route path="/doctor/paid-patients" element={
             <PrivateRoute role="doctor">
               <DoctorPaidPatients />
+            </PrivateRoute>
+          } />
+          <Route path="/doctor/documents" element={
+            <PrivateRoute role="doctor">
+              <DocumentsPage />
             </PrivateRoute>
           } />
 

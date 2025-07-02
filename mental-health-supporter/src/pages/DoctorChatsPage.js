@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import CustomNavbar from '../components/Navbar';
+import DoctorSidebar from '../features/doctors/components/DoctorSidebar';
+import '../features/doctors/style/style.css';
 // import Footer from "./../features/homePage/components/Footer";
 
 
@@ -50,87 +52,92 @@ export default function DoctorChatsPage() {
   };
   const paginatedRooms = rooms.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
-  if (loading) return <div style={{ textAlign: 'center', marginTop: 40 }}>Loading chats...</div>;
-  if (error) return <div style={{ color: 'red', textAlign: 'center' }}>{error}</div>;
+  if (loading) return (
+    <div className="doctor-dashboard-bg">
+      <DoctorSidebar />
+      <div className="doctor-dashboard-main enhanced-main-container">
+        <div className="enhanced-main-card d-flex justify-content-center align-items-center" style={{ minHeight: '60vh' }}>
+          <div className="spinner-border text-primary" style={{ width: '3rem', height: '3rem' }} role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+  if (error) return (
+    <div className="doctor-dashboard-bg">
+      <DoctorSidebar />
+      <div className="doctor-dashboard-main enhanced-main-container">
+        <div className="enhanced-main-card text-center p-5">
+          <div style={{ color: 'red' }}>{error}</div>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
-  <div style={{ background: 'radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2)', minHeight: '100vh', width: '100vw', zIndex: 0 }}>
-    <>
-      <CustomNavbar />
-      <div style={{ maxWidth: 800, margin: '40px auto', padding: '0 16px' }}>
-        <h2 style={{ textAlign: 'center', marginBottom: 24 }}>Doctor Chats</h2>
-        {paginatedRooms.length === 0 ? (
-          <div style={{ textAlign: 'center', color: '#888' }}>No chats found.</div>
-        ) : (
-          <ul style={{ listStyle: 'none', padding: 0 }}>
-            {paginatedRooms.map(room => {
-              const patientName = room.patient?.full_name || room.patient?.user?.username || '---';
-              const doctorName = room.doctor?.full_name || room.doctor?.user?.username || '---';
-              const lastMsg = room.messages?.length ? room.messages[room.messages.length - 1] : null;
-              const isDoctor = lastMsg && lastMsg.sender === room.doctor?.doctor_id;
-              return (
-                <li
-                  key={room.id}
-                  onClick={() => navigate(`/doctor-chat/${room.id}`)}
-                  style={{
-                    background: '#fff',
-                    borderRadius: 12,
-                    padding: '12px 16px',
-                    marginBottom: 12,
-                    boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    justifyContent: isDoctor ? 'flex-end' : 'flex-start',
-                    alignItems: 'center',
-                    transition: '0.2s',
-                  }}
-                >
-                  <div style={{ textAlign: isDoctor ? 'right' : 'left', width: '100%' }}>
-                    <div style={{ fontWeight: 'bold', fontSize: 16 }}>
-                      {isDoctor ? doctorName : patientName}
+    <div className="doctor-dashboard-bg">
+      <DoctorSidebar />
+      <div className="doctor-dashboard-main enhanced-main-container">
+        <div className="enhanced-main-card">
+          <div className="section-header mb-4">Doctor Chats</div>
+          {paginatedRooms.length === 0 ? (
+            <div className="text-center text-muted py-4">No chats found.</div>
+          ) : (
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+              {paginatedRooms.map(room => {
+                const patientName = room.patient?.full_name || room.patient?.user?.username || '---';
+                const doctorName = room.doctor?.full_name || room.doctor?.user?.username || '---';
+                const lastMsg = room.messages?.length ? room.messages[room.messages.length - 1] : null;
+                const isDoctor = lastMsg && lastMsg.sender === room.doctor?.doctor_id;
+                return (
+                  <li
+                    key={room.id}
+                    onClick={() => navigate(`/doctor-chat/${room.id}`)}
+                    className="section-card enhanced-section-card mb-3 chat-list-item"
+                    style={{ cursor: 'pointer', transition: '0.2s', padding: '1.25rem 1.5rem', display: 'flex', alignItems: 'center', background: '#f8fafc', border: '1px solid #ede7f6', borderRadius: '1rem', boxShadow: '0 2px 8px rgba(80,80,160,0.06)' }}
+                  >
+                    <div className="flex-grow-1">
+                      <div className="fw-bold fs-5 mb-1" style={{ color: '#4527a0' }}>{isDoctor ? doctorName : patientName}</div>
+                      <div className="text-muted" style={{ maxWidth: 320, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '1rem' }}>
+                        {lastMsg ? lastMsg.text : 'No messages yet'}
+                      </div>
                     </div>
-                    <div style={{ fontSize: 14, color: '#666', maxWidth: 220, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {lastMsg ? lastMsg.text : 'No messages yet'}
+                    <div className="text-muted small ms-3" style={{ whiteSpace: 'nowrap', fontSize: '0.95rem' }}>
+                      {lastMsg ? new Date(lastMsg.timestamp).toLocaleTimeString() : ''}
                     </div>
-                  </div>
-                  <div style={{ fontSize: 12, color: '#999', whiteSpace: 'nowrap', marginLeft: 8 }}>
-                    {lastMsg ? new Date(lastMsg.timestamp).toLocaleTimeString() : ''}
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-
-        {/* Pagination only if needed */}
-        {rooms.length > itemsPerPage && (
-          <div style={{ marginTop: 24, display: 'flex', justifyContent: 'center' }}>
-            <ReactPaginate
-              previousLabel={'←'}
-              nextLabel={'→'}
-              breakLabel={'...'}
-              pageCount={pageCount}
-              marginPagesDisplayed={1}
-              pageRangeDisplayed={2}
-              onPageChange={handlePageClick}
-              containerClassName={'pagination'}
-              activeClassName={'active'}
-              pageClassName={'page-item'}
-              previousClassName={'page-item'}
-              nextClassName={'page-item'}
-              breakClassName={'page-item'}
-              disabledClassName={'disabled'}
-              pageLinkClassName={'page-link'}
-              previousLinkClassName={'page-link'}
-              nextLinkClassName={'page-link'}
-              breakLinkClassName={'page-link'}
-            />
-          </div>
-        )}
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+          {/* Pagination only if needed */}
+          {rooms.length > itemsPerPage && (
+            <div className="d-flex justify-content-center mt-4">
+              <ReactPaginate
+                previousLabel={'←'}
+                nextLabel={'→'}
+                breakLabel={'...'}
+                pageCount={pageCount}
+                marginPagesDisplayed={1}
+                pageRangeDisplayed={2}
+                onPageChange={handlePageClick}
+                containerClassName={'pagination'}
+                activeClassName={'active'}
+                pageClassName={'page-item'}
+                previousClassName={'page-item'}
+                nextClassName={'page-item'}
+                breakClassName={'page-item'}
+                disabledClassName={'disabled'}
+                pageLinkClassName={'page-link'}
+                previousLinkClassName={'page-link'}
+                nextLinkClassName={'page-link'}
+                breakLinkClassName={'page-link'}
+              />
+            </div>
+          )}
+        </div>
       </div>
-      {/* <Footer /> */}
-    </>
-  </div>
-);
-
+    </div>
+  );
 }
