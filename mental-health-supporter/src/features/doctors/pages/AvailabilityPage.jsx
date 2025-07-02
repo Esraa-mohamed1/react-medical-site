@@ -46,7 +46,13 @@ const AvailabilityPage = () => {
           Authorization: `Bearer ${token}`
         }
       });
-      setAvailableDates(response.data);
+      // Map API fields to camelCase for UI
+      const mapped = response.data.map(slot => ({
+        ...slot,
+        startTime: slot.start_time,
+        endTime: slot.end_time
+      }));
+      setAvailableDates(mapped);
     } catch (error) {
       console.error('Error fetching availability:', error);
       toast.error('Failed to load availability dates');
