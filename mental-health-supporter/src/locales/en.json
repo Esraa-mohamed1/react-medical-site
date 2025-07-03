@@ -158,20 +158,26 @@
   "error": "Failed to fetch doctor details"
 },
 "patientDetails": {
-  "loading": "Loading...",
-  "notFound": "Patient not found",
-  "fetchError": "Failed to fetch patient details",
-  "updateError": "Failed to update patient details",
-  "changePhoto": "Change Photo",
-  "memberSince": "Member since",
+  "editProfile": "Edit Profile",
+  "save": "Save",
+  "cancel": "Cancel",
+  "saving": "Saving...",
   "basicInfo": "Basic Information",
   "contactInfo": "Contact Information",
   "fullName": "Full Name",
+  "memberSince": "Member Since",
   "email": "Email",
   "phone": "Phone",
   "address": "Address",
-  "city": "City"
-},
+  "city": "City",
+  "age": "Age",
+  "gender": "Gender",
+  "bloodType": "Blood Type",
+  "allergies": "Allergies",
+  "changePhoto": "Change Photo",
+  "fetchError": "Failed to load patient details"
+}
+,
 "appointmentBooking": {
   "title": "Book Appointment",
   "loading": "Loading available times...",

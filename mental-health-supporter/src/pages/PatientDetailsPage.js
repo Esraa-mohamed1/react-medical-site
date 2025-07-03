@@ -223,17 +223,17 @@ const PatientDetailsPage = () => {
                     disabled={saving}
                   >
                     <FiSave className="btn-icon" />
-                    {saving ? 'Saving...' : 'Save'}
+{saving ? t('patientDetails.saving') : t('patientDetails.save')}
                   </button>
                   <button className="cancelButton" onClick={handleCancel}>
                     <FiX className="btn-icon" />
-                    Cancel
+{t('patientDetails.cancel')}
                   </button>
                 </>
               ) : (
                 <button className="editButton" onClick={handleEdit}>
                   <FiEdit3 className="btn-icon" />
-                  Edit Profile
+{t('patientDetails.editProfile')}
                 </button>
               )}
             </div>
@@ -248,7 +248,7 @@ const PatientDetailsPage = () => {
                 {isEditing && (
                   <div className="changePhotoOverlay">
                     <FiCamera className="cameraIcon" />
-                    <span>Change Photo</span>
+<span>{t('patientDetails.changePhoto')}</span>
                   </div>
                 )}
                 <input

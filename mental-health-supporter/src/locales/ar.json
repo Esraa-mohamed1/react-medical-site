@@ -159,20 +159,26 @@
   "error": "فشل في جلب بيانات الطبيب"
 },
 "patientDetails": {
-  "loading": "جارٍ التحميل...",
-  "notFound": "لم يتم العثور على المريض",
-  "fetchError": "فشل في جلب تفاصيل المريض",
-  "updateError": "فشل في تحديث بيانات المريض",
-  "changePhoto": "تغيير الصورة",
-  "memberSince": "عضو منذ",
+  "editProfile": "تعديل الملف الشخصي",
+  "save": "حفظ",
+  "cancel": "إلغاء",
+  "saving": "جارٍ الحفظ...",
   "basicInfo": "المعلومات الأساسية",
-  "contactInfo": "معلومات التواصل",
+  "contactInfo": "معلومات الاتصال",
   "fullName": "الاسم الكامل",
+  "memberSince": "عضو منذ",
   "email": "البريد الإلكتروني",
-  "phone": "رقم الهاتف",
+  "phone": "الهاتف",
   "address": "العنوان",
-  "city": "المدينة"
-},
+  "city": "المدينة",
+  "age": "العمر",
+  "gender": "الجنس",
+  "bloodType": "فصيلة الدم",
+  "allergies": "الحساسيات",
+  "changePhoto": "تغيير الصورة",
+  "fetchError": "فشل في تحميل بيانات المريض"
+}
+,
 "appointmentBooking": {
   "title": "حجز موعد",
   "loading": "جارٍ تحميل المواعيد المتاحة...",
