@@ -8,8 +8,10 @@ import './Navbar.css';
 import useSupabaseNotifications from '../useSupabaseNotifications';
 import useUserNotifications from '../useUserNotifications';
 
+
 const CustomNavbar = () => {
-  const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
+  const [authChanged, setAuthChanged] = useState(0);
+  const [loggedUser, setLoggedUser] = useState(() => JSON.parse(localStorage.getItem('loggedUser')));
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -42,10 +44,27 @@ const CustomNavbar = () => {
   }
 
   const handleLogout = () => {
-    localStorage.clear();
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
+    localStorage.removeItem('loggedUser');
     setShowDropdown(false);
+    setLoggedUser(null);
+    setAuthChanged((prev) => prev + 1); // force re-render
     navigate('/login');
   };
+  // Keep loggedUser in sync with localStorage changes (e.g., login/logout in other tabs)
+  useEffect(() => {
+    const syncUser = () => {
+      setLoggedUser(JSON.parse(localStorage.getItem('loggedUser')));
+    };
+    window.addEventListener('storage', syncUser);
+    return () => window.removeEventListener('storage', syncUser);
+  }, []);
+
+  // Also update loggedUser when authChanged changes (e.g., after logout)
+  useEffect(() => {
+    setLoggedUser(JSON.parse(localStorage.getItem('loggedUser')));
+  }, [authChanged]);
 
   const handleAccountSettings = () => {
     setShowDropdown(false);
@@ -190,7 +209,7 @@ const CustomNavbar = () => {
                   minWidth: '250px',
                   maxHeight: '300px',
                   overflowY: 'auto',
-                  borderRadius: '8px',
+                  borderRadius: '8px'
                 }}>
                   <div style={{ padding: '10px', borderBottom: '1px solid #eee', fontWeight: 'bold' }}>Notifications</div>
                   {notifications.length === 0 ? (

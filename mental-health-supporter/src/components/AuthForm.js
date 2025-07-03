@@ -26,16 +26,16 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = {};
-    if (!formData.name) newErrors.name = isLogin ? 'Username or email is required' : 'Username is required';
-    if (!formData.password) newErrors.password = 'Password is required';
-    else if (formData.password.length < 6) newErrors.password = 'Password must be at least 6 characters';
+    if (!formData.name) newErrors.name = isLogin ? 'Please enter your username or email.' : 'Please enter a username.';
+    if (!formData.password) newErrors.password = 'Please enter your password.';
+    else if (formData.password.length < 6) newErrors.password = 'Password must be at least 6 characters.';
     if (!isLogin) {
-      if (!formData.full_name) newErrors.full_name = 'Full name is required';
-      if (!formData.email) newErrors.email = 'Email is required';
-      else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Invalid email';
-      if (!formData.confirmPassword) newErrors.confirmPassword = 'Please confirm your password';
+      if (!formData.full_name) newErrors.full_name = 'Please enter your full name.';
+      if (!formData.email) newErrors.email = 'Please enter your email.';
+      else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Please enter a valid email address.';
+      if (!formData.confirmPassword) newErrors.confirmPassword = 'Please confirm your password.';
       else if (formData.password !== formData.confirmPassword)
-        newErrors.confirmPassword = 'Passwords do not match';
+        newErrors.confirmPassword = 'Passwords do not match.';
     }
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -62,6 +62,11 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
       }
       if (apiErrors.detail && apiErrors.detail.toLowerCase().includes('doctor registration failed')) {
         mappedErrors.email = 'This email or username is already used.';
+      }
+      // Generalize for login errors
+      if (apiErrors.detail && apiErrors.detail.toLowerCase().includes('invalid credentials')) {
+        mappedErrors.name = 'Invalid username/email or password.';
+        mappedErrors.password = 'Invalid username/email or password.';
       }
       setErrors(mappedErrors);
     });

@@ -9,13 +9,20 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [serverError, setServerError] = useState('');
 
-  useEffect(() => {
-    const access = localStorage.getItem('access');
-    const loggedUser = localStorage.getItem('loggedUser');
-    if (access && loggedUser) {
-      navigate('/');
+useEffect(() => {
+  const access = localStorage.getItem('access');
+  const loggedUser = localStorage.getItem('loggedUser');
+  if (access && loggedUser) {
+    try {
+      const user = JSON.parse(loggedUser);
+      if (user && user.id && user.role) {
+        navigate('/');
+      }
+    } catch (e) {
+      // Invalid user, do nothing
     }
-  }, [navigate]);
+  }
+}, [navigate]);
 
   const handleLogin = async (data, setFieldErrors) => {
     setServerError('');
@@ -68,12 +75,46 @@ export default function LoginPage() {
       console.error('Login failed:', error);
       const errorData = error.response?.data;
       if (errorData) {
-        if (errorData.detail) {
+        // Show all error messages in a SweetAlert
+        if (errorData.error === 'Invalid credentials') {
+          Swal.fire({
+            icon: 'error',
+            title: 'Login Failed',
+            text: "User doesn't exist.",
+          });
+          setServerError("User doesn't exist.");
+        } else if (errorData.detail) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Login Failed',
+            text: errorData.detail,
+          });
           setServerError(errorData.detail);
-        } else {
+        } else if (typeof errorData === 'object' && errorData !== null) {
+          // Collect all field errors into a single string
+          const messages = Object.entries(errorData)
+            .map(([field, msgs]) => Array.isArray(msgs) ? `${field}: ${msgs.join(', ')}` : `${field}: ${msgs}`)
+            .join('\n');
+          Swal.fire({
+            icon: 'error',
+            title: 'Validation Error',
+            text: messages,
+          });
           setFieldErrors(errorData);
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Login Failed',
+            text: 'Invalid credentials',
+          });
+          setServerError('Invalid credentials');
         }
       } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Failed',
+          text: 'An unexpected error occurred. Please try again.',
+        });
         setServerError('An unexpected error occurred. Please try again.');
       }
     }
