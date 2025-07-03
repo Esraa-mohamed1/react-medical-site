@@ -4,14 +4,16 @@
   padding: 2rem;
   width: 100%;
   min-height: 100vh;
-  background: radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2);
+  background: #5c6bc0;
+
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   overflow: hidden;
   position: relative;
 }
 
 .card {
-  background: radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2);
+  background: #5c6bc0;
+
   backdrop-filter: blur(15px);
   border-radius: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
@@ -23,7 +25,8 @@
 }
 
 .header {
-  background: radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2);
+  background: #5c6bc0;
+
   color: #2d3748;
   padding: 2.5rem;
   position: relative;
@@ -69,12 +72,14 @@
   font-size: 2.5rem;
   font-weight: 700;
   margin: 0 0 0.5rem 0;
-  color: #2d3748;
+  color:#5c6bc0;
+
 }
 
 .created {
   font-size: 0.875rem;
-  color: rgba(45, 55, 72, 0.7);
+  color: #5c6bc0;
+
   margin-top: 0.5rem;
 }
 
@@ -155,7 +160,8 @@
 
 .editButton {
   padding: 0.8rem 1rem;
-  background: linear-gradient(to right, #37ECBA, #72AFD3);
+  background: #5c6bc0;
+
   color: white;
   border: none;
   border-radius: 30px;
@@ -169,39 +175,45 @@
 /* Buttons */
 .saveButton {
   padding: 0.8rem 1rem;
-  background: linear-gradient(to right, #37ECBA, #72AFD3);
+  background: #5c6bc0;
+
   color: white;
   border: none;
   border-radius: 30px;
   font-size: 1rem;
   font-weight: bold;
-  box-shadow: 0 4px 12px rgba(114, 175, 211, 0.3);
+  box-shadow: 0 4px 12px #5c6bc0;
+
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .saveButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(114, 175, 211, 0.4);
+  box-shadow: 0 6px 18px #5c6bc0;
+
 }
 
 
 .cancelButton {
   padding: 0.8rem 1rem;
-  background: linear-gradient(to right, #37ECBA, #72AFD3);
+  background: #5c6bc0;
+
   color: white;
   border: none;
   border-radius: 30px;
   font-size: 1rem;
   font-weight: bold;
-  box-shadow: 0 4px 12px rgba(114, 175, 211, 0.3);
+  box-shadow: 0 4px 12px #5c6bc0;
+
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .cancelButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(114, 175, 211, 0.4);
+  box-shadow: 0 6px 18px #5c6bc0;
+
 }
 .imageContainer {
   display: flex;

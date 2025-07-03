@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2);
+  background: #A2AADB;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   overflow: hidden;
   position: relative;
@@ -25,7 +25,7 @@
 
 .accountTitle {
   text-align: center;
-  color: #67B1B6;
+  color: #5c6bc0;
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
@@ -38,10 +38,10 @@
 .accountInput {
   background: transparent;
   border: none;
-  border-bottom: 2px solid #67B1B6;
+  border-bottom: 2px solid #5c6bc0;
   padding: 0.2rem 0;
   font-size: 1rem;
-  color: #274760;
+  color: #5c6bc0;
   outline: none;
   transition: border-color 0.3s ease;
   width: 100%;
@@ -53,7 +53,7 @@
 }
 
 .accountInput:focus {
-  border-bottom-color: #37ECBA;
+  border-bottom-color: #5c6bc0;
 }
 
 .validationMsg {
@@ -83,7 +83,7 @@
   font-weight: bold;
   font-size: 1.05rem;
   color: white;
-  background: linear-gradient(to right, #37ECBA, #72AFD3);
+  background: #5c6bc0;
   box-shadow: 0 4px 12px rgba(114, 175, 211, 0.3);
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -93,10 +93,10 @@
 
 .accountButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(114, 175, 211, 0.4);
+  box-shadow: 0 6px 18px #5c6bc0;
 }
 
 
 .classchangeusername {
-      color: #67B1B6 !important;
+      color: #5c6bc0 !important;
 }

@@ -120,7 +120,8 @@ const CustomNavbar = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className={changeMarginDirection('auto')}>
             <Nav.Link as={Link} to="/" className="text-primary mx-2 fw-medium">{t('navbar.home')}</Nav.Link>
-            <Nav.Link as={Link} to={loggedUser?.role === 'doctor' ? "/doctor/appointments" : "/doctors-list"} className="text-primary mx-2 fw-medium">{loggedUser?.role === 'doctor' ? t('navbar.Appointments') : t('navbar.doctors')}</Nav.Link>
+            {loggedUser && loggedUser.role && loggedUser.id && <Nav.Link as={Link} to={loggedUser?.role === 'doctor' ? "/doctor/appointments" : "/doctors-list"} className="text-primary mx-2 fw-medium">{loggedUser?.role === 'doctor' ? t('navbar.Appointments') : t('navbar.doctors')}</Nav.Link>}
+            {!loggedUser && <Nav.Link as={Link} to={"/login"} className="text-primary mx-2 fw-medium">{t('navbar.doctors')}</Nav.Link>}
             <Nav.Link as={Link} to={loggedUser?.role === 'doctor' ? "/doctor/availability" : "/select-disorder"} className="text-primary mx-2 fw-medium">{loggedUser?.role === 'doctor' ? t('navbar.SetTimes') : t('navbar.articles')}</Nav.Link>
             {/* Doctor chat link - only for doctors */}
             {loggedUser?.role === 'doctor' && (
