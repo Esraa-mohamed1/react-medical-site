@@ -3,11 +3,14 @@ import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import { useParams, Navigate } from 'react-router-dom';
+import CustomNavbar from './../components/Navbar';
+import Footer from "./../features/homePage/components/Footer";
 
 const PaymentPage = ({ onPaymentSuccess }) => {
   const { appointment_id } = useParams();
   const token = localStorage.getItem('access');
   const [isAllowed, setIsAllowed] = useState(null);
+  const [appointmentsResponse, setAppointmentsResponse] = useState({});
   let patientName = '';
 
   useEffect(() => {
@@ -18,6 +21,7 @@ const PaymentPage = ({ onPaymentSuccess }) => {
     })
       .then(res => {
         const appointment = res.data;
+        setAppointmentsResponse(appointment);
         const userDataRaw = localStorage.getItem('loggedUser');
         if (userDataRaw) {
           const userData = JSON.parse(userDataRaw);
@@ -42,8 +46,10 @@ const PaymentPage = ({ onPaymentSuccess }) => {
         }
         setIsAllowed(false);
       });
+
   }, [appointment_id, token]);
 
+  console.log(isAllowed, appointmentsResponse)
   if (!token) {
     // Redirect to login, but keep the intended URL for redirect after login
     return <Navigate to={`/login?next=/payment/${appointment_id}`} replace />;
@@ -75,6 +81,8 @@ const PaymentPage = ({ onPaymentSuccess }) => {
       text: 'Your payment has been completed successfully.',
       confirmButtonColor: '#6f42c1'
     });
+
+    return <Navigate to={`/payment/${appointment_id}`} replace />;
   };
 
   const createOrder = async (data, actions) => {
@@ -102,6 +110,8 @@ const PaymentPage = ({ onPaymentSuccess }) => {
   };
 
   return (
+    <>
+    <CustomNavbar />
     <div className="container py-5 d-flex justify-content-center align-items-center min-vh-100" style={{ background: 'linear-gradient(135deg, #f8fafc 0%, #e3e6f3 100%)' }}>
       <div className="card shadow-lg border-0 p-4" style={{ maxWidth: 480, width: '100%', borderRadius: 18 }}>
         <div className="text-center mb-4">
@@ -115,6 +125,7 @@ const PaymentPage = ({ onPaymentSuccess }) => {
           )}
           <p className="text-muted mb-0">Secure your appointment by paying the consultation fee below.</p>
         </div>
+        {(isAllowed === true && appointmentsResponse && appointmentsResponse.payment_status === 'paid') && <div className="alert alert-warning">This appointment is already paid.</div>}
         <div className="d-flex justify-content-center mb-3">
           <PayPalScriptProvider options={{ "client-id": "AWHRtQsGF5iOXME3WYS5kuOSzVRde2h6FUi2Zfd9oQ5VB0ArDp2cFPHRUoB5wORwzND_mh137tVNhkSm", currency: "USD" }}>
             <PayPalButtons
@@ -143,6 +154,7 @@ const PaymentPage = ({ onPaymentSuccess }) => {
                 console.error("PayPal onError:", err);
                 alert("Something went wrong with your payment. Please try again.");
               }}
+              disabled={(isAllowed === true && appointmentsResponse && appointmentsResponse.payment_status === 'paid')}
             />
           </PayPalScriptProvider>
         </div>
@@ -151,6 +163,8 @@ const PaymentPage = ({ onPaymentSuccess }) => {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 };
 

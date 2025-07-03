@@ -6,6 +6,7 @@ import startOfWeek from 'date-fns/startOfWeek';
 import getDay from 'date-fns/getDay';
 import enUS from 'date-fns/locale/en-US';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import './CalendarPage.css';
 
 const locales = {
   'en-US': enUS,
@@ -43,19 +44,19 @@ export default function CalendarPage() {
   };
 
   return (
-    <div style={{ display: 'flex', height: '100vh', background: '#fafbfc' }}>
+    <div className="calendar-container">
       {/* Sidebar */}
-      <div style={{ width: 260, background: '#fff', borderRight: '1px solid #eee', padding: 24, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div className="calendar-sidebar">
         <div>
-          <h3 style={{ fontWeight: 700, fontSize: 18, marginBottom: 24 }}>January</h3>
-          {/* Mini calendar placeholder */}
-          <div style={{ marginBottom: 32 }}>
+          <h3>January</h3>
+          {/* Mini calendar styled */}
+          <div className="mini-calendar">
             <Calendar
               localizer={localizer}
               events={[]}
               startAccessor="start"
               endAccessor="end"
-              style={{ height: 220 }}
+              style={{ height: 220, background: 'transparent', border: 'none' }}
               views={['month']}
               toolbar={false}
               selectable={false}
@@ -82,11 +83,11 @@ export default function CalendarPage() {
         </div>
       </div>
       {/* Main calendar */}
-      <div style={{ flex: 1, padding: 32, background: '#fafbfc' }}>
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: 24 }}>
-          <h2 style={{ fontWeight: 700, fontSize: 24, margin: 0, flex: 1 }}>01-07 January 2022</h2>
+      <div className="calendar-main">
+        <div className="calendar-header">
+          <h2>01-07 January 2022</h2>
           <button
-            style={{ background: '#2563eb', color: '#fff', border: 'none', borderRadius: 6, padding: '8px 18px', fontWeight: 600, fontSize: 15, cursor: 'pointer' }}
+            className="add-event-btn"
             onClick={() => setShowModal(true)}
           >
             Add event <span style={{ fontWeight: 700, fontSize: 18, marginLeft: 4 }}>+</span>
@@ -97,7 +98,7 @@ export default function CalendarPage() {
           events={events}
           startAccessor="start"
           endAccessor="end"
-          style={{ height: 'calc(100vh - 120px)', background: '#fff', borderRadius: 8, boxShadow: '0 2px 8px #0001' }}
+          style={{ height: 'calc(100vh - 120px)', background: '#fff', borderRadius: 18, boxShadow: '0 2px 16px #0002' }}
           defaultView={Views.WEEK}
           views={['week']}
           selectable
@@ -108,41 +109,38 @@ export default function CalendarPage() {
       {/* Modal for adding event */}
       {showModal && (
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: '#0006', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <form onSubmit={handleAddEvent} style={{ background: '#fff', padding: 32, borderRadius: 10, minWidth: 320, boxShadow: '0 2px 16px #0002' }}>
-            <h4 style={{ marginBottom: 18 }}>Add Event</h4>
-            <div style={{ marginBottom: 16 }}>
+          <form onSubmit={handleAddEvent} className="event-modal">
+            <h4>Add Event</h4>
+            <div>
               <label style={{ display: 'block', fontWeight: 500, marginBottom: 6 }}>Title</label>
               <input
                 type="text"
                 value={newEvent.title}
                 onChange={e => setNewEvent({ ...newEvent, title: e.target.value })}
-                style={{ width: '100%', padding: 8, borderRadius: 5, border: '1px solid #ddd' }}
                 required
               />
             </div>
-            <div style={{ marginBottom: 16 }}>
+            <div>
               <label style={{ display: 'block', fontWeight: 500, marginBottom: 6 }}>Start</label>
               <input
                 type="datetime-local"
                 value={newEvent.start ? format(newEvent.start, "yyyy-MM-dd'T'HH:mm") : ''}
                 onChange={e => setNewEvent({ ...newEvent, start: new Date(e.target.value) })}
-                style={{ width: '100%', padding: 8, borderRadius: 5, border: '1px solid #ddd' }}
                 required
               />
             </div>
-            <div style={{ marginBottom: 24 }}>
+            <div>
               <label style={{ display: 'block', fontWeight: 500, marginBottom: 6 }}>End</label>
               <input
                 type="datetime-local"
                 value={newEvent.end ? format(newEvent.end, "yyyy-MM-dd'T'HH:mm") : ''}
                 onChange={e => setNewEvent({ ...newEvent, end: new Date(e.target.value) })}
-                style={{ width: '100%', padding: 8, borderRadius: 5, border: '1px solid #ddd' }}
                 required
               />
             </div>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12 }}>
-              <button type="button" onClick={() => setShowModal(false)} style={{ background: '#eee', border: 'none', borderRadius: 5, padding: '8px 18px', fontWeight: 500, cursor: 'pointer' }}>Cancel</button>
-              <button type="submit" style={{ background: '#2563eb', color: '#fff', border: 'none', borderRadius: 5, padding: '8px 18px', fontWeight: 600, cursor: 'pointer' }}>Add</button>
+            <div className="modal-actions">
+              <button type="button" className="cancel-btn" onClick={() => setShowModal(false)}>Cancel</button>
+              <button type="submit" className="add-btn">Add</button>
             </div>
           </form>
         </div>

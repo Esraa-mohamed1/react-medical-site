@@ -74,7 +74,7 @@ export default function DoctorsSection() {
           <div className={styles.header}>
             <p className={styles.subtitle}>{t('doctorsSection.meetOurDoctors')}</p>
             <h2 className={styles.title}>
-              <span className={styles.titleHighlight}>{t('doctorsSection.professional')}</span> & <span className="text-success">{t('doctorsSection.enthusiastic')}</span>
+              <span className={styles.titleHighlight}>{t('doctorsSection.professional')}</span> & <span className="text-primary">{t('doctorsSection.enthusiastic')}</span>
             </h2>
           </div>
           <div className={styles.loading}>{t('doctorsSection.loadingDoctors')}</div>
@@ -93,7 +93,7 @@ export default function DoctorsSection() {
 
           </p>
           <h2 className={styles.title}>
-            <span className={`${styles.titleHighlight} text-success`}>{t('doctorsSection.professional')}</span> <span className="text-success">&</span> <span className="text-success">{t('doctorsSection.enthusiastic')}</span>
+            <span className={`${styles.titleHighlight}`}>{t('doctorsSection.professional')}</span> <span className={`${styles.titleHighlight}`}>&</span> <span className={`${styles.titleHighlight}`}>{t('doctorsSection.enthusiastic')}</span>
           </h2>
 
           {error && <p className={styles.error}>{error}</p>}

@@ -1,0 +1,45 @@
+.disorder-selection-page {
+  padding: 60px 20px;
+  background-color: #A2AADB;
+  text-align: center;
+  min-height: 100vh;
+ /* content center  */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Arial', sans-serif;
+}
+
+.disorder-selection-page h1 {
+  font-size: 2rem;
+  margin-bottom: 40px;
+  color: #333;
+}
+
+.disorder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.disorder-card {
+  background-color: white;
+  border-radius: 16px;
+  padding: 30px 20px;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  color: #444;
+  font-weight: 600;
+}
+
+.disorder-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  background-color: #eaf3ff;
+  color: #007bff;
+}

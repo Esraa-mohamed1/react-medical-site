@@ -26,9 +26,16 @@ const AppointmentBooking = ({ doctorId }) => {
   }, [doctorId, t]);
 
   const handleBookClick = (slot) => {
+    // Normalize slot fields for modal and API
+    const date = slot.date || (slot.date_time ? slot.date_time.split('T')[0] : '');
+    const start_time = slot.start_time || slot.startTime || slot.time || (slot.date_time ? slot.date_time.split('T')[1]?.slice(0,5) : '');
+    const end_time = slot.end_time || slot.endTime || '';
     setSelectedSlot({
       ...slot,
-      dateTime: slot.date_time || slot.dateTime || `${slot.date}T${slot.time}`
+      date,
+      start_time,
+      end_time,
+      dateTime: slot.date_time || slot.dateTime || `${date}T${start_time}`
     });
     setShowModal(true);
   };
@@ -52,20 +59,34 @@ const AppointmentBooking = ({ doctorId }) => {
             {loading && <div style={{ color: 'var(--secondary-teal)' }}>{t('appointmentBooking.loading')}</div>}
             {error && <div className="text-danger" style={{ color: 'var(--secondary-teal)' }}>{error}</div>}
             <div className="d-grid gap-2 mt-2">
-              {availableTimes.length > 0 ? availableTimes.map((slot) => (
-                <Button
-                  key={slot.id}
-                  variant="outline-primary"
-                  className="time-slot-btn d-flex justify-content-between align-items-center"
-                  onClick={() => handleBookClick(slot)}
-                  style={{ background: 'var(--extra-light-teal)', color: 'var(--secondary-teal)', borderColor: 'var(--secondary-teal)', fontWeight: 600 }}
-                >
-                  <span>{slot.time}</span>
-                  <Badge bg="light" text="primary" pill style={{ background: 'var(--secondary-teal)', color: '#fff', border: 'none' }}>
-                    {t('appointmentBooking.available')}
-                  </Badge>
-                </Button>
-              )) : !loading && <div style={{ color: 'var(--secondary-teal)' }}>{t('appointmentBooking.noTimes')}</div>}
+              {availableTimes.length > 0 ? availableTimes.map((slot) => {
+                // Normalize slot fields for display
+                const date = slot.date || (slot.date_time ? slot.date_time.split('T')[0] : '');
+                const start_time = slot.start_time || slot.startTime || slot.time || (slot.date_time ? slot.date_time.split('T')[1]?.slice(0,5) : '');
+                const end_time = slot.end_time || slot.endTime || '';
+                return (
+                  <Button
+                    key={slot.id}
+                    variant="outline-primary"
+                    className="time-slot-btn d-flex flex-column align-items-start"
+                    onClick={() => handleBookClick(slot)}
+                    style={{ background: 'var(--extra-light-teal)', color: 'var(--secondary-teal)', borderColor: 'var(--secondary-teal)', fontWeight: 600 }}
+                  >
+                    <div style={{ fontWeight: 700, fontSize: 16 }}>
+                      {date}
+                    </div>
+                    <div style={{ fontSize: 15 }}>
+                      <span style={{ marginRight: 8 }}>{t('appointmentBooking.startTime')}: {start_time}</span>
+                      <span>{t('appointmentBooking.endTime')}: {end_time}</span>
+                    </div>
+                    <div className="mt-1">
+                      <Badge bg="light" text="primary" pill style={{ background: 'var(--secondary-teal)', color: '#fff', border: 'none' }}>
+                        {t('appointmentBooking.available')}
+                      </Badge>
+                    </div>
+                  </Button>
+                );
+              }) : !loading && <div style={{ color: 'var(--secondary-teal)' }}>{t('appointmentBooking.noTimes')}</div>}
             </div>
           </Card.Body>
         </Card>

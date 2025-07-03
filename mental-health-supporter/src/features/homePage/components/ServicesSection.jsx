@@ -66,7 +66,7 @@ export default function ServicesSection() {
           </div>
 
           {/* Right Image - Placeholder */}
-          <div className={styles.imageContainer}>
+          {/* <div className={styles.imageContainer}>
             <div style={{
               width: '100%',
               height: '400px',
@@ -77,18 +77,18 @@ export default function ServicesSection() {
               justifyContent: 'center',
               color: '#6b7280',
               fontSize: '1.5rem'
-            }}>
-              <img
+            }}> */}
+              {/* <img
                 src="/images/mental-health-banner-choose-wellness-260nw-2480281739.jpg"  // Absolute path starting from the public folder
                 alt="Mental Health"
                 style={{
                   width: "850px",  // Fixed width of 800px
                   height: "auto",  // Height adjusts automatically based on width to maintain aspect ratio
                   borderRadius: "10px"
-                }}
-              />
-            </div>
-          </div>
+                }} */}
+              {/* /> */}
+            {/* </div> */}
+          {/* </div> */}
         </div>
       </div>
     </section>

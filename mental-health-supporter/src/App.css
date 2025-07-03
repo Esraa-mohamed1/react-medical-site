@@ -1,8 +1,8 @@
 :root {
-  --primary-teal: #2A5C5F;       
-  --secondary-teal: #4E8A8E;     
-  --light-teal: #67B1B6;         
-  --extra-light-teal: #B4DCDD;   
+  --primary-teal: #5c6bc0;       
+  --secondary-teal: #5c6bc0;     
+  --light-teal: #5c6bc0;         
+  --extra-light-teal: #5c6bc0;   
 
   --white: #ffffff;
   --light-gray: #f8f9fa;
@@ -51,7 +51,7 @@
 /* باقي الكود كما هو بدون تعديل */
 .app-container {
   min-height: 100vh;
-  background-color: var(--light-gray);
+  background-color: #5c6bc0;
 }
 
 body {
@@ -80,7 +80,7 @@ body {
   background-color: var(--secondary-teal);
 }
 .hero-class{
-  background: linear-gradient(to right, #37ECBA, #72AFD3);
+  background: #5c6bc0;
   position: relative;
   overflow: hidden;
   color: #333333;
@@ -88,7 +88,7 @@ body {
 .hero-class::before {
   content: '';
   position: absolute;
-  background-color:  #67B1B6;
+  background-color: #5c6bc0;
   top: 0;
   right: 0;
   width: 100%;

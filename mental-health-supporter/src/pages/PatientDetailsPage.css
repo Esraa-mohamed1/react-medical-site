@@ -2,13 +2,15 @@
 
 .patient-details-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: #5c6bc0;
+
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   padding: 2rem;
 }
 
-.patient-card {
-  background: rgba(255, 255, 255, 0.95);
+.card {
+  background: #5c6bc0;
+
   backdrop-filter: blur(15px);
   border-radius: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
@@ -91,8 +93,9 @@
 
 /* Header Section */
 .header {
-  background: linear-gradient(135deg, #37ECBA 0%, #72AFD3 100%);
-  color: white;
+  background: #5c6bc0;
+
+  color: #2d3748;
   padding: 2.5rem;
   position: relative;
   border-radius: 20px 20px 0 0;
@@ -177,13 +180,14 @@
   font-size: 2.5rem;
   font-weight: 700;
   margin: 0 0 0.5rem 0;
-  color: white;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color:#5c6bc0;
+
 }
 
 .created {
   font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: #5c6bc0;
+
   margin-top: 0.5rem;
 }
 
@@ -273,26 +277,32 @@
   font-family: inherit;
 }
 
-.input:focus {
-  outline: none;
-  border-color: #37ECBA;
-  box-shadow: 0 0 0 3px rgba(55, 236, 186, 0.1);
-  background: rgba(255, 255, 255, 1);
-}
+.editButton {
+  padding: 0.8rem 1rem;
+  background: #5c6bc0;
 
-.input::placeholder {
-  color: #a0aec0;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(114, 175, 211, 0.3);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 /* Buttons */
-.editButton,
-.saveButton,
-.cancelButton {
-  padding: 0.75rem 1.25rem;
+.saveButton {
+  padding: 0.8rem 1rem;
+  background: #5c6bc0;
+
+  color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 0.875rem;
-  font-weight: 600;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 4px 12px #5c6bc0;
+
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
@@ -311,7 +321,8 @@
 .editButton:hover {
   background: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 18px #5c6bc0;
+
 }
 
 .saveButton {
@@ -332,14 +343,32 @@
 }
 
 .cancelButton {
-  background: #e53e3e;
+  padding: 0.8rem 1rem;
+  background: #5c6bc0;
+
   color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 4px 12px #5c6bc0;
+
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .cancelButton:hover {
   background: #c53030;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(229, 62, 62, 0.3);
+  box-shadow: 0 6px 18px #5c6bc0;
+
+}
+.imageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
 }
 
 .btn-icon {

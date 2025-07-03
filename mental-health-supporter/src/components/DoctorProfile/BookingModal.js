@@ -119,12 +119,15 @@ const BookingModal = ({ show, onHide, selectedSlot, doctorId }) => {
       const accessToken = localStorage.getItem('access');
       const slotDateTime = selectedSlot?.dateTime || '';
       const { appointment_date, time } = parseSlotDateTime(slotDateTime);
+      // Try to get available_time from slot, fallback to id or dateTime
+      const available_time = selectedSlot.available_time || selectedSlot.id || slotDateTime;
       const appointmentData = {
         title: t('bookingModal.consultation'),
         doctor: doctorId,
         appointment_date,
         time,
-        notes: formData.notes
+        notes: formData.notes,
+        available_time
       };
       await axios.post(
         'http://127.0.0.1:8000/api/users/appointments/create/',
@@ -184,11 +187,22 @@ const BookingModal = ({ show, onHide, selectedSlot, doctorId }) => {
           </Alert>
         )}
 
-        <div className="text-start mb-4 p-3 rounded" style={{ background: 'var(--light-teal, #e3e6f3)' }}>
-          <h5 style={{ color: 'var(--primary-purple)' }}>
-            {selectedSlot?.dateTime || t('bookingModal.noSlot')}
-          </h5>
-        </div>
+        {/* Show slot date, start time, and end time */}
+        {selectedSlot && (
+          <div className="text-start mb-4 p-3 rounded" style={{ background: 'var(--light-teal, #e3e6f3)' }}>
+            <div style={{ color: 'var(--primary-purple)', fontWeight: 600 }}>
+              <div>
+                <span>{t('bookingModal.date', 'date')}:</span> {selectedSlot.date || (selectedSlot.dateTime ? selectedSlot.dateTime.split('T')[0] : '')}
+              </div>
+              <div>
+                <span>{t('bookingModal.startTime', 'startTime')}:</span> {selectedSlot.start_time || selectedSlot.startTime || (selectedSlot.dateTime ? (selectedSlot.dateTime.split('T')[1]?.slice(0,5) || '') : '')}
+              </div>
+              <div>
+                <span>{t('bookingModal.endTime', 'endTime')}:</span> {selectedSlot.end_time || selectedSlot.endTime || ''}
+              </div>
+            </div>
+          </div>
+        )}
 
         <Form noValidate validated={validated}>
           <Form.Group className="mb-3 text-start">

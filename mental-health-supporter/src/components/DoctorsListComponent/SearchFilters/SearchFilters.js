@@ -83,7 +83,7 @@ const SearchFilters = ({ onSearch, onFilterChange }) => {
             id="available"
             className="filter-select"
             onChange={(e) => handleFilterChange('available', e.target.value)}
-            value={filters.area}
+            value={filters.available}
           >
             <option value="">{t('searchFilters.availability')}</option>
 <option value="true">{t('searchFilters.available')}</option>

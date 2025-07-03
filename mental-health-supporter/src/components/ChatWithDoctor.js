@@ -106,6 +106,16 @@ export default function ChatWithDoctor({ doctorId, patientId }) {
     }
   };
 
+  useEffect(() => {
+    if (!room) return;
+    // Mark all messages as read for this room
+    axios.post(
+      `${API_BASE}/messages/mark_room_read/`,
+      { room_id: room.id },
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    ).catch(() => {});
+  }, [room, accessToken]);
+
   const doctorName = room?.doctor?.full_name || '---';
 
   if (loading) {
@@ -193,7 +203,7 @@ export default function ChatWithDoctor({ doctorId, patientId }) {
   width: '100%',
   overflowY: 'auto',
   padding: 24,
-  background: 'darkcyan'
+  background: 'seashell',
 }}>
 
         {messages.map(msg => {
