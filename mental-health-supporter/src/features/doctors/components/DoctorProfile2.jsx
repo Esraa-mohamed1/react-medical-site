@@ -16,7 +16,9 @@ import {
   Clock,
   MessageCircle,
 } from "lucide-react";
+import DoctorSidebar from "./DoctorSidebar";
 import "../../../components/DoctorProfile/DoctorProfile.css";
+import "./DoctorSidebar.css";
 
 const DoctorProfile = () => {
   const [doctor, setDoctor] = useState(null);
@@ -26,6 +28,7 @@ const DoctorProfile = () => {
   const [patients, setPatients] = useState([]);
   const [users, setUsers] = useState([]);
   const [availabilitySlots, setAvailabilitySlots] = useState([]);
+  const [specialties, setSpecialties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editOpen, setEditOpen] = useState(false);
   const [error, setError] = useState(null);
@@ -43,7 +46,7 @@ const DoctorProfile = () => {
   // Helper function to get auth headers
   const getAuthHeaders = () => {
     try {
-      const userData = localStorage.getItem("user");
+      const userData = localStorage.getItem("loggedUser");
       if (userData) {
         const parsedData = JSON.parse(userData);
         const token = parsedData.token;
@@ -64,7 +67,7 @@ const DoctorProfile = () => {
   // Helper function to get user data from localStorage
   const getCurrentUser = () => {
     try {
-      const userData = localStorage.getItem("user");
+      const userData = localStorage.getItem("loggedUser");
 
       if (userData) {
         const parsedData = JSON.parse(userData);
@@ -94,39 +97,39 @@ const DoctorProfile = () => {
   };
 
   // API base URL
-  const API_BASE_URL = "http://localhost:8000/api";
+  const API_BASE_URL = "http://127.0.0.1:8000/api";
 
   useEffect(() => {
     async function fetchData() {
       try {
+        setLoading(true);
+        setError(null);
+
         // Check authentication first
-        const userData = localStorage.getItem("user");
+        const userData = localStorage.getItem("loggedUser");
         if (!userData) {
           throw new Error("No authentication data found. Please login again.");
         }
 
         const parsedUserData = JSON.parse(userData);
-        if (!parsedUserData.token) {
+        const token = localStorage.getItem("access");
+        
+        if (!token) {
           throw new Error("No authentication token found. Please login again.");
         }
 
-        const headers = getAuthHeaders();
-        const currentUser = getCurrentUser();
-        console.log("Current user from localStorage:", currentUser);
-
-        if (!currentUser || !currentUser.id) {
-          throw new Error("Invalid user data. Please login again.");
-        }
-
-        if (currentUser.role !== "doctor") {
+        if (parsedUserData.role !== "doctor") {
           toast.error("Only doctors can view this profile");
           navigate("/login");
           return;
         }
 
-        // Fetch doctor profile
-        const doctorResponse = await fetch(`${API_BASE_URL}/doctor/profile/`, {
-          headers: headers,
+        // Fetch doctor profile using the correct endpoint
+        const doctorResponse = await fetch(`${API_BASE_URL}/medical/doctors/${parsedUserData.id}/`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         });
 
         if (!doctorResponse.ok) {
@@ -145,44 +148,31 @@ const DoctorProfile = () => {
         const doctorData = await doctorResponse.json();
         console.log("Doctor data:", doctorData);
 
-        // Fetch appointments for the logged-in doctor
+        // Fetch appointments for the logged-in doctor using the correct endpoint
         try {
           const response = await axios.get(
-            `${API_BASE_URL}/appointments/doctor-appointments/`,
+            `${API_BASE_URL}/medical/appointments/doctor/`,
             {
               headers: {
-                Authorization: `Bearer ${parsedUserData.token}`,
+                Authorization: `Bearer ${token}`,
               },
             }
           );
           console.log("Appointments endpoint response:", response.data);
           let appointmentsData = response.data || [];
-          // Enrich with patientName if possible
-          appointmentsData = appointmentsData.map((appointment) => {
-            let patientName = "";
-            if (appointment.patient_data?.name) {
-              patientName = appointment.patient_data.name;
-            } else if (appointment.patient && appointment.patient.user) {
-              const user = appointment.patient.user;
-              patientName =
-                user.first_name && user.last_name
-                  ? `${user.first_name} ${user.last_name}`
-                  : user.username || user.email || "";
-            } else if (appointment.patient_name) {
-              patientName = appointment.patient_name;
-            } else if (appointment.patient_id && usersData.length > 0) {
-              const patientUser = usersData.find(
-                (u) => u.id === appointment.patient_id
-              );
-              if (patientUser) {
-                patientName =
-                  patientUser.first_name && patientUser.last_name
-                    ? `${patientUser.first_name} ${patientUser.last_name}`
-                    : patientUser.username || patientUser.email || "";
+          if (Array.isArray(appointmentsData)) {
+            appointmentsData = appointmentsData.map((appointment) => {
+              let patientName = "";
+              if (appointment.patient_info?.first_name || appointment.patient_info?.last_name) {
+                patientName = `${appointment.patient_info.first_name || ""} ${appointment.patient_info.last_name || ""}`.trim();
+              } else if (appointment.patient_info?.username) {
+                patientName = appointment.patient_info.username;
+              } else if (appointment.patient_info?.email) {
+                patientName = appointment.patient_info.email;
               }
-            }
-            return { ...appointment, patientName };
-          });
+              return { ...appointment, patientName };
+            });
+          }
           setAppointments(appointmentsData);
         } catch (error) {
           console.error("Error fetching appointments:", error);
@@ -192,131 +182,29 @@ const DoctorProfile = () => {
           setAppointments([]);
         }
 
-        // Try different endpoints for users
-        let usersData = [];
-        const userEndpoints = [
-          `${API_BASE_URL}/users/`,
-          `${API_BASE_URL}/auth/users/`,
-          `${API_BASE_URL}/accounts/users/`,
-        ];
-
-        for (const endpoint of userEndpoints) {
-          try {
-            const usersResponse = await fetch(endpoint, { headers });
-            if (usersResponse.ok) {
-              usersData = await usersResponse.json();
-              if (!Array.isArray(usersData)) usersData = [];
-              console.log("Successfully fetched users from:", endpoint);
-              break;
-            }
-          } catch (e) {
-            console.warn(`Could not fetch users from ${endpoint}:`, e);
-          }
-        }
-
-        // Fetch specialties
-        const specialtiesResponse = await fetch(`${API_BASE_URL}/specialties/`);
-        let specialtiesData = [];
-        let doctorSpecialty = null;
-
-        if (specialtiesResponse.ok) {
-          specialtiesData = await specialtiesResponse.json();
-          doctorSpecialty =
-            specialtiesData.find((s) => s.name === doctorData.specialty) || {
-              name: doctorData.specialty || "General Practice",
-            };
-        } else {
-          console.warn("Could not fetch specialties");
-          doctorSpecialty = {
-            name: doctorData.specialty || "General Practice",
-          };
-        }
-
-        // Try different endpoints for patients
-        let patientsData = [];
-        const patientEndpoints = [
-          `${API_BASE_URL}/patients/`,
-          `${API_BASE_URL}/patient/`,
-          `${API_BASE_URL}/doctor/${doctorData.id}/patients/`,
-        ];
-
-        for (const endpoint of patientEndpoints) {
-          try {
-            const resPatients = await fetch(endpoint, { headers });
-            if (resPatients.ok) {
-              patientsData = await resPatients.json();
-              if (!Array.isArray(patientsData)) patientsData = [];
-              console.log("Successfully fetched patients from:", endpoint);
-              break;
-            }
-          } catch (e) {
-            console.warn(`Could not fetch patients from ${endpoint}:`, e);
-          }
-        }
-
-        // Fetch availability slots
-        let availabilityData = [];
-        const availabilityEndpoint = `${API_BASE_URL}/availability/public/doctor/${doctorData.id}/slots/`;
-        try {
-          const resAvailability = await fetch(availabilityEndpoint, { headers });
-          if (resAvailability.ok) {
-            availabilityData = await resAvailability.json();
-            console.log("Availability endpoint response:", availabilityData);
-            if (!Array.isArray(availabilityData)) {
-              console.warn(
-                "Availability data is not an array, falling back to doctorData.slots"
-              );
-              availabilityData = doctorData.slots || [];
-            }
-          } else {
-            console.warn(
-              `Failed to fetch availability from ${availabilityEndpoint}:`,
-              resAvailability.status,
-              resAvailability.statusText,
-            );
-            availabilityData = doctorData.slots || [];
-          }
-        } catch (e) {
-          console.error(
-            `Error fetching availability from ${availabilityEndpoint}:`,
-            e,
-          );
-          availabilityData = doctorData.slots || [];
-        }
-        console.log("Final availability data:", availabilityData);
-        console.log("Doctor data slots:", doctorData.slots);
-
-        // Get doctor's user info
-        let doctorUser = doctorData.user;
-        if (!doctorUser && doctorData.user_id) {
-          doctorUser = usersData.find((u) => u.id === doctorData.user_id);
-        }
-        if (!doctorUser) {
-          doctorUser = currentUser;
-        }
-
-        // Set all data
+        // Set doctor data
         setDoctor(doctorData);
-        setUser(doctorUser);
-        setSpecialty(doctorSpecialty);
-        setPatients(patientsData);
-        setUsers(usersData);
-        setAvailabilitySlots(availabilityData);
+        setUser(parsedUserData);
+        setSpecialty({ name: doctorData.specialty || "General Practice" });
+        setPatients([]);
+        setUsers([]);
+        setAvailabilitySlots(doctorData.availableSlots || []);
+        setSpecialties([{ name: doctorData.specialty || "General Practice" }]);
         setLoading(false);
 
-        // Set form data with proper names
-        const doctorName =
-          doctorUser?.first_name && doctorUser?.last_name
-            ? `${doctorUser.first_name} ${doctorUser.last_name}`
-            : doctorUser?.username || doctorUser?.email || "Doctor";
+        // Set form data
+        const doctorName = doctorData.first_name && doctorData.last_name
+          ? `${doctorData.first_name} ${doctorData.last_name}`
+          : doctorData.username || doctorData.email || "Doctor";
 
         setFormData({
           name: doctorName,
-          email: doctorUser?.email || doctorData.contact_email || "",
+          email: doctorData.email || "",
           phone: doctorData.phone || "",
-          specialtyName: doctorSpecialty?.name || doctorData.specialty || "",
+          specialtyName: doctorData.specialty || "General Practice",
           bio: doctorData.bio || "",
         });
+
       } catch (error) {
         console.error("Failed to load data", error);
         setError(error.message);
@@ -340,16 +228,13 @@ const DoctorProfile = () => {
     }
   };
 
-  const formatTime = (timeStr) => {
+  const formatTime = (dateTimeStr) => {
     try {
-      if (!timeStr) return "Not Available";
-      const [h, m] = timeStr.split(":");
-      const hour = parseInt(h, 10);
-      const suffix = hour >= 12 ? "PM" : "AM";
-      const formattedHour = hour % 12 || 12;
-      return `${formattedHour}:${m} ${suffix}`;
+      if (!dateTimeStr) return "Not Available";
+      const date = new Date(dateTimeStr);
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     } catch (error) {
-      return timeStr;
+      return dateTimeStr;
     }
   };
 
@@ -409,14 +294,18 @@ const DoctorProfile = () => {
 
   const handleSave = async () => {
     try {
+      const token = localStorage.getItem("access");
       const updateData = {
         phone: formData.phone,
         bio: formData.bio,
       };
 
-      const response = await fetch(`${API_BASE_URL}/doctor/profile/`, {
+      const response = await fetch(`${API_BASE_URL}/medical/doctors/${doctor.id}/update/`, {
         method: "PATCH",
-        headers: getAuthHeaders(),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(updateData),
       });
 
@@ -449,7 +338,7 @@ const DoctorProfile = () => {
   };
 
   const handleLogin = () => {
-    localStorage.removeItem("user");
+    localStorage.removeItem("loggedUser");
     window.location.href = "/login";
   };
 
@@ -474,10 +363,15 @@ const DoctorProfile = () => {
 
   if (loading) {
     return (
-      <div className="doctor-profile-container">
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
-          <p className="loading-text">Loading doctor profile...</p>
+      <div className="doctor-dashboard-layout">
+        <DoctorSidebar />
+        <div className="doctor-main-content">
+          <div className="doctor-profile-container">
+            <div className="loading-container">
+              <div className="loading-spinner"></div>
+              <p className="loading-text">Loading doctor profile...</p>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -485,22 +379,27 @@ const DoctorProfile = () => {
 
   if (error) {
     return (
-      <div className="doctor-profile-container">
-        <div className="error-container">
-          <AlertCircle className="error-icon" />
-          <h2 className="error-title">Error Loading Profile</h2>
-          <p className="error-message">{error}</p>
-          <div
-            style={{ display: "flex", gap: "10px", justifyContent: "center" }}
-          >
-            <button onClick={handleRetry} className="error-button">
-              Try Again
-            </button>
-            {error.includes("Authentication") || error.includes("login") ? (
-              <button onClick={handleLogin} className="error-button">
-                Login Again
-              </button>
-            ) : null}
+      <div className="doctor-dashboard-layout">
+        <DoctorSidebar />
+        <div className="doctor-main-content">
+          <div className="doctor-profile-container">
+            <div className="error-container">
+              <AlertCircle className="error-icon" />
+              <h2 className="error-title">Error Loading Profile</h2>
+              <p className="error-message">{error}</p>
+              <div
+                style={{ display: "flex", gap: "10px", justifyContent: "center" }}
+              >
+                <button onClick={handleRetry} className="error-button">
+                  Try Again
+                </button>
+                {error.includes("Authentication") || error.includes("login") ? (
+                  <button onClick={handleLogin} className="error-button">
+                    Login Again
+                  </button>
+                ) : null}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -509,33 +408,41 @@ const DoctorProfile = () => {
 
   if (!doctor) {
     return (
-      <div className="doctor-profile-container">
-        <div className="error-container">
-          <User className="error-icon" />
-          <h2 className="error-title">Doctor Profile Not Found</h2>
-          <p className="error-message">
-            No doctor profile found for your account.
-          </p>
-          <button
-            onClick={() => (window.location.href = "/")}
-            className="error-button"
-          >
-            Go Back
-          </button>
+      <div className="doctor-dashboard-layout">
+        <DoctorSidebar />
+        <div className="doctor-main-content">
+          <div className="doctor-profile-container">
+            <div className="error-container">
+              <User className="error-icon" />
+              <h2 className="error-title">Doctor Profile Not Found</h2>
+              <p className="error-message">
+                No doctor profile found for your account.
+              </p>
+              <button
+                onClick={() => (window.location.href = "/")}
+                className="error-button"
+              >
+                Go Back
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 
   const userName =
-    user?.first_name && user?.last_name
-      ? `${user.first_name} ${user.last_name}`
-      : user?.username || user?.first_name || "Doctor";
+    doctor?.first_name && doctor?.last_name
+      ? `${doctor.first_name} ${doctor.last_name}`
+      : doctor?.username || doctor?.email || "Doctor";
 
-  const userEmail = user?.email || doctor?.contact_email || "Not Available";
+  const userEmail = doctor?.email || "Not Available";
 
   return (
-    <div className="doctor-profile-container">
+    <div className="doctor-dashboard-layout">
+      <DoctorSidebar />
+      <div className="doctor-main-content">
+        <div className="doctor-profile-container">
       <div className="profile-doctor-header">
         <div className="doctor-header-content">
           <div className="doctor-avatar-container">
@@ -694,8 +601,8 @@ const DoctorProfile = () => {
                         key={appt.id}
                         className="hover:bg-gray-50 border-b border-gray-200"
                       >
-                        <td className="p-3">{formatDate(appt.date)}</td>
-                        <td className="p-3">{formatTime(appt.time)}</td>
+                        <td className="p-3">{formatDate(appt.appointment_date)}</td>
+                        <td className="p-3">{formatTime(appt.appointment_date)}</td>
                         <td className="p-3">
                           {appt.patientName || getPatientName(appt.patient_id, appt)}
                         </td>
@@ -907,6 +814,8 @@ const DoctorProfile = () => {
           </div>
         </div>
       )}
+        </div>
+      </div>
     </div>
   );
 };

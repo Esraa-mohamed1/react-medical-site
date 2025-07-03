@@ -119,6 +119,7 @@
   "newPassword": "كلمة المرور الجديدة",
   "confirmPassword": "تأكيد كلمة المرور الجديدة",
   "saveUsername": "حفظ اسم المستخدم",
+  "savePassword": "حفظ كلمة المرور",
   "resetPasswordButton": "إعادة تعيين كلمة المرور",
   "usernameUpdated": "تم تحديث اسم المستخدم بنجاح.",
   "usernameFailed": "فشل في تحديث اسم المستخدم. ",

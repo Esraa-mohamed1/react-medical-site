@@ -118,6 +118,7 @@
   "newPassword": "New Password",
   "confirmPassword": "Confirm New Password",
   "saveUsername": "Save Username",
+  "savePassword": "Save Password",
   "resetPasswordButton": "Reset Password",
   "usernameUpdated": "Username updated successfully.",
   "usernameFailed": "Failed to update username. ",

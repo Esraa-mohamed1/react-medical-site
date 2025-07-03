@@ -29,6 +29,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import CalendarPage from './features/doctors/pages/CalendarPage';
 import DoctorPaidPatients from './features/doctors/pages/DoctorPaidPatients';
 import DocumentsPage from './features/doctors/pages/DocumentsPage.jsx';
+import DoctorDashboard from './features/doctors/pages/DoctorDashboard';
 
 import ErrorBoundary from './ErrorBoundary';
 
@@ -60,11 +61,11 @@ function App() {
           <Route path="/payment/:appointment_id" element={<PaymentPage />} />
           
           {/* Doctor Routes */}
-          {/* <Route path="/doctor/dashboard" element={
+          <Route path="/doctor/dashboard" element={
             <PrivateRoute role="doctor">
               <DoctorDashboard />
             </PrivateRoute>
-          } /> */}
+          } />
 
           <Route path="/doctor/appointments" element={
             <PrivateRoute role="doctor">
