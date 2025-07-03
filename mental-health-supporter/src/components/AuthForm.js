@@ -102,7 +102,7 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
             <img
               src="/images/welcome-back (1).png"
               alt="welcome-back"
-              style={{ maxWidth: '80%', height: 'auto', textAlign: 'center', marginLeft: '10%', marginTop: '5%' }}
+              style={{ maxWidth: '80%', height: 'auto', textAlign: 'center', marginLeft: '1%', marginTop: '5%' }}
             />
           </div>
           {/* Vertical divider */}
