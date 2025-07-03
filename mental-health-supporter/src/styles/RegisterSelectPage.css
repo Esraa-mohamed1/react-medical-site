@@ -1,45 +1,41 @@
-/* — Layout — */
+/* === Page Layout === */
 .register-selection-page {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-    background: radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2);
-
-  /* background: radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2); */
+  background: #818bd0;
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   overflow: hidden;
   position: relative;
 }
 
-/* — Overlay — */
 .register-selection-page::before {
   content: "";
   position: absolute;
   inset: 0;
-  /* background: linear-gradient(180deg, rgba(5, 19, 83, 0.4), rgba(3, 19, 77, 0.6)); */
   opacity: 0.3;
   z-index: 0;
 }
 
-/* — Card — */
+/* === Card Container === */
 .register-selection-card {
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
   background: rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(15px);
   border-radius: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-  padding: 3rem 2.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 420px;
   border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 2rem;
+  max-width: 90%;
+  width: 100%;
+  gap: 30px;
   transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
 }
 
@@ -49,72 +45,70 @@
   transform: translateY(-2px);
 }
 
-/* — Title — */
+/* === Image Side === */
+.register-card-image-side {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.register-selection-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* === Vertical Separator === */
+.vertical-separator {
+  width: 1px;
+  background-color: rgba(92, 107, 192, 0.3);
+}
+
+/* === Form Side === */
+.register-card-form-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* === Title === */
 .register-selection-title {
-  text-align: center;
-  color: #67B1B6;
+  color: #5c6bc0;
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 2rem;
+  text-align: center;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
   letter-spacing: -0.25px;
 }
 
-/* — Form — */
-.register-selection-form {
+/* === Buttons === */
+.register-buttons {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 20px;
   width: 100%;
 }
 
-/* — Input Group — */
-.register-selection-input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.register-selection-input-group label {
-  font-size: 0.92rem;
-  color: #274760;
-  font-weight: 600;
-  padding-left: 2px;
-}
-
-.register-selection-input-group input {
-  padding: 0.75rem 1rem;
-  background: rgba(255, 255, 255, 0.85);
-  border: none;
-  border-bottom: 2px solid #67B1B6;
-  border-radius: 10px;
-  font-size: 1rem;
-  color: #274760;
-  transition: all 0.3s ease;
-  outline: none;
-}
-
-.register-selection-input-group input:focus {
-  border-color: #37ECBA;
-  background: #ffffff;
-  /* box-shadow: 0 2px 6px rgba(55, 236, 186, 0.2); */
-}
-
-/* — Button — */
 .register-selection-btn {
-  background: linear-gradient(to right, #37ECBA, #72AFD3);
+  background: #5c6bc0;
   color: #fff;
   border: none;
   border-radius: 30px;
-  padding: 0.9rem 2.5rem;
+  padding: 1.9rem 2.5rem;
   font-size: 1.05rem;
   font-weight: bold;
   cursor: pointer;
-  /* box-shadow: 0 4px 12px rgba(114, 175, 211, 0.35); */
   transition: all 0.3s ease;
-  margin-top: 1rem;
   min-height: 48px;
+  margin-left: 13%;
   text-align: center;
+  width: 74%;
+
 }
 
 .register-selection-btn:hover {
@@ -122,12 +116,12 @@
   box-shadow: 0 6px 18px rgba(114, 175, 211, 0.45);
 }
 
-/* — Footer — */
+/* === Footer Styling (Optional) === */
 .register-selection-footer {
   text-align: center;
   margin-top: 2rem;
   font-size: 0.95rem;
-  background: linear-gradient(to right, #67B1B6, #72AFD3);
+  background: #818bd0;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -145,11 +139,21 @@
   opacity: 0.85;
 }
 
-/* — Responsive — */
+/* === Responsive === */
 @media (max-width: 768px) {
   .register-selection-card {
+    flex-direction: column;
     padding: 2rem 1.5rem;
     max-width: 95vw;
+    gap: 20px;
+  }
+
+  .vertical-separator {
+    display: none;
+  }
+
+  .register-selection-image {
+    max-width: 90%;
   }
 
   .register-selection-btn {

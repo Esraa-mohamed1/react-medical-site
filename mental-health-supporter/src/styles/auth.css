@@ -1,56 +1,118 @@
-/* — Layout — */
+/* === Auth Page Layout (Match Register Page) === */
 .auth-page {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2);
+  background: #818bd0;
+  background-size: cover;
+  background-position: center;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   overflow: hidden;
   position: relative;
 }
 
 .auth-page::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
-  background-image: url('https://www.transparenttextures.com/patterns/symphony.png');
-  opacity: 0.05;
+  opacity: 0.3;
   z-index: 0;
+  background: inherit;
 }
 
-/* — Card — */
-.auth-card {
+/* === Auth Container (Similar to register-selection-card) === */
+.auth-container {
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
   background: rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(15px);
   border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  width: 360px;
-  padding: 2.5rem 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 2rem;
+  /* max-width: 90%;
+  width: 100%; */
+  gap: 30px;
+  transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
+}
+
+.auth-container:hover {
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.18);
+  transform: translateY(-2px);
+}
+
+/* === Auth Card (Update Height & Transparent Overlay) === */
+.auth-card {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  height: auto;
+  padding: 0;
+}
+
+/* === Divider Line (Subtle, match register page) === */
+/* === Improved Vertical Divider === */
+.vertical-divider {
+  width: 1px;
+  background-color: rgba(92, 107, 192, 0.5);
+  height: auto;
+  /* align-self: stretch; */
+  margin: 0 1rem;
+  box-shadow: 0 0 4px rgba(92, 107, 192, 0.25);
+  border-radius: 1px;
+}
+.auth-form-section {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  justify-content: center !important;
+  gap: 1.2rem;
+  text-align: center;
 }
+
+.auth-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  text-align: center;
+  padding-left: 5%;
+}
+
+
+
+
 
 /* — Title — */
 .auth-title {
+  display: flex;
+  align-items: center;
   text-align: center;
-  color: #67B1B6;
-  font-size: 2rem;
-  font-weight: 700;
+  gap: 0.5rem;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #5c6bc0; /* Optional: a modern dark gray */
 }
+
+.auth-title-icon svg {
+  display: block;
+  color: #5c6bc0; /* Optional: subtle blue to match theme */
+}
+
 
 /* — Input Fields — */
 .auth-card input {
   background: transparent;
   border: none;
-  border-bottom: 2px solid #67B1B6;
-  padding: 0.6rem 0;
+  border-bottom: 2px solid  #5c6bc0;
+    padding: 0.6rem 0;
   font-size: 1rem;
-  color: #274760;
+color: #5c6bc0;
   outline: none;
   transition: border-color 0.3s ease;
 }
@@ -60,12 +122,12 @@
 }
 
 .auth-card input:focus {
-  border-bottom-color: #37ECBA;
+  border-bottom-color: #5c6bc0;
 }
 
 /* — Forgot Password — */
 .auth-card .forgot-password {
-  text-align: right;
+  text-align: center;
   font-size: 0.9rem;
   color: rgba(0, 0, 0, 0.5);
   margin-top: -1rem;
@@ -81,10 +143,11 @@
   font-weight: bold;
   font-size: 1.05rem;
   color: white;
-  background: linear-gradient(to right, #37ECBA, #72AFD3);
+background: #5c6bc0;
   box-shadow: 0 4px 12px rgba(114, 175, 211, 0.3);
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 90% !important;
 }
 
 .auth-btn:hover,
@@ -100,7 +163,7 @@
   left: 30px;
   padding: 0.6rem 1rem;
   border-radius: 30px;
-  background: linear-gradient(to right, #00f2fe, #4facfe);
+  background: #5c6bc0;
   color: white;
   font-weight: bold;
   border: none;
@@ -114,7 +177,7 @@
 }
 
 .back-btn:hover {
-  background: linear-gradient(to right, #37ECBA, #72AFD3);
+background: #5c6bc0;
 }
 
 /* — Mobile — */
@@ -144,7 +207,7 @@
 }
 
 .google-login-btn {
-  border: 2px solid #67B1B6 !important;
+  border: 2px solid #5c6bc0 !important;
   background: #ffffff;
   border-radius: 50%;
   width: 54px;
@@ -186,7 +249,7 @@
   font-weight: 600;
   letter-spacing: 0.3px;
   white-space: nowrap;
-  background: linear-gradient(to right, #67B1B6, #72AFD3);
+  background: #5c6bc0;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text; /* Optional: for broader browser support */
@@ -206,7 +269,8 @@
   font-size: 0.95rem;
   text-align: center;
   margin-top: 1.2rem;
-  background: linear-gradient(to right, #67B1B6, #72AFD3);
+  background: #5c6bc0;
+
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text; /* non-prefixed for wider support */
@@ -218,8 +282,8 @@
 .auth-switch a {
   font-weight: 600;
   text-decoration: underline;
-  color: #67B1B6;
-  transition: opacity 0.3s ease;
+color: #5c6bc0;  
+transition: opacity 0.3s ease;
 }
 
 .google-login-btn img {
@@ -238,4 +302,21 @@
 
 .form-control{
   padding-left: 1rem !important;
+}
+
+/* Override valid input styles */
+.is-valid {
+  border-color: #5c6bc0 !important;
+  box-shadow: 0 0 0 0.25rem rgba(92, 107, 192, 0.25) !important;
+}
+
+/* Override invalid input styles */
+.is-invalid {
+  border-color: red !important;
+  box-shadow: 0 0 0 0.25rem rgba(92, 107, 192, 0.25) !important;
+}
+
+/* Optional: override feedback text colors if used */
+.invalid-feedback {
+  color: red !important;  
 }

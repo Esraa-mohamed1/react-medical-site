@@ -110,28 +110,28 @@ const CustomNavbar = () => {
   });
 
   return (
-    <Navbar expand="lg" className="shadow-sm py-3" bg="white">
+    <Navbar expand="lg" className="shadow-sm py-3 navBar">
       <Container>
         <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
-          <FaClinicMedical className={changeMarginDirection(2)} size={28} color="green" />
-          <span className="text-success fw-bold fs-3">{t('navbar.brand')}</span>
+          <FaClinicMedical className={changeMarginDirection(2)} size={28} color="#5c6bc0" />
+          <span className="classbrand fw-bold fs-3">{t('navbar.brand')}</span>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className={changeMarginDirection('auto')}>
-            <Nav.Link as={Link} to="/" className="text-success mx-2 fw-medium">{t('navbar.home')}</Nav.Link>
-            <Nav.Link as={Link} to={loggedUser?.role === 'doctor' ? "/doctor/appointments" : "/doctors-list"} className="text-success mx-2 fw-medium">{loggedUser?.role === 'doctor' ? t('navbar.Appointments') : t('navbar.doctors')}</Nav.Link>
-            <Nav.Link as={Link} to={loggedUser?.role === 'doctor' ? "/doctor/availability" : "/select-disorder"} className="text-success mx-2 fw-medium">{loggedUser?.role === 'doctor' ? t('navbar.SetTimes') : t('navbar.articles')}</Nav.Link>
+            <Nav.Link as={Link} to="/" className="text-primary mx-2 fw-medium">{t('navbar.home')}</Nav.Link>
+            <Nav.Link as={Link} to={loggedUser?.role === 'doctor' ? "/doctor/appointments" : "/doctors-list"} className="text-primary mx-2 fw-medium">{loggedUser?.role === 'doctor' ? t('navbar.Appointments') : t('navbar.doctors')}</Nav.Link>
+            <Nav.Link as={Link} to={loggedUser?.role === 'doctor' ? "/doctor/availability" : "/select-disorder"} className="text-primary mx-2 fw-medium">{loggedUser?.role === 'doctor' ? t('navbar.SetTimes') : t('navbar.articles')}</Nav.Link>
             {/* Doctor chat link - only for doctors */}
             {loggedUser?.role === 'doctor' && (
-              <Nav.Link as={Link} to="/doctor-chats" className="text-success mx-2 fw-medium" title={t('navbar.chats') || 'Chats'}>
+              <Nav.Link as={Link} to="/doctor-chats" className="text-primary mx-2 fw-medium" title={t('navbar.chats') || 'Chats'}>
                 {/* React-icons Bootstrap chat icon */}
                 <BsChatDots style={{ fontSize: '1.3rem', verticalAlign: 'middle' }} />
               </Nav.Link>
             )}
             {/* Doctor paid patients link - only for doctors */}
             {loggedUser?.role === 'doctor' && (
-              <Nav.Link as={Link} to="/doctor/paid-patients" className="text-success mx-2 fw-medium">
+              <Nav.Link as={Link} to="/doctor/paid-patients" className="text-primary mx-2 fw-medium">
                 {t('navbar.myPatients') || 'My Patients'}
               </Nav.Link>
             )}
@@ -139,13 +139,13 @@ const CustomNavbar = () => {
 
           {/* Language Switcher */}
           <Dropdown align="end" className={changeMarginDirection(3)}>
-            <Dropdown.Toggle variant="outline-light" className={`d-flex align-items-center text-success custom-dropdown-toggle`}>
+            <Dropdown.Toggle variant="outline-light" className={`d-flex align-items-center text-primary custom-dropdown-toggle`}>
               <FaGlobe className={changeMarginDirection(2)} />
               {i18n.language === 'ar' ? 'ع' : language.toUpperCase()}
             </Dropdown.Toggle>
-            <Dropdown.Menu className='text-success'>
-              <Dropdown.Item className='text-success' onClick={() => changeLanguage('en')}>{t('navbar.english')}</Dropdown.Item>
-              <Dropdown.Item className='text-success' onClick={() => changeLanguage('ar')}>{t('navbar.arabic')}</Dropdown.Item>
+            <Dropdown.Menu className='text-primary'>
+              <Dropdown.Item className='text-primary' onClick={() => changeLanguage('en')}>{t('navbar.english')}</Dropdown.Item>
+              <Dropdown.Item className='text-primary' onClick={() => changeLanguage('ar')}>{t('navbar.arabic')}</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
 
@@ -173,8 +173,8 @@ const CustomNavbar = () => {
             </Dropdown>
           ) : (
             <Nav>
-              <Nav.Link as={Link} to="/login" className="text-success mx-2 fw-medium">{t('navbar.login')}</Nav.Link>
-              <Nav.Link as={Link} to="/register-select" className="text-success mx-2 fw-medium">{t('navbar.register')}</Nav.Link>
+              <Nav.Link as={Link} to="/login" className="text-primary mx-2 fw-medium">{t('navbar.login')}</Nav.Link>
+              <Nav.Link as={Link} to="/register-select" className="text-primary mx-2 fw-medium">{t('navbar.register')}</Nav.Link>
             </Nav>
           )}
 
