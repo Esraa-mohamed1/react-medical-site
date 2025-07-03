@@ -36,14 +36,32 @@ const DoctorRegister = () => {
     };
 
     const handleFileChange = (e) => {
-        setDegreeFile(e.target.files[0]);
-        if (errors.degreeFile) setErrors(prev => ({ ...prev, degreeFile: null }));
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const allowedTypes = ['application/pdf', 'image/jpg', 'image/jpeg', 'image/png', 'image/webp'];
+
+        if (!allowedTypes.includes(file.type)) {
+            setErrors(prev => ({
+                ...prev,
+                degreeFile: 'Only image files and PDFs are allowed.',
+            }));
+            setDegreeFile(null); // Optionally clear the file
+            return;
+        }
+
+        setDegreeFile(file);
+        if (errors.degreeFile) {
+            setErrors(prev => ({ ...prev, degreeFile: null }));
+        }
     };
+
 
     const validateStep1 = () => {
         const newErrors = {};
         if (!formData.full_name.trim()) newErrors.full_name = 'Full name is required';
         if (!formData.username.trim()) newErrors.username = 'Username is required';
+        else if(formData.username.includes(' ')) newErrors.username = 'Username cannot contain spaces';
         if (!formData.email.trim()) newErrors.email = 'Email is required';
         else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = 'Email is invalid';
         if (!formData.password) newErrors.password = 'Password is required';
@@ -190,7 +208,7 @@ const DoctorRegister = () => {
                         </div>
                         <div className="form-group">
                             <label>Academic Degree Document</label>
-                            <input type="file" onChange={handleFileChange} className={errors.degreeFile ? 'is-invalid' : ''} />
+                            <input type="file" accept="image/*,application/pdf" onChange={handleFileChange} className={errors.degreeFile ? 'is-invalid' : ''} />
                             {errors.degreeFile && <div className="invalid-feedback">{errors.degreeFile}</div>}
                         </div>
                         {Object.keys(errors).length > 0 && <div className="alert alert-danger mt-2">Please fix the highlighted errors above.</div>}
