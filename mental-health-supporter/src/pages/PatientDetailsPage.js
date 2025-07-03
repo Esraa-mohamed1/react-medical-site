@@ -6,6 +6,7 @@ import CustomNavbar from './../components/Navbar';
 import './PatientDetailsPage.css';
 import Footer from "./../features/homePage/components/Footer";
 import { useTranslation } from 'react-i18next';
+import { getPatientDoctorAppointments } from '../services/doctors/AppointmentService';
 
 const PatientDetailsPage = () => {
   const { t, i18n } = useTranslation();
@@ -19,6 +20,9 @@ const PatientDetailsPage = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [isHoveringImage, setIsHoveringImage] = useState(false);
   const { id } = useParams();
+  const [appointments, setAppointments] = useState([]);
+  const [appointmentsLoading, setAppointmentsLoading] = useState(true);
+  const [appointmentsError, setAppointmentsError] = useState(null);
 
   useEffect(() => {
     const fetchPatientDetails = async () => {
@@ -36,6 +40,28 @@ const PatientDetailsPage = () => {
     };
     fetchPatientDetails();
   }, [id, t]);
+
+  // Fetch appointments for this patient with a specific doctor (replace doctorId as needed)
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      setAppointmentsLoading(true);
+      setAppointmentsError(null);
+      try {
+        // Replace with actual doctor_id logic as needed
+        const doctorId = patient && patient.doctor_id ? patient.doctor_id : '1';
+        const patientId = id;
+        if (doctorId && patientId) {
+          const data = await getPatientDoctorAppointments(patientId, doctorId);
+          setAppointments(data);
+        }
+      } catch (err) {
+        setAppointmentsError('Failed to fetch appointments.');
+      } finally {
+        setAppointmentsLoading(false);
+      }
+    };
+    if (patient) fetchAppointments();
+  }, [patient, id]);
 
   const handleEdit = () => setIsEditing(true);
   const handleCancel = () => {
@@ -160,6 +186,45 @@ const PatientDetailsPage = () => {
                 {renderField('address', 'address')}
                 {renderField('city', 'city')}
               </div>
+            </div>
+
+            <div className="section">
+              <h2 className="sectionTitle">Appointments with Your Doctor</h2>
+              {appointmentsLoading ? (
+                <div>Loading appointments...</div>
+              ) : appointmentsError ? (
+                <div className="statusMessage error">{appointmentsError}</div>
+              ) : appointments.length === 0 ? (
+                <div>No appointments found with your doctor.</div>
+              ) : (
+                <table className="appointments-table">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Time</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {appointments.map((appt) => (
+                      <tr key={appt.id}>
+                        <td>{new Date(appt.appointment_date).toLocaleDateString()}</td>
+                        <td>{new Date(appt.appointment_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
+                        <td>{appt.status}</td>
+                        <td>
+                          <button
+                            className="chat-btn"
+                            onClick={() => navigate(`/chat/${appt.doctor_id}/${appt.id}`)}
+                          >
+                            Chat with Doctor
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
           </div>
         </div>

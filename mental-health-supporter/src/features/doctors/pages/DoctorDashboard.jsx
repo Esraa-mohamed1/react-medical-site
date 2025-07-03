@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import DoctorSidebar from '../components/DoctorSidebar';
 import { FaBell, FaSearch, FaUserFriends, FaCalendarAlt, FaComments } from 'react-icons/fa';
 import './style.css';
+import axios from 'axios';
 
 // Mock data for demonstration
 const mockOverview = {
@@ -38,6 +39,62 @@ const DoctorDashboard = () => {
   const [overview, setOverview] = useState(mockOverview);
   const [appointments, setAppointments] = useState(mockAppointments);
   const [schedule, setSchedule] = useState(mockSchedule);
+  const [availableSlots, setAvailableSlots] = useState([]);
+  const [slotForm, setSlotForm] = useState({ date: '', start_time: '', end_time: '', available: true, price: '' });
+  const [slotLoading, setSlotLoading] = useState(false);
+  const [slotError, setSlotError] = useState(null);
+  const [slotSuccess, setSlotSuccess] = useState(null);
+
+  // Fetch available slots for the doctor
+  const fetchAvailableSlots = async () => {
+    setSlotLoading(true);
+    setSlotError(null);
+    try {
+      const token = localStorage.getItem('access');
+      const res = await axios.get('http://127.0.0.1:8000/api/time_slots/available/my/', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setAvailableSlots(res.data);
+    } catch (err) {
+      setSlotError('Failed to fetch available slots.');
+    } finally {
+      setSlotLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAvailableSlots();
+  }, []);
+
+  const handleSlotFormChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setSlotForm((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+  };
+
+  const handleSlotFormSubmit = async (e) => {
+    e.preventDefault();
+    setSlotLoading(true);
+    setSlotError(null);
+    setSlotSuccess(null);
+    try {
+      const token = localStorage.getItem('access');
+      const payload = { ...slotForm };
+      payload.available = Boolean(payload.available);
+      const res = await axios.post('http://127.0.0.1:8000/api/time_slots/available/create/', payload, {
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      });
+      setSlotSuccess('Time slot created successfully!');
+      setSlotForm({ date: '', start_time: '', end_time: '', available: true, price: '' });
+      fetchAvailableSlots();
+    } catch (err) {
+      setSlotError('Failed to create time slot.');
+    } finally {
+      setSlotLoading(false);
+    }
+  };
 
   // Example: fetch data from API here
   useEffect(() => {
@@ -82,6 +139,57 @@ const DoctorDashboard = () => {
               <div className="overview-card-value">{overview.chats}</div>
             </div>
           </div>
+        </div>
+        {/* Add Available Time Slot Form */}
+        <div className="dashboard-section-card" style={{ background: '#e0f7fa', borderRadius: '16px', padding: '1.5rem', marginBottom: '2rem', boxShadow: '0 2px 8px rgba(44, 62, 80, 0.07)' }}>
+          <h3 style={{ color: '#2a5c5f', marginBottom: '1rem' }}>Add Available Time Slot</h3>
+          <form onSubmit={handleSlotFormSubmit} style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
+            <input type="date" name="date" value={slotForm.date} onChange={handleSlotFormChange} required placeholder="Date" style={{ borderRadius: '8px', border: '1px solid #b2dfdb', padding: '0.5rem' }} />
+            <input type="time" name="start_time" value={slotForm.start_time} onChange={handleSlotFormChange} required placeholder="Start Time" style={{ borderRadius: '8px', border: '1px solid #b2dfdb', padding: '0.5rem' }} />
+            <input type="time" name="end_time" value={slotForm.end_time} onChange={handleSlotFormChange} required placeholder="End Time" style={{ borderRadius: '8px', border: '1px solid #b2dfdb', padding: '0.5rem' }} />
+            <input type="number" name="price" value={slotForm.price} onChange={handleSlotFormChange} required min="0" step="0.01" placeholder="Price (e.g. 100.00)" style={{ borderRadius: '8px', border: '1px solid #b2dfdb', padding: '0.5rem', width: '120px' }} />
+            <select name="available" value={slotForm.available ? 'true' : 'false'} onChange={e => setSlotForm(prev => ({ ...prev, available: e.target.value === 'true' }))} style={{ borderRadius: '8px', border: '1px solid #b2dfdb', padding: '0.5rem' }}>
+              <option value="true">Available</option>
+              <option value="false">Unavailable</option>
+            </select>
+            <button type="submit" disabled={slotLoading} style={{ background: 'linear-gradient(90deg, #6dd5ed 0%, #2193b0 100%)', color: '#fff', border: 'none', borderRadius: '20px', padding: '0.5rem 1.5rem', fontWeight: 600, cursor: 'pointer', boxShadow: '0 2px 6px rgba(44, 62, 80, 0.08)' }}>
+              {slotLoading ? 'Saving...' : 'Add Slot'}
+            </button>
+          </form>
+          {slotError && <div style={{ color: '#d32f2f', marginTop: '0.5rem' }}>{slotError}</div>}
+          {slotSuccess && <div style={{ color: '#388e3c', marginTop: '0.5rem' }}>{slotSuccess}</div>}
+        </div>
+        {/* List of Available Time Slots */}
+        <div className="dashboard-section-card" style={{ background: '#f7fafc', borderRadius: '16px', padding: '1.5rem', marginBottom: '2rem', boxShadow: '0 2px 8px rgba(44, 62, 80, 0.07)' }}>
+          <h3 style={{ color: '#2a5c5f', marginBottom: '1rem' }}>Your Available Time Slots</h3>
+          {slotLoading ? (
+            <div>Loading slots...</div>
+          ) : availableSlots.length === 0 ? (
+            <div>No available time slots yet.</div>
+          ) : (
+            <table className="appointments-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Start Time</th>
+                  <th>End Time</th>
+                  <th>Available</th>
+                  <th>Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {availableSlots.map((slot) => (
+                  <tr key={slot.id}>
+                    <td>{slot.date}</td>
+                    <td>{slot.start_time}</td>
+                    <td>{slot.end_time}</td>
+                    <td>{slot.available ? 'Yes' : 'No'}</td>
+                    <td>{slot.price}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
         {/* Main Content */}
         <div className="dashboard-content-row">

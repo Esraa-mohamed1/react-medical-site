@@ -110,3 +110,20 @@ export const getAppointmentRecord = async (recordId) => {
     throw error;
   }
 };
+
+// Fetch all appointments for a patient with a specific doctor
+export const getPatientDoctorAppointments = async (patientId, doctorId) => {
+  try {
+    const token = localStorage.getItem('access');
+    const response = await axios.get(
+      `http://127.0.0.1:8000/api/appointments/patient-doctor/?patient_id=${patientId}&doctor_id=${doctorId}`,
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching patient-doctor appointments:', error);
+    throw error;
+  }
+};

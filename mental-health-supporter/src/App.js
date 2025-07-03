@@ -34,6 +34,7 @@ import ErrorBoundary from './ErrorBoundary';
 import ArticlePage from './pages/ArticlePage';
 import SelectDisorderPage from './pages/SelectDisorderPage';
 import DisorderSelection from './pages/DisorderSelection';
+import PatientAppointmentsPage from './pages/PatientAppointmentsPage';
 
 function App() {
   return (
@@ -113,6 +114,8 @@ function App() {
               <DocumentsPage />
             </PrivateRoute>
           } />
+
+          <Route path="/my-appointments" element={<PatientAppointmentsPage />} />
 
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
