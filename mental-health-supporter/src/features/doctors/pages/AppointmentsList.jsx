@@ -21,13 +21,13 @@ const AppointmentsList = () => {
   const [statusFilter, setStatusFilter] = useState('all');
 
   const navigate = useNavigate();
-
+  
   const fetchAppointments = useCallback(async (search) => {
     try {
       setIsLoading(true);
       const userData = JSON.parse(localStorage.getItem("loggedUser"));
       const token = localStorage.getItem("access");
-
+      
       if (!userData || userData.role !== "doctor" || !token) {
         toast.error("Only doctors can view appointments");
         navigate('/login');
@@ -35,7 +35,7 @@ const AppointmentsList = () => {
       }
 
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/medical/appointments/doctor/`,
+        `http://127.0.0.1:8000/api/medical/appointments/doctor/`, 
         {
           headers: { Authorization: `Bearer ${token}` },
           params: { search: search }
@@ -65,12 +65,12 @@ const AppointmentsList = () => {
     try {
       setUpdatingStatus(prev => ({ ...prev, [appointmentId]: true }));
       const token = localStorage.getItem("access");
-
+      
       await axios.patch(
         `http://127.0.0.1:8000/api/medical/appointments/${appointmentId}/update/`,
         { status: newStatus },
         {
-          headers: {
+          headers: { 
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
           }
@@ -78,9 +78,9 @@ const AppointmentsList = () => {
       );
 
       // Update the appointment in the local state
-      setAppointments(prev =>
-        prev.map(appointment =>
-          appointment.id === appointmentId
+      setAppointments(prev => 
+        prev.map(appointment => 
+          appointment.id === appointmentId 
             ? { ...appointment, status: newStatus }
             : appointment
         )
@@ -140,7 +140,7 @@ const AppointmentsList = () => {
 
   const getStatusBadge = (status) => {
     if (!status) return 'bg-secondary';
-    switch (status.toLowerCase()) {
+    switch(status.toLowerCase()) {
       case 'scheduled':
         return 'bg-warning text-dark';
       case 'completed':
@@ -159,200 +159,114 @@ const AppointmentsList = () => {
     navigate('/login');
     toast.success("You have been logged out.");
   };
-
+  
   if (isLoading && filteredAppointments.length === 0) {
     return (
-      <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
-        <div className="spinner-border" style={{ width: '3rem', height: '3rem', color: '#2A5C5F' }} role="status">
-          <span className="visually-hidden">Loading...</span>
+      <div className="doctor-dashboard-bg">
+        <DoctorSidebar />
+        <div className="doctor-dashboard-main enhanced-main-container">
+          <div className="enhanced-main-card d-flex justify-content-center align-items-center" style={{ minHeight: '60vh' }}>
+            <div className="spinner-border text-primary" style={{width: '3rem', height: '3rem'}} role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <>
-      <div style={{ background: 'radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2)', minHeight: '100vh', width: '100vw', zIndex: 0 }}>
-        <div className="min-vh-100 d-flex flex-column">
-          <CustomNavbar />
-          <div className="container py-5 flex-grow-1">
-            {/* Summary & Filter */}
-            <div className="row mb-4">
-              <div className="col-12 col-lg-10 mx-auto d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3 flex-wrap">
-                <div>
-                  <h1 className="fw-bold text-dark display-5 mb-1">My Appointments</h1>
-                  <p className="text-muted mb-0">
-                    Total: <span className="fw-bold text-success">{filteredAppointments.length}</span> appointments
-                  </p>
-                </div>
-                <div className="d-flex align-items-center gap-2 mt-3 mt-md-0">
-                  <FiFilter className="text-success" />
-                  <select
-                    className="form-select form-select-sm"
-                    style={{ minWidth: 140 }}
-                    value={statusFilter}
-                    onChange={e => setStatusFilter(e.target.value)}
-                    aria-label="Filter by status"
-                  >
-                    <option value="all">All Statuses</option>
-                    <option value="scheduled">Scheduled</option>
-                    <option value="completed">Completed</option>
-                    <option value="cancelled">Cancelled</option>
-                  </select>
-                </div>
-              </div>
+    <div className="doctor-dashboard-bg">
+      <DoctorSidebar />
+      <div className="doctor-dashboard-main enhanced-main-container">
+        <div className="enhanced-main-card">
+          <div className="section-header mb-4">My Appointments</div>
+          <div className="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 mb-4">
+            <div>
+              <p className="text-muted mb-0">
+                Total: <span className="fw-bold text-primary">{filteredAppointments.length}</span> appointments
+              </p>
             </div>
-            {/* Search Card */}
-            <div className="card shadow-sm border-0 rounded-4 mb-4 p-4 bg-white">
-              <div className="row align-items-center g-3">
-                <div className="col-12 col-md-6 mx-auto">
-                  <div className="input-group">
-                    <span className="input-group-text bg-white"><FiSearch /></span>
-                    <input
-                      type="text"
-                      placeholder="Search appointments..."
-                      className="form-control rounded-end"
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      style={{ boxShadow: 'none' }}
-                      aria-label="Search appointments"
-                    />
-                  </div>
-                </div>
-              </div>
+            <div className="d-flex align-items-center gap-2 mt-3 mt-md-0">
+              <FiFilter className="text-primary" />
+              <select
+                className="form-select form-select-sm"
+                style={{ minWidth: 140 }}
+                value={statusFilter}
+                onChange={e => setStatusFilter(e.target.value)}
+                aria-label="Filter by status"
+              >
+                <option value="all">All Statuses</option>
+                <option value="scheduled">Scheduled</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
             </div>
-            {/* Appointments Grid */}
-            {isLoading ? (
-              <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '50vh' }}>
-                <div className="spinner-border " style={{ width: '3rem', height: '3rem', color: '#2A5C5F' }} role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </div>
-              </div>
-            ) : filteredCurrentAppointments.length > 0 ? (
-              <>
-                <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                  {filteredCurrentAppointments.map(appointment => (
-                    <div className="col-md-6 col-lg-12" key={appointment.id}>
-                      <div className="card h-100 border-0 rounded-4 shadow-sm bg-blue-50 d-flex flex-column appointment-card transition"
-
-                        style={{
-                          background: 'linear-gradient(135deg, #eaf3fb 0%, #f6fafd 100%)',
-                          transition: 'transform 0.18s cubic-bezier(.4,2,.6,1), box-shadow 0.18s',
-                          cursor: 'pointer',
-                        }}
-                        onMouseEnter={e => {
-                          e.currentTarget.style.transform = 'scale(1.025)';
-                          e.currentTarget.style.boxShadow = '0 8px 32px rgba(49,123,196,0.10)';
-                          e.currentTarget.style.background = 'linear-gradient(135deg, #d0e6fa 0%, #eaf3fb 100%)';
-                        }}
-                        onMouseLeave={e => {
-                          e.currentTarget.style.transform = 'scale(1)';
-                          e.currentTarget.style.boxShadow = '0 2px 8px rgba(49,123,196,0.08)';
-                          e.currentTarget.style.background = 'linear-gradient(135deg, #eaf3fb 0%, #f6fafd 100%)';
-                        }}
-                      >
-                        <div className="card-header bg-white border-0 rounded-top-4 d-flex align-items-center gap-3 mb-2" style={{ minHeight: 56 }}>
-                          <div className="rounded-circle bg-success text-white d-flex align-items-center justify-content-center" style={{ width: 40, height: 40, fontSize: 18 }}>
-                            {appointment.patient_info ? getInitials(appointment.patient_info.username) : 'U'}
-                          </div>
-                          <div className="flex-grow-1">
-                            <h5 className="card-title fw-bold text-dark mb-0 fs-6">
-                              {getDisplayPatient(appointment)}
-                            </h5>
-                            <span className="text-muted small">Patient</span>
-                          </div>
-                          <div className="text-muted small" style={{ wordWrap: 'break-word' }}>
-                            <p className="d-flex align-items-center mb-2">
-                              <FiCalendar className="me-2" />
-                              <span>{getDisplayDate(appointment)}</span>
-                            </p>
-                            <p className="d-flex align-items-center mb-2">
-                              <FiClock className="me-2" />
-                              <span>{getDisplayTime(appointment)}</span>
-                            </p>
-                            <p className="d-flex align-items-center">
-                              <FiUser className="me-2" />
-                              <span>Appointment #{appointment.id}</span>
-                            </p>
-                            <p className="d-flex align-items-center">
-                              <span className="fw-semibold">Title:</span> {appointment.title}
-                            </p>
-                            <p className="d-flex align-items-center">
-                              <span className="fw-semibold">Payment Status:</span> {appointment.payment_status}
-                            </p>
-                          </div>
-                          {/* Status Update Section */}
-                          <div className="mt-2 mb-3">
-                            <label className="form-label small text-muted mb-1">Update Status:</label>
-                            <select
-                              className="form-select form-select-sm"
-                              value={appointment.status || 'scheduled'}
-                              onChange={(e) => handleStatusUpdate(appointment.id, e.target.value)}
-                              disabled={updatingStatus[appointment.id]}
-                              aria-label="Update appointment status"
-                            >
-                              <option value="scheduled">Scheduled</option>
-                              <option value="completed">Completed</option>
-                              <option value="cancelled">Cancelled</option>
-                            </select>
-                          </div>
-                          <div className="mt-auto">
-                            <button
-                              className="btn btn-outline-success btn-sm w-100"
-                              onClick={() => goToDetails(appointment.id)}
-                              aria-label="View appointment details"
-                              title="View Details"
-                            >
-                              View Details &rarr;
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+          </div>
+          <div className="section-card enhanced-section-card">
+            <div className="table-responsive">
+              <table className="records-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Patient</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredCurrentAppointments.length === 0 ? (
+                    <tr><td colSpan="5" className="text-center text-muted py-4">No appointments found.</td></tr>
+                  ) : filteredCurrentAppointments.map(appointment => (
+                    <tr key={appointment.id}>
+                      <td>{getDisplayDate(appointment)}</td>
+                      <td>{getDisplayTime(appointment)}</td>
+                      <td>{getDisplayPatient(appointment)}</td>
+                      <td>
+                        <span className={`badge rounded-pill px-3 py-2 ${getStatusBadge(appointment.status)}`}>{appointment.status || 'Scheduled'}</span>
+                      </td>
+                      <td>
+                        <button 
+                          className="edit-btn btn-sm"
+                          onClick={() => goToDetails(appointment.id)}
+                          aria-label="View appointment details"
+                          title="View Details"
+                        >
+                          View Details
+                        </button>
+                      </td>
+                    </tr>
                   ))}
-                </div>
-                {/* Pagination Controls */}
-                {totalPages > 1 && (
-                  <div className="d-flex justify-content-center mt-5">
-                    <nav>
-                      <ul className="pagination">
-                        <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                          <button className="page-link" onClick={() => setCurrentPage(p => p - 1)} aria-label="Previous page">
-                            <FiChevronLeft />
-                          </button>
-                        </li>
-                        {Array.from({ length: totalPages }, (_, i) => (
-                          <li key={i + 1} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
-                            <button className="page-link" onClick={() => setCurrentPage(i + 1)} aria-label={`Go to page ${i + 1}`}>
-                              {i + 1}
-                            </button>
-                          </li>
-                        ))}
-                        <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-                          <button className="page-link" onClick={() => setCurrentPage(p => p + 1)} aria-label="Next page">
-                            <FiChevronRight />
-                          </button>
-                        </li>
-                      </ul>
-                    </nav>
-                  </div>
-                )}
-              </>
-            ) : (
-              <div className="text-center card shadow-sm p-5">
-                <FiInbox className="mx-auto h1 text-muted" style={{ fontSize: '4rem' }} />
-                <h3 className="mt-4 fw-bold text-dark">No appointments found</h3>
-                <p className="mt-2 text-muted">
-                  {searchTerm ? `No appointments match your search for "${searchTerm}".` : "When you have appointments, they will show up here."}
-                </p>
-              </div>
-            )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          {/* Pagination Controls */}
+          <div className="d-flex justify-content-center mt-4">
+            <nav>
+              <ul className="pagination">
+                <li className={`page-item${currentPage === 1 ? ' disabled' : ''}`}>
+                  <button className="page-link" onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>
+                    <FiChevronLeft />
+                  </button>
+                </li>
+                {[...Array(totalPages)].map((_, idx) => (
+                  <li key={idx} className={`page-item${currentPage === idx + 1 ? ' active' : ''}`}>
+                    <button className="page-link" onClick={() => setCurrentPage(idx + 1)}>{idx + 1}</button>
+                  </li>
+                ))}
+                <li className={`page-item${currentPage === totalPages ? ' disabled' : ''}`}>
+                  <button className="page-link" onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages}>
+                    <FiChevronRight />
+                  </button>
+                </li>
+              </ul>
+            </nav>
           </div>
         </div>
-
       </div>
-      <Footer />
-    </>
+    </div>
   );
 };
 

@@ -3,36 +3,37 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import CustomNavbar from '../../../components/Navbar';
-import { FiCalendar, FiClock, FiPlus, FiEdit2, FiTrash2 } from 'react-icons/fi';
+import { FiCalendar, FiClock, FiPlus, FiEdit2, FiTrash2, FiDollarSign, FiCheck, FiX } from 'react-icons/fi';
 import Swal from 'sweetalert2';
-import Footer from "../../homePage/components/Footer";
-import { useDispatch } from 'react-redux';
-import { addAvailability } from '../availabilitySlice';
-import '../../../features/doctors/style/style.css';
 import DoctorSidebar from '../components/DoctorSidebar';
+import '../../../features/doctors/style/style.css';
 
 const AvailabilityPage = () => {
   const [availableDates, setAvailableDates] = useState([]);
   const [formData, setFormData] = useState({
     date: '',
-    startTime: '',
-    endTime: ''
+    start_time: '',
+    end_time: '',
+    price: '',
+    available: true
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem('loggedUser'));
     const token = localStorage.getItem('access');
     
     if (!userData || userData.role !== 'doctor' || !token) {
-      toast.error('Only doctors can manage availability');
-      navigate('/login');
+      Swal.fire({
+        icon: 'error',
+        title: 'Access Denied',
+        text: 'Only doctors can manage availability',
+        confirmButtonColor: '#3085d6'
+      }).then(() => navigate('/login'));
       return;
     }
     
@@ -42,103 +43,120 @@ const AvailabilityPage = () => {
   const fetchAvailableDates = async (token) => {
     try {
       setIsLoading(true);
-      // Fetch only the slots created by the logged-in doctor
       const response = await axios.get('http://localhost:8000/api/time_slots/available/my/', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        headers: { Authorization: `Bearer ${token}` }
       });
-      // Map API fields to camelCase for UI
-      const mapped = response.data.map(slot => ({
-        ...slot,
-        startTime: slot.start_time,
-        endTime: slot.end_time
-      }));
-      setAvailableDates(mapped);
+      setAvailableDates(response.data);
     } catch (error) {
       console.error('Error fetching availability:', error);
-      toast.error('Failed to load availability dates');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Failed to load availability dates',
+        confirmButtonColor: '#3085d6'
+      });
     } finally {
       setIsLoading(false);
     }
   };
 
+  const validateForm = () => {
+    const todayStr = new Date().toISOString().split('T')[0];
+    const errors = [];
+
+    if (!formData.date || formData.date < todayStr) {
+      errors.push('Please select a valid date (today or future)');
+    }
+
+    if (!formData.start_time || !formData.end_time) {
+      errors.push('Please select both start and end times');
+    } else if (formData.start_time >= formData.end_time) {
+      errors.push('End time must be after start time');
+    }
+
+    if (formData.date === todayStr) {
+      const now = new Date();
+      const [startHour, startMinute] = formData.start_time.split(':').map(Number);
+      if (startHour < now.getHours() || 
+          (startHour === now.getHours() && startMinute < now.getMinutes())) {
+        errors.push('Start time cannot be in the past');
+      }
+    }
+
+    if (formData.price && (isNaN(formData.price) || formData.price < 0)) {
+      errors.push('Please enter a valid price (positive number)');
+    }
+
+    if (errors.length > 0) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Validation Error',
+        html: errors.join('<br>'),
+        confirmButtonColor: '#3085d6'
+      });
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const todayStr = new Date().toISOString().split('T')[0];
-    if (!formData.date || formData.date < todayStr) {
-      toast.error('Please select a valid date (today or future)');
-      return;
-    }
-    if (!formData.startTime || !formData.endTime) {
-      toast.error('Please select both start and end times');
-      return;
-    }
-    if (formData.startTime >= formData.endTime) {
-      toast.error('End time must be after start time');
-      return;
-    }
-    if (formData.date === todayStr) {
-      const now = new Date();
-      const [startHour, startMinute] = formData.startTime.split(':').map(Number);
-      if (
-        startHour < now.getHours() ||
-        (startHour === now.getHours() && startMinute < now.getMinutes())
-      ) {
-        toast.error('Please select a valid start time (not in the past)');
-        return;
-      }
-    }
-    // Prevent duplicate slot (same date and time range)
-    const isDuplicate = availableDates.some(slot => slot.date === formData.date && slot.startTime === formData.startTime && slot.endTime === formData.endTime && slot.id !== editingId);
-    if (isDuplicate) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Duplicate Slot',
-        text: 'A slot with this date and time range already exists.'
-      });
-      return;
-    }
+    if (!validateForm()) return;
 
     try {
       setIsSubmitting(true);
       const token = localStorage.getItem('access');
+      const userData = JSON.parse(localStorage.getItem('loggedUser'));
+      
       const payload = {
         date: formData.date,
-        start_time: formData.startTime, // always snake_case for backend
-        end_time: formData.endTime
+        start_time: formData.start_time,
+        end_time: formData.end_time,
+        price: formData.price || null,
+        available: formData.available,
+        doctor_id: userData.id
       };
+
       if (editingId) {
-        await axios.put(
+        await axios.patch(
           `http://localhost:8000/api/time_slots/available/my/${editingId}/update/`,
           payload,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json'
-            }
-          }
+          { headers: { Authorization: `Bearer ${token}` } }
         );
         Swal.fire({
           icon: 'success',
           title: 'Updated!',
-          text: 'Time slot updated successfully.'
+          text: 'Time slot updated successfully.',
+          confirmButtonColor: '#3085d6'
         });
       } else {
-        // Use Redux thunk to add availability with correct keys
-        await dispatch(addAvailability(payload));
+        await axios.post(
+          'http://localhost:8000/api/time_slots/available/my/',
+          payload,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
         Swal.fire({
           icon: 'success',
           title: 'Added!',
-          text: 'Time slot added successfully.'
+          text: 'Time slot added successfully.',
+          confirmButtonColor: '#3085d6'
         });
       }
+      
       resetForm();
       fetchAvailableDates(token);
     } catch (error) {
       console.error('Error saving time slot:', error);
-      toast.error(error.response?.data?.detail || 'Failed to save time slot');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error.response?.data?.detail || 
+             Object.values(error.response?.data || {}).flat().join('\n') || 
+             'Failed to save time slot',
+        confirmButtonColor: '#3085d6'
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -148,48 +166,88 @@ const AvailabilityPage = () => {
     setEditingId(availability.id);
     setFormData({
       date: availability.date,
-      startTime: availability.startTime,
-      endTime: availability.endTime
+      start_time: availability.start_time,
+      end_time: availability.end_time,
+      price: availability.price || '',
+      available: availability.available
     });
     setShowForm(true);
   };
 
   const handleDelete = async (id) => {
-    Swal.fire({
+    const result = await Swal.fire({
       title: 'Are you sure?',
-      text: 'Do you want to delete this time slot?',
+      text: 'You won\'t be able to revert this!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!'
-    }).then(async (result) => {
-      if (!result.isConfirmed) return;
-      try {
-        const token = localStorage.getItem('access');
-        await axios.delete(`http://localhost:8000/api/time_slots/available/my/${id}/delete/`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        Swal.fire({
-          icon: 'success',
-          title: 'Deleted!',
-          text: 'Time slot deleted successfully.'
-        });
-        fetchAvailableDates(token);
-      } catch (error) {
-        console.error('Error deleting time slot:', error);
-        toast.error(error.response?.data?.detail || 'Failed to delete time slot');
-      }
     });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      const token = localStorage.getItem('access');
+      await axios.delete(
+        `http://localhost:8000/api/time_slots/available/my/${id}/delete/`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      Swal.fire({
+        icon: 'success',
+        title: 'Deleted!',
+        text: 'Time slot deleted successfully.',
+        confirmButtonColor: '#3085d6'
+      });
+      fetchAvailableDates(token);
+    } catch (error) {
+      console.error('Error deleting time slot:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error.response?.data?.detail || 'Failed to delete time slot',
+        confirmButtonColor: '#3085d6'
+      });
+    }
+  };
+
+  const toggleAvailability = async (id, currentAvailable) => {
+    try {
+      const token = localStorage.getItem('access');
+      const newAvailableStatus = !currentAvailable;
+      
+      await axios.patch(
+        `http://localhost:8000/api/time_slots/available/${id}/set-available/`,
+        { available: newAvailableStatus },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Status Updated!',
+        text: `Time slot is now ${newAvailableStatus ? 'available' : 'unavailable'}`,
+        confirmButtonColor: '#3085d6'
+      });
+
+      fetchAvailableDates(token);
+    } catch (error) {
+      console.error('Error toggling availability:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error.response?.data?.detail || 'Failed to update availability',
+        confirmButtonColor: '#3085d6'
+      });
+    }
   };
 
   const resetForm = () => {
     setFormData({
       date: '',
-      startTime: '',
-      endTime: ''
+      start_time: '',
+      end_time: '',
+      price: '',
+      available: true
     });
     setEditingId(null);
     setShowForm(false);
@@ -214,14 +272,12 @@ const AvailabilityPage = () => {
     });
   };
 
-  const getStatusColor = (dateString) => {
-    const date = new Date(dateString);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    if (date < today) return 'text-muted';
-    if (date.getTime() === today.getTime()) return 'text-success';
-    return 'text-primary';
+  const getStatusBadge = (available) => {
+    return (
+      <span className={`badge ${available ? 'bg-success' : 'bg-danger'} text-white`}>
+        {available ? 'Available' : 'Unavailable'}
+      </span>
+    );
   };
 
   if (isLoading) {
@@ -244,133 +300,209 @@ const AvailabilityPage = () => {
       <DoctorSidebar />
       <div className="doctor-dashboard-main enhanced-main-container">
         <div className="enhanced-main-card">
-          <ToastContainer />
-          {/* Header Section */}
-          <div className="section-header mb-4">
-            <FiCalendar className="me-2 text-primary" />Manage Your Time Slots
-          </div>
-          <p className="text-muted mb-4">Set your available dates and times for patient appointments</p>
-          <div className="d-flex justify-content-end gap-3 mb-4">
+          <ToastContainer position="top-right" autoClose={5000} />
+          
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <div>
+              <h2 className="mb-1">
+                <FiCalendar className="me-2 text-primary" />Manage Your Time Slots
+              </h2>
+              <p className="text-muted mb-0">Set your available dates and times for patient appointments</p>
+            </div>
             <button 
-              className="review-btn"
+              className="btn btn-primary d-flex align-items-center"
               onClick={() => setShowForm(true)}
             >
               <FiPlus className="me-2" />Add New Time Slot
             </button>
           </div>
 
-          {/* Add/Edit Form */}
           {showForm && (
-            <div className="section-card enhanced-section-card mb-4">
-              <div className="section-header mb-3">{editingId ? 'Edit Time Slot' : 'Add New Time Slot'}</div>
-              <form onSubmit={handleSubmit}>
-                <div className="row g-3 mb-3">
-                  <div className="col-md-4">
-                    <label className="form-label fw-semibold">Date *</label>
-                    <input
-                      type="date"
-                      className="form-control"
-                      value={formData.date}
-                      min={new Date().toISOString().split('T')[0]}
-                      onChange={(e) => setFormData({...formData, date: e.target.value})}
-                      required
-                    />
+            <div className="card mb-4 border-0 shadow-sm">
+              <div className="card-body">
+                <h5 className="card-title mb-4">
+                  {editingId ? 'Edit Time Slot' : 'Add New Time Slot'}
+                </h5>
+                <form onSubmit={handleSubmit}>
+                  <div className="row g-3 mb-3">
+                    <div className="col-md-4">
+                      <label className="form-label fw-semibold">Date *</label>
+                      <input
+                        type="date"
+                        className="form-control"
+                        value={formData.date}
+                        min={new Date().toISOString().split('T')[0]}
+                        onChange={(e) => setFormData({...formData, date: e.target.value})}
+                        required
+                      />
+                    </div>
+                    <div className="col-md-4">
+                      <label className="form-label fw-semibold">
+                        <FiClock className="me-2 text-primary" />Start Time *
+                      </label>
+                      <input
+                        type="time"
+                        className="form-control"
+                        value={formData.start_time}
+                        min={formData.date === new Date().toISOString().split('T')[0] ? 
+                          new Date().toLocaleTimeString('en-GB', { hour12: false }).slice(0,5) : undefined}
+                        onChange={(e) => setFormData({...formData, start_time: e.target.value})}
+                        required
+                      />
+                    </div>
+                    <div className="col-md-4">
+                      <label className="form-label fw-semibold">End Time *</label>
+                      <input
+                        type="time"
+                        className="form-control"
+                        value={formData.end_time}
+                        min={formData.start_time}
+                        onChange={(e) => setFormData({...formData, end_time: e.target.value})}
+                        required
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label fw-semibold">
+                        <FiDollarSign className="me-2 text-primary" />Price
+                      </label>
+                      <div className="input-group">
+                        <span className="input-group-text">$</span>
+                        <input
+                          type="number"
+                          className="form-control"
+                          value={formData.price}
+                          min="0"
+                          step="0.01"
+                          onChange={(e) => setFormData({...formData, price: e.target.value})}
+                          placeholder="0.00"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label fw-semibold">Availability</label>
+                      <div className="form-check form-switch">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          role="switch"
+                          checked={formData.available}
+                          onChange={(e) => setFormData({...formData, available: e.target.checked})}
+                        />
+                        <label className="form-check-label">
+                          {formData.available ? 'Available' : 'Unavailable'}
+                        </label>
+                      </div>
+                    </div>
                   </div>
-                  <div className="col-md-4">
-                    <label className="form-label fw-semibold"><FiClock className="me-2 text-primary" />Start Time *</label>
-                    <input
-                      type="time"
-                      className="form-control"
-                      value={formData.startTime}
-                      min={formData.date === new Date().toISOString().split('T')[0] ? new Date().toLocaleTimeString('en-GB', { hour12: false }).slice(0,5) : undefined}
-                      onChange={(e) => setFormData({...formData, startTime: e.target.value})}
-                      required
-                    />
+                  <div className="d-flex gap-3 mt-3">
+                    <button 
+                      type="submit" 
+                      className="btn btn-primary" 
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                          {editingId ? 'Updating...' : 'Adding...'}
+                        </>
+                      ) : (
+                        editingId ? 'Update Slot' : 'Add Slot'
+                      )}
+                    </button>
+                    <button 
+                      type="button" 
+                      className="btn btn-outline-secondary" 
+                      onClick={resetForm} 
+                      disabled={isSubmitting}
+                    >
+                      Cancel
+                    </button>
                   </div>
-                  <div className="col-md-4">
-                    <label className="form-label fw-semibold">End Time *</label>
-                    <input
-                      type="time"
-                      className="form-control"
-                      value={formData.endTime}
-                      min={formData.startTime}
-                      onChange={(e) => setFormData({...formData, endTime: e.target.value})}
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="d-flex gap-3 mt-3">
-                  <button type="submit" className="review-btn" disabled={isSubmitting}>
-                    {isSubmitting ? 'Saving...' : (editingId ? 'Update Slot' : 'Add Slot')}
-                  </button>
-                  <button type="button" className="edit-btn" onClick={resetForm} disabled={isSubmitting}>
-                    Cancel
-                  </button>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
           )}
 
-          {/* Time Slots Table */}
-          <div className="section-card enhanced-section-card">
-            <div className="section-header mb-3">
-              <FiCalendar className="me-2 text-primary" />Your Available Time Slots
-            </div>
-            {availableDates.length === 0 ? (
-              <div className="text-center py-5">
-                <div className="mb-4">
-                  <FiCalendar size={64} className="text-muted" />
+          <div className="card border-0 shadow-sm">
+            <div className="card-body">
+              <h5 className="card-title mb-4">
+                <FiCalendar className="me-2 text-primary" />Your Available Time Slots
+              </h5>
+              
+              {availableDates.length === 0 ? (
+                <div className="text-center py-5">
+                  <div className="mb-4">
+                    <FiCalendar size={64} className="text-muted" />
+                  </div>
+                  <h5 className="text-muted mb-2">No time slots set yet</h5>
+                  <p className="text-muted mb-4">Add your first time slot to start accepting patient appointments</p>
+                  <button 
+                    className="btn btn-primary"
+                    onClick={() => setShowForm(true)}
+                  >
+                    <FiPlus className="me-2" />Add Your First Time Slot
+                  </button>
                 </div>
-                <h5 className="text-muted mb-2">No time slots set yet</h5>
-                <p className="text-muted mb-4">Add your first time slot to start accepting patient appointments</p>
-                <button 
-                  className="review-btn"
-                  onClick={() => setShowForm(true)}
-                >
-                  <FiPlus className="me-2" />Add Your First Time Slot
-                </button>
-              </div>
-            ) : (
-              <div className="table-responsive">
-                <table className="records-table">
-                  <thead>
-                    <tr>
-                      <th>Date</th>
-                      <th>Start Time</th>
-                      <th>End Time</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {availableDates.map((availability) => (
-                      <tr key={availability.id}>
-                        <td>{formatFullDate(availability.date)}</td>
-                        <td>{availability.start_time || availability.startTime}</td>
-                        <td>{availability.end_time || availability.endTime}</td>
-                        <td>
-                          <div className="btn-group" role="group">
-                            <button 
-                              onClick={() => handleEdit(availability)}
-                              className="edit-btn btn-sm"
-                              title="Edit"
-                            >
-                              <FiEdit2 />
-                            </button>
-                            <button 
-                              onClick={() => handleDelete(availability.id)}
-                              className="btn btn-outline-danger btn-sm"
-                              title="Delete"
-                            >
-                              <FiTrash2 />
-                            </button>
-                          </div>
-                        </td>
+              ) : (
+                <div className="table-responsive">
+                  <table className="table table-hover">
+                    <thead className="table-light">
+                      <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Actions</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
+                    </thead>
+                    <tbody>
+                      {availableDates.map((slot) => (
+                        <tr key={slot.id}>
+                          <td>
+                            <div className="fw-semibold">{formatFullDate(slot.date)}</div>
+                            <div className="text-muted small">{formatDate(slot.date)}</div>
+                          </td>
+                          <td>
+                            {slot.start_time} - {slot.end_time}
+                          </td>
+                          <td>
+                            {slot.price ? `$${parseFloat(slot.price).toFixed(2)}` : 'Not set'}
+                          </td>
+                          <td>
+                            {getStatusBadge(slot.available)}
+                          </td>
+                          <td>
+                            <div className="d-flex gap-2">
+                              <button 
+                                onClick={() => handleEdit(slot)}
+                                className="btn btn-sm btn-outline-primary"
+                                title="Edit"
+                              >
+                                <FiEdit2 />
+                              </button>
+                              <button 
+                                onClick={() => handleDelete(slot.id)}
+                                className="btn btn-sm btn-outline-danger"
+                                title="Delete"
+                              >
+                                <FiTrash2 />
+                              </button>
+                              <button
+                                onClick={() => toggleAvailability(slot.id, slot.available)}
+                                className={`btn btn-sm ${slot.available ? 'btn-outline-danger' : 'btn-outline-success'}`}
+                                title={slot.available ? 'Mark as unavailable' : 'Mark as available'}
+                              >
+                                {slot.available ? <FiX /> : <FiCheck />}
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
