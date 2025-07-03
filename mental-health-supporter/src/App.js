@@ -5,7 +5,6 @@ import RegisterPage from "./pages/RegisterPage";
 import DoctorRegister from './components/DoctorsRegister/DoctorRegister';
 import MentalHealthArticle from './pages/MentalHealthArticle';
 import DoctorPage from './pages/DoctorPage';
-import ArticalPage from "./pages/ArticalPage";
 import DoctorsList from './pages/DoctorsListPage';
 import BaseLoginPage from './pages/BaseLoginPage';
 import DoctorDetailsPage from './pages/DoctorDetailsPage';
@@ -32,17 +31,27 @@ import DocumentsPage from './features/doctors/pages/DocumentsPage.jsx';
 
 import ErrorBoundary from './ErrorBoundary';
 
+import ArticlePage from './pages/ArticlePage';
+import SelectDisorderPage from './pages/SelectDisorderPage';
+import DisorderSelection from './pages/DisorderSelection';
+
 function App() {
   return (
     <ErrorBoundary>
       <Router>
         <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
         <Routes>
+        
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/register-select" element={<RegisterSelectPage />} />
-          <Route path="/artical" element={<ArticalPage />} />
+        {/* artical  */}
+
+          <Route path="/select-disorder" element={<DisorderSelection />} />
+          <Route path="/article/:disorderType" element={<ArticlePage />} />
+          <Route path="/articals" element={<SelectDisorderPage />} />
+
           <Route path="/ai-chat" element={<AIChatInterface />} />
           <Route path="/google-auth-redirect" element={<GoogleAuthRedirect />} />
           <Route path="/social/complete/google-oauth2/" element={<GoogleAuthRedirect />} />

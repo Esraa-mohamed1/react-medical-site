@@ -1,10 +1,10 @@
 import React from 'react';
-import BreathingExercise from '../components/articalComponents/BreathingExercise';
-import ProfessionalHelp from '../components/articalComponents/ProfessionalHelp';
-import MoodProgress from '../components/articalComponents/MoodProgress';
-import TriggerList from '../components/articalComponents/TriggerList';
-import CopingStrategies from '../components/articalComponents/CopingStrategies';
-import MoodTracker from '../components/articalComponents/MoodTracker';
+import BreathingExercise from '../components/article/BreathingExercise';
+import ProfessionalHelp from '../components/article/ProfessionalHelp';
+import MoodProgress from '../components/article/MoodProgress';
+import TriggerList from '../components/article/TriggerList';
+import CopingStrategies from '../components/article/CopingStrategies';
+import MoodTracker from '../components/article/MoodTracker';
 import '../styles/MentalHealthArticle.css';
 import Footer from "./../features/homePage/components/Footer";
 

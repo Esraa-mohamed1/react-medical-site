@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { aiChatService } from '../services/aiChatService';
 import './AIChatInterface.css';
+import Footer from "./../features/homePage/components/Footer";
+import CustomNavbar from './../components/Navbar';
 import { useNavigate } from 'react-router-dom';
-import { FiArrowLeft } from 'react-icons/fi';
+
 
 const AIChatInterface = () => {
   const [messages, setMessages] = useState([
@@ -98,27 +100,16 @@ const AIChatInterface = () => {
   };
 
   return (
-    <div className="ai-chat-interface">
-      <button onClick={() => navigate('/')} className="edit-btn" style={{ position: 'absolute', top: 16, left: 16, zIndex: 10 }} title="Back to Home">
-        <FiArrowLeft />
-      </button>
-      <div className="ai-chat-room">
-        {/* Chat Room Header */}
-        <div className="chat-room-header">
-          <div className="header-content">
-            <div className="ai-avatar-large">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.89 1 3 1.89 3 3V21C3 22.11 3.89 23 5 23H19C20.11 23 21 22.11 21 21V9ZM19 9H14V4H5V21H19V9Z" fill="currentColor"/>
-              </svg>
-            </div>
-            <div className="chat-room-title">
-              <h1>Mental Health AI Assistant</h1>
-              <p>Your supportive companion for mental wellness</p>
-              <span className="status-indicator">
-                <span className="status-dot"></span>
-                Online & Ready to Help
-              </span>
-            </div>
+    <>
+    <CustomNavbar />
+    <div className="ai-chat-room">
+      {/* Chat Room Header */}
+      <div className="chat-room-header">
+        <div className="header-content">
+          <div className="ai-avatar-large">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.89 1 3 1.89 3 3V21C3 22.11 3.89 23 5 23H19C20.11 23 21 22.11 21 21V9ZM19 9H14V4H5V21H19V9Z" fill="currentColor"/>
+            </svg>
           </div>
           <div className="header-actions">
             <button onClick={clearChat} className="clear-chat-btn" title="Clear chat">
@@ -213,6 +204,8 @@ const AIChatInterface = () => {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 };
 
