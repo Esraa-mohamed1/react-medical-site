@@ -101,9 +101,9 @@ export default function ArticlePage() {
             ))}
           </section>
 
-          {/* {['anger', 'anxiety', 'stress'].includes(disorderKey) && (
+          {['anger', 'anxiety', 'stress'].includes(disorderKey) && (
             <BreathingExercise disorder={disorderKey} />
-          )} */}
+          )}
 
           <CopingStrategies disorder={disorderKey} />
           <ProfessionalHelp disorder={disorderKey} />

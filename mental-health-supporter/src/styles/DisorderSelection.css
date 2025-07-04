@@ -1,7 +1,7 @@
 /* src/styles/DisorderSelection.css */
 
 .disorder-selection-container {
-  background: #b2f1f1;
+  background: #f4f8f8;
   padding-bottom: 3rem;
   font-family: 'Segoe UI', sans-serif;
 }
@@ -16,7 +16,7 @@
 }
 
 .banner span {
-  color: #fff;
+  color: #9dd6e9;
 }
 
 .blog-header {
