@@ -23,12 +23,11 @@ import ChatPage from './pages/ChatPage';
 import DoctorChatsPage from './pages/DoctorChatsPage';
 import DoctorChatRoomPage from './pages/DoctorChatRoomPage';
 import AIChatInterface from './components/AIChatInterface';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import CalendarPage from './features/doctors/pages/CalendarPage';
 import DoctorPaidPatients from './features/doctors/pages/DoctorPaidPatients';
 import DocumentsPage from './features/doctors/pages/DocumentsPage.jsx';
 import DoctorDashboard from './features/doctors/pages/DoctorDashboard';
+import DoctorPatientDetailsPage from './features/doctors/pages/DoctorPatientDetailsPage';
 
 import ErrorBoundary from './ErrorBoundary';
 
@@ -40,7 +39,6 @@ function App() {
   return (
     <ErrorBoundary>
       <Router>
-        <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
         <Routes>
         
           <Route path="/" element={<HomePage />} />
@@ -112,6 +110,11 @@ function App() {
           <Route path="/doctor/documents" element={
             <PrivateRoute role="doctor">
               <DocumentsPage />
+            </PrivateRoute>
+          } />
+          <Route path="/doctor/patient-details/:appointmentId" element={
+            <PrivateRoute role="doctor">
+              <DoctorPatientDetailsPage />
             </PrivateRoute>
           } />
 

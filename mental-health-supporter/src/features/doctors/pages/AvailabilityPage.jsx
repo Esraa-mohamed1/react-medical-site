@@ -100,7 +100,7 @@ const AvailabilityPage = () => {
     return true;
   };
 
-  const handleSubmit = async (e) => {
+  const handleCreateTimeSlot = async (e) => {
     e.preventDefault();
 
     if (!validateForm()) return;
@@ -119,42 +119,29 @@ const AvailabilityPage = () => {
         doctor_id: userData.id
       };
 
-      if (editingId) {
-        await axios.patch(
-          `http://localhost:8000/api/time_slots/available/my/${editingId}/update/`,
-          payload,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        Swal.fire({
-          icon: 'success',
-          title: 'Updated!',
-          text: 'Time slot updated successfully.',
-          confirmButtonColor: '#3085d6'
-        });
-      } else {
-        await axios.post(
-          'http://localhost:8000/api/time_slots/available/my/',
-          payload,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        Swal.fire({
-          icon: 'success',
-          title: 'Added!',
-          text: 'Time slot added successfully.',
-          confirmButtonColor: '#3085d6'
-        });
-      }
+      await axios.post(
+        'http://localhost:8000/api/time_slots/available/create/',
+        payload,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Time slot created successfully.',
+        confirmButtonColor: '#3085d6'
+      });
       
       resetForm();
       fetchAvailableDates(token);
     } catch (error) {
-      console.error('Error saving time slot:', error);
+      console.error('Error creating time slot:', error);
       Swal.fire({
         icon: 'error',
         title: 'Error',
         text: error.response?.data?.detail || 
              Object.values(error.response?.data || {}).flat().join('\n') || 
-             'Failed to save time slot',
+             'Failed to create time slot',
         confirmButtonColor: '#3085d6'
       });
     } finally {
@@ -172,6 +159,53 @@ const AvailabilityPage = () => {
       available: availability.available
     });
     setShowForm(true);
+  };
+
+  const handleUpdateTimeSlot = async (e) => {
+    e.preventDefault();
+
+    if (!validateForm()) return;
+
+    try {
+      setIsSubmitting(true);
+      const token = localStorage.getItem('access');
+      
+      const payload = {
+        date: formData.date,
+        start_time: formData.start_time,
+        end_time: formData.end_time,
+        price: formData.price || null,
+        available: formData.available
+      };
+
+      await axios.patch(
+        `http://localhost:8000/api/time_slots/available/my/${editingId}/update/`,
+        payload,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Time slot updated successfully.',
+        confirmButtonColor: '#3085d6'
+      });
+      
+      resetForm();
+      fetchAvailableDates(token);
+    } catch (error) {
+      console.error('Error updating time slot:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error.response?.data?.detail || 
+             Object.values(error.response?.data || {}).flat().join('\n') || 
+             'Failed to update time slot',
+        confirmButtonColor: '#3085d6'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleDelete = async (id) => {
@@ -311,7 +345,10 @@ const AvailabilityPage = () => {
             </div>
             <button 
               className="btn btn-primary d-flex align-items-center"
-              onClick={() => setShowForm(true)}
+              onClick={() => {
+                resetForm();
+                setShowForm(true);
+              }}
             >
               <FiPlus className="me-2" />Add New Time Slot
             </button>
@@ -323,7 +360,7 @@ const AvailabilityPage = () => {
                 <h5 className="card-title mb-4">
                   {editingId ? 'Edit Time Slot' : 'Add New Time Slot'}
                 </h5>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={editingId ? handleUpdateTimeSlot : handleCreateTimeSlot}>
                   <div className="row g-3 mb-3">
                     <div className="col-md-4">
                       <label className="form-label fw-semibold">Date *</label>
@@ -438,7 +475,10 @@ const AvailabilityPage = () => {
                   <p className="text-muted mb-4">Add your first time slot to start accepting patient appointments</p>
                   <button 
                     className="btn btn-primary"
-                    onClick={() => setShowForm(true)}
+                    onClick={() => {
+                      resetForm();
+                      setShowForm(true);
+                    }}
                   >
                     <FiPlus className="me-2" />Add Your First Time Slot
                   </button>
