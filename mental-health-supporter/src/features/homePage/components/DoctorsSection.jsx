@@ -15,6 +15,7 @@ export default function DoctorsSection() {
   const navigate = useNavigate();
   const { t } = useTranslation();  // Use translation hook
 
+
   // Get user role from localStorage
   const user = JSON.parse(localStorage.getItem('loggedUser'));
   const isDoctor = user?.role === 'doctor';
@@ -121,11 +122,15 @@ export default function DoctorsSection() {
               ))}
             </select>
 
-            {!isDoctor && (
-              <a href="/doctors-list" className={styles.customLink}>
-                {t('doctorsSection.seeMore')}
-              </a>
-            )}
+           {!isDoctor && (
+  <a
+    href={user ? "/doctors-list" : "/login"}
+    className={styles.customLink}
+  >
+    {t('doctorsSection.seeMore')}
+  </a>
+)}
+
           </div>
         </div>
 
