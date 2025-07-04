@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import DoctorSidebar from '../components/DoctorSidebar';
-import { getPaidPatients, getAppointmentRecords, createAppointmentRecord } from '../../../services/doctors/AppointmentService';
-import { getPatientById } from '../../../services/patients/PatientServices';
-import { FaEnvelope, FaPhone, FaBirthdayCake, FaVenusMars, FaEdit, FaFileAlt, FaNotesMedical, FaPills, FaChevronDown } from 'react-icons/fa';
+import { getPaidPatients } from '../../../services/doctors/AppointmentService';
+import { 
+  FaUser,
+  FaCalendarAlt,
+  FaStethoscope,
+  FaFileAlt,
+  FaChevronDown
+} from 'react-icons/fa';
 import '../../../features/doctors/style/style.css';
 import { Link } from 'react-router-dom';
 
@@ -10,35 +15,7 @@ const DoctorPaidPatients = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [appointments, setAppointments] = useState([]);
-  const [selectedAppointment, setSelectedAppointment] = useState(null);
-  const [patient, setPatient] = useState(null);
-  const [records, setRecords] = useState([]);
-
-  const [consultationNotes, setConsultationNotes] = useState('');
-  const [consultationReport, setConsultationReport] = useState('');
-  const [consultationDoc, setConsultationDoc] = useState(null);
-  const [consultationDocUrl, setConsultationDocUrl] = useState('');
-  const [consultationEdit, setConsultationEdit] = useState(false);
-
-  const [diagnosisNotes, setDiagnosisNotes] = useState('');
-  const [diagnosisReport, setDiagnosisReport] = useState('');
-  const [diagnosisDoc, setDiagnosisDoc] = useState(null);
-  const [diagnosisDocUrl, setDiagnosisDocUrl] = useState('');
-  const [diagnosisEdit, setDiagnosisEdit] = useState(false);
-
-  const [medicationNotes, setMedicationNotes] = useState('');
-  const [medicationReport, setMedicationReport] = useState('');
-  const [medicationDoc, setMedicationDoc] = useState(null);
-  const [medicationDocUrl, setMedicationDocUrl] = useState('');
-  const [medicationEdit, setMedicationEdit] = useState(false);
-
-  // Section save states
-  const [consultationSaving, setConsultationSaving] = useState(false);
-  const [consultationError, setConsultationError] = useState('');
-  const [diagnosisSaving, setDiagnosisSaving] = useState(false);
-  const [diagnosisError, setDiagnosisError] = useState('');
-  const [medicationSaving, setMedicationSaving] = useState(false);
-  const [medicationError, setMedicationError] = useState('');
+  const [expandedCard, setExpandedCard] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,22 +24,8 @@ const DoctorPaidPatients = () => {
       try {
         const appts = await getPaidPatients();
         setAppointments(appts);
-        if (appts.length > 0) {
-          setSelectedAppointment(appts[0]);
-          // Fetch patient details
-          const patientId = appts[0].patient_info?.id || appts[0].patient_info?.patient_id;
-          if (patientId) {
-            const patientData = await getPatientById(patientId);
-            setPatient(patientData);
-          } else {
-            setPatient(appts[0].patient_info);
-          }
-          // Fetch appointment records
-          const recs = await getAppointmentRecords(appts[0].id);
-          setRecords(recs);
-        }
       } catch (err) {
-        setError('Failed to fetch data.');
+        setError('Failed to fetch patient data. Please try again later.');
       } finally {
         setLoading(false);
       }
@@ -70,81 +33,40 @@ const DoctorPaidPatients = () => {
     fetchData();
   }, []);
 
-  // Enhance: allow selecting other appointments/patients if needed
-
-  // Handlers for file upload (simulate upload for now)
-  const handleFileChange = (e, setDoc, setDocUrl) => {
-    const file = e.target.files[0];
-    setDoc(file);
-    if (file) {
-      setDocUrl(URL.createObjectURL(file));
-    } else {
-      setDocUrl('');
-    }
+  const toggleCardExpand = (appointmentId) => {
+    setExpandedCard(expandedCard === appointmentId ? null : appointmentId);
   };
 
-  // Save handlers
-  const handleSaveSection = async (type) => {
-    let notes, report, doc, setEdit, setSaving, setError, setDoc, setDocUrl;
-    if (type === 'consultation') {
-      notes = consultationNotes;
-      report = consultationReport;
-      doc = consultationDoc;
-      setEdit = setConsultationEdit;
-      setSaving = setConsultationSaving;
-      setError = setConsultationError;
-      setDoc = setConsultationDoc;
-      setDocUrl = setConsultationDocUrl;
-    } else if (type === 'diagnosis') {
-      notes = diagnosisNotes;
-      report = diagnosisReport;
-      doc = diagnosisDoc;
-      setEdit = setDiagnosisEdit;
-      setSaving = setDiagnosisSaving;
-      setError = setDiagnosisError;
-      setDoc = setDiagnosisDoc;
-      setDocUrl = setDiagnosisDocUrl;
-    } else if (type === 'medication') {
-      notes = medicationNotes;
-      report = medicationReport;
-      doc = medicationDoc;
-      setEdit = setMedicationEdit;
-      setSaving = setMedicationSaving;
-      setError = setMedicationError;
-      setDoc = setMedicationDoc;
-      setDocUrl = setMedicationDocUrl;
-    }
-    setSaving(true);
-    setError('');
-    try {
-      const formData = new FormData();
-      formData.append('record_type', type);
-      if (notes) formData.append('notes', notes);
-      if (report) formData.append('medical_report', report);
-      if (doc) formData.append('document', doc);
-      await createAppointmentRecord(selectedAppointment.id, formData);
-      setEdit(false);
-      setDoc(null);
-      setDocUrl('');
-      // Refresh records
-      const recs = await getAppointmentRecords(selectedAppointment.id);
-      setRecords(recs);
-    } catch (err) {
-      setError('Failed to save.');
-    } finally {
-      setSaving(false);
-    }
+  const formatDate = (dateString) => {
+    if (!dateString) return 'Date not available';
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  // Helper to get the correct profile image URL
+  const getProfileImageUrl = (imgPath) => {
+    if (!imgPath) return '/images/doctor.png';
+    if (imgPath.startsWith('http')) return imgPath;
+    return `${process.env.REACT_APP_API_BASE_URL || ''}${imgPath}`;
   };
 
   return (
     <div className="doctor-dashboard-bg">
       <DoctorSidebar />
       <div className="doctor-dashboard-main enhanced-main-container">
-        <div className="enhanced-main-card" style={{ background: '#f7fafc', borderRadius: 16, boxShadow: '0 2px 8px rgba(44, 62, 80, 0.07)', padding: '2rem' }}>
-          <div className="section-header mb-4" style={{ color: '#2a5c5f', fontWeight: 700, fontSize: '1.5rem' }}>My Patients</div>
+        <div className="enhanced-main-card">
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <h2 className="section-header">
+              <FaUser className="me-2" />My Patients
+            </h2>
+            <div className="patient-count">
+              {appointments.length} {appointments.length === 1 ? 'Patient' : 'Patients'}
+            </div>
+          </div>
+          
           {loading ? (
-            <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '60vh' }}>
-              <div className="spinner-border text-primary" style={{ width: '3rem', height: '3rem' }} role="status">
+            <div className="spinner-container">
+              <div className="spinner-border text-primary" role="status">
                 <span className="visually-hidden">Loading...</span>
               </div>
             </div>
@@ -153,24 +75,79 @@ const DoctorPaidPatients = () => {
           ) : appointments.length === 0 ? (
             <div className="alert alert-info text-center my-5">No patients found.</div>
           ) : (
-            <div className="patients-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
+            <div className="patients-list">
               {appointments.map((appt) => {
                 const patient = appt.patient_info;
+                const profileImgUrl = getProfileImageUrl(patient.profile_image);
+                console.log('Profile image URL:', profileImgUrl);
                 return (
-                  <div key={patient.patient_id || patient.id || patient.username} className="patient-card" style={{ background: '#e0f7fa', borderRadius: 12, boxShadow: '0 2px 8px rgba(44, 62, 80, 0.07)', padding: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <img src={patient.profile_image || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(patient.full_name || patient.username || 'Patient') + '&background=ede7f6&color=5e35b1&size=128'} alt="Patient" style={{ width: 80, height: 80, borderRadius: '50%', objectFit: 'cover', marginBottom: '1rem', border: '3px solid #b2dfdb' }} />
-                    <div className="fw-bold fs-5 mb-1" style={{ color: '#2193b0' }}>{patient.full_name || patient.username}</div>
-                    <div className="text-muted mb-2">{patient.email}</div>
-                    <button
-                      className="review-btn"
-                      onClick={() => window.location.href = `/doctor/patient-details/${appt.id}`}
+                  <div key={appt.id} className={`patient-card ${expandedCard === appt.id ? 'expanded' : ''}`}>
+                    <div 
+                      className="patient-card-header"
+                      onClick={() => toggleCardExpand(appt.id)}
                     >
-                      View Details
-                    </button>
+                      <div className="patient-basic-info d-flex align-items-center gap-3" style={{flexDirection: 'row'}}>
+                        {/* Patient profile image */}
+                        {patient.profile_image ? (
+                          <img
+                            src={profileImgUrl}
+                            alt={patient.full_name || 'Patient'}
+                            className="patient-profile-img"
+                            style={{ width: 48, height: 48, borderRadius: '50%', objectFit: 'cover', border: '2px solid #6dd5ed' }}
+                            onError={e => { e.target.onerror = null; e.target.src = '/images/doctor.png'; }}
+                          />
+                        ) : (
+                          <FaUser className="patient-profile-img" style={{ width: 48, height: 48, borderRadius: '50%', background: '#e0e0e0', color: '#888', padding: 8 }} />
+                        )}
+                        <div className="d-flex flex-column justify-content-center">
+                          <h3 className="patient-name mb-0">{patient.full_name || 'Unknown Patient'}</h3>
+                          <div className="appointment-date">
+                            <FaCalendarAlt className="me-1" /> 
+                            {formatDate(appt.appointment_date)}
+                          </div>
+                        </div>
+                      </div>
+                      <FaChevronDown 
+                        className={`chevron-icon ${expandedCard === appt.id ? 'rotate-180' : ''}`} 
+                      />
+                    </div>
+                    
+                    {expandedCard === appt.id && (
+                      <div className="patient-card-details">
+                        {patient.email && (
+                          <div className="patient-detail">
+                            <span className="detail-label">Email:</span>
+                            <span className="detail-value">{patient.email}</span>
+                          </div>
+                        )}
+                        
+                        {patient.phone && (
+                          <div className="patient-detail">
+                            <span className="detail-label">Phone:</span>
+                            <span className="detail-value">{patient.phone}</span>
+                          </div>
+                        )}
+                        
+                        <div className="patient-actions">
+                          <Link 
+                            to={`/doctor/patient-details/${appt.id}`}
+                            className="action-btn medical-history"
+                          >
+                            <FaStethoscope className="me-1" /> Medical History
+                          </Link>
+                          <Link 
+                            to={`/doctor/patient-records/${appt.id}`}
+                            className="action-btn documents"
+                          >
+                            <FaFileAlt className="me-1" /> Documents
+                          </Link>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 );
               })}
-              </div>
+            </div>
           )}
         </div>
       </div>
@@ -178,4 +155,4 @@ const DoctorPaidPatients = () => {
   );
 };
 
-export default DoctorPaidPatients; 
+export default DoctorPaidPatients;
