@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { FaUserCircle, FaStar, FaComment } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 
-const PatientReviews = ({ reviews: initialReviews }) => {
+const PatientReviews = ({ reviews: initialReviews, doctorId }) => {
   const { t } = useTranslation();
   const [reviews, setReviews] = useState(initialReviews);
   const [activePage, setActivePage] = useState(1);
@@ -23,19 +23,41 @@ const PatientReviews = ({ reviews: initialReviews }) => {
     setNewReview({ ...newReview, rating });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!newReview.patientName || !newReview.comment || newReview.rating === 0) return;
 
-    const today = new Date();
-    const formattedDate = today.toISOString().split('T')[0];
-
-    setReviews([
-      { ...newReview, date: formattedDate, response: null },
-      ...reviews
-    ]);
-    setNewReview({ patientName: '', comment: '', rating: 0 });
-    setShowForm(false);
-    setActivePage(1);
+    try {
+      if (!doctorId) {
+        alert('Doctor ID is missing.');
+        return;
+      }
+      const res = await fetch(`http://localhost:8000/api/medical/doctors/${doctorId}/reviews/create/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          patient_name: newReview.patientName,
+          comment: newReview.comment,
+          rating: newReview.rating
+        })
+      });
+      if (!res.ok) {
+        alert('Failed to submit review.');
+        return;
+      }
+      const data = await res.json();
+      // Add the new review to the list
+      setReviews([
+        { ...data, response: null },
+        ...reviews
+      ]);
+      setNewReview({ patientName: '', comment: '', rating: 0 });
+      setShowForm(false);
+      setActivePage(1);
+    } catch (err) {
+      alert('Error submitting review.');
+    }
   };
 
   return (
