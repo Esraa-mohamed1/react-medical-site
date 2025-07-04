@@ -1,20 +1,23 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import '../../styles/MoodProgress.css';
 
 const MoodProgress = ({ moodData = [] }) => {
+  const { t } = useTranslation();
+
   const defaultMoods = [
-    { name: 'Anger', level: 0, color: '#FF6B6B' },
-    { name: 'Frustration', level: 0, color: '#FFA500' },
-    { name: 'Anxiety', level: 0, color: '#FFD700' },
-    { name: 'Sadness', level: 0, color: '#87CEEB' },
-    { name: 'Calmness', level: 0, color: '#90EE90' }
+    { name: t('mood.anger'), level: 0, color: '#FF6B6B' },
+    { name: t('mood.frustration'), level: 0, color: '#FFA500' },
+    { name: t('mood.anxiety'), level: 0, color: '#FFD700' },
+    { name: t('mood.sadness'), level: 0, color: '#87CEEB' },
+    { name: t('mood.calmness'), level: 0, color: '#90EE90' }
   ];
 
   const moods = moodData.length > 0 ? moodData : defaultMoods;
 
   return (
     <div className="mood-progress">
-      {/* <h3>Your Mood Profile</h3> */}
+      {/* <h3>{t('mood.profileTitle')}</h3> */}
       {/* <div className="mood-metrics"> */}
         {moods.map((mood, index) => (
           <div className="mood-metric" key={index}>
@@ -30,9 +33,9 @@ const MoodProgress = ({ moodData = [] }) => {
                 ></div>
               </div>
               <div className="progress-labels">
-                <span>Low</span>
-                <span>Medium</span>
-                <span>High</span>
+                <span>{t('mood.low')}</span>
+                <span>{t('mood.medium')}</span>
+                <span>{t('mood.high')}</span>
               </div>
             </div>
           </div>

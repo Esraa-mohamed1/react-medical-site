@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import '../../styles/BreathingExercise.css';
 
 const BreathingExercise = ({ disorder }) => {
+  const { t } = useTranslation();
   const [isBreathingActive, setIsBreathingActive] = useState(false);
   const [breathPhase, setBreathPhase] = useState('inhale');
   const [breathCount, setBreathCount] = useState(0);
@@ -29,29 +31,29 @@ const BreathingExercise = ({ disorder }) => {
 
   return (
     <section className={`breathing-exercise ${isBreathingActive ? 'active' : ''}`}>
-      <h3>When you feel {disorder?.toLowerCase()} rising...</h3>
+      <h3>{t('breathingExercise.when_you_feel')} {disorder?.toLowerCase()} {t('breathingExercise.rising')}</h3>
       <div className="breathing-visual">
         <div className={`breathing-circle ${breathPhase}`}>
           <div className="breathing-text">
             {!isBreathingActive ? (
               <>
-                <p>Try this guided breathing exercise</p>
+                <p>{t('breathingExercise.try_guided_breathing')}</p>
                 <button
                   className="start-breathing"
                   onClick={() => setIsBreathingActive(true)}
                 >
-                  Start Breathing Exercise
+                  {t('breathingExercise.start_breathing')}
                 </button>
               </>
             ) : (
               <>
                 <p className="breath-instruction">
-                  {breathPhase === 'inhale' && 'Breathe In Deeply'}
-                  {breathPhase === 'hold' && 'Hold'}
-                  {breathPhase === 'exhale' && 'Breathe Out Slowly'}
-                  {breathPhase === 'rest' && 'Rest'}
+                  {breathPhase === 'inhale' && t('breathingExercise.breathe_in')}
+                  {breathPhase === 'hold' && t('breathingExercise.hold')}
+                  {breathPhase === 'exhale' && t('breathingExercise.breathe_out')}
+                  {breathPhase === 'rest' && t('breathingExercise.rest')}
                 </p>
-                <div className="breath-count">Breaths: {breathCount}</div>
+                <div className="breath-count">{t('breathingExercise.breaths')}: {breathCount}</div>
                 <button
                   className="stop-breathing"
                   onClick={() => {
@@ -59,7 +61,7 @@ const BreathingExercise = ({ disorder }) => {
                     setBreathPhase('inhale');
                   }}
                 >
-                  Finish
+                  {t('breathingExercise.finish')}
                 </button>
               </>
             )}
@@ -67,7 +69,7 @@ const BreathingExercise = ({ disorder }) => {
         </div>
       </div>
       <div className="breathing-instructions">
-        <p>Follow the rhythm: 4s inhale, 4s hold, 4s exhale, 4s rest</p>
+        <p>{t('breathingExercise.follow_rhythm')}</p>
       </div>
     </section>
   );
