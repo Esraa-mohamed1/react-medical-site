@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { FaUserEdit, FaKey, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaUserEdit, FaKey, FaEye, FaEyeSlash, FaUserMd } from 'react-icons/fa';
 import { postData } from '../services/api';
-import CustomNavbar from '../components/Navbar';
-import './AccountSettingsPage.css'; // ✅ Import the new CSS
-import Footer from "./../features/homePage/components/Footer";
+import DoctorSidebar from '../features/doctors/components/DoctorSidebar';
+import './AccountSettingsPage.css';
 import { useTranslation } from 'react-i18next';
 import Swal from 'sweetalert2';
 
@@ -12,7 +11,6 @@ const passwordMinLength = 8;
 
 const AccountSettingsPage = () => {
     const { t } = useTranslation();
-
     const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
     const [username, setUsername] = useState(loggedUser?.username || '');
     const [currentPassword, setCurrentPassword] = useState('');
@@ -22,12 +20,10 @@ const AccountSettingsPage = () => {
     const [showCurrentPassword, setShowCurrentPassword] = useState(false);
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
     const [usernameTouched, setUsernameTouched] = useState(false);
     const [currentPasswordTouched, setCurrentPasswordTouched] = useState(false);
     const [newPasswordTouched, setNewPasswordTouched] = useState(false);
     const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
-
     const usernameValid = username.length >= usernameMinLength && /^[a-zA-Z0-9_]+$/.test(username);
     const newPasswordValid = newPassword.length >= passwordMinLength;
     const newPasswordHasNumber = /\d/.test(newPassword);
@@ -168,11 +164,26 @@ const AccountSettingsPage = () => {
     };
 
     return (
-        <>
-            <CustomNavbar />
-            <div className="account-settings-page">
-                <div className="settings-container">
-                    <div className="settings-card">
+        <div className="doctor-dashboard-bg">
+            <DoctorSidebar />
+            <div className="doctor-dashboard-main settings-main">
+                <div className="settings-flex-container">
+                    {/* Profile Card */}
+                    <div className="settings-profile-card">
+                        <div className="profile-avatar">
+                            {loggedUser?.profile_image ? (
+                                <img src={loggedUser.profile_image} alt="Doctor" />
+                            ) : (
+                                <FaUserMd size={48} />
+                            )}
+                        </div>
+                        <div className="profile-info">
+                            <div className="profile-name">{loggedUser?.username || 'Doctor'}</div>
+                            <div className="profile-role">{loggedUser?.role ? loggedUser.role.charAt(0).toUpperCase() + loggedUser.role.slice(1) : 'Doctor'}</div>
+                        </div>
+                    </div>
+                    {/* Settings Card */}
+                    <div className="settings-card enhanced-settings-card">
                         <div className="card-header">
                             <h2 className="card-title">
                                 <FaUserEdit className="title-icon" />
@@ -180,7 +191,6 @@ const AccountSettingsPage = () => {
                             </h2>
                             <p className="card-subtitle">Manage your account settings and security</p>
                         </div>
-
                         <div className="settings-sections">
                             {/* Username Section */}
                             <div className="settings-section">
@@ -193,7 +203,6 @@ const AccountSettingsPage = () => {
                                         Update your username. This will be your display name across the platform.
                                     </p>
                                 </div>
-
                                 <form onSubmit={handleUsernameChange} className="settings-form">
                                     <div className="form-group">
                                         <label className="form-label">
@@ -203,27 +212,17 @@ const AccountSettingsPage = () => {
                                             type="text"
                                             className={`form-input ${usernameTouched && !usernameValid ? 'error' : ''}`}
                                             value={username}
-                                            onChange={(e) => setUsername(e.target.value)}
-                                            onBlur={() => setUsernameTouched(true)}
+                                            onChange={e => { setUsername(e.target.value); setUsernameTouched(true); }}
+                                            minLength={usernameMinLength}
                                             required
-                                            disabled={loading}
-                                            placeholder="Enter new username"
                                         />
-                                        <div className={`validation-message ${usernameTouched && !usernameValid ? 'error' : ''}`}>
-                                            {t('accountSettings.usernameValidation', { count: usernameMinLength })}
-                                        </div>
                                     </div>
-                                    
-                                    <button 
-                                        type="submit" 
-                                        className="btn-primary" 
-                                        disabled={loading || !usernameValid}
-                                    >
-                                        {loading ? 'Updating...' : t('accountSettings.saveUsername')}
+                                    <button type="submit" className="save-btn" disabled={loading || !usernameValid}>
+                                        Save Username
                                     </button>
                                 </form>
                             </div>
-
+                            <hr className="settings-divider" />
                             {/* Password Section */}
                             <div className="settings-section">
                                 <div className="section-header">
@@ -235,7 +234,6 @@ const AccountSettingsPage = () => {
                                         Change your password to keep your account secure.
                                     </p>
                                 </div>
-
                                 <form onSubmit={handlePasswordChange} className="settings-form">
                                     <div className="form-group">
                                         <label className="form-label">
@@ -246,7 +244,7 @@ const AccountSettingsPage = () => {
                                                 type={showCurrentPassword ? "text" : "password"}
                                                 className={`form-input ${currentPasswordTouched && !currentPassword ? 'error' : ''}`}
                                                 value={currentPassword}
-                                                onChange={(e) => setCurrentPassword(e.target.value)}
+                                                onChange={e => setCurrentPassword(e.target.value)}
                                                 onBlur={() => setCurrentPasswordTouched(true)}
                                                 required
                                                 disabled={loading}
@@ -264,7 +262,6 @@ const AccountSettingsPage = () => {
                                             {t('accountSettings.enterCurrentPassword')}
                                         </div>
                                     </div>
-
                                     <div className="form-group">
                                         <label className="form-label">
                                             {t('accountSettings.newPassword')}
@@ -274,7 +271,7 @@ const AccountSettingsPage = () => {
                                                 type={showNewPassword ? "text" : "password"}
                                                 className={`form-input ${newPasswordTouched && !newPasswordValid ? 'error' : ''}`}
                                                 value={newPassword}
-                                                onChange={(e) => setNewPassword(e.target.value)}
+                                                onChange={e => setNewPassword(e.target.value)}
                                                 onBlur={() => setNewPasswordTouched(true)}
                                                 required
                                                 disabled={loading}
@@ -288,7 +285,6 @@ const AccountSettingsPage = () => {
                                                 {showNewPassword ? <FaEyeSlash /> : <FaEye />}
                                             </button>
                                         </div>
-                                        
                                         <div className="password-requirements">
                                             <div className={`requirement ${newPasswordTouched && !newPasswordValid ? 'error' : ''}`}>
                                                 {t('accountSettings.minimumCharacters', { count: passwordMinLength })}
@@ -307,7 +303,6 @@ const AccountSettingsPage = () => {
                                             </div>
                                         </div>
                                     </div>
-
                                     <div className="form-group">
                                         <label className="form-label">
                                             {t('accountSettings.confirmPassword')}
@@ -317,7 +312,7 @@ const AccountSettingsPage = () => {
                                                 type={showConfirmPassword ? "text" : "password"}
                                                 className={`form-input ${confirmPasswordTouched && !passwordsMatch ? 'error' : ''}`}
                                                 value={confirmPassword}
-                                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                                onChange={e => setConfirmPassword(e.target.value)}
                                                 onBlur={() => setConfirmPasswordTouched(true)}
                                                 required
                                                 disabled={loading}
@@ -337,7 +332,6 @@ const AccountSettingsPage = () => {
                                                 : t('accountSettings.repeatNewPassword')}
                                         </div>
                                     </div>
-                                    
                                     <button
                                         type="submit"
                                         className="btn-primary"
@@ -360,8 +354,7 @@ const AccountSettingsPage = () => {
                     </div>
                 </div>
             </div>
-            <Footer />
-        </>
+        </div>
     );
 };
 

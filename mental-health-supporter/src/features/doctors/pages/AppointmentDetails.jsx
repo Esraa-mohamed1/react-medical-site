@@ -141,14 +141,14 @@ export default function AppointmentDetails() {
 
   // Map fields directly from API response
   const getDisplayDate = (appointment) => {
-    if (!appointment?.appointment_date) return 'No date';
-    const date = new Date(appointment.appointment_date);
-    return date.toLocaleDateString();
+    return appointment?.date || 'No date';
   };
   const getDisplayTime = (appointment) => {
-    if (!appointment?.appointment_date) return 'No time';
-    const date = new Date(appointment.appointment_date);
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    if (!appointment?.start_time) return 'No time';
+    if (appointment.end_time) {
+      return `${appointment.start_time.slice(0,5)} - ${appointment.end_time.slice(0,5)}`;
+    }
+    return appointment.start_time.slice(0,5);
   };
   const getDisplayPatient = (appointment) => {
     if (!appointment?.patient_info) return 'Walk-in';
@@ -223,10 +223,10 @@ export default function AppointmentDetails() {
               <div className="col-md-6">
                 <div className="mb-2"><span className="fw-semibold">Date:</span> {getDisplayDate(appointment)}</div>
                 <div className="mb-2"><span className="fw-semibold">Time:</span> {getDisplayTime(appointment)}</div>
-                <div className="mb-2"><span className="fw-semibold">Status:</span> <span className={`badge rounded-pill px-3 py-2 ${getStatusBadge(appointment.status)}`}>{appointment.status || 'Scheduled'}</span></div>
-                <div className="mb-2"><span className="fw-semibold">Appointment ID:</span> #{appointment.id}</div>
+               
                 <div className="mb-2"><span className="fw-semibold">Title:</span> {appointment.title}</div>
                 <div className="mb-2"><span className="fw-semibold">Payment Status:</span> {appointment.payment_status}</div>
+                <div className="mb-2"><span className="fw-semibold">Price:</span> {appointment.price ? `$${appointment.price}` : 'N/A'}</div>
               </div>
               <div className="col-md-6">
                 <label className="form-label fw-semibold">Doctor Notes</label>

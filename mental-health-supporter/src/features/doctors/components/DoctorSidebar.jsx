@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, Link, useLocation } from 'react-router-dom';
+import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaUserMd, FaCalendarAlt, FaUsers, FaRegClock, FaFileAlt, FaComments, FaPills, FaBell, FaCog, FaUser, FaSignOutAlt } from 'react-icons/fa';
 import { BsBell } from 'react-icons/bs';
 import { useState, useEffect } from 'react';
@@ -23,6 +23,7 @@ const profileLinks = [
 
 const DoctorSidebar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const doctor = JSON.parse(localStorage.getItem('loggedUser')) || { username: 'Dr. Name', role: 'doctor' };
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
@@ -53,10 +54,17 @@ const DoctorSidebar = () => {
     setNotifications((prev) => [newNotification, ...prev]);
   });
 
+  // Compact profile logic
+  const profileImageSrc = doctor.profile_image || '/images/doctor.png';
+  const handleProfileClick = () => {
+    navigate('/doctor/profile');
+  };
+
   const handleLogout = () => {
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
     localStorage.removeItem('loggedUser');
-    localStorage.removeItem('token');
-    window.location.href = '/login';
+    navigate('/login');
   };
 
   return (
@@ -65,7 +73,6 @@ const DoctorSidebar = () => {
         <span className="sidebar-logo">🩺</span>
         <span className="sidebar-title">Pearla</span>
       </div>
-      
       <nav className="sidebar-nav">
         <div className="nav-section">
           <h3 className="nav-section-title">Main Menu</h3>
@@ -130,8 +137,18 @@ const DoctorSidebar = () => {
               </div>
             )}
           </div>
+          {/* Logout button at the bottom of the sidebar */}
+          <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', padding: '16px 0', background: 'inherit' }}>
+            <button 
+              className="sidebar-link logout-button text-danger"
+              onClick={handleLogout}
+              style={{ background: 'none', border: 'none', width: '100%', textAlign: 'start', padding: 0, margin: 0, display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+            >
+              <span className="sidebar-icon"><FaSignOutAlt /></span>
+              <span className="sidebar-label">Logout</span>
+            </button>
+          </div>
         </div>
-
         <div className="nav-section">
           <h3 className="nav-section-title">Account</h3>
           {profileLinks.map(link => (
@@ -144,25 +161,22 @@ const DoctorSidebar = () => {
               <span className="sidebar-label">{link.label}</span>
             </NavLink>
           ))}
-          <button 
-            className="sidebar-link logout-button"
-            onClick={handleLogout}
-          >
-            <span className="sidebar-icon"><FaSignOutAlt /></span>
-            <span className="sidebar-label">Logout</span>
-          </button>
         </div>
       </nav>
-
-      <div className="sidebar-profile">
-        <img src={doctor.profile_image || 'https://randomuser.me/api/portraits/men/32.jpg'} alt="Doctor" className="sidebar-avatar" />
+      <div className="sidebar-profile" style={{ cursor: 'pointer' }} onClick={handleProfileClick}>
+        <img
+          src={profileImageSrc}
+          alt="Doctor"
+          className="sidebar-avatar"
+          onError={e => { e.target.onerror = null; e.target.src = '/images/doctor.png'; }}
+        />
         <div className="profile-info">
-          <div className="sidebar-profile-name">{doctor.username || 'Dr. Name'}</div>
-          <div className="sidebar-profile-role">{doctor.role || 'Doctor'}</div>
+          <div className="sidebar-profile-name">{doctor.full_name || doctor.username || 'Dr. Name'}</div>
+          <div className="sidebar-profile-role">{doctor.specialization || doctor.role || 'Doctor'}</div>
         </div>
       </div>
     </aside>
   );
 };
 
-export default DoctorSidebar; 
+export default DoctorSidebar;

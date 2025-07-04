@@ -114,20 +114,18 @@ const AppointmentsList = () => {
 
   // Map fields directly from API response
   const getDisplayDate = (appointment) => {
-    if (!appointment?.appointment_date) return 'No date';
-    const date = new Date(appointment.appointment_date);
-    return date.toLocaleDateString();
+    return appointment?.date || 'No date';
   };
   const getDisplayTime = (appointment) => {
-    if (!appointment?.appointment_date) return 'No time';
-    const date = new Date(appointment.appointment_date);
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    if (!appointment?.start_time) return 'No time';
+    if (appointment.end_time) {
+      return `${appointment.start_time.slice(0,5)} - ${appointment.end_time.slice(0,5)}`;
+    }
+    return appointment.start_time.slice(0,5);
   };
   const getDisplayPatient = (appointment) => {
     if (!appointment?.patient_info) return 'Walk-in';
-    const { first_name, last_name, username } = appointment.patient_info;
-    if (first_name || last_name) return `${first_name} ${last_name}`.trim();
-    return username;
+    return appointment.patient_info.full_name || appointment.patient_info.username;
   };
   const getDisplayEmail = (appointment) => appointment.patient_info?.email || 'Not available';
   const getDisplayNotes = (appointment) => appointment.notes || '';
@@ -151,6 +149,7 @@ const AppointmentsList = () => {
         return 'bg-secondary';
     }
   };
+  
 
   const handleLogout = () => {
     localStorage.removeItem('loggedUser');
@@ -212,32 +211,41 @@ const AppointmentsList = () => {
                     <th>Time</th>
                     <th>Patient</th>
                     <th>Status</th>
+                    <th>Price</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredCurrentAppointments.length === 0 ? (
-                    <tr><td colSpan="5" className="text-center text-muted py-4">No appointments found.</td></tr>
-                  ) : filteredCurrentAppointments.map(appointment => (
-                    <tr key={appointment.id}>
-                      <td>{getDisplayDate(appointment)}</td>
-                      <td>{getDisplayTime(appointment)}</td>
-                      <td>{getDisplayPatient(appointment)}</td>
-                      <td>
-                        <span className={`badge rounded-pill px-3 py-2 ${getStatusBadge(appointment.status)}`}>{appointment.status || 'Scheduled'}</span>
-                      </td>
-                      <td>
-                        <button 
-                          className="edit-btn btn-sm"
-                          onClick={() => goToDetails(appointment.id)}
-                          aria-label="View appointment details"
-                          title="View Details"
-                        >
-                          View Details
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                    <tr><td colSpan="6" className="text-center text-muted py-4">No appointments found.</td></tr>
+                  ) : filteredCurrentAppointments.map(appointment => {
+                    // Debug logs for status
+                    console.log('Appointment:', appointment);
+                    console.log('Appointment status:', appointment.status);
+                    return (
+                      <tr key={appointment.id}>
+                        <td>{getDisplayDate(appointment)}</td>
+                        <td>{getDisplayTime(appointment)}</td>
+                        <td>{getDisplayPatient(appointment)}</td>
+                        <td>
+                        <span className={`badge status-badge rounded-pill px-3 py-2 ${getStatusBadge(appointment.status)}`}>
+                          {appointment.status ? appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1) : 'Scheduled'}
+                        </span>
+                        </td>
+                        <td>{appointment.price ? `$${appointment.price}` : 'N/A'}</td>
+                        <td>
+                          <button 
+                            className="view-details-btn btn-sm"
+                            onClick={() => goToDetails(appointment.id)}
+                            aria-label="View appointment details"
+                            title="View Details"
+                          >
+                            View Details
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -269,5 +277,6 @@ const AppointmentsList = () => {
     </div>
   );
 };
+
 
 export default AppointmentsList;

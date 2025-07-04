@@ -3,26 +3,26 @@ import { useNavigate } from 'react-router-dom';
 import AuthForm from '../components/AuthForm';
 import { loginUser } from '../services/api';
 import Swal from 'sweetalert2';
-import ChatWithDoctor from '../components/ChatWithDoctor';
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const [serverError, setServerError] = useState('');
 
-useEffect(() => {
-  const access = localStorage.getItem('access');
-  const loggedUser = localStorage.getItem('loggedUser');
-  if (access && loggedUser) {
-    try {
-      const user = JSON.parse(loggedUser);
-      if (user && user.id && user.role) {
-        navigate('/');
+  useEffect(() => {
+    const access = localStorage.getItem('access');
+    const loggedUser = localStorage.getItem('loggedUser');
+    if (access && loggedUser) {
+      try {
+        const user = JSON.parse(loggedUser);
+        if (user && user.id && user.role) {
+          // Redirect based on role
+          user.role === 'doctor' ? navigate('/doctor/dashboard') : navigate('/');
+        }
+      } catch (e) {
+        // Invalid user, do nothing
       }
-    } catch (e) {
-      // Invalid user, do nothing
     }
-  }
-}, [navigate]);
+  }, [navigate]);
 
   const handleLogin = async (data, setFieldErrors) => {
     setServerError('');
@@ -68,14 +68,15 @@ useEffect(() => {
         }
         
         localStorage.setItem('loggedUser', JSON.stringify(loggedUser));
-        navigate('/');
+        
+        // Redirect based on role after successful login
+        userRole === 'doctor' ? navigate('/doctor/dashboard') : navigate('/');
       });
 
     } catch (error) {
       console.error('Login failed:', error);
       const errorData = error.response?.data;
       if (errorData) {
-        // Show all error messages in a SweetAlert
         if (errorData.error === 'Invalid credentials') {
           Swal.fire({
             icon: 'error',
@@ -91,7 +92,6 @@ useEffect(() => {
           });
           setServerError(errorData.detail);
         } else if (typeof errorData === 'object' && errorData !== null) {
-          // Collect all field errors into a single string
           const messages = Object.entries(errorData)
             .map(([field, msgs]) => Array.isArray(msgs) ? `${field}: ${msgs.join(', ')}` : `${field}: ${msgs}`)
             .join('\n');
