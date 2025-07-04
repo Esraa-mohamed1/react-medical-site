@@ -21,6 +21,7 @@ const AvailabilityPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -60,7 +61,7 @@ const AvailabilityPage = () => {
     }
   };
 
-  const validateForm = () => {
+  const validateForm = (form) => {
     const todayStr = new Date().toISOString().split('T')[0];
     const errors = [];
 
@@ -97,13 +98,32 @@ const AvailabilityPage = () => {
       return false;
     }
 
+    if (form.checkValidity() === false) {
+      setValidated(true);
+      return false;
+    }
+
     return true;
+  };
+
+  const resetForm = () => {
+    setFormData({
+      date: '',
+      start_time: '',
+      end_time: '',
+      price: '',
+      available: true
+    });
+    setEditingId(null);
+    setShowForm(false);
+    setValidated(false);
   };
 
   const handleCreateTimeSlot = async (e) => {
     e.preventDefault();
-
-    if (!validateForm()) return;
+    const form = e.currentTarget;
+    
+    if (!validateForm(form)) return;
 
     try {
       setIsSubmitting(true);
@@ -163,8 +183,9 @@ const AvailabilityPage = () => {
 
   const handleUpdateTimeSlot = async (e) => {
     e.preventDefault();
-
-    if (!validateForm()) return;
+    const form = e.currentTarget;
+    
+    if (!validateForm(form)) return;
 
     try {
       setIsSubmitting(true);
@@ -275,18 +296,6 @@ const AvailabilityPage = () => {
     }
   };
 
-  const resetForm = () => {
-    setFormData({
-      date: '',
-      start_time: '',
-      end_time: '',
-      price: '',
-      available: true
-    });
-    setEditingId(null);
-    setShowForm(false);
-  };
-
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
@@ -360,7 +369,11 @@ const AvailabilityPage = () => {
                 <h5 className="card-title mb-4">
                   {editingId ? 'Edit Time Slot' : 'Add New Time Slot'}
                 </h5>
-                <form onSubmit={editingId ? handleUpdateTimeSlot : handleCreateTimeSlot}>
+                <form 
+                  onSubmit={editingId ? handleUpdateTimeSlot : handleCreateTimeSlot}
+                  noValidate
+                  className={validated ? 'was-validated' : ''}
+                >
                   <div className="row g-3 mb-3">
                     <div className="col-md-4">
                       <label className="form-label fw-semibold">Date *</label>
@@ -372,6 +385,9 @@ const AvailabilityPage = () => {
                         onChange={(e) => setFormData({...formData, date: e.target.value})}
                         required
                       />
+                      <div className="invalid-feedback">
+                        Please select a valid date
+                      </div>
                     </div>
                     <div className="col-md-4">
                       <label className="form-label fw-semibold">
@@ -386,6 +402,9 @@ const AvailabilityPage = () => {
                         onChange={(e) => setFormData({...formData, start_time: e.target.value})}
                         required
                       />
+                      <div className="invalid-feedback">
+                        Please select a start time
+                      </div>
                     </div>
                     <div className="col-md-4">
                       <label className="form-label fw-semibold">End Time *</label>
@@ -397,6 +416,9 @@ const AvailabilityPage = () => {
                         onChange={(e) => setFormData({...formData, end_time: e.target.value})}
                         required
                       />
+                      <div className="invalid-feedback">
+                        Please select an end time after start time
+                      </div>
                     </div>
                     <div className="col-md-6">
                       <label className="form-label fw-semibold">
@@ -413,6 +435,9 @@ const AvailabilityPage = () => {
                           onChange={(e) => setFormData({...formData, price: e.target.value})}
                           placeholder="0.00"
                         />
+                      </div>
+                      <div className="invalid-feedback">
+                        Please enter a valid price (positive number)
                       </div>
                     </div>
                     <div className="col-md-6">

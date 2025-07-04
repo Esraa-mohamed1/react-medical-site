@@ -177,9 +177,9 @@
   .review-btn {
     background: linear-gradient(90deg, #5e35b1 60%, #7e57c2 100%);
     color: #fff;
-    font-weight: 600;
+    font-weight: 400;
     border: none;
-    border-radius: 2rem;
+    border-radius: 15px;
     padding: 0.75rem 2.5rem;
     font-size: 1.1rem;
     box-shadow: 0 2px 8px rgba(80, 80, 160, 0.10);
@@ -344,21 +344,32 @@
     border-color: #5e35b1;
     outline: none;
   }
-  .edit-btn, .save-btn {
-    background: #ede7f6;
+   .save-btn {
+    background: linear-gradient(90deg, #5e35b1 60%, #7e57c2 100%);
     color: #5e35b1;
-    border: none;
-    border-radius: 1.5rem;
-    padding: 0.4rem 1.5rem;
-    font-weight: 700;
+    border-radius: 15px;
+    padding: 0.4rem 3.5rem;
+    font-weight: 400;
     font-size: 1rem;
     margin-left: 1rem;
     cursor: pointer;
     transition: background 0.2s, color 0.2s;
   }
+  .edit-btn {
+    background: linear-gradient(90deg, #5e35b1 60%, #7e57c2 100%);
+    color: #5e35b1;
+    border-radius: 15px;
+    padding: 0.4rem 3.5rem;
+    font-weight: 400;
+    font-size: 1rem;
+    margin-left: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+ 
   .edit-btn:hover, .save-btn:hover {
-    background: #5e35b1;
-    color: #fff;
+    background: linear-gradient(90deg, #5e35b1 60%, #7e57c2 100%);
+    color: #111010;
   }
 
   .patient-card {
@@ -370,7 +381,7 @@
     flex-direction: column;
     align-items: center;
     transition: box-shadow 0.2s, transform 0.2s;
-    border: 1.5px solid #b2dfdb;
+    border: 1.5px solid #9abaf7;
   }
   .patient-card:hover {
     box-shadow: 0 6px 24px rgba(44, 62, 80, 0.13);
@@ -396,7 +407,7 @@
     margin-bottom: 0.5rem;
   }
   .patient-card .review-btn {
-    background: linear-gradient(90deg, #6dd5ed 0%, #2193b0 100%);
+    background: linear-gradient(90deg, #5e35b1 60%, #7e57c2 100%);
     color: #fff;
     border: none;
     border-radius: 20px;
@@ -408,19 +419,20 @@
     transition: background 0.2s;
   }
   .patient-card .review-btn:hover {
-    background: linear-gradient(90deg, #2193b0 0%, #6dd5ed 100%);
+    background: linear-gradient(90deg, #4b4b6b 0%, #4b4b6b 100%);
   }
 
   .view-details-btn {
-    background: linear-gradient(90deg, #6dd5ed 0%, #2193b0 100%);
+    background: linear-gradient(90deg, #5e35b1 60%, #7e57c2 100%);
     color: #fff;
     border: none;
-    border-radius: 20px;
+    border-radius: 10px;
     padding: 6px 18px;
-    font-weight: 500;
+    size: 10[px];
+    font-weight: 200;
     transition: background 0.2s;
   }
   .view-details-btn:hover, .view-details-btn:focus {
-    background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
+    background: linear-gradient(90deg, #4527a0 0%, #4c24c5 100%);
     color: #fff;
   }
