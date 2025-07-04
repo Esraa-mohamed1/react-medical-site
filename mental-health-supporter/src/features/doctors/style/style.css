@@ -505,3 +505,76 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Shared Responsive Styles */
+
+@media (max-width: 900px) {
+  .enhanced-main-card, .enhanced-section-card {
+    padding: 10px 5px;
+    border-radius: 12px;
+  }
+  .doctorDetailsPage, .doctorDetailsContainer {
+    padding: 0 5px;
+  }
+  .doctorProfile, .doctorHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .doctorImage, .profile-image {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+@media (max-width: 700px) {
+  .doctor-dashboard-bg {
+    flex-direction: column;
+  }
+  .doctor-sidebar {
+    width: 100vw;
+    max-width: 100vw;
+    position: relative;
+    height: auto;
+    min-height: 60px;
+    z-index: 10;
+  }
+  .sidebar-profile {
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 0;
+  }
+  .sidebar-avatar {
+    width: 40px;
+    height: 40px;
+  }
+  .doctorDetailsPage, .doctorDetailsContainer {
+    padding: 0 2px;
+  }
+}
+
+@media (max-width: 500px) {
+  .doctorDetailsPage, .doctorDetailsContainer {
+    padding: 0 1px;
+  }
+  .doctorImage, .profile-image {
+    width: 60px;
+    height: 60px;
+  }
+  .title, .subtitle, .sectionTitle {
+    font-size: 1rem;
+  }
+}
+
+/* Make form controls and buttons touch-friendly */
+.editInput, .form-select, .form-control-sm, .review-btn, .edit-btn {
+  min-width: 44px;
+  min-height: 36px;
+  font-size: 1rem;
+  border-radius: 8px;
+}
+
+/* Card and section enhancements for mobile */
+.enhanced-main-card, .enhanced-section-card {
+  box-shadow: 0 2px 8px rgba(33, 147, 176, 0.08);
+  background: linear-gradient(90deg, #f8fcff 0%, #e6f7fa 100%);
+}
