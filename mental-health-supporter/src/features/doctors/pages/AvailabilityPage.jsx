@@ -344,7 +344,6 @@ const AvailabilityPage = () => {
       <div className="doctor-dashboard-main enhanced-main-container">
         <div className="enhanced-main-card">
           <ToastContainer position="top-right" autoClose={5000} />
-          
           <div className="d-flex justify-content-between align-items-center mb-4">
             <div>
               <h2 className="mb-1">
@@ -552,13 +551,7 @@ const AvailabilityPage = () => {
                               >
                                 <FiTrash2 />
                               </button>
-                              <button
-                                onClick={() => toggleAvailability(slot.id, slot.available)}
-                                className={`btn btn-sm ${slot.available ? 'btn-outline-danger' : 'btn-outline-success'}`}
-                                title={slot.available ? 'Mark as unavailable' : 'Mark as available'}
-                              >
-                                {slot.available ? <FiX /> : <FiCheck />}
-                              </button>
+                            
                             </div>
                           </td>
                         </tr>
