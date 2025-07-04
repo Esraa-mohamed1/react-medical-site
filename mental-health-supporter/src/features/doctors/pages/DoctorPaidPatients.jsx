@@ -2,10 +2,6 @@ import React, { useEffect, useState } from 'react';
 import DoctorSidebar from '../components/DoctorSidebar';
 import { getPaidPatients } from '../../../services/doctors/AppointmentService';
 import { 
-  FaEnvelope, 
-  FaPhone, 
-  FaBirthdayCake, 
-  FaVenusMars, 
   FaUser,
   FaCalendarAlt,
   FaStethoscope,
@@ -47,39 +43,11 @@ const DoctorPaidPatients = () => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  const renderPatientInfo = (patient) => {
-    return (
-      <>
-        <div className="col-md-6">
-          <div className="patient-info-item mb-3">
-            <FaEnvelope className="me-2 text-primary" />
-            <span>{patient.email || 'Email not provided'}</span>
-          </div>
-          
-          {patient.phone && (
-            <div className="patient-info-item mb-3">
-              <FaPhone className="me-2 text-primary" />
-              <span>{patient.phone}</span>
-            </div>
-          )}
-        </div>
-        <div className="col-md-6">
-          {patient.gender && (
-            <div className="patient-info-item mb-3">
-              <FaVenusMars className="me-2 text-primary" />
-              <span>{patient.gender}</span>
-            </div>
-          )}
-          
-          {patient.date_of_birth && (
-            <div className="patient-info-item mb-3">
-              <FaBirthdayCake className="me-2 text-primary" />
-              <span>{formatDate(patient.date_of_birth)}</span>
-            </div>
-          )}
-        </div>
-      </>
-    );
+  // Helper to get the correct profile image URL
+  const getProfileImageUrl = (imgPath) => {
+    if (!imgPath) return '/images/doctor.png';
+    if (imgPath.startsWith('http')) return imgPath;
+    return `${process.env.REACT_APP_API_BASE_URL || ''}${imgPath}`;
   };
 
   return (
@@ -88,17 +56,17 @@ const DoctorPaidPatients = () => {
       <div className="doctor-dashboard-main enhanced-main-container">
         <div className="enhanced-main-card">
           <div className="d-flex justify-content-between align-items-center mb-4">
-            <h2 className="section-header mb-0">
+            <h2 className="section-header">
               <FaUser className="me-2" />My Patients
             </h2>
-            <div className="text-muted">
+            <div className="patient-count">
               {appointments.length} {appointments.length === 1 ? 'Patient' : 'Patients'}
             </div>
           </div>
           
           {loading ? (
-            <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '40vh' }}>
-              <div className="spinner-border text-primary" style={{ width: '3rem', height: '3rem' }} role="status">
+            <div className="spinner-container">
+              <div className="spinner-border text-primary" role="status">
                 <span className="visually-hidden">Loading...</span>
               </div>
             </div>
@@ -107,36 +75,36 @@ const DoctorPaidPatients = () => {
           ) : appointments.length === 0 ? (
             <div className="alert alert-info text-center my-5">No patients found.</div>
           ) : (
-            <div className="patients-grid-container">
+            <div className="patients-list">
               {appointments.map((appt) => {
                 const patient = appt.patient_info;
+                const profileImgUrl = getProfileImageUrl(patient.profile_image);
+                console.log('Profile image URL:', profileImgUrl);
                 return (
                   <div key={appt.id} className={`patient-card ${expandedCard === appt.id ? 'expanded' : ''}`}>
                     <div 
-                      className="patient-card-header d-flex justify-content-between align-items-center p-3"
+                      className="patient-card-header"
                       onClick={() => toggleCardExpand(appt.id)}
                     >
-                      <div className="d-flex align-items-center">
-                        <div className="patient-avatar me-3">
-                          {patient.profile_image ? (
-                            <img 
-                              src={patient.profile_image} 
-                              alt={patient.full_name || 'Patient'} 
-                              className="rounded-circle"
-                              width="60"
-                              height="60"
-                            />
-                          ) : (
-                            <div className="avatar-placeholder rounded-circle">
-                              <FaUser size={24} />
-                            </div>
-                          )}
-                        </div>
-                        <div>
-                          <h5 className="mb-0 patient-name">{patient.full_name || 'Unknown Patient'}</h5>
-                          <small className="text-muted">
-                            <FaCalendarAlt className="me-1" /> {formatDate(appt.appointment_date)}
-                          </small>
+                      <div className="patient-basic-info d-flex align-items-center gap-3" style={{flexDirection: 'row'}}>
+                        {/* Patient profile image */}
+                        {patient.profile_image ? (
+                          <img
+                            src={profileImgUrl}
+                            alt={patient.full_name || 'Patient'}
+                            className="patient-profile-img"
+                            style={{ width: 48, height: 48, borderRadius: '50%', objectFit: 'cover', border: '2px solid #6dd5ed' }}
+                            onError={e => { e.target.onerror = null; e.target.src = '/images/doctor.png'; }}
+                          />
+                        ) : (
+                          <FaUser className="patient-profile-img" style={{ width: 48, height: 48, borderRadius: '50%', background: '#e0e0e0', color: '#888', padding: 8 }} />
+                        )}
+                        <div className="d-flex flex-column justify-content-center">
+                          <h3 className="patient-name mb-0">{patient.full_name || 'Unknown Patient'}</h3>
+                          <div className="appointment-date">
+                            <FaCalendarAlt className="me-1" /> 
+                            {formatDate(appt.appointment_date)}
+                          </div>
                         </div>
                       </div>
                       <FaChevronDown 
@@ -145,21 +113,31 @@ const DoctorPaidPatients = () => {
                     </div>
                     
                     {expandedCard === appt.id && (
-                      <div className="patient-card-content p-3">
-                        <div className="row">
-                          {renderPatientInfo(patient)}
-                        </div>
+                      <div className="patient-card-details">
+                        {patient.email && (
+                          <div className="patient-detail">
+                            <span className="detail-label">Email:</span>
+                            <span className="detail-value">{patient.email}</span>
+                          </div>
+                        )}
                         
-                        <div className="patient-actions mt-3">
+                        {patient.phone && (
+                          <div className="patient-detail">
+                            <span className="detail-label">Phone:</span>
+                            <span className="detail-value">{patient.phone}</span>
+                          </div>
+                        )}
+                        
+                        <div className="patient-actions">
                           <Link 
                             to={`/doctor/patient-details/${appt.id}`}
-                            className="btn btn-primary me-2"
+                            className="action-btn medical-history"
                           >
                             <FaStethoscope className="me-1" /> Medical History
                           </Link>
                           <Link 
                             to={`/doctor/patient-records/${appt.id}`}
-                            className="btn btn-outline-primary"
+                            className="action-btn documents"
                           >
                             <FaFileAlt className="me-1" /> Documents
                           </Link>
