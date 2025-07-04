@@ -102,6 +102,7 @@ const AIChatInterface = () => {
   return (
     <>
     <CustomNavbar />
+    <div className='containerrr'>
     <div className="ai-chat-room">
       {/* Chat Room Header */}
       <div className="chat-room-header">
@@ -203,6 +204,7 @@ const AIChatInterface = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
     <Footer />
     </>
