@@ -3,7 +3,7 @@
   top: 0;
   z-index: 999;
   /* background: linear-gradient(90deg, #6a11cb, #8e44ad); */
-  background-color: #eceef8 !important;
+  background-color: #f6f6f9 !important;
   padding: 15px 40px;
   display: flex;
   justify-content: space-between;
@@ -12,7 +12,7 @@
   /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); */
 }
 .navBar {
-    background-color: #C0C9EE !important;
+    background-color: #f6f6f9 !important;
 }
 
 .custom-navbar .logo {

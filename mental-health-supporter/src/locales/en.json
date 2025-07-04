@@ -158,20 +158,26 @@
   "error": "Failed to fetch doctor details"
 },
 "patientDetails": {
-  "loading": "Loading...",
-  "notFound": "Patient not found",
-  "fetchError": "Failed to fetch patient details",
-  "updateError": "Failed to update patient details",
-  "changePhoto": "Change Photo",
-  "memberSince": "Member since",
+  "editProfile": "Edit Profile",
+  "save": "Save",
+  "cancel": "Cancel",
+  "saving": "Saving...",
   "basicInfo": "Basic Information",
   "contactInfo": "Contact Information",
   "fullName": "Full Name",
+  "memberSince": "Member Since",
   "email": "Email",
   "phone": "Phone",
   "address": "Address",
-  "city": "City"
-},
+  "city": "City",
+  "age": "Age",
+  "gender": "Gender",
+  "bloodType": "Blood Type",
+  "allergies": "Allergies",
+  "changePhoto": "Change Photo",
+  "fetchError": "Failed to load patient details"
+}
+,
 "appointmentBooking": {
   "title": "Book Appointment",
   "loading": "Loading available times...",
@@ -233,11 +239,417 @@
   "review": "Review",
   "rating": "Rating",
   "publish": "Publish Review",
-  "response": "Clinic Response",
-  "doctorIdMissing": "Doctor ID is missing. Please try again later."
-}
+  "response": "Clinic Response"
+},
+"breathingExercise": {
+    "when_you_feel": "When you feel",
+    "rising": "rising...",
+    "try_guided_breathing": "Try this guided breathing exercise",
+    "start_breathing": "Start Breathing Exercise",
+    "breathe_in": "Breathe In Deeply",
+    "hold": "Hold",
+    "breathe_out": "Breathe Out Slowly",
+    "rest": "Rest",
+    "breaths": "Breaths",
+    "finish": "Finish",
+    "follow_rhythm": "Follow the rhythm: 4s inhale, 4s hold, 4s exhale, 4s rest"
+  },
+  "coping": {
+  "title": "Coping Strategies for {{disorder}}",
+    "whyItHappens": "Why it happens",
+    "howToApply": "How to Apply",
+    "whyItHelps": "Why it helps",
+    "tryThis": "Try This",
+    "close": "Close",
+
+    "anger": {
+          "label": "Anger",
+      "reason": "Anger can arise from frustration, feeling threatened, unresolved trauma, or stress overload.",
+      "strategies": [
+        {
+          "tip": "Practice deep breathing for 5 minutes",
+          "howTo": [
+            "Find a quiet space",
+            "Inhale deeply through your nose for 4 seconds",
+            "Hold your breath for 4 seconds",
+            "Exhale slowly through your mouth for 6 seconds",
+            "Repeat for 5 minutes"
+          ],
+          "benefit": "Helps regulate emotional intensity and reduce physiological arousal."
+        },
+        {
+          "tip": "Take a 10-minute walk in nature",
+          "howTo": [
+            "Go outside to a green space",
+            "Walk at a comfortable pace",
+            "Notice sights, sounds, and smells around you"
+          ],
+          "benefit": "Reduces cortisol and improves mood by engaging senses."
+        },
+        {
+          "tip": "Write down your feelings in a journal",
+          "howTo": [
+            "Use a notebook or app",
+            "Express what triggered your anger",
+            "Write without censoring yourself"
+          ],
+          "benefit": "Provides emotional release and self-awareness."
+        },
+        {
+          "tip": "Listen to calming music",
+          "howTo": [
+            "Use instrumental or soft music",
+            "Close your eyes and breathe with the rhythm"
+          ],
+          "benefit": "Distracts the mind and reduces irritability."
+        },
+        {
+          "tip": "Practice progressive muscle relaxation",
+          "howTo": [
+            "Tense each muscle group for 5 seconds",
+            "Then relax for 10 seconds",
+            "Start from feet and go up to head"
+          ],
+          "benefit": "Reduces physical tension and induces calm."
+        }
+      ]
+    },
+
+    "anxiety": {
+          "label": "Anxiety",
+
+      "reason": "Anxiety often stems from uncertainty, overwhelming pressure, or past trauma that triggers fear responses.",
+      "strategies": [
+        {
+          "tip": "Try grounding techniques",
+          "howTo": [
+            "Name 5 things you can see",
+            "4 things you can touch",
+            "3 things you can hear",
+            "2 things you can smell",
+            "1 thing you can taste"
+          ],
+          "benefit": "Helps bring focus to the present moment and reduce panic."
+        },
+        {
+          "tip": "Do a short mindfulness meditation",
+          "howTo": [
+            "Sit quietly and close your eyes",
+            "Focus on your breath for 5–10 minutes",
+            "Refocus gently when thoughts wander"
+          ],
+          "benefit": "Improves awareness and reduces anxious thoughts."
+        },
+        {
+          "tip": "Use a calming mantra",
+          "howTo": [
+            "Pick a soothing phrase (e.g. \"I am safe\")",
+            "Repeat it aloud or in your mind during anxiety"
+          ],
+          "benefit": "Provides reassurance and interrupts negative thinking loops."
+        },
+        {
+          "tip": "Box Breathing (4-4-4-4 Technique)",
+          "howTo": [
+            "Inhale for 4 seconds",
+            "Hold for 4 seconds",
+            "Exhale for 4 seconds",
+            "Hold for 4 seconds again and repeat"
+          ],
+          "benefit": "Regulates nervous system and reduces anxiety."
+        },
+        {
+          "tip": "Progressive Muscle Relaxation (PMR)",
+          "howTo": [
+            "Start from your toes and work upward",
+            "Tense each muscle group for 5 seconds then release"
+          ],
+          "benefit": "Reduces physical symptoms of anxiety and promotes relaxation."
+        }
+      ]
+    },
+
+    "depression": {
+          "label": "Depression",
+
+      "reason": "Depression may result from chemical imbalances, prolonged stress, loss, or unresolved emotional pain.",
+      "strategies": [
+        {
+          "tip": "Create a small to-do list",
+          "howTo": [
+            "Write 2–3 simple tasks for the day",
+            "Start with the easiest one",
+            "Celebrate each small win"
+          ],
+          "benefit": "Gives a sense of purpose and achievement."
+        },
+        {
+          "tip": "Reach out to someone you trust",
+          "howTo": [
+            "Call or message a friend or loved one",
+            "Be honest about how you’re feeling"
+          ],
+          "benefit": "Helps reduce feelings of isolation and loneliness."
+        },
+        {
+          "tip": "Do one enjoyable activity",
+          "howTo": [
+            "Choose something you used to enjoy",
+            "Try doing it for even 10 minutes"
+          ],
+          "benefit": "Re-engages pleasure centers in the brain and improves mood."
+        },
+        {
+          "tip": "Practice self-compassion",
+          "howTo": [
+            "Talk to yourself as you would to a struggling friend",
+            "Use affirmations like: “I am doing the best I can.”"
+          ],
+          "benefit": "Counters negative self-talk and builds emotional resilience."
+        },
+        {
+          "tip": "Journal your thoughts",
+          "howTo": [
+            "Write 1–2 paragraphs about your emotions",
+            "End with a small thing you’re grateful for"
+          ],
+          "benefit": "Externalizes emotions and introduces a positive lens."
+        }
+      ]
+    },
+
+    "ocd": {
+          "label": "OCD",
+
+      "reason": "OCD often emerges due to a need for control, heightened responsibility fears, or inherited tendencies.",
+      "strategies": [
+        {
+          "tip": "Practice exposure and response prevention (ERP)",
+          "howTo": [
+            "Identify a minor trigger",
+            "Avoid performing the compulsion after exposure",
+            "Repeat daily with support if needed"
+          ],
+          "benefit": "Helps retrain the brain to tolerate uncertainty and anxiety."
+        },
+        {
+          "tip": "Write down intrusive thoughts without judgment",
+          "howTo": [
+            "Acknowledge the thought without acting on it",
+            "Write it in a notebook to externalize it"
+          ],
+          "benefit": "Helps gain distance from obsessive thoughts and reduce distress."
+        }
+      ]
+    },
+
+    "stress": {
+          "label": "Stress",
+
+      "reason": "Stress can be triggered by high demands, lack of control, change, or conflict in daily life.",
+      "strategies": [
+        {
+          "tip": "Take a short break and stretch",
+          "howTo": [
+            "Stand up and move away from your workspace",
+            "Do simple neck rolls, shoulder shrugs, and back stretches",
+            "Breathe deeply while stretching"
+          ],
+          "benefit": "Relieves physical tension, boosts circulation, and gives your brain a reset."
+        },
+        {
+          "tip": "Practice time blocking",
+          "howTo": [
+            "Divide your tasks into focused work periods (e.g., 25–45 minutes)",
+            "Insert short 5–10 minute breaks in between",
+            "Use a timer or planner"
+          ],
+          "benefit": "Increases productivity and prevents burnout from multitasking or long hours."
+        },
+        {
+          "tip": "Use the 4-7-8 breathing technique",
+          "howTo": [
+            "Inhale through your nose for 4 seconds",
+            "Hold your breath for 7 seconds",
+            "Exhale through your mouth for 8 seconds",
+            "Repeat 3–4 times"
+          ],
+          "benefit": "Activates the parasympathetic nervous system, calming the body."
+        },
+        {
+          "tip": "Limit stimulants and screen time",
+          "howTo": [
+            "Reduce caffeine and sugar, especially late in the day",
+            "Take breaks from screens every hour (20-20-20 rule)"
+          ],
+          "benefit": "Helps regulate mood, reduce overstimulation, and support better sleep."
+        },
+        {
+          "tip": "Talk it out or write it down",
+          "howTo": [
+            "Call a friend or write in a journal",
+            "Focus on what’s bothering you and how it makes you feel"
+          ],
+          "benefit": "Provides emotional release and clarity, preventing stress from building up."
+        }
+      ]
+    }
+  },
+  "disorder": {
+    "anger": {
+      "title": "Understanding Anger",
+      "reason": "Anger can arise from frustration, feeling threatened, unresolved trauma, or stress overload."
+    },
+    "anxiety": {
+      "title": "Understanding Anxiety",
+      "reason": "Anxiety often stems from uncertainty, overwhelming pressure, or past trauma that triggers fear responses."
+    },
+    "depression": {
+      "title": "Understanding Depression",
+      "reason": "Depression may result from chemical imbalances, prolonged stress, loss, or unresolved emotional pain."
+    },
+    "ocd": {
+      "title": "Understanding OCD",
+      "reason": "OCD often emerges due to a need for control, heightened responsibility fears, or inherited tendencies."
+    },
+    "stress": {
+      "title": "Understanding Stress",
+      "reason": "Stress can be triggered by high demands, lack of control, change, or conflict in daily life."
+    }
+  },
+  "mood": {
+    "profileTitle": "Your Mood Profile",
+    "anger": "Anger",
+    "frustration": "Frustration",
+    "anxiety": "Anxiety",
+    "sadness": "Sadness",
+    "calmness": "Calmness",
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High"
+  },
+   "moodTracker": {
+    "trackProgress": "Track Your Progress",
+    "monitoringNote": "Monitoring your mood can help identify patterns and improvements.",
+    "howFeeling": "How are you feeling today?",
+    "addEntry": "+ Add Today's Mood Entry",
+    "days": {
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat",
+      "sun": "Sun"
+    }
+  },
+  "mood": {
+    "calmness": "Calm",
+    "neutral": "Neutral",
+    "anger": "Angry",
+    "frustration": "Frustrated",
+    "relaxed": "Relaxed"
+  },
+   "professionalHelp": {
+    "title": "Professional Support for {{disorder}}",
+    "findTherapist": "Find a Therapist",
+    "chatbot": "Talk to a Chatbot",
+    "recommendedBooks": "Recommended Books",
+    "suggestedReading": "Suggested Reading for {{disorder}}",
+    "close": "Close"
+  },
+  "bookSuggestions": {
+    "anger": [
+      "The Anger Trap by Les Carter",
+      "The Dance of Anger by Harriet Lerner",
+      "Anger: Wisdom for Cooling the Flames by Thich Nhat Hanh",
+      "When Anger Hurts: Quieting the Storm Within by Matthew McKay et al.",
+      "Letting Go of Anger by Ronald Potter-Efron & Patricia Potter-Efron"
+    ],
+    "anxiety": [
+      "The Anxiety and Phobia Workbook by Edmund J. Bourne",
+      "Feeling Good: The New Mood Therapy by David D. Burns",
+      "Dare: The New Way to End Anxiety by Barry McDonagh",
+      "Rewire Your Anxious Brain by Catherine Pittman & Elizabeth Karle",
+      "Unwinding Anxiety by Judson Brewer"
+    ],
+    "depression": [
+      "Feeling Good: The New Mood Therapy by Dr. David D. Burns",
+      "The Mindful Way Through Depression by Mark Williams, John Teasdale, Zindel Segal & Jon Kabat-Zinn",
+      "Undoing Depression by Richard O’Connor",
+      "Lost Connections by Johann Hari",
+      "The Noonday Demon: An Atlas of Depression by Andrew Solomon"
+    ],
+    "ocd": [
+      "Freedom from Obsessive Compulsive Disorder by Dr. Jonathan Grayson",
+      "Brain Lock by Dr. Jeffrey M. Schwartz",
+      "The OCD Workbook by Bruce Hyman & Cherlene Pedrick",
+      "Overcoming Unwanted Intrusive Thoughts by Sally Winston & Martin Seif",
+      "Rewire Your OCD Brain by Catherine M. Pittman & William H. Youngs"
+    ],
+    "stress": [
+      "The Relaxation and Stress Reduction Workbook by Martha Davis, Elizabeth Robbins Eshelman & Matthew McKay",
+      "Burnout: The Secret to Unlocking the Stress Cycle by Emily & Amelia Nagoski",
+      "Why Zebras Don’t Get Ulcers by Robert Sapolsky",
+      "The Stress-Proof Brain by Melanie Greenberg",
+      "Self-Compassion by Kristin Neff"
+    ]
+  },
+  "triggers": {
+    "stress": "Stress",
+    "misunderstood": "Feeling Misunderstood",
+    "change": "Change",
+    "sleep": "Lack of Sleep",
+    "hunger": "Hunger",
+    "noise": "Loud Noises",
+    "wait": "Waiting Too Long",
+    "critic": "Criticism"
+  },
+  "articleTitles": {
+    "anger": "Anger Management",
+    "anxiety": "Managing Anxiety",
+    "depression": "Overcoming Depression",
+    "ocd": "Understanding OCD",
+    "stress": "Stress Relief Techniques",
+    "default": "Mental Health Support"
+  },
+  "selectDisorder": {
+    "titlee": "Select Your Current Mental Health Concern",
+    "angerr": "Anger",
+    "anxietyy": "Anxiety",
+    "depressionn": "Depression",
+    "stresss": "Stress",
+    "ocdd": "OCD"
+  },
+   "disorderSelection": {
+    "title": "Select a Mental Health Topic",
+    "anger": "Anger",
+    "anxiety": "Anxiety",
+    "depression": "Depression",
+    "ocd": "OCD",
+    "stress": "Stress"
+  },
+  "aiChat": {
+  "title": "AI Mental Health Support",
+  "welcome": "Hello! I'm here to support you with your mental health. How are you feeling today? Feel free to share anything that's on your mind.",
+  "placeholder": "Share your thoughts, feelings, or ask for support...",
+  "clear": "Clear Chat",
+  "thinking": "AI is thinking...",
+  "send": "Send message",
+  "hint": "Press Enter to send, Shift+Enter for new line • Your conversations are private and secure",
+  "error": "I'm sorry, I'm having trouble connecting right now. Please try again in a moment, or consider reaching out to a mental health professional for immediate support."
 }
 
+
+
+
+
+
+
+
+
+
+}
 
 
 

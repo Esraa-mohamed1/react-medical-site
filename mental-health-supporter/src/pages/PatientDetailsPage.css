@@ -180,13 +180,13 @@
   font-size: 2.5rem;
   font-weight: 700;
   margin: 0 0 0.5rem 0;
-  color:#5c6bc0;
+  color:white;
 
 }
 
 .created {
   font-size: 0.875rem;
-  color: #5c6bc0;
+  color: white;
 
   margin-top: 0.5rem;
 }
@@ -225,7 +225,7 @@
 }
 
 .section-icon {
-  color: #37ECBA;
+  color: #5c6bc0;
   font-size: 1.25rem;
 }
 
@@ -259,7 +259,7 @@
 }
 
 .value {
-  color: #2d3748;
+  color: black ;
   font-size: 1.1rem;
   font-weight: 500;
   line-height: 1.4;
@@ -344,7 +344,7 @@
 
 .cancelButton {
   padding: 0.8rem 1rem;
-  background: #5c6bc0;
+  background: #c53030;
 
   color: white;
   border: none;
@@ -359,6 +359,7 @@
 
 .cancelButton:hover {
   background: #c53030;
+  color: white;
   transform: translateY(-2px);
   box-shadow: 0 6px 18px #5c6bc0;
 
