@@ -2,15 +2,9 @@
     background: linear-gradient(135deg, #f5f7fa, #e4e8eb);
     border-radius: 12px;
     padding: 1rem;
-    /* margin: 2rem 0; */
+    margin: 2rem 0;
   }
-  /* .personalized-tips {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #333;
-    text-align: center;
-    margin-bottom: 1rem;
-  } */
+ 
   .help-content {
     max-width: 800px;
     margin: 0 auto;
@@ -19,10 +13,10 @@
   .urgent-alert {
     background: #ff6b6b;
     color: white;
-    /* padding: 0.5rem 1rem; */
+    padding: 0.5rem 1rem;
     border-radius: 5px;
     display: inline-block;
-    /* margin-bottom: 1rem; */
+    margin-bottom: 1rem;
     font-weight: 600;
     animation: pulse 2s infinite;
   }
@@ -36,7 +30,7 @@
   .resource-buttons {
     display: flex;
     gap: 1rem;
-    /* margin-top: 1.5rem; */
+    margin-top: 1.5rem;
     flex-wrap: wrap;
     justify-content: center;
   }
@@ -107,7 +101,7 @@
   }
   
   .book-list {
-    /* margin: 1.5rem 0; */
+    margin: 1.5rem 0;
     list-style-type: none;
   }
   
@@ -116,20 +110,20 @@
     font-size: 1.1rem;
   }
   
-  .popup-close {
+  /* .popup-close {
     background: #6e8efb;
     color: white;
     border: none;
-    padding: 0.2rem 0.6rem;
+    /* padding: 0.2rem 0.6rem; 
     border-radius: 8px;
-    /* margin-top: 1rem; */
+    /* margin-top: 1rem;
     cursor: pointer;
     transition: all 0.2s ease;
-  }
+  } */
   
-  .popup-close:hover {
+  /* .popup-close:hover {
     background: #5a7df4;
-  }
+  } */
   
   @media (max-width: 768px) {
     .resource-buttons {
@@ -147,3 +141,28 @@
     background: linear-gradient(135deg, #5a7df4, #9669e6);
     cursor: pointer;
   }
+  .popup-close-icon {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #999;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+.popup-close-icon:hover {
+  color: #e74c3c;
+}     
+
+
+.book-link {
+  color: #3498db;
+  text-decoration: underline;
+  margin-left: 8px;
+}
+
+.book-link:hover {
+  color: #1d6fa5;
+}
