@@ -130,7 +130,7 @@ const DoctorPaidPatients = () => {
                         
                         <div className="patient-actions">
                           <Link 
-                            to={`/doctor/patient-details/${appt.id}`}
+                            to={`/doctor/patient-details/${patient.patient_id}`}
                             className="action-btn medical-history"
                           >
                             <FaStethoscope className="me-1" /> Medical History
