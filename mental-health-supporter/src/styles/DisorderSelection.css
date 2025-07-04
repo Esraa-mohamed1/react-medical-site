@@ -1,45 +1,199 @@
-.disorder-selection-page {
-  padding: 60px 20px;
-  background-color: #A2AADB;
-  text-align: center;
-  min-height: 100vh;
- /* content center  */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Arial', sans-serif;
+/* src/styles/DisorderSelection.css */
+
+.disorder-selection-container {
+  background: #b2f1f1;
+  padding-bottom: 3rem;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-.disorder-selection-page h1 {
-  font-size: 2rem;
-  margin-bottom: 40px;
+.banner {
+  font-size: 3rem;
+  text-align: center;
+  font-weight: bold;
+  color: #6a5acd;
+  padding: 3rem 1rem 1rem;
+  line-height: 1.2;
+}
+
+.banner span {
+  color: #fff;
+}
+
+.blog-header {
+  background-color: #54c8e1;
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding: 1rem 0;
+  margin-top: 1rem;
+}
+
+.main-article {
+  background-color: #f3fdfd;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 2rem;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.main-article img {
+  max-width: 300px;
+  height: auto;
+}
+
+.main-article-content {
+  max-width: 500px;
+}
+
+.main-article-content h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.main-article-content p {
+  font-size: 1rem;
   color: #333;
 }
 
-.disorder-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 20px;
-  max-width: 900px;
-  margin: 0 auto;
+.read-more-btn {
+  background-color: #00aaff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  margin-top: 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.latest-header {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 2rem;
+}
+
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 1rem;
+  gap: 1.5rem;
 }
 
 .disorder-card {
-  background-color: white;
-  border-radius: 16px;
-  padding: 30px 20px;
-  font-size: 1.2rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  cursor: pointer;
-  color: #444;
-  font-weight: 600;
+  width: 250px;
+  padding: 1rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
 }
 
 .disorder-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  background-color: #eaf3ff;
-  color: #007bff;
+  transform: translateY(-5px);
+}
+
+.disorder-card img {
+  width: 100%;
+  max-height: 140px;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+}
+
+.disorder-card h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.disorder-card p {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.disorder-card button {
+  background-color: #333;
+  color: white;
+  border: none;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  background-color: rgb(49, 162, 199);
+
+}
+
+/* Background colors */
+.card-anxiety {
+  background-color: #ffe2b3;
+}
+.card-stress {
+  background-color: #ffe1e1;
+}
+.card-depression {
+  background-color: #fff5b1;
+}
+.card-ocd {
+  background-color: #e1e9ff;
+}
+.card-anger {
+  background-color: #ffdfd3;
+}
+
+.more-btn {
+  background-color: #0099cc;
+  color: white;
+  border: none;
+  padding: 0.6rem 2rem;
+  border-radius: 25px;
+  display: block;
+  margin: 2rem auto 0;
+  cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .banner {
+    font-size: 2rem;
+    padding: 2rem 1rem 1rem;
+  }
+
+  .main-article {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .main-article img {
+    max-width: 100%;
+  }
+
+  .main-article-content {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .disorder-card {
+    width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .disorder-card {
+    width: 100%;
+  }
+
+  .read-more-btn,
+  .disorder-card button,
+  .more-btn {
+    width: 100%;
+    font-size: 1rem;
+  }
 }

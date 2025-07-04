@@ -151,28 +151,55 @@ const copingContent = {
       }
     ]
   },
-  ocd: {
-    reason: 'OCD often emerges due to a need for control, heightened responsibility fears, or inherited tendencies.',
-    strategies: [
-      {
-        tip: 'Practice exposure and response prevention (ERP)',
-        howTo: [
-          'Identify a minor trigger',
-          'Avoid performing the compulsion after exposure',
-          'Repeat daily with support if needed'
-        ],
-        benefit: 'Helps retrain the brain to tolerate uncertainty and anxiety.'
-      },
-      {
-        tip: 'Write down intrusive thoughts without judgment',
-        howTo: [
-          'Acknowledge the thought without acting on it',
-          'Write it in a notebook to externalize it'
-        ],
-        benefit: 'Helps gain distance from obsessive thoughts and reduce distress.'
-      }
-    ]
-  },
+ ocd: {
+  reason: 'OCD often emerges due to a need for control, heightened responsibility fears, or inherited tendencies.',
+  strategies: [
+    {
+      tip: 'Practice Exposure and Response Prevention (ERP)',
+      howTo: [
+        'Identify a mild trigger (e.g. touching a doorknob)',
+        'Avoid performing the compulsion afterward',
+        'Repeat daily, gradually increasing challenge'
+      ],
+      benefit: 'Retraits brain to tolerate anxiety and uncertainty.'
+    },
+    {
+      tip: 'Label intrusive thoughts as "just thoughts"',
+      howTo: [
+        'Notice the intrusive thought',
+        'Silently label: "This is an OCD thought"',
+        'Avoid reacting to it'
+      ],
+      benefit: 'Creates mental distance and reduces impact.'
+    },
+    {
+      tip: 'Use mindfulness and acceptance',
+      howTo: [
+        'Set aside 5–10 minutes to sit quietly',
+        'Focus on your breath and simply notice thoughts without judgment'
+      ],
+      benefit: 'Increases awareness and disrupts compulsive loops.'
+    },
+    {
+      tip: 'Schedule “worry time”',
+      howTo: [
+        'Pick a 10-minute slot each day',
+        'Only allow yourself to worry during that time'
+      ],
+      benefit: 'Reduces intrusion during the rest of the day.'
+    },
+    {
+      tip: 'Journal triggers & progress',
+      howTo: [
+        'Write obsession & resisted compulsion',
+        'Note time, intensity, outcome',
+        'Track improvements over time'
+      ],
+      benefit: 'Enhances self-awareness and motivation.'
+    }
+  ]
+}
+,
   stress: {
     reason: 'Stress can be triggered by high demands, lack of control, change, or conflict in daily life.',
     strategies: [
@@ -224,6 +251,53 @@ const copingContent = {
   }
 };
 
+const emojiMap = {
+  breathing: '🫁',
+  walk: '🚶‍♂️',
+  journal: '📓',
+  music: '🎵',
+  muscle: '💪',
+  grounding: '🧍‍♀️',
+  meditation: '🧘‍♀️',
+  mantra: '🔁',
+  stretch: '🧍',
+  talk: '🗣️',
+  time: '⏰',
+  sleep: '😴',
+  shower: '🚿',
+  gratitude: '🙏',
+  checklist: '✅',
+  write: '✍️',
+  relax: '😌',
+  control: '🎮',
+  repeat: '🔄'
+};
+
+const getEmoji = (tip) => {
+  const lowered = tip.toLowerCase();
+  if (lowered.includes('breath')) return emojiMap.breathing;
+  if (lowered.includes('walk')) return emojiMap.walk;
+  if (lowered.includes('journal')) return emojiMap.journal;
+  if (lowered.includes('music')) return emojiMap.music;
+  if (lowered.includes('muscle')) return emojiMap.muscle;
+  if (lowered.includes('grounding')) return emojiMap.grounding;
+  if (lowered.includes('meditation')) return emojiMap.meditation;
+  if (lowered.includes('mantra')) return emojiMap.mantra;
+  if (lowered.includes('stretch')) return emojiMap.stretch;
+  if (lowered.includes('talk') || lowered.includes('reach')) return emojiMap.talk;
+  if (lowered.includes('time')) return emojiMap.time;
+  if (lowered.includes('sleep')) return emojiMap.sleep;
+  if (lowered.includes('shower')) return emojiMap.shower;
+  if (lowered.includes('grateful')) return emojiMap.gratitude;
+  if (lowered.includes('to-do') || lowered.includes('list')) return emojiMap.checklist;
+  if (lowered.includes('write')) return emojiMap.write;
+  if (lowered.includes('relax')) return emojiMap.relax;
+  if (lowered.includes('control') || lowered.includes('erp')) return emojiMap.control;
+  if (lowered.includes('repeat')) return emojiMap.repeat;
+  return '💡'; // fallback icon
+};
+
+
 const CopingStrategies = ({ disorder }) => {
   const [activeTip, setActiveTip] = useState(null);
   const content = copingContent[disorder?.toLowerCase()] || {};
@@ -233,32 +307,37 @@ const CopingStrategies = ({ disorder }) => {
   return (
     <section className="personalized-tips container">
       <h3>Coping Strategies for {disorder}</h3>
-      {reason && <p className="disorder-reason"><strong>Why it happens:</strong> {reason}</p>}
+      {/* {reason && <p className="disorder-reason"><strong>Why it happens:</strong> {reason}</p>} */}
       <div className="row">
         {tips.map((tipObj, index) => (
-          <div className="col-sm-6 col-md-4 mb-4" key={index}>
+          <div className="col-sm-6 col-md-4 mb-2" key={index}>
             <div className="tip-card">
-              <div className="tip-icon">{['🧘','🚶','✍️','🎵','💪'][index % 5]}</div>
+              <div className="tip-icon">{getEmoji(tipObj.tip)}</div>
               <p>{tipObj.tip}</p>
-              <button className="try-button" onClick={() => setActiveTip(tipObj)}>Try This</button>
+              <button className="try-button " onClick={() => setActiveTip(tipObj)}>Try This</button>
             </div>
           </div>
         ))}
       </div>
 
-      {activeTip && (
-        <div className="popup-overlay">
-          <div className="popup-content">
-            <h4>{activeTip.tip}</h4>
-            <h5>How to Apply:</h5>
-            <ul>
-              {activeTip.howTo.map((step, idx) => <li key={idx}>{step}</li>)}
-            </ul>
-            <p><strong>Why it helps:</strong> {activeTip.benefit}</p>
-            <button className="popup-close" onClick={() => setActiveTip(null)}>Close</button>
-          </div>
-        </div>
-      )}
+     {activeTip && (
+  <div className="popup-overlay">
+    <div className="popup-content">
+      <h4>{activeTip.tip}</h4>
+      <h5>How to Apply:</h5>
+      <ul>
+        {activeTip.howTo.map((step, idx) => (
+          <li key={idx}>{step}</li>
+        ))}
+      </ul>
+      <p><h5>Why it helps:</h5> {activeTip.benefit}</p>
+      {/* <button className="popup-close" onClick={() => setActiveTip(null)}>Close</button> */}
+      <span className="popup-close-icon" onClick={() => setActiveTip(null)}>×</span>
+
+    </div>
+  </div>
+)}
+
     </section>
   );
 };
