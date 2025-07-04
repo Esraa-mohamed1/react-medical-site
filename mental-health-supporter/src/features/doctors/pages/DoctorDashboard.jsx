@@ -133,8 +133,6 @@ const DoctorDashboard = () => {
                       <div className="table-row" key={index}>
                         <div>#{appointment.id || appointment.appointment_id}</div>
                         <div>{appointment.patient_info?.full_name || appointment.name || '-'}</div>
-                        <div>{appointment.patient_info?.gender || appointment.gender || '-'}</div>
-                        <div>{appointment.reason || appointment.reason_for_visit || '-'}</div>
                         <div>
                           <button 
                             className="consult-btn"
