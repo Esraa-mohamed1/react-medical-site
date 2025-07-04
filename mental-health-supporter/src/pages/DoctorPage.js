@@ -72,7 +72,7 @@ const DoctorPage = () => {
               }
               return null;
             })()}
-            <PatientReviews reviews={reviews} />
+            <PatientReviews reviews={reviews} doctorId={doctorData.doctor_id || doctor_id} />
             <ContactInfo contact={contactInfo} />
           </Col>
           <Col lg={4}>

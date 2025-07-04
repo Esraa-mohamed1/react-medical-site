@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, ListGroup, Badge } from 'react-bootstrap';
 import { motion } from 'framer-motion';
-import { FaMapMarkerAlt, FaClock, FaMoneyBillWave, FaProcedures, FaWifi } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaClock, FaMoneyBillWave, FaProcedures, FaWifi, FaExternalLinkAlt } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 
 const ClinicDetails = ({ clinic }) => {
@@ -37,25 +37,16 @@ const ClinicDetails = ({ clinic }) => {
                 <p className="mb-0 text-muted">{address}</p>
                 <a
                   href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`}
-                  className="small"
-                  style={{ color: '#2A5C5F' }}
+                  style={{ color: '#2A5C5F', marginRight: 8, textDecoration: 'none' }}
                   target="_blank"
                   rel="noopener noreferrer"
+                  title={t('clinicDetails.viewOnMap')}
                 >
-                  {t('clinicDetails.viewOnMap')}
+                  <FaExternalLinkAlt size={16} />
                 </a>
               </div>
             </ListGroup.Item>
 
-            <ListGroup.Item className="d-flex align-items-center py-3 border-bottom flex-row-reverse">
-              <div className="icon-container ms-3">
-                <FaClock size={20} style={{ color: 'var(--primary-purple)' }} />
-              </div>
-              <div>
-                <h6 className="mb-1 fw-bold">{t('clinicDetails.workingHours')}</h6>
-                <p className="mb-0 text-muted">{openingHours}</p>
-              </div>
-            </ListGroup.Item>
 
             <ListGroup.Item className="d-flex align-items-center py-3 flex-row-reverse">
               <div className="icon-container ms-3">
@@ -64,7 +55,7 @@ const ClinicDetails = ({ clinic }) => {
               <div>
                 <h6 className="mb-1 fw-bold">{t('clinicDetails.consultationFee')}</h6>
                 <p className="mb-0 text-muted">{fees}</p>
-                <small className="text-muted">{t('clinicDetails.feeNote')}</small>
+                <small className="text-muted">{t('clinicDetails.feeNote') === 'Price may vary based on service' ? 'Price based on session' : t('clinicDetails.feeNote')}</small>
               </div>
             </ListGroup.Item>
           </ListGroup>
