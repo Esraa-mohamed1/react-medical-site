@@ -101,6 +101,10 @@
   border-radius: 20px 20px 0 0;
 }
 
+.header, .mainContent {
+  width: 100%;
+}
+
 .buttonsContainer-en {
   position: absolute;
   top: 1rem;
@@ -161,6 +165,12 @@
   transition: opacity 0.3s ease;
   font-size: 0.875rem;
   font-weight: 500;
+  width: 80px;
+  height: 80px;
+}
+
+.changePhotoOverlay span {
+  text-align: center;
 }
 
 .imageContainer.editable:hover .changePhotoOverlay {
