@@ -149,6 +149,7 @@ const AppointmentsList = () => {
         return 'bg-secondary';
     }
   };
+  
 
   const handleLogout = () => {
     localStorage.removeItem('loggedUser');
@@ -217,28 +218,34 @@ const AppointmentsList = () => {
                 <tbody>
                   {filteredCurrentAppointments.length === 0 ? (
                     <tr><td colSpan="6" className="text-center text-muted py-4">No appointments found.</td></tr>
-                  ) : filteredCurrentAppointments.map(appointment => (
-                    <tr key={appointment.id}>
-                      <td>{getDisplayDate(appointment)}</td>
-                      <td>{getDisplayTime(appointment)}</td>
-                      <td>{getDisplayPatient(appointment)}</td>
-                      <td>
-                      <span className={`badge rounded-pill px-3 py-2 ${getStatusBadge(appointment.status)}`}>
-  {appointment.status ? appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1) : 'Scheduled'}
-</span>                      </td>
-                      <td>{appointment.price ? `$${appointment.price}` : 'N/A'}</td>
-                      <td>
-                        <button 
-                          className="view-details-btn btn-sm"
-                          onClick={() => goToDetails(appointment.id)}
-                          aria-label="View appointment details"
-                          title="View Details"
-                        >
-                          View Details
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                  ) : filteredCurrentAppointments.map(appointment => {
+                    // Debug logs for status
+                    console.log('Appointment:', appointment);
+                    console.log('Appointment status:', appointment.status);
+                    return (
+                      <tr key={appointment.id}>
+                        <td>{getDisplayDate(appointment)}</td>
+                        <td>{getDisplayTime(appointment)}</td>
+                        <td>{getDisplayPatient(appointment)}</td>
+                        <td>
+                        <span className={`badge status-badge rounded-pill px-3 py-2 ${getStatusBadge(appointment.status)}`}>
+                          {appointment.status ? appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1) : 'Scheduled'}
+                        </span>
+                        </td>
+                        <td>{appointment.price ? `$${appointment.price}` : 'N/A'}</td>
+                        <td>
+                          <button 
+                            className="view-details-btn btn-sm"
+                            onClick={() => goToDetails(appointment.id)}
+                            aria-label="View appointment details"
+                            title="View Details"
+                          >
+                            View Details
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -270,5 +277,6 @@ const AppointmentsList = () => {
     </div>
   );
 };
+
 
 export default AppointmentsList;
