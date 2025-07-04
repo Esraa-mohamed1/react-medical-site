@@ -39,8 +39,9 @@ export default function ArticlePage() {
           <ProfessionalHelp disorder={disorderType} />
         </main>
 
-        <Footer />
       </div>
+              <Footer />
+
     </>
   );
 }
