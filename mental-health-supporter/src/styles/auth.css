@@ -57,7 +57,7 @@
 .auth-image {
   width: 100%;
   max-width: 380px;
-  height: auto;
+  height: 300px;
   border-radius: 20px;
   object-fit: contain;
   filter: drop-shadow(0 8px 24px rgba(129, 139, 208, 0.2));
