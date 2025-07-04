@@ -52,11 +52,11 @@ const AppointmentBooking = ({ doctorId }) => {
           <Card.Body className="p-4">
             <div className="d-flex align-items-center mb-4 justify-content-end">
               <h4 className="mb-0 ms-2" style={{ color: 'var(--secondary-teal)' }}>
-                {t('appointmentBooking.title')}
+                {t('title')}
               </h4>
               <FaCalendarAlt size={24} style={{ color: 'var(--secondary-teal)' }} />
             </div>
-            {loading && <div style={{ color: 'var(--secondary-teal)' }}>{t('appointmentBooking.loading')}</div>}
+            {loading && <div style={{ color: 'var(--secondary-teal)' }}>{t('loading')}</div>}
             {error && <div className="text-danger" style={{ color: 'var(--secondary-teal)' }}>{error}</div>}
             <div className="d-grid gap-2 mt-2">
               {availableTimes.length > 0 ? availableTimes.map((slot) => {
@@ -64,29 +64,46 @@ const AppointmentBooking = ({ doctorId }) => {
                 const date = slot.date || (slot.date_time ? slot.date_time.split('T')[0] : '');
                 const start_time = slot.start_time || slot.startTime || slot.time || (slot.date_time ? slot.date_time.split('T')[1]?.slice(0,5) : '');
                 const end_time = slot.end_time || slot.endTime || '';
+                const isAvailable = slot.available !== false;
                 return (
                   <Button
                     key={slot.id}
                     variant="outline-primary"
-                    className="time-slot-btn d-flex flex-column align-items-start"
-                    onClick={() => handleBookClick(slot)}
-                    style={{ background: 'var(--extra-light-teal)', color: 'var(--secondary-teal)', borderColor: 'var(--secondary-teal)', fontWeight: 600 }}
+                    className="time-slot-btn d-flex flex-row align-items-center justify-content-between px-3 py-3 mb-2 shadow-sm"
+                    onClick={() => isAvailable && handleBookClick(slot)}
+                    disabled={!isAvailable}
+                    style={{
+                      background: isAvailable ? '#fff' : '#f5f5f5',
+                      color: 'var(--secondary-teal)',
+                      borderColor: 'var(--secondary-teal)',
+                      borderRadius: 16,
+                      fontWeight: 600,
+                      minHeight: 64,
+                      boxShadow: '0 2px 8px rgba(44, 62, 80, 0.07)',
+                      opacity: isAvailable ? 1 : 0.6,
+                      cursor: isAvailable ? 'pointer' : 'not-allowed'
+                    }}
                   >
-                    <div style={{ fontWeight: 700, fontSize: 16 }}>
-                      {date}
+                    <div className="d-flex flex-column align-items-start">
+                      <div style={{ fontWeight: 700, fontSize: 17, color: 'var(--secondary-teal)' }}>
+                        <span style={{ marginRight: 6, fontSize: 15, color: '#888' }}>{t('date')}</span> {date}
+                      </div>
+                      <div style={{ fontSize: 15, color: '#444', marginTop: 2 }}>
+                        <span style={{ marginRight: 8 }}>{t('startTime')}: <span style={{ color: 'var(--primary-teal)', fontWeight: 600 }}>{start_time}</span></span>
+                        <span>{t('endTime')}: <span style={{ color: 'var(--primary-teal)', fontWeight: 600 }}>{end_time}</span></span>
+                      </div>
                     </div>
-                    <div style={{ fontSize: 15 }}>
-                      <span style={{ marginRight: 8 }}>{t('appointmentBooking.startTime')}: {start_time}</span>
-                      <span>{t('appointmentBooking.endTime')}: {end_time}</span>
-                    </div>
-                    <div className="mt-1">
-                      <Badge bg="light" text="primary" pill style={{ background: 'var(--secondary-teal)', color: '#fff', border: 'none' }}>
-                        {t('appointmentBooking.available')}
-                      </Badge>
+                    <div className="d-flex flex-column align-items-end gap-2">
+                      <span className="badge rounded-pill px-3 py-2" style={{ background: isAvailable ? 'var(--secondary-teal)' : '#bbb', color: '#fff', fontSize: 15, fontWeight: 600, letterSpacing: 0.5 }}>
+                        {isAvailable ? t('available') : t('unavailable')}
+                      </span>
+                      <span className="badge rounded-pill px-3 py-2" style={{ background: '#f7fafc', color: 'var(--secondary-teal)', fontSize: 15, fontWeight: 600, border: '1px solid var(--secondary-teal)' }}>
+                        {t('price')}: {slot.price ? slot.price : '-'}
+                      </span>
                     </div>
                   </Button>
                 );
-              }) : !loading && <div style={{ color: 'var(--secondary-teal)' }}>{t('appointmentBooking.noTimes')}</div>}
+              }) : !loading && <div style={{ color: 'var(--secondary-teal)' }}>{t('noTimes')}</div>}
             </div>
           </Card.Body>
         </Card>
