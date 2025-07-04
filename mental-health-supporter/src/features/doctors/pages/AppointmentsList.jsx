@@ -5,8 +5,11 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FiCalendar, FiClock, FiUser, FiSearch, FiInbox, FiChevronLeft, FiChevronRight, FiFilter } from 'react-icons/fi';
 import debounce from 'lodash.debounce';
+import CustomNavbar from '../../../components/Navbar';
+import Footer from "../../homePage/components/Footer";
 import DoctorSidebar from '../components/DoctorSidebar';
 import '../../../features/doctors/style/style.css';
+
 
 const AppointmentsList = () => {
   const [appointments, setAppointments] = useState([]);
@@ -38,20 +41,8 @@ const AppointmentsList = () => {
           params: { search: search }
         }
       );
-      
-      // Process the response to ensure proper price and status fields
-      const processedAppointments = Array.isArray(response.data) 
-        ? response.data 
-        : (response.data.results || []);
-      
-      // Ensure each appointment has price and status fields
-      const normalizedAppointments = processedAppointments.map(appointment => ({
-        ...appointment,
-        price: appointment.price || 0, // Default to 0 if price is missing
-        status: appointment.status || 'scheduled' // Default to 'scheduled' if status is missing
-      }));
-      
-      setAppointments(normalizedAppointments);
+      const data = Array.isArray(response.data) ? response.data : (response.data.results || []);
+      setAppointments(data);
       setCurrentPage(1); // Reset to first page on new search
     } catch (error) {
       console.error("Error fetching appointments:", error);
@@ -104,82 +95,69 @@ const AppointmentsList = () => {
     }
   };
 
-  // Pagination calculations
   const indexOfLastAppointment = currentPage * appointmentsPerPage;
   const indexOfFirstAppointment = indexOfLastAppointment - appointmentsPerPage;
-  
+  const currentAppointments = appointments.slice(indexOfFirstAppointment, indexOfLastAppointment);
+
   // Filtered appointments by status
   const filteredAppointments = statusFilter === 'all'
     ? appointments
-    : appointments.filter(a => a.status.toLowerCase() === statusFilter);
+    : appointments.filter(a => (a.status || 'scheduled').toLowerCase() === statusFilter);
 
-  const currentAppointments = filteredAppointments.slice(indexOfFirstAppointment, indexOfLastAppointment);
+  const filteredCurrentAppointments = filteredAppointments.slice(indexOfFirstAppointment, indexOfLastAppointment);
+
+  // Helper for avatar/initials
+  const getInitials = (username) => {
+    if (!username) return 'U';
+    return username.slice(0, 2).toUpperCase();
+  };
+
+  // Map fields directly from API response
+  const getDisplayDate = (appointment) => {
+    return appointment?.date || 'No date';
+  };
+  const getDisplayTime = (appointment) => {
+    if (!appointment?.start_time) return 'No time';
+    if (appointment.end_time) {
+      return `${appointment.start_time.slice(0,5)} - ${appointment.end_time.slice(0,5)}`;
+    }
+    return appointment.start_time.slice(0,5);
+  };
+  const getDisplayPatient = (appointment) => {
+    if (!appointment?.patient_info) return 'Walk-in';
+    return appointment.patient_info.full_name || appointment.patient_info.username;
+  };
+  const getDisplayEmail = (appointment) => appointment.patient_info?.email || 'Not available';
+  const getDisplayNotes = (appointment) => appointment.notes || '';
+
+  const goToDetails = (id) => {
+    navigate(`/doctor/appointments/${id}`);
+  };
+
   const totalPages = Math.ceil(filteredAppointments.length / appointmentsPerPage);
 
-  // Helper functions for display
-  const formatPrice = (price) => {
-    if (price === null || price === undefined) return '-';
-    return `$${parseFloat(price).toFixed(2)}`;
-  };
-
   const getStatusBadge = (status) => {
-    const statusText = status || 'scheduled';
-    let badgeClass = '';
-    
-    switch(statusText.toLowerCase()) {
+    if (!status) return 'bg-secondary';
+    switch(status.toLowerCase()) {
       case 'scheduled':
-        badgeClass = 'bg-warning text-dark';
-        break;
+        return 'bg-warning text-dark';
       case 'completed':
-        badgeClass = 'bg-success';
-        break;
+        return 'bg-success';
       case 'cancelled':
-        badgeClass = 'bg-danger';
-        break;
-      case 'confirmed':
-        badgeClass = 'bg-primary';
-        break;
-      case 'no-show':
-        badgeClass = 'bg-secondary';
-        break;
+        return 'bg-danger';
       default:
-        badgeClass = 'bg-info text-dark';
+        return 'bg-secondary';
     }
-    
-    return (
-      <span className={`badge rounded-pill px-3 py-2 ${badgeClass}`}>
-        {statusText.charAt(0).toUpperCase() + statusText.slice(1)}
-      </span>
-    );
   };
 
-  const getDisplayDate = (appointment) => {
-    if (appointment.date) return appointment.date;
-    if (!appointment.appointment_date) return 'No date';
-    return new Date(appointment.appointment_date).toLocaleDateString();
+  const handleLogout = () => {
+    localStorage.removeItem('loggedUser');
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
+    navigate('/login');
+    toast.success("You have been logged out.");
   };
-
-  const getDisplayTime = (appointment) => {
-    if (appointment.start_time && appointment.end_time) {
-      return `${appointment.start_time} - ${appointment.end_time}`;
-    }
-    if (appointment.appointment_date) {
-      return new Date(appointment.appointment_date).toLocaleTimeString([], { 
-        hour: '2-digit', 
-        minute: '2-digit' 
-      });
-    }
-    return 'No time';
-  };
-
-  const getDisplayPatient = (appointment) => {
-    if (appointment.patient_info?.full_name) return appointment.patient_info.full_name;
-    if (appointment.patient_info?.first_name || appointment.patient_info?.last_name) {
-      return `${appointment.patient_info.first_name || ''} ${appointment.patient_info.last_name || ''}`.trim();
-    }
-    return appointment.patient_info?.username || 'Walk-in';
-  };
-
+  
   if (isLoading && filteredAppointments.length === 0) {
     return (
       <div className="doctor-dashboard-bg">
@@ -201,14 +179,12 @@ const AppointmentsList = () => {
       <div className="doctor-dashboard-main enhanced-main-container">
         <div className="enhanced-main-card">
           <div className="section-header mb-4">My Appointments</div>
-          
           <div className="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 mb-4">
             <div>
               <p className="text-muted mb-0">
                 Total: <span className="fw-bold text-primary">{filteredAppointments.length}</span> appointments
               </p>
             </div>
-            
             <div className="d-flex align-items-center gap-2 mt-3 mt-md-0">
               <FiFilter className="text-primary" />
               <select
@@ -222,12 +198,9 @@ const AppointmentsList = () => {
                 <option value="scheduled">Scheduled</option>
                 <option value="completed">Completed</option>
                 <option value="cancelled">Cancelled</option>
-                <option value="confirmed">Confirmed</option>
-                <option value="no-show">No Show</option>
               </select>
             </div>
           </div>
-          
           <div className="section-card enhanced-section-card">
             <div className="table-responsive">
               <table className="records-table">
@@ -236,87 +209,61 @@ const AppointmentsList = () => {
                     <th>Date</th>
                     <th>Time</th>
                     <th>Patient</th>
-                    <th>Price</th>
                     <th>Status</th>
-                    <th>Action</th>
+                    <th>Price</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {currentAppointments.length === 0 ? (
-                    <tr>
-                      <td colSpan="6" className="text-center text-muted py-4">
-                        No appointments found.
+                  {filteredCurrentAppointments.length === 0 ? (
+                    <tr><td colSpan="6" className="text-center text-muted py-4">No appointments found.</td></tr>
+                  ) : filteredCurrentAppointments.map(appointment => (
+                    <tr key={appointment.id}>
+                      <td>{getDisplayDate(appointment)}</td>
+                      <td>{getDisplayTime(appointment)}</td>
+                      <td>{getDisplayPatient(appointment)}</td>
+                      <td>
+                        <span className={`badge rounded-pill px-3 py-2 ${getStatusBadge(appointment.status)}`}>{appointment.status || 'Scheduled'}</span>
+                      </td>
+                      <td>{appointment.price ? `$${appointment.price}` : 'N/A'}</td>
+                      <td>
+                        <button 
+                          className="view-details-btn btn-sm"
+                          onClick={() => goToDetails(appointment.id)}
+                          aria-label="View appointment details"
+                          title="View Details"
+                        >
+                          View Details
+                        </button>
                       </td>
                     </tr>
-                  ) : (
-                    currentAppointments.map(appointment => (
-                      <tr key={appointment.id}>
-                        <td>{getDisplayDate(appointment)}</td>
-                        <td>{getDisplayTime(appointment)}</td>
-                        <td>{getDisplayPatient(appointment)}</td>
-                        <td className="text-nowrap">
-                          {formatPrice(appointment.price)}
-                        </td>
-                        <td>
-                          {getStatusBadge(appointment.status)}
-                        </td>
-                        <td>
-                          <button 
-                            className="edit-btn btn-sm"
-                            onClick={() => navigate(`/doctor/appointments/${appointment.id}`)}
-                            aria-label="View appointment details"
-                            title="View Details"
-                          >
-                            View Details
-                          </button>
-                        </td>
-                      </tr>
-                    ))
-                  )}
+                  ))}
                 </tbody>
               </table>
             </div>
           </div>
-          
           {/* Pagination Controls */}
-          {totalPages > 1 && (
-            <div className="d-flex justify-content-center mt-4">
-              <nav>
-                <ul className="pagination">
-                  <li className={`page-item${currentPage === 1 ? ' disabled' : ''}`}>
-                    <button 
-                      className="page-link" 
-                      onClick={() => setCurrentPage(currentPage - 1)} 
-                      disabled={currentPage === 1}
-                    >
-                      <FiChevronLeft />
-                    </button>
+          <div className="d-flex justify-content-center mt-4">
+            <nav>
+              <ul className="pagination">
+                <li className={`page-item${currentPage === 1 ? ' disabled' : ''}`}>
+                  <button className="page-link" onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>
+                    <FiChevronLeft />
+                  </button>
+                </li>
+                {[...Array(totalPages)].map((_, idx) => (
+                  <li key={idx} className={`page-item${currentPage === idx + 1 ? ' active' : ''}`}>
+                    <button className="page-link" onClick={() => setCurrentPage(idx + 1)}>{idx + 1}</button>
                   </li>
-                  
-                  {[...Array(totalPages)].map((_, idx) => (
-                    <li key={idx} className={`page-item${currentPage === idx + 1 ? ' active' : ''}`}>
-                      <button 
-                        className="page-link" 
-                        onClick={() => setCurrentPage(idx + 1)}
-                      >
-                        {idx + 1}
-                      </button>
-                    </li>
-                  ))}
-                  
-                  <li className={`page-item${currentPage === totalPages ? ' disabled' : ''}`}>
-                    <button 
-                      className="page-link" 
-                      onClick={() => setCurrentPage(currentPage + 1)} 
-                      disabled={currentPage === totalPages}
-                    >
-                      <FiChevronRight />
-                    </button>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-          )}
+                ))}
+                <li className={`page-item${currentPage === totalPages ? ' disabled' : ''}`}>
+                  <button className="page-link" onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages}>
+                    <FiChevronRight />
+                  </button>
+                </li>
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
     </div>

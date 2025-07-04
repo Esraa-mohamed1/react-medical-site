@@ -5,9 +5,26 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./style.css";
 import "../../../styles/global.css";
-import { FiUser, FiCalendar, FiClock, FiChevronLeft, FiCheckCircle, FiEdit2, FiFileText, FiDollarSign } from 'react-icons/fi';
+import CustomNavbar from '../../../components/Navbar';
+import { FiUser, FiCalendar, FiClock, FiChevronLeft, FiCheckCircle, FiEdit2, FiFileText } from 'react-icons/fi';
+import { Tooltip } from 'react-tooltip';
 import DoctorSidebar from '../components/DoctorSidebar';
 import '../../../features/doctors/style/style.css';
+
+// Add getStatusBadge helper
+const getStatusBadge = (status) => {
+  if (!status) return 'bg-secondary';
+  switch(status.toLowerCase()) {
+    case 'scheduled':
+      return 'bg-warning text-dark';
+    case 'completed':
+      return 'bg-success';
+    case 'cancelled':
+      return 'bg-danger';
+    default:
+      return 'bg-secondary';
+  }
+};
 
 export default function AppointmentDetails() {
   const { id } = useParams();
@@ -18,12 +35,10 @@ export default function AppointmentDetails() {
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const statusOptions = [
-    { value: 'scheduled', label: 'Scheduled', color: 'warning' },
-    { value: 'completed', label: 'Completed', color: 'success' },
-    { value: 'cancelled', label: 'Cancelled', color: 'danger' },
-    { value: 'confirmed', label: 'Confirmed', color: 'primary' },
-    { value: 'no-show', label: 'No Show', color: 'secondary' }
+  const statusSteps = [
+    { label: 'Scheduled', icon: <FiCalendar />, value: 'scheduled' },
+    { label: 'Completed', icon: <FiCheckCircle />, value: 'completed' },
+    { label: 'Cancelled', icon: <FiFileText />, value: 'cancelled' },
   ];
 
   useEffect(() => {
@@ -40,18 +55,24 @@ export default function AppointmentDetails() {
         }
 
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/medical/appointments/${id}/`,
+          `http://127.0.0.1:8000/api/medical/appointments/doctor/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
-            }
+            },
+            params: { id },
           }
         );
-        
-        const data = response.data;
-        setAppointment(data);
-        setStatus(data.status || "scheduled");
-        setNotes(data.notes || "");
+        const data = Array.isArray(response.data) ? response.data : (response.data.results || []);
+        let found = Array.isArray(data) ? data.find(a => String(a.id) === String(id)) : null;
+        if (!found) {
+          toast.error('Appointment not found for this doctor.');
+          navigate('/doctor/appointments');
+          return;
+        }
+        setAppointment(found);
+        setStatus(found.status || "scheduled");
+        setNotes(found.notes || "");
       } catch (error) {
         console.error("Error fetching appointment details:", error);
         toast.error(error.response?.data?.detail || "Failed to load appointment details");
@@ -67,8 +88,15 @@ export default function AppointmentDetails() {
   const handleUpdate = async () => {
     try {
       setIsUpdating(true);
+      const userData = JSON.parse(localStorage.getItem("loggedUser"));
       const token = localStorage.getItem("access");
       
+      if (!userData || userData.role !== 'doctor' || !token) {
+        toast.error("You don't have permission to update this appointment");
+        navigate('/login');
+        return;
+      }
+      // Use the doctor-specific update endpoint
       await axios.patch(
         `http://127.0.0.1:8000/api/medical/appointments/${id}/update/`,
         { 
@@ -83,94 +111,53 @@ export default function AppointmentDetails() {
         }
       );
 
-      toast.success("Appointment updated successfully!");
-      // Refresh data
+      toast.success("Appointment status updated successfully!");
+      // Refresh appointment data from doctor endpoint
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/medical/appointments/${id}/`,
+        `http://127.0.0.1:8000/api/medical/appointments/doctor/`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-          }
+          },
+          params: { id },
         }
       );
-      setAppointment(response.data);
+      const data = Array.isArray(response.data) ? response.data : (response.data.results || []);
+      const found = Array.isArray(data) ? data.find(a => String(a.id) === String(id)) : null;
+      setAppointment(found || data || null);
     } catch (error) {
       console.error("Error updating appointment:", error);
-      toast.error(error.response?.data?.detail || "Failed to update appointment");
+      toast.error(error.response?.data?.detail || "Failed to update appointment status");
     } finally {
       setIsUpdating(false);
     }
   };
 
-  const formatPrice = (price) => {
-    if (price === null || price === undefined) return 'Not set';
-    return `$${parseFloat(price).toFixed(2)}`;
+  // Helper for avatar/initials
+  const getInitials = (username) => {
+    if (!username) return 'U';
+    return username.slice(0, 2).toUpperCase();
   };
 
-  const formatDateTime = (dateString) => {
-    if (!dateString) return 'Not scheduled';
-    const date = new Date(dateString);
-    return {
-      date: date.toLocaleDateString('en-US', { 
-        weekday: 'long', 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
-      }),
-      time: date.toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-      }),
-      startTime: date.toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-      }),
-      endTime: new Date(date.getTime() + (appointment?.duration || 30) * 60000).toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-      })
-    };
+  // Map fields directly from API response
+  const getDisplayDate = (appointment) => {
+    return appointment?.date || 'No date';
   };
-
-  const getStatusBadge = (status) => {
-    const statusText = status || 'scheduled';
-    let badgeClass = '';
-    switch(statusText.toLowerCase()) {
-      case 'scheduled': badgeClass = 'bg-warning text-dark'; break;
-      case 'completed': badgeClass = 'bg-success'; break;
-      case 'cancelled': badgeClass = 'bg-danger'; break;
-      case 'confirmed': badgeClass = 'bg-primary'; break;
-      case 'no-show': badgeClass = 'bg-secondary'; break;
-      default: badgeClass = 'bg-info text-dark';
+  const getDisplayTime = (appointment) => {
+    if (!appointment?.start_time) return 'No time';
+    if (appointment.end_time) {
+      return `${appointment.start_time.slice(0,5)} - ${appointment.end_time.slice(0,5)}`;
     }
-    return (
-      <span className={`badge rounded-pill px-3 py-2 ${badgeClass}`}>{statusText.charAt(0).toUpperCase() + statusText.slice(1)}</span>
-    );
+    return appointment.start_time.slice(0,5);
   };
-
-  const getPaymentStatusBadge = (paymentStatus) => {
-    const statusText = paymentStatus || 'pending';
-    let badgeClass = '';
-    switch(statusText.toLowerCase()) {
-      case 'paid': badgeClass = 'bg-success'; break;
-      case 'pending': badgeClass = 'bg-warning text-dark'; break;
-      case 'failed': badgeClass = 'bg-danger'; break;
-      default: badgeClass = 'bg-secondary';
-    }
-    return (
-      <span className={`badge rounded-pill px-3 py-2 ${badgeClass}`}>{statusText.charAt(0).toUpperCase() + statusText.slice(1)}</span>
-    );
+  const getDisplayPatient = (appointment) => {
+    if (!appointment?.patient_info) return 'Walk-in';
+    const { first_name, last_name, username } = appointment.patient_info;
+    if (first_name || last_name) return `${first_name} ${last_name}`.trim();
+    return username;
   };
-
-  const getPatientDisplay = (patient) => {
-    if (!patient) return { name: 'Walk-in Patient', initials: 'W' };
-    const name = [patient.first_name, patient.last_name].filter(Boolean).join(' ') || patient.username;
-    const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
-    return { name, initials };
-  };
+  const getDisplayEmail = (appointment) => appointment.patient_info?.email || 'Not available';
+  const getDisplayNotes = (appointment) => appointment.notes || '';
 
   if (isLoading) return (
     <div className="doctor-dashboard-bg">
@@ -184,18 +171,14 @@ export default function AppointmentDetails() {
       </div>
     </div>
   );
-
   if (!appointment) return (
     <div className="doctor-dashboard-bg">
       <DoctorSidebar />
       <div className="doctor-dashboard-main enhanced-main-container">
         <div className="enhanced-main-card text-center p-5">
-          <h3 className="fw-bold text-dark mb-3">Appointment Not Found</h3>
-          <p className="text-muted">The requested appointment could not be loaded.</p>
-          <button 
-            className="btn btn-primary mt-3" 
-            onClick={() => navigate('/doctor/appointments')}
-          >
+          <h3 className="fw-bold text-dark mb-3">Unable to load appointment details</h3>
+          <p className="text-muted">Please try again later.</p>
+          <button className="edit-btn mt-3" onClick={() => navigate('/doctor/appointments')}>
             <FiChevronLeft className="me-2" />Back to Appointments
           </button>
         </div>
@@ -203,56 +186,58 @@ export default function AppointmentDetails() {
     </div>
   );
 
-  const { date: displayDate, time: displayTime, startTime, endTime } = formatDateTime(appointment.appointment_date);
-  const { name: patientName, initials: patientInitials } = getPatientDisplay(appointment.patient_info);
-
   return (
     <div className="doctor-dashboard-bg">
       <DoctorSidebar />
       <div className="doctor-dashboard-main enhanced-main-container">
-        <div className="enhanced-main-card" style={{ background: '#f7fafc', borderRadius: 16, boxShadow: '0 2px 8px rgba(44, 62, 80, 0.07)', padding: '2rem' }}>
-          <div className="section-header mb-4" style={{ color: '#2a5c5f', fontWeight: 700, fontSize: '1.5rem' }}>Appointment Details</div>
+        <div className="enhanced-main-card">
+          <div className="section-header mb-4">Appointment Details</div>
           <div className="d-flex flex-column flex-md-row align-items-center gap-3 mb-4">
-            {getStatusBadge(appointment.status)}
+            <span className={`badge rounded-pill px-3 py-2 fs-6 ${
+              appointment.status === 'scheduled' ? 'bg-warning text-dark' :
+              appointment.status === 'completed' ? 'bg-success' :
+              appointment.status === 'cancelled' ? 'bg-danger' : 'bg-secondary'
+            }`} title="Current Status">
+              {appointment.status || 'Scheduled'}
+            </span>
             <span className="text-muted d-flex align-items-center gap-2">
               <FiCalendar className="text-primary" />
-              {displayDate} <FiClock className="ms-2 text-primary" /> {startTime} - {endTime}
+              {getDisplayDate(appointment)} <FiClock className="ms-2 text-primary" /> {getDisplayTime(appointment)}
             </span>
           </div>
-          <div className="section-card enhanced-section-card mb-4" style={{ background: '#e0f7fa', borderRadius: 12 }}>
-            <div className="section-header mb-3" style={{ color: '#2193b0', fontWeight: 600 }}>Patient Information</div>
+          <div className="section-card enhanced-section-card mb-4">
+            <div className="section-header mb-3">Patient Information</div>
             <div className="d-flex flex-column flex-md-row align-items-center gap-4">
               <div className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style={{width: 64, height: 64, fontSize: 28}}>
-                {patientInitials}
+                {appointment.patient_info ? getInitials(appointment.patient_info.username) : 'U'}
               </div>
               <div>
-                <div className="fw-bold fs-5 mb-1">{patientName}</div>
-                <div className="text-muted mb-1"><FiUser className="me-2" />{appointment.patient_info?.email || 'No email provided'}</div>
+                <div className="fw-bold fs-5 mb-1">{getDisplayPatient(appointment)}</div>
+                <div className="text-muted mb-1"><FiUser className="me-2" />{getDisplayEmail(appointment)}</div>
               </div>
             </div>
           </div>
-          <div className="section-card enhanced-section-card mb-4" style={{ background: '#e0f7fa', borderRadius: 12 }}>
-            <div className="section-header mb-3" style={{ color: '#2193b0', fontWeight: 600 }}>Appointment Information</div>
+          <div className="section-card enhanced-section-card mb-4">
+            <div className="section-header mb-3">Appointment Information</div>
             <div className="row g-3">
               <div className="col-md-6">
-                <div className="mb-2"><span className="fw-semibold">Date:</span> {displayDate}</div>
-                <div className="mb-2"><span className="fw-semibold">Time:</span> {displayTime}</div>
-                <div className="mb-2"><span className="fw-semibold">Status:</span> {getStatusBadge(appointment.status)}</div>
-                <div className="mb-2"><span className="fw-semibold">Payment Status:</span> {getPaymentStatusBadge(appointment.payment_status)}</div>
-                <div className="mb-2"><span className="fw-semibold">Appointment ID:</span> #{appointment.id}</div>
+                <div className="mb-2"><span className="fw-semibold">Date:</span> {getDisplayDate(appointment)}</div>
+                <div className="mb-2"><span className="fw-semibold">Time:</span> {getDisplayTime(appointment)}</div>
+               
                 <div className="mb-2"><span className="fw-semibold">Title:</span> {appointment.title}</div>
+                <div className="mb-2"><span className="fw-semibold">Payment Status:</span> {appointment.payment_status}</div>
+                <div className="mb-2"><span className="fw-semibold">Price:</span> {appointment.price ? `$${appointment.price}` : 'N/A'}</div>
               </div>
               <div className="col-md-6">
                 <label className="form-label fw-semibold">Doctor Notes</label>
                 <textarea
-                  value={notes}
+                  value={notes || getDisplayNotes(appointment)}
                   onChange={(e) => setNotes(e.target.value)}
                   className="form-control"
                   placeholder="Add your notes here..."
                   rows={4}
                   disabled={isUpdating}
                   title="Add notes for this appointment"
-                  style={{ borderRadius: 8, border: '1px solid #b2dfdb', background: '#f7fafc' }}
                 />
                 <label className="form-label fw-semibold mt-3">Update Status</label>
                 <select
@@ -261,13 +246,10 @@ export default function AppointmentDetails() {
                   className="form-select"
                   disabled={isUpdating || appointment.payment_status === 'paid'}
                   title="Change appointment status"
-                  style={{ borderRadius: 8, border: '1px solid #b2dfdb', background: '#f7fafc' }}
                 >
-                  {statusOptions.map(option => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
+                  <option value="scheduled">Scheduled</option>
+                  <option value="completed">Completed</option>
+                  <option value="cancelled">Cancelled</option>
                 </select>
               </div>
             </div>
@@ -277,7 +259,6 @@ export default function AppointmentDetails() {
                 className="review-btn px-4"
                 disabled={isUpdating || appointment.payment_status === 'paid'}
                 title="Save changes"
-                style={{ background: 'linear-gradient(90deg, #6dd5ed 0%, #2193b0 100%)', color: '#fff', border: 'none', borderRadius: '20px', fontWeight: 600 }}
               >
                 {isUpdating ? 'Updating...' : 'Update Appointment'}
               </button>
@@ -286,7 +267,6 @@ export default function AppointmentDetails() {
                 className="edit-btn px-4"
                 disabled={isUpdating}
                 title="Back to appointments"
-                style={{ borderRadius: 8, border: '1px solid #b2dfdb', background: '#e0f7fa', color: '#2193b0' }}
               >
                 <FiChevronLeft className="me-2" />Back to Appointments
               </button>

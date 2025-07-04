@@ -410,3 +410,17 @@
   .patient-card .review-btn:hover {
     background: linear-gradient(90deg, #2193b0 0%, #6dd5ed 100%);
   }
+
+  .view-details-btn {
+    background: linear-gradient(90deg, #6dd5ed 0%, #2193b0 100%);
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 18px;
+    font-weight: 500;
+    transition: background 0.2s;
+  }
+  .view-details-btn:hover, .view-details-btn:focus {
+    background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
+    color: #fff;
+  }
