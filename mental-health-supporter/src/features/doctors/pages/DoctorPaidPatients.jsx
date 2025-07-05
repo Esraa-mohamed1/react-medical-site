@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import DoctorSidebar from '../components/DoctorSidebar';
 import { getPaidPatients } from '../../../services/doctors/AppointmentService';
-import { 
-  FaUser,
-  FaCalendarAlt,
-  FaStethoscope,
-  FaFileAlt,
-  FaChevronDown
-} from 'react-icons/fa';
+import { FaUser, FaCalendarAlt, FaStethoscope, FaFileAlt, FaChevronDown } from 'react-icons/fa';
 import '../../../features/doctors/style/style.css';
 import { Link } from 'react-router-dom';
 
@@ -23,7 +17,12 @@ const DoctorPaidPatients = () => {
       setError(null);
       try {
         const appts = await getPaidPatients();
-        setAppointments(appts);
+        // Filter appointments to include only those with valid patient_info
+        const validAppts = (appts || []).filter(
+          appt => appt.patient_info && 
+                  (appt.patient_info.full_name || appt.patient_info.name || appt.patient_info.username)
+        );
+        setAppointments(validAppts);
       } catch (err) {
         setError('Failed to fetch patient data. Please try again later.');
       } finally {
@@ -43,7 +42,6 @@ const DoctorPaidPatients = () => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  // Helper to get the correct profile image URL
   const getProfileImageUrl = (imgPath) => {
     if (!imgPath) return '/images/doctor.png';
     if (imgPath.startsWith('http')) return imgPath;
@@ -63,7 +61,7 @@ const DoctorPaidPatients = () => {
               {appointments.length} {appointments.length === 1 ? 'Patient' : 'Patients'}
             </div>
           </div>
-          
+
           {loading ? (
             <div className="spinner-container">
               <div className="spinner-border text-primary" role="status">
@@ -73,45 +71,50 @@ const DoctorPaidPatients = () => {
           ) : error ? (
             <div className="alert alert-danger text-center my-5">{error}</div>
           ) : appointments.length === 0 ? (
-            <div className="alert alert-info text-center my-5">No patients found.</div>
+            <div className="alert alert-info text-center my-5">
+              You do not have any paid patients yet.
+            </div>
           ) : (
             <div className="patients-list">
               {appointments.map((appt) => {
-                const patient = appt.patient_info;
+                const patient = appt.patient_info; // No need for fallback since we filtered invalid patient_info
                 const profileImgUrl = getProfileImageUrl(patient.profile_image);
-                console.log('Profile image URL:', profileImgUrl);
                 return (
                   <div key={appt.id} className={`patient-card ${expandedCard === appt.id ? 'expanded' : ''}`}>
-                    <div 
+                    <div
                       className="patient-card-header"
                       onClick={() => toggleCardExpand(appt.id)}
                     >
-                      <div className="patient-basic-info d-flex align-items-center gap-3" style={{flexDirection: 'row'}}>
-                        {/* Patient profile image */}
+                      <div className="patient-basic-info d-flex align-items-center gap-3" style={{ flexDirection: 'row' }}>
                         {patient.profile_image ? (
                           <img
                             src={profileImgUrl}
-                            alt={patient.full_name || 'Patient'}
+                            alt={patient.full_name || patient.name || patient.username || 'Patient'}
                             className="patient-profile-img"
                             style={{ width: 48, height: 48, borderRadius: '50%', objectFit: 'cover', border: '2px solid #6dd5ed' }}
-                            onError={e => { e.target.onerror = null; e.target.src = '/images/doctor.png'; }}
+                            onError={(e) => { e.target.onerror = null; e.target.src = '/images/doctor.png'; }}
                           />
                         ) : (
-                          <FaUser className="patient-profile-img" style={{ width: 48, height: 48, borderRadius: '50%', background: '#e0e0e0', color: '#888', padding: 8 }} />
+                          <FaUser
+                            className="patient-profile-img"
+                            style={{ width: 48, height: 48, borderRadius: '50%', background: '#e0e0e0', color: '#888', padding: 8 }}
+                          />
                         )}
                         <div className="d-flex flex-column justify-content-center">
-                          <h3 className="patient-name mb-0">{patient.full_name || 'Unknown Patient'}</h3>
+                          <h3 className="patient-name mb-0">
+                            {patient.full_name || patient.name || patient.username}
+                          </h3>
                           <div className="appointment-date">
-                            <FaCalendarAlt className="me-1" /> 
+                            <FaCalendarAlt className="me-1" />
                             {formatDate(appt.appointment_date)}
                           </div>
                         </div>
                       </div>
-                      <FaChevronDown 
-                        className={`chevron-icon ${expandedCard === appt.id ? 'rotate-180' : ''}`} 
+                      <FaChevronDown
+                        className={`chevron-icon ${expandedCard === appt.id ? 'rotate-180' : ''}`}
                       />
                     </div>
-                    
+
                     {expandedCard === appt.id && (
                       <div className="patient-card-details">
                         {patient.email && (
@@ -120,22 +123,20 @@ const DoctorPaidPatients = () => {
                             <span className="detail-value">{patient.email}</span>
                           </div>
                         )}
-                        
                         {patient.phone && (
                           <div className="patient-detail">
                             <span className="detail-label">Phone:</span>
                             <span className="detail-value">{patient.phone}</span>
                           </div>
                         )}
-                        
                         <div className="patient-actions">
-                          <Link 
-                            to={`/doctor/patient-details/${patient.patient_id}`}
+                          <Link
+                            to={`/doctor/patient-details/${patient.patient_id || patient.id || ''}`}
                             className="action-btn medical-history"
                           >
                             <FaStethoscope className="me-1" /> Medical History
                           </Link>
-                          <Link 
+                          <Link
                             to={`/doctor/patient-records/${appt.id}`}
                             className="action-btn documents"
                           >
