@@ -223,7 +223,7 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
                 padding: '1rem',
                 borderTop: '1px solid rgba(255,255,255,0.1)'
               }}>
-                <button
+                {/* <button
                   type="button"
                   onClick={handleGoogleLogin}
                   style={{
@@ -266,7 +266,7 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
                 </button>
                 <span className="google-login-text">
                   Continue with Google
-                </span>
+                </span> */}
               </div>
             )}
             <p className="auth-switch text-center">
