@@ -282,14 +282,14 @@ export default function ChatWithDoctor({ doctorId, patientId }) {
             }}
           />
           <button type="submit" style={{
-  background: '#5c6bc0',
-  color: '#fff',
-  border: '1px solid green',
+  background: 'whitesmoke',
+  color: '#5c6bc0',
+  border: '1px solid blue',
   borderRadius: 20,
   padding: '8px 24px',
   fontWeight: 'bold',
   fontSize: 16,
-  cursor: 'pointer'
+  cursor: 'pointer',
 }}>
   Send
 </button>
