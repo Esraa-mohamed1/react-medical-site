@@ -5,7 +5,6 @@ import RegisterPage from "./pages/RegisterPage";
 import DoctorRegister from './components/DoctorsRegister/DoctorRegister';
 import MentalHealthArticle from './pages/MentalHealthArticle';
 import DoctorPage from './pages/DoctorPage';
-import ArticalPage from "./pages/ArticalPage";
 import DoctorsList from './pages/DoctorsListPage';
 import BaseLoginPage from './pages/BaseLoginPage';
 import DoctorDetailsPage from './pages/DoctorDetailsPage';
@@ -24,19 +23,34 @@ import ChatPage from './pages/ChatPage';
 import DoctorChatsPage from './pages/DoctorChatsPage';
 import DoctorChatRoomPage from './pages/DoctorChatRoomPage';
 import AIChatInterface from './components/AIChatInterface';
+import CalendarPage from './features/doctors/pages/CalendarPage';
+import DoctorPaidPatients from './features/doctors/pages/DoctorPaidPatients';
+import DocumentsPage from './features/doctors/pages/DocumentsPage.jsx';
+import DoctorDashboard from './features/doctors/pages/DoctorDashboard';
+import DoctorPatientDetailsPage from './features/doctors/pages/DoctorPatientDetailsPage';
 
 import ErrorBoundary from './ErrorBoundary';
+
+import ArticlePage from './pages/ArticlePage';
+import SelectDisorderPage from './pages/SelectDisorderPage';
+import DisorderSelection from './pages/DisorderSelection';
 
 function App() {
   return (
     <ErrorBoundary>
       <Router>
         <Routes>
+        
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/register-select" element={<RegisterSelectPage />} />
-          <Route path="/artical" element={<ArticalPage />} />
+        {/* artical  */}
+
+          <Route path="/select-disorder" element={<DisorderSelection />} />
+          <Route path="/article/:disorderType" element={<ArticlePage />} />
+          <Route path="/articals" element={<SelectDisorderPage />} />
+
           <Route path="/ai-chat" element={<AIChatInterface />} />
           <Route path="/google-auth-redirect" element={<GoogleAuthRedirect />} />
           <Route path="/social/complete/google-oauth2/" element={<GoogleAuthRedirect />} />
@@ -54,11 +68,11 @@ function App() {
           <Route path="/payment/:appointment_id" element={<PaymentPage />} />
           
           {/* Doctor Routes */}
-          {/* <Route path="/doctor/dashboard" element={
+          <Route path="/doctor/dashboard" element={
             <PrivateRoute role="doctor">
               <DoctorDashboard />
             </PrivateRoute>
-          } /> */}
+          } />
 
           <Route path="/doctor/appointments" element={
             <PrivateRoute role="doctor">
@@ -83,6 +97,26 @@ function App() {
           <Route path="/chat/:doctorId" element={<ChatPage />} />
           <Route path="/doctor-chats" element={<DoctorChatsPage />} />
           <Route path="/doctor-chat/:roomId" element={<DoctorChatRoomPage />} />
+          <Route path="/doctor/calendar" element={
+            <PrivateRoute role="doctor">
+              <CalendarPage />
+            </PrivateRoute>
+          } />
+          <Route path="/doctor/paid-patients" element={
+            <PrivateRoute role="doctor">
+              <DoctorPaidPatients />
+            </PrivateRoute>
+          } />
+          <Route path="/doctor/documents" element={
+            <PrivateRoute role="doctor">
+              <DocumentsPage />
+            </PrivateRoute>
+          } />
+          <Route path="/doctor/patient-details/:appointmentId" element={
+            <PrivateRoute role="doctor">
+              <DoctorPatientDetailsPage />
+            </PrivateRoute>
+          } />
 
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>

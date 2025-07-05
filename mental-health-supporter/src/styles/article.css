@@ -9,19 +9,33 @@
     --text: #333;
     --text-light: #6c757d;
   }
-  
+    body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text);
+    background-color: #5c6bc0 !important;
+  }
+  .article-header {
+  padding: 2rem;
+  text-align: center;
+  color: white;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.article-header h2 {
+  margin-top: 10px;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
   * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
   }
   
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-    color: var(--text);
-    background-color: #f5f7fa;
-  }
+
   
   .article-container {
     max-width: 900px;
@@ -34,9 +48,9 @@
   
   /* Enhanced Header */
   .article-header {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    background: #5c6bc0;
     color: white;
-    padding: 2.5rem 2rem;
+    /* padding: 2.5rem 2rem; */
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -67,23 +81,23 @@
     position: relative;
   }
   
-  .user-greeting {
+  /* .user-greeting {
     background: rgba(255, 255, 255, 0.2);
     display: inline-block;
     padding: 0.5rem 1.5rem;
     border-radius: 50px;
     backdrop-filter: blur(5px);
     position: relative;
-  }
+  } */
   
-  .welcome {
+  /* .welcome {
     opacity: 0.8;
     margin-right: 0.5rem;
-  }
+  } */
   
-  .username {
+  /* .username {
     font-weight: 600;
-  }
+  } */
   
   /* Breathing Exercise Section */
   .breathing-exercise {
@@ -205,11 +219,11 @@
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
   }
   
-  .progress-container {
+  /* .progress-container {
     margin-top: 1rem;
-  }
+  } */
   
-  .progress-bar {
+  /* .progress-bar {
     height: 12px;
     background: #e9ecef;
     border-radius: 6px;
@@ -221,24 +235,24 @@
     height: 100%;
     border-radius: 6px;
     transition: width 0.5s ease, background-color 0.5s ease;
-  }
-  
+  } */
+/*   
   .progress-labels {
     display: flex;
     justify-content: space-between;
     font-size: 0.8rem;
     color: var(--text-light);
     margin-top: 0.3rem;
-  }
+  } */
   
-  .anger-value {
+  /* .anger-value {
     text-align: center;
     font-size: 1.2rem;
     font-weight: 600;
     margin-top: 0.5rem;
     color: var(--text);
-  }
-  
+  } */
+/*   
   .episode-display {
     background: #f1f8fe;
     padding: 0.5rem;
@@ -247,14 +261,14 @@
     margin: 0.5rem 0 1.5rem;
     font-weight: 600;
     color: var(--primary);
-  }
+  } */
   
-  .triggers-list {
+  /* .triggers-list {
     list-style-type: none;
     margin-top: 0.5rem;
-  }
+  } */
   
-  .triggers-list li {
+  /* .triggers-list li {
     background: #f8f9fa;
     padding: 0.8rem;
     margin: 0.5rem 0;
@@ -271,7 +285,7 @@
   .trigger-icon {
     margin-right: 0.8rem;
     font-size: 1.2rem;
-  }
+  } */
   
   /* Coping Strategies Section */
   .personalized-tips {
@@ -359,8 +373,8 @@
   .professional-help {
     background: linear-gradient(135deg, #f5f7fa, #e4e8eb);
     border-radius: 12px;
-    padding: 2rem;
-    margin: 2rem;
+    /* padding: 2rem; */
+    /* margin: 2rem; */
   }
   
   .help-content {
@@ -413,7 +427,7 @@
   }
   
   .resource-button.therapist {
-    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    background: #5c6bc0;
     color: white;
   }
   
@@ -433,7 +447,7 @@
   }
   
   /* Mood Tracker Section */
-  .mood-tracker {
+  /* .mood-tracker {
     background: white;
     border-radius: 12px;
     padding: 2rem;
@@ -443,8 +457,8 @@
   .tracker-container {
     margin-top: 1.5rem;
   }
-  
-  .mood-chart {
+   */
+  /* .mood-chart {
     background: #f8f9fa;
     border-radius: 10px;
     padding: 1.5rem;
@@ -453,9 +467,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-  }
+  } */
   
-  .chart-placeholder {
+  /* .chart-placeholder {
     color: var(--text-light);
     text-align: center;
   }
@@ -478,7 +492,7 @@
   .tracker-button:hover {
     background: var(--secondary);
     transform: translateY(-2px);
-  }
+  } */
   
   /* Footer */
   .article-footer {
@@ -551,12 +565,12 @@
 
 /* Updated stop breathing button color */
 .stop-breathing {
-    background: #6e8efb;
+    background: #5c6bc0;
     color: white;
   }
   
   .stop-breathing:hover {
-    background: #5a7df4;
+    background: #5c6bc0;
   }
   
   /* Popup styles */
@@ -617,7 +631,7 @@
   }
   
   .popup-close {
-    background: #6e8efb;
+    background: #5c6bc0;
     color: white;
     border: none;
     padding: 0.8rem 1.5rem;
@@ -631,7 +645,7 @@
     background: #5a7df4;
   }
   
-  /* Mood chart styles */
+  /* Mood chart styles
   .chart-bars {
     display: flex;
     justify-content: space-around;
@@ -690,7 +704,7 @@
     background: #6e8efb;
     color: white;
     border-color: #6e8efb;
-  }
+  } */
   
   /* Footer animations */
   .footer-animation {
@@ -718,7 +732,7 @@
   /* Add these new styles to your existing CSS */
 
 /* Progress circles for mood tracker */
-.progress-circles {
+/* .progress-circles {
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -769,7 +783,7 @@
     font-size: 0.7rem;
     color: #6c757d;
     margin-top: 0.2rem;
-  }
+  } */
   
   /* Footer with quote */
   .article-footer {
@@ -929,3 +943,58 @@
     min-width: 24px;
     text-align: center;
   }
+
+  .disorder-intro {
+  max-width: 800px;
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.intro-text {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: #444;
+}
+
+.intro-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.1);
+}
+.disorder-detailed-intro {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.detailed-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.detailed-paragraph {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #333;
+  margin-bottom: 1.5rem;
+  text-align: justify;
+}
+
+.detailed-image {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.detailed-image img {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  object-fit: contain;
+}

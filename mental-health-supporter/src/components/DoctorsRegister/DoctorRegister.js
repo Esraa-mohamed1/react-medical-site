@@ -36,14 +36,32 @@ const DoctorRegister = () => {
     };
 
     const handleFileChange = (e) => {
-        setDegreeFile(e.target.files[0]);
-        if (errors.degreeFile) setErrors(prev => ({ ...prev, degreeFile: null }));
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const allowedTypes = ['application/pdf', 'image/jpg', 'image/jpeg', 'image/png', 'image/webp'];
+
+        if (!allowedTypes.includes(file.type)) {
+            setErrors(prev => ({
+                ...prev,
+                degreeFile: 'Only image files and PDFs are allowed.',
+            }));
+            setDegreeFile(null); // Optionally clear the file
+            return;
+        }
+
+        setDegreeFile(file);
+        if (errors.degreeFile) {
+            setErrors(prev => ({ ...prev, degreeFile: null }));
+        }
     };
+
 
     const validateStep1 = () => {
         const newErrors = {};
         if (!formData.full_name.trim()) newErrors.full_name = 'Full name is required';
         if (!formData.username.trim()) newErrors.username = 'Username is required';
+        else if(formData.username.includes(' ')) newErrors.username = 'Username cannot contain spaces';
         if (!formData.email.trim()) newErrors.email = 'Email is required';
         else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = 'Email is invalid';
         if (!formData.password) newErrors.password = 'Password is required';
@@ -87,22 +105,43 @@ const DoctorRegister = () => {
             Swal.fire({
                 icon: 'success',
                 title: 'Registration Successful!',
-                text: 'Your application has been submitted for review.',
-                timer: 3000,
-                showConfirmButton: false,
+                text: 'Admin must approve your account before you can log in.',
+                confirmButtonText: 'OK',
+            }).then(() => {
+                navigate('/login');
             });
-            setTimeout(() => navigate('/login'), 3000);
         } catch (error) {
             const apiErrors = error.response?.data || {};
             const formattedErrors = {};
+            let errorMsg = '';
             Object.keys(apiErrors).forEach(key => {
-                formattedErrors[key] = Array.isArray(apiErrors[key]) ? apiErrors[key][0] : apiErrors[key];
+                let msg = Array.isArray(apiErrors[key]) ? apiErrors[key][0] : apiErrors[key];
+                formattedErrors[key] = typeof msg === 'string' ? msg : JSON.stringify(msg);
+                // Only show concise messages for email/username
+                if (key.toLowerCase().includes('email') && msg.toLowerCase().includes('already exists')) {
+                  errorMsg += `Email already exists.\n`;
+                } else if (key.toLowerCase().includes('username') && msg.toLowerCase().includes('already exists')) {
+                  errorMsg += `Username already exists.\n`;
+                } else {
+                  // Enhance field name for user-friendly message
+                  let fieldLabel = key.replace(/_/g, ' ')
+                    .replace('username', 'Username')
+                    .replace('email', 'Email')
+                    .replace('full name', 'Full Name')
+                    .replace('phone', 'Phone Number')
+                    .replace('specialization', 'Specialization')
+                    .replace('degreeFile', 'Academic Degree Document')
+                    .replace('clinic address', 'Clinic Address')
+                    .replace('city', 'City');
+                  errorMsg += `${fieldLabel}: ${formattedErrors[key]}\n`;
+                }
             });
+            errorMsg = errorMsg.trim();
             setErrors(formattedErrors);
             Swal.fire({
                 icon: 'error',
                 title: 'Registration Failed',
-                text: 'Please check the form for errors.',
+                text: errorMsg || 'Please check the form for errors.',
             });
         } finally {
             setIsSubmitting(false);
@@ -114,7 +153,23 @@ const DoctorRegister = () => {
             case 1:
                 return (
                     <div>
-                        <h3 className="step-title">Account Information</h3>
+                        <h3 className="step-title">
+<span className="doctor-title-icon" aria-hidden="true">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1.5em"
+      height="1.5em"
+      fill="currentColor"
+      viewBox="0 0 24 24"
+      role="img"
+      focusable="false"
+    >
+      <path d="M10 12c2.21 0 4-1.79 4-4s-1.79-4-4-4S6 5.79 6 8s1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+    </svg>
+  </span>
+  <span className="doctor-title-text">Create Account</span>
+</h3>
+
                         <div className="form-group">
                             <label>Full Name</label>
                             <input type="text" name="full_name" value={formData.full_name} onChange={handleChange} className={errors.full_name ? 'is-invalid' : ''} />
@@ -140,6 +195,7 @@ const DoctorRegister = () => {
                             <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} className={errors.confirmPassword ? 'is-invalid' : ''} />
                             {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword}</div>}
                         </div>
+                        {Object.keys(errors).length > 0 && <div className="alert alert-danger mt-2">Please fix the highlighted errors above.</div>}
                     </div>
                 );
             case 2:
@@ -168,9 +224,10 @@ const DoctorRegister = () => {
                         </div>
                         <div className="form-group">
                             <label>Academic Degree Document</label>
-                            <input type="file" onChange={handleFileChange} className={errors.degreeFile ? 'is-invalid' : ''} />
+                            <input type="file" accept="image/*,application/pdf" onChange={handleFileChange} className={errors.degreeFile ? 'is-invalid' : ''} />
                             {errors.degreeFile && <div className="invalid-feedback">{errors.degreeFile}</div>}
                         </div>
+                        {Object.keys(errors).length > 0 && <div className="alert alert-danger mt-2">Please fix the highlighted errors above.</div>}
                     </div>
                 );
             case 3:
@@ -190,6 +247,7 @@ const DoctorRegister = () => {
                         <div className="form-group">
                             <MapPicker onLocationSelect={({ lat, lng }) => setFormData(prev => ({ ...prev, latitude: lat, longitude: lng }))} />
                         </div>
+                        {Object.keys(errors).length > 0 && <div className="alert alert-danger mt-2">Please fix the highlighted errors above.</div>}
                     </div>
                 );
             default:

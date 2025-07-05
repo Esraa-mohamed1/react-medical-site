@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import CustomNavbar from '../components/Navbar';
 import Footer from "./../features/homePage/components/Footer";
+import DoctorSidebar from '../features/doctors/components/DoctorSidebar';
+import '../features/doctors/style/style.css';
 
 
 const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:8000/api/chat';
@@ -77,78 +79,61 @@ export default function DoctorChatRoomPage() {
 
   // Get patient name from room.patient if available
   const patientName = room?.patient?.full_name || '---';
+  const roomName = room?.name || 'Chat Room';
 
   return (
-    <>
-    <CustomNavbar />
-<div style={{  background: 'radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2)', minHeight: '100vh', width: '100vw', zIndex: 0}}>
-      <div className="chat-box" style={{width:'100%',maxWidth:600,minWidth:320,height:'100vh',margin:'0 auto',display:'flex',flexDirection:'column',background:'#f0f0f0',boxShadow:'0 0 8px rgba(0,0,0,0.1)'}}>
-        {/* Header with Back Button */}
-        <div style={{background: 'linear-gradient(to right, #37ECBA, #72AFD3)',color:'#fff',padding:'16px 16px',fontSize:20,fontWeight:'bold',display:'flex',alignItems:'center',width:'100%',borderBottom:'2px solid #ddd'}}>
-          <button onClick={() => window.history.back()} style={{background:'transparent',border:'none',color:'#fff',fontSize:40,cursor:'pointer',marginRight:16,fontWeight:'bolder'}}>
-            ←
-          </button>
-          {patientName}
-        </div>
-        {/* Messages */}
-        <div className="chat-messages" style={{flex:1,width:'100%',overflowY:'auto',padding:24,background: 'linear-gradient(to right, #37ECBA, #72AFD3)'}}>
-          {messages.map(msg => {
-            const senderId = typeof msg.sender === 'object' ? msg.sender.id : msg.sender;
-            const patientUserId = room?.patient?.user_id;
-            const doctorUserId = room?.doctor?.user_id;
-            const isPatient = senderId === patientUserId;
-            const isDoctor = senderId === doctorUserId;
-            return (
-              <div
-                key={msg.id}
-                style={{
-                  display: 'flex',
-                  width: '100%',
-                  justifyContent: isPatient ? 'flex-end' : 'flex-start',
-                  margin: '8px 0',
-                }}
-              >
-                <span
-                  style={{
-                    background: isPatient ? '#dcf8c6' : '#fff',
-                    color: '#222',
-                    borderRadius: '16px',
-                    padding: '10px 16px',
-                    maxWidth: '75%',
-                    wordBreak: 'break-word',
-                    boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)',
-                    border: isPatient ? '1px solid #b2f5ea' : '1px solid #e0e0e0',
-                    marginLeft: isPatient ? 'auto' : 0,
-                    marginRight: isPatient ? 0 : 'auto',
-                    alignSelf: 'flex-start',
-                    textAlign: 'left',
-                  }}
-                >
-                  {msg.text}
+    <div className="doctor-dashboard-bg">
+      <DoctorSidebar />
+      <div className="doctor-dashboard-main enhanced-main-container">
+        <div className="enhanced-main-card">
+          <div className="section-header mb-4">{roomName}</div>
+          <div className="chat-room-area" style={{ height: 500, maxHeight: 500, background: 'linear-gradient(135deg, #e0f7fa 60%, #e8eaf6 100%)', borderRadius: '1rem', padding: '2rem', marginBottom: '2rem', boxShadow: '0 2px 8px rgba(80,80,160,0.06)', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <div className="chat-messages" style={{width:'100%', minHeight: '100%', display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+              {messages.map((msg, idx) => {
+                const senderId = typeof msg.sender === 'object' ? msg.sender.id : msg.sender;
+                const isMe = senderId === user?.user_id;
+                return (
                   <div
+                    key={msg.id || idx}
                     style={{
-                      fontSize: 10,
-                      color: '#888',
-                      marginTop: 4,
-                      textAlign: 'right',
+                      display: 'flex',
+                      justifyContent: isMe ? 'flex-end' : 'flex-start',
+                      alignItems: 'flex-end',
+                      width: '100%'
                     }}
                   >
-                    {new Date(msg.timestamp).toLocaleTimeString()}
+                    <div
+                      style={{
+                        background: isMe ? 'linear-gradient(90deg, #b2dfdb 60%, #80cbc4 100%)' : '#fff',
+                        color: isMe ? '#222' : '#333',
+                        borderRadius: isMe ? '1.2rem 1.2rem 0.2rem 1.2rem' : '1.2rem 1.2rem 1.2rem 0.2rem',
+                        boxShadow: '0 2px 8px rgba(80,80,160,0.10)',
+                        padding: '0.75rem 1.25rem',
+                        maxWidth: '70%',
+                        fontSize: '1.05rem',
+                        marginBottom: '0.2rem',
+                        marginLeft: isMe ? 'auto' : undefined,
+                        marginRight: !isMe ? 'auto' : undefined,
+                        position: 'relative',
+                      }}
+                    >
+                      {msg.text}
+                      <div style={{ fontSize: '0.85rem', color: '#888', marginTop: 4, textAlign: isMe ? 'right' : 'left' }}>
+                        {msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString() : ''}
+                      </div>
+                    </div>
                   </div>
-                </span>
-              </div>
-            );
-          })}
-          <div ref={messagesEndRef} />
+                );
+              })}
+              <div ref={messagesEndRef} />
+            </div>
+          </div>
+          <form onSubmit={handleSend} style={{display:'flex',gap:8,padding:16,background: 'linear-gradient(to right, #37ECBA, #72AFD3)',borderTop:'1px solid #ccc',width:'100%',position:'sticky',bottom:0}}>
+            <input value={text} onChange={e=>setText(e.target.value)} placeholder="Type a message..." style={{flex:1,padding:12,borderRadius:20,border:'1px solid #ccc',outline:'none',fontSize:16}} />
+            <button type="submit" style={{background: 'linear-gradient(to right, #37ECBA, #72AFD3)',color:'#fff',border:'1px solid green',borderRadius:20,padding:'8px 24px',fontWeight:'bold',fontSize:16,cursor:'pointer'}}>Send</button>
+          </form>
         </div>
-        {/* Input */}
-        <form onSubmit={handleSend} style={{display:'flex',gap:8,padding:16,background: 'linear-gradient(to right, #37ECBA, #72AFD3)',borderTop:'1px solid #ccc',width:'100%',position:'sticky',bottom:0}}>
-          <input value={text} onChange={e=>setText(e.target.value)} placeholder="Type a message..." style={{flex:1,padding:12,borderRadius:20,border:'1px solid #ccc',outline:'none',fontSize:16}} />
-          <button type="submit" style={{background: 'linear-gradient(to right, #37ECBA, #72AFD3)',color:'#fff',border:'1px solid green',borderRadius:20,padding:'8px 24px',fontWeight:'bold',fontSize:16,cursor:'pointer'}}>Send</button>
-        </form>
       </div>
     </div>
-    <Footer />
-    </>
   );
 }

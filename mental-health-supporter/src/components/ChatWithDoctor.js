@@ -106,6 +106,16 @@ export default function ChatWithDoctor({ doctorId, patientId }) {
     }
   };
 
+  useEffect(() => {
+    if (!room) return;
+    // Mark all messages as read for this room
+    axios.post(
+      `${API_BASE}/messages/mark_room_read/`,
+      { room_id: room.id },
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    ).catch(() => {});
+  }, [room, accessToken]);
+
   const doctorName = room?.doctor?.full_name || '---';
 
   if (loading) {
@@ -115,7 +125,7 @@ export default function ChatWithDoctor({ doctorId, patientId }) {
         justifyContent: 'center',
         alignItems: 'center',
         height: '100vh',
-        background: '#075e54',
+        background: '#5c6bc0',
         color: '#fff'
       }}>
         Loading chat...
@@ -130,7 +140,7 @@ export default function ChatWithDoctor({ doctorId, patientId }) {
         justifyContent: 'center',
         alignItems: 'center',
         height: '100vh',
-        background: '#075e54',
+        background: '#5c6bc0',
         color: '#fff'
       }}>
         Unable to start chat.
@@ -142,9 +152,8 @@ export default function ChatWithDoctor({ doctorId, patientId }) {
     <>
       {/* <CustomNavbar /> */}
       <div style={{
-  background: 'radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2)',
+  background: '#A2AADB',
   minHeight: '100vh',
-  width: '100vw',
   zIndex: 0
 }}>
 
@@ -156,13 +165,13 @@ export default function ChatWithDoctor({ doctorId, patientId }) {
         margin: '0 auto',
         display: 'flex',
         flexDirection: 'column',
-        background: '#f0f0f0',
+        background: '#5c6bc0',
         boxShadow: '0 0 8px rgba(0,0,0,0.1)',
       }}>
 
         {/* Header with Back Button */}
         <div style={{
-  background: 'linear-gradient(to right, #37ECBA, #72AFD3)',
+  background: '#5c6bc0',
   color: '#fff',
   padding: '16px 16px',
   fontSize: 20,
@@ -193,7 +202,7 @@ export default function ChatWithDoctor({ doctorId, patientId }) {
   width: '100%',
   overflowY: 'auto',
   padding: 24,
-  background: 'linear-gradient(to right, #37ECBA, #72AFD3)'
+  background: 'seashell',
 }}>
 
         {messages.map(msg => {
@@ -221,7 +230,7 @@ export default function ChatWithDoctor({ doctorId, patientId }) {
                   maxWidth: '75%',
                   wordBreak: 'break-word',
                   boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)',
-                  border: isPatient ? '1px solid #b2f5ea' : '1px solid #e0e0e0',
+                  border: isPatient ? '1px solid #5c6bc0' : '1px solid white',
                   alignSelf: 'flex-start',
                   textAlign: 'left',
                   marginLeft: isPatient ? 'auto' : 0,
@@ -252,7 +261,7 @@ export default function ChatWithDoctor({ doctorId, patientId }) {
   display: 'flex',
   gap: 8,
   padding: 16,
-  background: 'linear-gradient(to right, #37ECBA, #72AFD3)',
+  background: '#5c6bc0',
   borderTop: '1px solid #ccc',
   width: '100%',
   position: 'sticky',
@@ -273,14 +282,14 @@ export default function ChatWithDoctor({ doctorId, patientId }) {
             }}
           />
           <button type="submit" style={{
-  background: 'linear-gradient(to right, #37ECBA, #72AFD3)',
-  color: '#fff',
-  border: '1px solid green',
+  background: 'whitesmoke',
+  color: '#5c6bc0',
+  border: '1px solid blue',
   borderRadius: 20,
   padding: '8px 24px',
   fontWeight: 'bold',
   fontSize: 16,
-  cursor: 'pointer'
+  cursor: 'pointer',
 }}>
   Send
 </button>

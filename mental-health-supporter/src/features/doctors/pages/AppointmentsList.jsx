@@ -7,6 +7,8 @@ import { FiCalendar, FiClock, FiUser, FiSearch, FiInbox, FiChevronLeft, FiChevro
 import debounce from 'lodash.debounce';
 import CustomNavbar from '../../../components/Navbar';
 import Footer from "../../homePage/components/Footer";
+import DoctorSidebar from '../components/DoctorSidebar';
+import '../../../features/doctors/style/style.css';
 
 
 const AppointmentsList = () => {
@@ -112,20 +114,18 @@ const AppointmentsList = () => {
 
   // Map fields directly from API response
   const getDisplayDate = (appointment) => {
-    if (!appointment?.appointment_date) return 'No date';
-    const date = new Date(appointment.appointment_date);
-    return date.toLocaleDateString();
+    return appointment?.date || 'No date';
   };
   const getDisplayTime = (appointment) => {
-    if (!appointment?.appointment_date) return 'No time';
-    const date = new Date(appointment.appointment_date);
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    if (!appointment?.start_time) return 'No time';
+    if (appointment.end_time) {
+      return `${appointment.start_time.slice(0,5)} - ${appointment.end_time.slice(0,5)}`;
+    }
+    return appointment.start_time.slice(0,5);
   };
   const getDisplayPatient = (appointment) => {
     if (!appointment?.patient_info) return 'Walk-in';
-    const { first_name, last_name, username } = appointment.patient_info;
-    if (first_name || last_name) return `${first_name} ${last_name}`.trim();
-    return username;
+    return appointment.patient_info.full_name || appointment.patient_info.username;
   };
   const getDisplayEmail = (appointment) => appointment.patient_info?.email || 'Not available';
   const getDisplayNotes = (appointment) => appointment.notes || '';
@@ -149,6 +149,7 @@ const AppointmentsList = () => {
         return 'bg-secondary';
     }
   };
+  
 
   const handleLogout = () => {
     localStorage.removeItem('loggedUser');
@@ -160,25 +161,27 @@ const AppointmentsList = () => {
   
   if (isLoading && filteredAppointments.length === 0) {
     return (
-      <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
-        <div className="spinner-border" style={{width: '3rem', height: '3rem', color: '#2A5C5F'}} role="status">
-          <span className="visually-hidden">Loading...</span>
+      <div className="doctor-dashboard-bg">
+        <DoctorSidebar />
+        <div className="doctor-dashboard-main enhanced-main-container">
+          <div className="enhanced-main-card d-flex justify-content-center align-items-center" style={{ minHeight: '60vh' }}>
+            <div className="spinner-border text-primary" style={{width: '3rem', height: '3rem'}} role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <>
-      <div style={{ background: 'radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2)', minHeight: '100vh', width: '100vw', zIndex: 0 }}>
-    <div className="min-vh-100">
-      <CustomNavbar />
-      <div className="container py-5">
-        {/* Summary & Filter */}
-        <div className="row mb-4">
-          <div className="col-lg-8 mx-auto d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+    <div className="doctor-dashboard-bg">
+      <DoctorSidebar />
+      <div className="doctor-dashboard-main enhanced-main-container">
+        <div className="enhanced-main-card">
+          <div className="section-header mb-4">My Appointments</div>
+          <div className="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 mb-4">
             <div>
-              <h1 className="fw-bold text-dark display-5 mb-1">My Appointments</h1>
               <p className="text-muted mb-0">
                 Total: <span className="fw-bold text-primary">{filteredAppointments.length}</span> appointments
               </p>
@@ -199,159 +202,81 @@ const AppointmentsList = () => {
               </select>
             </div>
           </div>
-        </div>
-        {/* Search Card */}
-        <div className="card shadow-sm border-0 rounded-4 mb-4 p-4 bg-white">
-          <div className="row align-items-center g-3">
-            <div className="col-12 col-md-6 mx-auto">
-              <div className="input-group">
-                <span className="input-group-text bg-white"><FiSearch /></span>
-                <input
-                  type="text"
-                  placeholder="Search appointments..."
-                  className="form-control rounded-end"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  style={{ boxShadow: 'none' }}
-                  aria-label="Search appointments"
-                />
-              </div>
+          <div className="section-card enhanced-section-card">
+            <div className="table-responsive">
+              <table className="records-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Patient</th>
+                    <th>Status</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredCurrentAppointments.length === 0 ? (
+                    <tr><td colSpan="6" className="text-center text-muted py-4">No appointments found.</td></tr>
+                  ) : filteredCurrentAppointments.map(appointment => {
+                    // Debug logs for status
+                    console.log('Appointment:', appointment);
+                    console.log('Appointment status:', appointment.status);
+                    return (
+                      <tr key={appointment.id}>
+                        <td>{getDisplayDate(appointment)}</td>
+                        <td>{getDisplayTime(appointment)}</td>
+                        <td>{getDisplayPatient(appointment)}</td>
+                        <td>
+                        <span className={`badge status-badge rounded-pill px-3 py-2 ${getStatusBadge(appointment.status)}`}>
+                          {appointment.status ? appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1) : 'Scheduled'}
+                        </span>
+                        </td>
+                        <td>{appointment.price ? `$${appointment.price}` : 'N/A'}</td>
+                        <td>
+                          <button 
+                            className="view-details-btn btn-sm"
+                            onClick={() => goToDetails(appointment.id)}
+                            aria-label="View appointment details"
+                            title="View Details"
+                          >
+                            View Details
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
+          </div>
+          {/* Pagination Controls */}
+          <div className="d-flex justify-content-center mt-4">
+            <nav>
+              <ul className="pagination">
+                <li className={`page-item${currentPage === 1 ? ' disabled' : ''}`}>
+                  <button className="page-link" onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>
+                    <FiChevronLeft />
+                  </button>
+                </li>
+                {[...Array(totalPages)].map((_, idx) => (
+                  <li key={idx} className={`page-item${currentPage === idx + 1 ? ' active' : ''}`}>
+                    <button className="page-link" onClick={() => setCurrentPage(idx + 1)}>{idx + 1}</button>
+                  </li>
+                ))}
+                <li className={`page-item${currentPage === totalPages ? ' disabled' : ''}`}>
+                  <button className="page-link" onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages}>
+                    <FiChevronRight />
+                  </button>
+                </li>
+              </ul>
+            </nav>
           </div>
         </div>
-        {/* Appointments Grid */}
-        {isLoading ? (
-          <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '50vh' }}>
-            <div className="spinner-border " style={{width: '3rem', height: '3rem', color: '#2A5C5F'}} role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          </div>
-        ) : filteredCurrentAppointments.length > 0 ? (
-          <>
-            <div className="row g-4">
-              {filteredCurrentAppointments.map(appointment => (
-                <div className="col-md-6 col-lg-4" key={appointment.id}>
-                  <div
-                    className="card h-100 border-0 rounded-4 shadow-sm bg-blue-50 position-relative appointment-card transition"
-                    style={{
-                      background: 'linear-gradient(135deg, #eaf3fb 0%, #f6fafd 100%)',
-                      transition: 'transform 0.18s cubic-bezier(.4,2,.6,1), box-shadow 0.18s',
-                      cursor: 'pointer',
-                    }}
-                    onMouseEnter={e => {
-                      e.currentTarget.style.transform = 'scale(1.025)';
-                      e.currentTarget.style.boxShadow = '0 8px 32px rgba(49,123,196,0.10)';
-                      e.currentTarget.style.background = 'linear-gradient(135deg, #d0e6fa 0%, #eaf3fb 100%)';
-                    }}
-                    onMouseLeave={e => {
-                      e.currentTarget.style.transform = 'scale(1)';
-                      e.currentTarget.style.boxShadow = '0 2px 8px rgba(49,123,196,0.08)';
-                      e.currentTarget.style.background = 'linear-gradient(135deg, #eaf3fb 0%, #f6fafd 100%)';
-                    }}
-                  >
-                    <div className="card-header bg-white border-0 rounded-top-4 d-flex align-items-center gap-3 mb-2" style={{minHeight: 56}}>
-                      <div className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style={{width: 40, height: 40, fontSize: 18}}>
-                        {appointment.patient_info ? getInitials(appointment.patient_info.username) : 'U'}
-                      </div>
-                      <div className="flex-grow-1">
-                        <h5 className="card-title fw-bold text-dark mb-0 fs-6">
-                          {getDisplayPatient(appointment)}
-                        </h5>
-                        <span className="text-muted small">Patient</span>
-                      </div>
-                      <div className="text-muted">
-                        <p className="d-flex align-items-center mb-2">
-                          <FiCalendar className="me-2" />
-                          <span>{getDisplayDate(appointment)}</span>
-                        </p>
-                        <p className="d-flex align-items-center mb-2">
-                          <FiClock className="me-2" />
-                          <span>{getDisplayTime(appointment)}</span>
-                        </p>
-                        <p className="d-flex align-items-center">
-                          <FiUser className="me-2" />
-                          <span>Appointment #{appointment.id}</span>
-                        </p>
-                        <p className="d-flex align-items-center">
-                          <span className="fw-semibold">Title:</span> {appointment.title}
-                        </p>
-                        <p className="d-flex align-items-center">
-                          <span className="fw-semibold">Payment Status:</span> {appointment.payment_status}
-                        </p>
-                      </div>
-                      {/* Status Update Section */}
-                      <div className="mt-2 mb-3">
-                        <label className="form-label small text-muted mb-1">Update Status:</label>
-                        <select
-                          className="form-select form-select-sm"
-                          value={appointment.status || 'scheduled'}
-                          onChange={(e) => handleStatusUpdate(appointment.id, e.target.value)}
-                          disabled={updatingStatus[appointment.id]}
-                          aria-label="Update appointment status"
-                        >
-                          <option value="scheduled">Scheduled</option>
-                          <option value="completed">Completed</option>
-                          <option value="cancelled">Cancelled</option>
-                        </select>
-                      </div>
-                      <div className="mt-auto">
-                        <button 
-                          className="btn btn-outline-primary btn-sm w-100"
-                          onClick={() => goToDetails(appointment.id)}
-                          aria-label="View appointment details"
-                          title="View Details"
-                        >
-                          View Details &rarr;
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            {/* Pagination Controls */}
-            {totalPages > 1 && (
-              <div className="d-flex justify-content-center mt-5">
-                <nav>
-                  <ul className="pagination">
-                    <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                      <button className="page-link" onClick={() => setCurrentPage(p => p - 1)} aria-label="Previous page">
-                        <FiChevronLeft />
-                      </button>
-                    </li>
-                    {Array.from({ length: totalPages }, (_, i) => (
-                      <li key={i + 1} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
-                        <button className="page-link" onClick={() => setCurrentPage(i + 1)} aria-label={`Go to page ${i + 1}`}>
-                          {i + 1}
-                        </button>
-                      </li>
-                    ))}
-                    <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-                      <button className="page-link" onClick={() => setCurrentPage(p => p + 1)} aria-label="Next page">
-                        <FiChevronRight />
-                      </button>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-            )}
-          </>
-        ) : (
-          <div className="text-center card shadow-sm p-5">
-            <FiInbox className="mx-auto h1 text-muted" style={{fontSize: '4rem'}}/>
-            <h3 className="mt-4 fw-bold text-dark">No appointments found</h3>
-            <p className="mt-2 text-muted">
-              {searchTerm ? `No appointments match your search for "${searchTerm}".` : "When you have appointments, they will show up here."}
-            </p>
-          </div>
-        )}
       </div>
     </div>
-
-    </div>
-              <Footer />
-</>
   );
 };
+
 
 export default AppointmentsList;

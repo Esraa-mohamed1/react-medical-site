@@ -5,7 +5,7 @@
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(226, 232, 240, 0.8);
     position: sticky;
-    color: var(--color-font) !important;
+    color: #5c6bc0 !important;
     top: 0;
     z-index: 50;
     transition: all 0.3s ease;
@@ -33,7 +33,7 @@
   .logoIcon {
     width: 40px;
     height: 40px;
-    background-color: var(--color-font);
+    background-color: #5c6bc0;
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -56,7 +56,7 @@
   .logoTitle {
     font-weight: 800;
     font-size: 1.5rem;
-    color:var(--color-font);
+    color:#5c6bc0;
     letter-spacing: -0.025em;
   }
   .nav {
@@ -83,7 +83,7 @@
   }
   
   .navLink:hover {
-    color: #0e5da7;
+    color: #5c6bc0;
     background: rgba(38, 147, 220, 0.05);
   }
   
@@ -94,7 +94,7 @@
     left: 50%;
     width: 0;
     height: 2px;
-    background: #031e69;
+    background: #5c6bc0;
     transition: all 0.3s ease;
     transform: translateX(-50%);
   }
@@ -105,7 +105,7 @@
   
   .ctaButton {
     display: none;
-    background: var(--color-font);
+    background: #5c6bc0;
     color: white;
     padding: 12px 24px;
     border-radius: 12px;

@@ -1,6 +1,6 @@
 .hero {
-  background: linear-gradient(to right, #37ECBA, #72AFD3);
-  padding: 3rem 1rem;
+  background: #5c6bc0;
+  padding: 2rem 1rem;
   text-align: center;
   width: 100%;
   box-sizing: border-box;
@@ -23,7 +23,7 @@
 .hero-stats {
   text-align: center !important;
   width: 100% !important;
-    color: #26767a;
+    color: white;
 
 }
 
@@ -31,7 +31,7 @@
 /* Keep all your existing hero styles the same */
 .hero-title {
   font-size: 2.5rem;
-  color: #26767a;
+  color: white;
   margin-bottom: 1rem;
   font-weight: 700;
   line-height: 1;
@@ -68,7 +68,7 @@
   .hero {
     position: static; /* Let hero scroll normally on mobile */
     padding: 2.5rem 1rem;
-  background: linear-gradient(to right, #37ECBA, #72AFD3);
+  background: rgba(255, 255, 255, 0.3);
 
   }
   
@@ -80,7 +80,8 @@
 
 @media (max-width: 480px) {
   .hero {
-  background: linear-gradient(to right, #37ECBA, #72AFD3);
+  background: rgba(255, 255, 255, 0.3);
+
 
   }
   

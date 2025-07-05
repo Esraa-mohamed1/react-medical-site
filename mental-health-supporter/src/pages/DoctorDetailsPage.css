@@ -1,286 +1,338 @@
-/* DoctorDetailsPage.css */
+/* === Doctor Details Page - Enhanced Professional Styling === */
 
-/* Layout */
 .doctorDetailsPage {
-  padding: 2rem;
-  width: 100%;
+  padding: 3rem 2rem;
   min-height: 100vh;
-  background: radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2);
+  background: linear-gradient(135deg, #5c6bc0 0%, #7e57c2 100%);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  overflow: hidden;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .doctorDetailsContainer {
-  position: relative;
-  z-index: 1;
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(15px);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(25px);
+  border-radius: 24px;
+  padding: 2.5rem;
   width: 100%;
-  padding: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  max-width: 1300px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  animation: fadeIn 0.8s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Header */
 .doctorHeader {
-  padding: 3rem;
-  border-bottom: 1px solid #e9ecef;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-radius: 20px 20px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Profile Info */
+/* Profile Section */
 .doctorProfile {
   display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
   gap: 3rem;
   align-items: center;
-  max-width: 1400px;
-  margin: 0 auto;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease;
 }
 
-.doctorImage {
-  width: 250px;
-  height: 250px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 6px solid white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+.doctorProfile:hover {
+  transform: translateY(-4px);
 }
 
 .imageContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
   position: relative;
 }
 
-.changePhotoOverlay {
-  position: absolute;
-  top: 35px;
-  left: 35px;
-  width: 250px;
-  height: 250px;
+.doctorImage {
+  width: 240px;
+  height: 240px;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.45);
-  color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.2s;
-  cursor: pointer;
-  font-size: 1.1rem;
-  z-index: 2;
+  object-fit: cover;
+  border: 5px solid #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
 }
 
-.imageContainerHover {
+.imageContainer:hover .doctorImage {
+  transform: scale(1.03);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+}
+
+.changePhotoOverlayy {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: 240px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  opacity: 0;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.imageContainer:hover .changePhotoOverlayy {
   opacity: 1;
 }
 
 .cameraIcon {
-  font-size: 2rem;
+  font-size: 1.8rem;
   margin-bottom: 0.3rem;
 }
 
+.doctorBasicInfo {
+  flex: 1;
+  text-align: left;
+  max-width: 600px;
+}
+
 .title {
-  margin: 0;
-  color: #2d3748;
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.4rem;
 }
 
 .subtitle {
-  margin: 0.75rem 0;
-  color: #4a5568;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 500;
+  color: #e0e0ff;
+  margin-top: 0.5rem;
 }
 
+.created {
+  font-size: 1rem;
+  color: #c0c8ff;
+  font-style: italic;
+  margin-top: 0.25rem;
+}
+
+/* Status Badge */
 .availabilityBadge {
-  margin-top: 1rem;
+  margin-top: 1.2rem;
 }
 
 .status {
-  padding: 0.5rem 1rem;
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
   border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
 .available {
-  background-color: #e7f5ea;
-  color: #0a8528;
+  background-color: #e6ffe9;
+  color: #15803d;
+  box-shadow: 0 2px 6px rgba(21, 128, 61, 0.2);
 }
 
 .unavailable {
-  background-color: #fee7e7;
-  color: #d32f2f;
+  background-color: #ffeaea;
+  color: #b91c1c;
+  box-shadow: 0 2px 6px rgba(185, 28, 28, 0.2);
 }
 
+/* Info Section */
 .doctorContent {
-  padding: 3rem;
-  max-width: 1400px;
-  margin: 0 auto;
+  padding-top: 3rem;
 }
 
 .infoSection {
-  margin-bottom: 3rem;
-  background-color: rgba(255, 255, 255, 0.25);
+  background-color: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
   padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .sectionTitle {
-  color: #333;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 2px solid #f0f0f0;
   font-size: 1.5rem;
   font-weight: 600;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 0.5rem;
 }
 
 .infoGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
 }
 
 .infoItem {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  padding: 1rem;
-  background-color: #f8f9fa;
-  border-radius: 6px;
-  transition: transform 0.2s;
+  gap: 0.4rem;
+  transition: 0.3s ease;
+  color: #f0f0ff;
 }
 
 .infoItem:hover {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 .label {
-  color: #666;
-  font-size: 0.9rem;
-}
-
-.value {
-  color: #2d3748;
-  font-size: 1.2rem;
+  font-size: 0.85rem;
+  color: #cbd5e1;
   font-weight: 500;
 }
 
+.value {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
 .editInput {
-  width: 100%;
-  padding: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  border: none;
   font-size: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  margin-top: 0.5rem;
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(4px);
+  background-color: rgba(255, 255, 255, 0.85);
+  color: #333;
+  outline: none;
 }
 
 /* Buttons */
+.actionButton,
+.cancelButton,
 .saveButton {
-  padding: 0.8rem 1rem;
-  background: linear-gradient(to right, #37ECBA, #72AFD3);
-  color: white;
   border: none;
+  padding: 0.75rem 1.2rem;
   border-radius: 30px;
   font-size: 1rem;
-  font-weight: bold;
-  box-shadow: 0 4px 12px rgba(114, 175, 211, 0.3);
+  font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: 0.3s ease;
 }
-
-.saveButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(114, 175, 211, 0.4);
-}
-
 
 .actionButton {
-  background-color: #e6f5ec;
-  color: #1e5631 !important;
-  border: 1px solid #a5d6a7;
-  border-radius: 50%;
-  font-size: 1.2rem;
-  padding: 0.6rem 0.8rem;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  transition: background 0.2s ease;
+  background-color: #ffffff;
+  color: #5c6bc0;
+  border: 1px solid #5c6bc0;
 }
 
 .cancelButton {
-  background-color: #e6f5ec;
-  color: #1e5631 !important;
-  border: 1px solid #a5d6a7;
-  border-radius: 50%;
-  font-size: 1.2rem;
-  padding: 0.6rem 0.8rem;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  transition: background 0.2s ease;
+  background-color: #ffffff;
+  color: #d32f2f;
+  border: 1px solid #d32f2f;
+}
+
+.saveButton {
+  background: linear-gradient(90deg, #5c6bc0, #7e57c2);
+  color: white;
+  box-shadow: 0 6px 14px rgba(92, 107, 192, 0.5);
+}
+
+.saveButton:hover {
+  background: linear-gradient(90deg, #4e5ab8, #6d4bb8);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(92, 107, 192, 0.7);
 }
 
 .cancelButton:hover {
-  background-color: #c8e6c9;
+  background-color: #fbe9e7;
+  color: #c62828;
+  border-color: #c62828;
 }
 
-
-.buttonContainer-en {
+/* Layout for Action Buttons */
+.buttonContainer-en,
+.buttonContainer-ar {
   position: absolute;
-  top: 2rem;
-  right: 2rem;
+  top: 1.5rem;
   display: flex;
   gap: 1rem;
+}
+
+.buttonContainer-en {
+  right: 1.5rem;
 }
 
 .buttonContainer-ar {
-  position: absolute;
-  top: 2rem;
-  left: 2rem;
+  left: 1.5rem;
+}
+
+/* Icon Button Style */
+.iconButton {
+  font-size: 1.2rem;
+  padding: 0.6rem;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   display: flex;
-  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
 }
 
-.headerContainer {
-  position: relative;
-  width: 100%;
+.iconButton:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
 }
 
+/* Utility States */
 .loading,
 .error,
 .notFound {
+  font-size: 1.3rem;
+  padding: 3rem;
   text-align: center;
-  padding: 2rem;
+  color: #ffffff;
+}
+
+.purpleButton {
   font-size: 1.2rem;
+  padding: 0.6rem 0.9rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5c6bc0, #7e57c2);
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 12px rgba(92, 107, 192, 0.4);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
 }
 
-.loading {
-  color: #666;
-}
-
-.error {
-  color: #d32f2f;
-}
-
-.notFound {
-  color: #666;
-}
-
-.created {
-  font-size: 0.875rem;
-  color: rgba(45, 55, 72, 0.7);
-  margin-top: 0.5rem;
+.purpleButton:hover {
+  background: linear-gradient(135deg, #4e5ab8, #6d4bb8);
+  box-shadow: 0 6px 18px rgba(92, 107, 192, 0.6);
+  transform: translateY(-2px);
 }

@@ -84,60 +84,6 @@ export default function HomePage() {
         <div className={styles.section}>
           <HeroSection />
         </div>
-        <div className={styles.section} style={{ display: 'flex', justifyContent: 'center', gap: '2rem', margin: '2rem 0' }}>
-          <Link to="/ai-chat" style={{ textDecoration: 'none' }}>
-            <button
-              style={{
-                padding: '1rem 2rem',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '12px',
-                fontWeight: 'bold',
-                fontSize: '1.1rem',
-                cursor: 'pointer',
-                boxShadow: '0 4px 15px rgba(102, 126, 234, 0.3)',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.transform = 'translateY(-2px)';
-                e.target.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.4)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.transform = 'translateY(0)';
-                e.target.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.3)';
-              }}
-            >
-              💬 Chat with AI Assistant
-            </button>
-          </Link>
-          <Link to="/doctors-list" style={{ textDecoration: 'none' }}>
-            <button
-              style={{
-                padding: '1rem 2rem',
-                background: 'linear-gradient(135deg, #37ECBA 0%, #72AFD3 100%)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '12px',
-                fontWeight: 'bold',
-                fontSize: '1.1rem',
-                cursor: 'pointer',
-                boxShadow: '0 4px 15px rgba(55, 236, 186, 0.3)',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.transform = 'translateY(-2px)';
-                e.target.style.boxShadow = '0 6px 20px rgba(55, 236, 186, 0.4)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.transform = 'translateY(0)';
-                e.target.style.boxShadow = '0 4px 15px rgba(55, 236, 186, 0.3)';
-              }}
-            >
-              👨‍⚕️ Find Doctors
-            </button>
-          </Link>
-        </div>
         <div className={styles.section}>
           <DoctorsSection />
         </div>

@@ -1,33 +1,108 @@
-/* PatientDetailsPage.css - DoctorDetailsPage Color Scheme */
+/* PatientDetailsPage.css - Enhanced Styling */
 
-.containerr {
-  padding: 2rem;
-  width: 100%;
+.patient-details-page {
   min-height: 100vh;
-  background: radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2);
+  background: #5c6bc0;
+
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  overflow: hidden;
-  position: relative;
+  padding: 2rem;
 }
 
 .card {
-  background: radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2);
+  background: #5c6bc0;
+
   backdrop-filter: blur(15px);
   border-radius: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   border: 1px solid rgba(255, 255, 255, 0.3);
   overflow: hidden;
 }
 
+/* Loading and Error States */
+.loading-container,
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 3rem;
+  height: 3rem;
+  border: 3px solid #e2e8f0;
+  border-top: 3px solid #37ECBA;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-spinner p {
+  color: #718096;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.error-content {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.error-content h2 {
+  color: #e53e3e;
+  margin-bottom: 1rem;
+}
+
+.error-content p {
+  color: #718096;
+  margin-bottom: 1.5rem;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #37ECBA 0%, #72AFD3 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(55, 236, 186, 0.3);
+}
+
+/* Header Section */
 .header {
-  background: radial-gradient(circle at top left, #c6f4f1, #d4f1f7, #bdeff2);
+  background: #5c6bc0;
+
   color: #2d3748;
   padding: 2.5rem;
   position: relative;
   border-radius: 20px 20px 0 0;
+}
+
+.header, .mainContent {
+  width: 100%;
 }
 
 .buttonsContainer-en {
@@ -35,7 +110,7 @@
   top: 1rem;
   right: 1rem;
   display: flex;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
 .buttonsContainer-ar {
@@ -43,7 +118,7 @@
   top: 1rem;
   left: 1rem;
   display: flex;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
 .profileSection {
@@ -52,13 +127,59 @@
   align-items: center;
 }
 
+/* Avatar Section */
+.imageContainer {
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.imageContainer.editable:hover {
+  transform: scale(1.05);
+}
+
 .avatar {
   width: 180px;
   height: 180px;
   border-radius: 50%;
-  border: 6px solid white;
+  border: 6px solid rgba(255, 255, 255, 0.8);
   object-fit: cover;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.changePhotoOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
+  width: 80px;
+  height: 80px;
+}
+
+.changePhotoOverlay span {
+  text-align: center;
+}
+
+.imageContainer.editable:hover .changePhotoOverlay {
+  opacity: 1;
+}
+
+.cameraIcon {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .profileInfo {
@@ -69,93 +190,107 @@
   font-size: 2.5rem;
   font-weight: 700;
   margin: 0 0 0.5rem 0;
-  color: #2d3748;
+  color:white;
+
 }
 
 .created {
   font-size: 0.875rem;
-  color: rgba(45, 55, 72, 0.7);
+  /* color: white; */
+
   margin-top: 0.5rem;
 }
 
+/* Main Content */
 .mainContent {
   padding: 2rem;
 }
 
 .section {
-  background-color: rgba(255, 255, 255, 0.25);
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 16px;
   padding: 2rem;
   margin-bottom: 1.5rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 .sectionTitle {
   font-size: 1.5rem;
-  color: #333;
+  color: #2d3748;
   font-weight: 600;
   margin-bottom: 1.5rem;
   padding-bottom: 0.75rem;
-  border-bottom: 2px solid #f0f0f0;
+  border-bottom: 2px solid #e2e8f0;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
+}
+
+.section-icon {
+  color: #5c6bc0;
+  font-size: 1.25rem;
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 .field {
-  background-color: #f8f9fa;
-  padding: 1rem;
-  border-radius: 6px;
-  transition: transform 0.2s;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 1.25rem;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .field:hover {
   transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .label {
-  color: #666;
-  font-size: 0.9rem;
+  color: #718096;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .value {
-  color: #2d3748;
-  font-size: 1.2rem;
+  color: black ;
+  font-size: 1.1rem;
   font-weight: 500;
+  line-height: 1.4;
 }
 
 .input {
   width: 100%;
-  padding: 0.5rem;
+  padding: 0.75rem;
   font-size: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  margin-top: 0.5rem;
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(4px);
-}
-
-.button {
-  padding: 0.75rem 1.5rem;
+  border: 2px solid #e2e8f0;
   border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  font-size: 0.875rem;
-  font-weight: 500;
-  transition: all 0.2s;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+  font-family: inherit;
 }
 
 .editButton {
   padding: 0.8rem 1rem;
-  background: linear-gradient(to right, #37ECBA, #72AFD3);
+  background: #5c6bc0;
+
   color: white;
   border: none;
   border-radius: 30px;
@@ -169,39 +304,75 @@
 /* Buttons */
 .saveButton {
   padding: 0.8rem 1rem;
-  background: linear-gradient(to right, #37ECBA, #72AFD3);
+  background: #5c6bc0;
+
   color: white;
   border: none;
   border-radius: 30px;
   font-size: 1rem;
   font-weight: bold;
-  box-shadow: 0 4px 12px rgba(114, 175, 211, 0.3);
+  box-shadow: 0 4px 12px #5c6bc0;
+
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.saveButton:hover {
+.editButton {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.editButton:hover {
+  background: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(114, 175, 211, 0.4);
+  box-shadow: 0 6px 18px #5c6bc0;
+
 }
 
+.saveButton {
+  background: #38a169;
+  color: white;
+}
+
+.saveButton:hover:not(:disabled) {
+  background: #2f855a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(56, 161, 105, 0.3);
+}
+
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
 
 .cancelButton {
   padding: 0.8rem 1rem;
-  background: linear-gradient(to right, #37ECBA, #72AFD3);
+  background: #c53030;
+
   color: white;
   border: none;
   border-radius: 30px;
   font-size: 1rem;
   font-weight: bold;
-  box-shadow: 0 4px 12px rgba(114, 175, 211, 0.3);
+  box-shadow: 0 4px 12px #5c6bc0;
+
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .cancelButton:hover {
+  background: #c53030;
+  color: white;
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(114, 175, 211, 0.4);
+  box-shadow: 0 6px 18px #5c6bc0;
+
 }
 .imageContainer {
   display: flex;
@@ -211,41 +382,103 @@
   position: relative;
 }
 
-.changePhotoOverlay {
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  width: 170px;
-  height: 170px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.45);
-  color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.2s;
-  cursor: pointer;
-  font-size: 1.1rem;
-  z-index: 2;
+.btn-icon {
+  font-size: 1rem;
 }
 
-.imageContainerHover {
-  opacity: 1;
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .patient-details-page {
+    padding: 1.5rem;
+  }
+  
+  .profileSection {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
+  }
+  
+  .name {
+    font-size: 2rem;
+  }
+  
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }
 
-.cameraIcon {
-  font-size: 2rem;
-  margin-bottom: 0.3rem;
+@media (max-width: 768px) {
+  .patient-details-page {
+    padding: 1rem;
+  }
+  
+  .header {
+    padding: 1.5rem;
+  }
+  
+  .mainContent {
+    padding: 1.5rem;
+  }
+  
+  .section {
+    padding: 1.5rem;
+  }
+  
+  .avatar {
+    width: 140px;
+    height: 140px;
+  }
+  
+  .name {
+    font-size: 1.75rem;
+  }
+  
+  .buttonsContainer-en,
+  .buttonsContainer-ar {
+    position: static;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  
+  .editButton,
+  .saveButton,
+  .cancelButton {
+    padding: 0.625rem 1rem;
+    font-size: 0.8rem;
+  }
 }
 
-.statusMessage {
-  text-align: center;
-  padding: 2rem;
-  font-size: 1.2rem;
-}
-
-.statusMessage.error {
-  color: #d32f2f;
+@media (max-width: 480px) {
+  .patient-details-page {
+    padding: 0.5rem;
+  }
+  
+  .header {
+    padding: 1rem;
+  }
+  
+  .mainContent {
+    padding: 1rem;
+  }
+  
+  .section {
+    padding: 1rem;
+  }
+  
+  .avatar {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .name {
+    font-size: 1.5rem;
+  }
+  
+  .field {
+    padding: 1rem;
+  }
+  
+  .grid {
+    gap: 1rem;
+  }
 }

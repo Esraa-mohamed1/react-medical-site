@@ -1,14 +1,13 @@
 import React from 'react';
-import { Card, ListGroup, Badge } from 'react-bootstrap';
+import { Card, Badge } from 'react-bootstrap';
 import { motion } from 'framer-motion';
-import { FaMapMarkerAlt, FaClock, FaMoneyBillWave, FaProcedures, FaWifi } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaMoneyBillWave, FaProcedures, FaExternalLinkAlt } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 
 const ClinicDetails = ({ clinic }) => {
   const { t } = useTranslation();
 
   const address = `${clinic?.clinic_address}, ${clinic.city}` || '';
-  const openingHours = clinic?.openingHours || '';
   const fees = clinic?.fees || '';
   const services = Array.isArray(clinic?.services)
     ? clinic.services
@@ -20,73 +19,134 @@ const ClinicDetails = ({ clinic }) => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.1 }}
-      dir="rtl"
+      transition={{ duration: 0.3 }}
     >
-      <Card className="border-0 shadow-sm mb-4 text-start">
+      <Card className="border-0" style={{
+        borderRadius: '12px',
+        background: 'hsl(240, 6%, 97%)',
+        boxShadow: '0 4px 20px rgba(109, 90, 207, 0.08)',
+        overflow: 'hidden'
+      }}>
         <Card.Body className="p-4">
-          <h4 className="section-title">{t('clinicDetails.title')}</h4>
+          <div className="d-flex align-items-center mb-4">
+            <FaProcedures className="me-2" size={20} style={{ color: '#6D5ACF' }} />
+            <h4 className="m-0" style={{
+              color: '#4D3ACF',
+              fontWeight: '600',
+              fontSize: '1.25rem'
+            }}>
+              Clinic Information
+            </h4>
+          </div>
 
-          <ListGroup variant="flush" className="mb-4">
-            <ListGroup.Item className="d-flex align-items-center py-3 border-bottom flex-row-reverse">
-              <div className="icon-container ms-3">
-                <FaMapMarkerAlt size={20} style={{ color: 'var(--primary-purple)' }} />
-              </div>
-              <div>
-                <h6 className="mb-1 fw-bold">{t('clinicDetails.addressTitle')}</h6>
-                <p className="mb-0 text-muted">{address}</p>
+          {/* Address Section */}
+          <div className="mb-4">
+            <div className="d-flex align-items-start">
+              <FaMapMarkerAlt className="me-3 mt-1" size={18} style={{ color: '#6D5ACF', minWidth: '20px' }} />
+              <div style={{ flex: 1 }}>
+                <div className="d-flex align-items-center">
+                  <h6 className="mb-1" style={{ 
+                    color: '#555',
+                    fontSize: '0.95rem',
+                    fontWeight: '600'
+                  }}>
+                    Clinic Address
+                  </h6>
+                </div>
+                <p className="mb-1" style={{ 
+                  color: '#4D3ACF',
+                  fontWeight: '500'
+                }}>
+                  {address || 'Not specified'}
+                </p>
                 <a
                   href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`}
-                  className="small"
-                  style={{ color: '#2A5C5F' }}
+                  style={{
+                    color: '#6D5ACF',
+                    fontSize: '0.85rem',
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px'
+                  }}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {t('clinicDetails.viewOnMap')}
+                  <span>View on Map</span>
+                  <FaExternalLinkAlt size={12} />
                 </a>
               </div>
-            </ListGroup.Item>
+            </div>
+          </div>
 
-            <ListGroup.Item className="d-flex align-items-center py-3 border-bottom flex-row-reverse">
-              <div className="icon-container ms-3">
-                <FaClock size={20} style={{ color: 'var(--primary-purple)' }} />
+          {/* Consultation Fee */}
+          <div className="mb-4">
+            <div className="d-flex align-items-start">
+              <FaMoneyBillWave className="me-3 mt-1" size={18} style={{ color: '#6D5ACF', minWidth: '20px' }} />
+              <div style={{ flex: 1 }}>
+                <div className="d-flex align-items-center">
+                  <h6 className="mb-1" style={{ 
+                    color: '#555',
+                    fontSize: '0.95rem',
+                    fontWeight: '600'
+                  }}>
+                    Consultation Fee
+                  </h6>
+                </div>
+                <p className="mb-1" style={{ 
+                  color: '#4D3ACF',
+                  fontWeight: '500',
+                  fontSize: '1.1rem'
+                }}>
+                  {fees || 'Not specified'}
+                </p>
+                <small style={{ 
+                  color: '#888',
+                  fontSize: '0.8rem'
+                }}>
+                  (Price may vary based on service)
+                </small>
               </div>
-              <div>
-                <h6 className="mb-1 fw-bold">{t('clinicDetails.workingHours')}</h6>
-                <p className="mb-0 text-muted">{openingHours}</p>
-              </div>
-            </ListGroup.Item>
+            </div>
+          </div>
 
-            <ListGroup.Item className="d-flex align-items-center py-3 flex-row-reverse">
-              <div className="icon-container ms-3">
-                <FaMoneyBillWave size={20} style={{ color: 'var(--primary-purple)' }} />
-              </div>
-              <div>
-                <h6 className="mb-1 fw-bold">{t('clinicDetails.consultationFee')}</h6>
-                <p className="mb-0 text-muted">{fees}</p>
-                <small className="text-muted">{t('clinicDetails.feeNote')}</small>
-              </div>
-            </ListGroup.Item>
-          </ListGroup>
-
-          <div className="mt-4">
-            <h6 className="fw-bold mb-3 d-flex align-items-center justify-content-end">
-              <FaProcedures className="ms-2" style={{ color: 'var(--primary-purple)' }} />
-              {t('clinicDetails.availableServices')}
-            </h6>
-            <div className="d-flex flex-wrap gap-2 justify-content-end">
-              {services.map((service, index) => (
-                <Badge
-                  key={index}
-                  pill
-                  bg="light"
-                  text="primary"
-                  className="px-3 py-2 d-flex align-items-center flex-row-reverse"
-                >
-                  <FaWifi className="ms-1" size={12} />
-                  {service}
-                </Badge>
-              ))}
+          {/* Available Services */}
+          <div>
+            <div className="d-flex align-items-center mb-3">
+              <FaProcedures className="me-3" size={18} style={{ color: '#6D5ACF' }} />
+              <h6 className="fw-bold m-0" style={{ 
+                color: '#555',
+                fontSize: '0.95rem'
+              }}>
+                Available Services
+              </h6>
+            </div>
+            <div className="d-flex flex-wrap gap-2">
+              {services.length > 0 ? (
+                services.map((service, index) => (
+                  <motion.div
+                    key={index}
+                    whileHover={{ y: -2 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Badge
+                      pill
+                      className="px-3 py-1"
+                      style={{
+                        background: 'rgba(109, 90, 207, 0.08)',
+                        color: '#4D3ACF',
+                        fontWeight: '500',
+                        fontSize: '0.85rem',
+                        border: '1px solid rgba(109, 90, 207, 0.15)'
+                      }}
+                    >
+                      {service.trim()}
+                    </Badge>
+                  </motion.div>
+                ))
+              ) : (
+                <p className="text-muted small mb-0">No services listed</p>
+              )}
             </div>
           </div>
         </Card.Body>

@@ -3,12 +3,16 @@
   top: 0;
   z-index: 999;
   /* background: linear-gradient(90deg, #6a11cb, #8e44ad); */
+  background-color: #f6f6f9 !important;
   padding: 15px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   color: white;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); */
+}
+.navBar {
+    background-color: #f6f6f9 !important;
 }
 
 .custom-navbar .logo {
@@ -52,17 +56,40 @@
 }
 
 .custom-dropdown-toggle {
-  border: 1px solid #28a745; /* Outline color matching success text color */
+  border: 1px solid #5c6bc0;; /* Outline color matching success text color */
   border-radius: 8px; /* Optional: To make the corners rounded */
   transition: all 0.3s ease;
 }
 
 .custom-dropdown-toggle:focus {
   outline: none; /* Remove default outline */
-  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.4); /* Light green focus box-shadow */
+  box-shadow: 0 0 0 3px #5c6bc0;; /* Light green focus box-shadow */
 }
 
 .custom-dropdown-toggle:hover {
-  border-color: #218838; /* Darker green on hover */
+  border-color: #5c6bc0;; /* Darker green on hover */
+}
+
+/* Remove dark background from Nav.Link when clicked or active */
+.navbar .nav-link,
+.navbar .nav-link:focus,
+.navbar .nav-link:active,
+.navbar .nav-link.active,
+.navbar .nav-link.show {
+  background-color: transparent !important;
+  color: #5c6bc0 !important; /* or your desired primary color */
+}
+
+.dropdown-menu .dropdown-item:focus,
+.dropdown-menu .dropdown-item:active,
+.dropdown-menu .dropdown-item.active {
+  background-color: transparent !important;
+  color: #5c6bc0 !important;
+}
+
+
+.classbrand {
+   background-color: transparent !important;
+  color: #5c6bc0 !important; /* or your desired primary color */
 }
 

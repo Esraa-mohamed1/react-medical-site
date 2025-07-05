@@ -84,13 +84,13 @@
   }
   
   .mood-option.selected {
-    background: #6e8efb;
+    background: #5c6bc0;
     color: white;
-    border-color: #6e8efb;
+    border-color: #5c6bc0;
   }
   
   .tracker-button {
-    background: #6e8efb;
+    background: #5c6bc0;
     color: white;
     border: none;
     /* padding: 0.8rem 1.5rem; */
@@ -105,7 +105,7 @@
   }
   
   .tracker-button:hover {
-    background: #5a7df4;
+    background: #5c6bc0;
     transform: translateY(-2px);
   }
   
