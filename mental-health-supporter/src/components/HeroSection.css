@@ -1,80 +1,139 @@
- @import 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css';
-
 .hero-section {
-  position: relative;
-  background: linear-gradient(135deg, #b14ae5, #60065d);
-  padding: 120px 20px;
-  overflow: hidden;
+  background: linear-gradient(135deg, #6D5ACF 0%, #4D3ACF 100%);
+  color: white;
+  padding: 5rem 0;
+  border-radius: 12px;
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
 }
 
 .hero-content {
-  max-width: 700px;
-  margin: auto;
-  z-index: 2;
-  position: relative;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4rem;
 }
 
-.hero-button {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 12px 30px;
-  background: white;
-  color: #6a11cb;
-  font-weight: bold;
-  border-radius: 30px;
-  text-decoration: none;
+.profile-container {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 5px solid #fff;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.text-content {
+  flex: 1;
+  min-width: 250px;
+}
+
+.hero-title {
+  font-weight: 700;
+  font-size: 2.5rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-title span:first-child {
+  margin-bottom: 0.5rem;
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  margin-bottom: 0;
+}
+
+.button-container {
+  margin-left: auto;
+}
+
+.book-button {
+  padding: 16px 32px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  border-radius: 10px;
+  color: #2A5C5F;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
   transition: all 0.3s ease;
 }
 
-.hero-button:hover {
-  background: #ffffffcc;
-  transform: scale(1.05);
+.book-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
 }
 
-.hero-shape {
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0.2;
-  z-index: 1;
+.button-icon {
+  margin-right: 12px;
+  font-size: 1.2rem;
 }
 
-.shape1 {
-  width: 300px;
-  height: 300px;
-  top: -80px;
-  left: -100px;
-  background: #ffffff;
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .hero-content {
+    gap: 3rem;
+  }
+  
+  .profile-container {
+    width: 140px;
+    height: 140px;
+  }
+  
+  .hero-title {
+    font-size: 2.2rem;
+  }
 }
 
-.shape2 {
-  width: 400px;
-  height: 400px;
-  bottom: -120px;
-  right: -150px;
-  background: #ffffff;
-} 
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 4rem 0;
+  }
+  
+  .hero-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 2.5rem;
+  }
+  
+  .button-container {
+    margin: 2rem auto 0;
+  }
+  
+  .profile-container {
+    width: 120px;
+    height: 120px;
+  }
 
-.hero-banner {
-  /* background: url('F:\final_project_iti\front\my-app\public\images\1.jpeg') center center / cover no-repeat; */
-  background:#8e44ad;
-  padding: 60px 0;
-  color: white;
-  position: relative;
-  overflow: hidden;
+  .hero-title {
+    font-size: 2rem;
+    align-items: center;
+  }
+  
+  .book-button {
+    padding: 14px 28px;
+    font-size: 1.2rem;
+  }
 }
 
-.hero-banner::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: rgba(48, 14, 73, 0.6); /* semi-transparent purple overlay */
-  z-index: 1;
-}
-
-.hero-banner .container {
-  position: relative;
-  z-index: 2;
+@media (max-width: 576px) {
+  .hero-title {
+    font-size: 1.8rem;
+  }
+  
+  .profile-container {
+    width: 100px;
+    height: 100px;
+  }
 }

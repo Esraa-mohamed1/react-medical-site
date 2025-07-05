@@ -110,7 +110,7 @@ const CustomNavbar = () => {
   });
 
   return (
-    <Navbar expand="lg" className="shadow-sm py-3 navBar">
+    <Navbar expand="lg" className="shadow-sm py-3 navBar" style={{ background: 'linear-gradient(hsl(240, 6%, 97%) 0%)' }}>
       <Container>
         <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
           <FaClinicMedical className={changeMarginDirection(2)} size={28} color="#5c6bc0" />
