@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 const DoctorPaidPatients = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
   const [appointments, setAppointments] = useState([]);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [patient, setPatient] = useState(null);
@@ -118,7 +119,6 @@ const DoctorPaidPatients = () => {
     setError('');
     try {
       const formData = new FormData();
-      formData.append('record_type', type);
       if (notes) formData.append('notes', notes);
       if (report) formData.append('medical_report', report);
       if (doc) formData.append('document', doc);
@@ -173,7 +173,7 @@ const DoctorPaidPatients = () => {
                   <thead>
                     <tr>
                       <th>Date</th>
-                      <th>Type</th>
+                     
                       <th>Notes</th>
                       <th>Document</th>
                     </tr>
@@ -182,7 +182,6 @@ const DoctorPaidPatients = () => {
                     {records.map((rec) => (
                       <tr key={rec.id}>
                         <td>{rec.created_at ? new Date(rec.created_at).toLocaleDateString() : ''}</td>
-                        <td>{rec.type || rec.record_type || '-'}</td>
                         <td>{rec.notes || rec.medical_report || '-'}</td>
                         <td>{rec.document ? <a href={rec.document} className="record-doc-link" target="_blank" rel="noopener noreferrer">View</a> : '-'}</td>
                       </tr>
@@ -262,14 +261,7 @@ const DoctorPaidPatients = () => {
                   {medicationDocUrl && <div className="mt-2"><a href={medicationDocUrl} target="_blank" rel="noopener noreferrer">{medicationDoc?.name || 'View Document'}</a></div>}
                 </div>
               </div>
-              {/* Follow Up */}
-              <div className="section-card enhanced-section-card">
-                <div className="section-header">Follow Up <FaChevronDown className="chevron-icon" /></div>
-                <input type="date" className="followup-date-input" />
-              </div>
-              <div className="review-btn-row">
-                <button className="review-btn">Review</button>
-              </div>
+
             </>
           )}
         </div>

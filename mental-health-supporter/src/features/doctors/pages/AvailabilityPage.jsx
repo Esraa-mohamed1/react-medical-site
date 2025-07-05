@@ -516,7 +516,7 @@ const AvailabilityPage = () => {
                         <th>Date</th>
                         <th>Time</th>
                         <th>Price</th>
-                        <th>Status</th>
+                       
                         <th>Actions</th>
                       </tr>
                     </thead>
@@ -533,9 +533,7 @@ const AvailabilityPage = () => {
                           <td>
                             {slot.price ? `$${parseFloat(slot.price).toFixed(2)}` : 'Not set'}
                           </td>
-                          <td>
-                            {getStatusBadge(slot.available)}
-                          </td>
+                        
                           <td>
                             <div className="d-flex gap-2">
                               <button 

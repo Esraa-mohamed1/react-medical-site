@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Swal from 'sweetalert2';
 import "./style.css";
 import "../../../styles/global.css";
 import CustomNavbar from '../../../components/Navbar';
@@ -86,50 +87,77 @@ export default function AppointmentDetails() {
   }, [id, navigate]);
 
   const handleUpdate = async () => {
-    try {
-      setIsUpdating(true);
-      const userData = JSON.parse(localStorage.getItem("loggedUser"));
-      const token = localStorage.getItem("access");
-      
-      if (!userData || userData.role !== 'doctor' || !token) {
-        toast.error("You don't have permission to update this appointment");
-        navigate('/login');
-        return;
-      }
-      // Use the doctor-specific update endpoint
-      await axios.patch(
-        `http://127.0.0.1:8000/api/medical/appointments/${id}/update/`,
-        { 
-          status: status,
-          notes: notes 
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+    // Show confirmation dialog
+    const result = await Swal.fire({
+      title: 'Update Appointment Status?',
+      text: `Are you sure you want to update this appointment status to "${status}"?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, update it!',
+      cancelButtonText: 'Cancel'
+    });
 
-      toast.success("Appointment status updated successfully!");
-      // Refresh appointment data from doctor endpoint
-      const response = await axios.get(
-        `http://127.0.0.1:8000/api/medical/appointments/doctor/`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: { id },
+    if (result.isConfirmed) {
+      try {
+        setIsUpdating(true);
+        const userData = JSON.parse(localStorage.getItem("loggedUser"));
+        const token = localStorage.getItem("access");
+        
+        if (!userData || userData.role !== 'doctor' || !token) {
+          toast.error("You don't have permission to update this appointment");
+          navigate('/login');
+          return;
         }
-      );
-      const data = Array.isArray(response.data) ? response.data : (response.data.results || []);
-      const found = Array.isArray(data) ? data.find(a => String(a.id) === String(id)) : null;
-      setAppointment(found || data || null);
-    } catch (error) {
-      console.error("Error updating appointment:", error);
-      toast.error(error.response?.data?.detail || "Failed to update appointment status");
-    } finally {
-      setIsUpdating(false);
+        // Use the doctor-specific update endpoint
+        await axios.patch(
+          `http://127.0.0.1:8000/api/medical/appointments/${id}/update/`,
+          { 
+            status: status,
+            notes: notes 
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        // Show success message with SweetAlert
+        await Swal.fire({
+          title: 'Success!',
+          text: 'Appointment status updated successfully!',
+          icon: 'success',
+          confirmButtonColor: '#28a745'
+        });
+
+        // Refresh appointment data from doctor endpoint
+        const response = await axios.get(
+          `http://127.0.0.1:8000/api/medical/appointments/doctor/`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            params: { id },
+          }
+        );
+        const data = Array.isArray(response.data) ? response.data : (response.data.results || []);
+        const found = Array.isArray(data) ? data.find(a => String(a.id) === String(id)) : null;
+        setAppointment(found || data || null);
+      } catch (error) {
+        console.error("Error updating appointment:", error);
+        // Show error message with SweetAlert
+        await Swal.fire({
+          title: 'Error!',
+          text: error.response?.data?.detail || "Failed to update appointment status",
+          icon: 'error',
+          confirmButtonColor: '#dc3545'
+        });
+      } finally {
+        setIsUpdating(false);
+      }
     }
   };
 
@@ -226,7 +254,7 @@ export default function AppointmentDetails() {
                
                 <div className="mb-2"><span className="fw-semibold">Title:</span> {appointment.title}</div>
                 <div className="mb-2"><span className="fw-semibold">Payment Status:</span> {appointment.payment_status}</div>
-                <div className="mb-2"><span className="fw-semibold">Price:</span> {appointment.price ? `$${appointment.price}` : 'N/A'}</div>
+                <div className="mb-2"><span className="fw-semibold">Price:</span> {appointment.available_time_info?.price ? `$${appointment.available_time_info.price}` : (appointment.price ? `$${appointment.price}` : 'N/A')}</div>
               </div>
               <div className="col-md-6">
                 <label className="form-label fw-semibold">Doctor Notes</label>

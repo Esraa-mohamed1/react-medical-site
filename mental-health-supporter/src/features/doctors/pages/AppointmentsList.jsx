@@ -210,7 +210,6 @@ const AppointmentsList = () => {
                     <th>Date</th>
                     <th>Time</th>
                     <th>Patient</th>
-                    <th>Status</th>
                     <th>Price</th>
                     <th>Actions</th>
                   </tr>
@@ -227,12 +226,8 @@ const AppointmentsList = () => {
                         <td>{getDisplayDate(appointment)}</td>
                         <td>{getDisplayTime(appointment)}</td>
                         <td>{getDisplayPatient(appointment)}</td>
-                        <td>
-                        <span className={`badge status-badge rounded-pill px-3 py-2 ${getStatusBadge(appointment.status)}`}>
-                          {appointment.status ? appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1) : 'Scheduled'}
-                        </span>
-                        </td>
-                        <td>{appointment.price ? `$${appointment.price}` : 'N/A'}</td>
+                     
+                        <td>{appointment.available_time_info?.price ? `$${appointment.available_time_info.price}` : (appointment.price ? `$${appointment.price}` : 'N/A')}</td>
                         <td>
                           <button 
                             className="view-details-btn btn-sm"
