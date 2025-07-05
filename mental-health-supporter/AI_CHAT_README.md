@@ -151,7 +151,7 @@ Users receive friendly error messages that encourage them to try again or seek p
 ### Common Issues
 
 1. **Chat not opening**: Check if the component is properly imported and rendered
-2. **API errors**: Verify the backend endpoint is running at `http://127.0.0.1:8000`
+2. **API errors**: Verify the backend endpoint is running at `https://pearla.pythonanywhere.com`
 3. **Styling issues**: Ensure the CSS file is properly imported
 4. **Mobile responsiveness**: Test on different screen sizes
 
