@@ -35,7 +35,7 @@ const AppointmentsList = () => {
       }
 
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/medical/appointments/doctor/`, 
+        `https://pearla.pythonanywhere.com/api/medical/appointments/doctor/`, 
         {
           headers: { Authorization: `Bearer ${token}` },
           params: { search: search }
@@ -67,7 +67,7 @@ const AppointmentsList = () => {
       const token = localStorage.getItem("access");
       
       await axios.patch(
-        `http://127.0.0.1:8000/api/medical/appointments/${appointmentId}/update/`,
+        `https://pearla.pythonanywhere.com/api/medical/appointments/${appointmentId}/update/`,
         { status: newStatus },
         {
           headers: { 

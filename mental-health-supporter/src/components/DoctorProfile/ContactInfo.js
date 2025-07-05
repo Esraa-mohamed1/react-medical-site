@@ -26,7 +26,7 @@ const ContactInfo = () => {
       }
       try {
         const token = localStorage.getItem('access');
-        const res = await fetch(`http://127.0.0.1:8000/api/users/doctors/${doctorId}/`, {
+        const res = await fetch(`https://pearla.pythonanywhere.com/api/users/doctors/${doctorId}/`, {
           headers: token ? { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' },
         });
         if (!res.ok) throw new Error('Failed to fetch doctor');

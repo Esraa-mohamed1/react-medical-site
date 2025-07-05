@@ -55,7 +55,7 @@ const BookingModal = ({ show, onHide, selectedSlot, doctorId }) => {
         paypal_transaction_id: transactionId
       };
       await axios.post(
-        'http://127.0.0.1:8000/api/users/appointments/create/',
+        'https://pearla.pythonanywhere.com/api/users/appointments/create/',
         appointmentData,
         {
           headers: {
@@ -130,7 +130,7 @@ const BookingModal = ({ show, onHide, selectedSlot, doctorId }) => {
         available_time
       };
       await axios.post(
-        'http://127.0.0.1:8000/api/users/appointments/create/',
+        'https://pearla.pythonanywhere.com/api/users/appointments/create/',
         appointmentData,
         {
           headers: {

@@ -16,7 +16,7 @@ const PaymentPage = ({ onPaymentSuccess }) => {
   useEffect(() => {
     if (!token) return;
     // Fetch appointment details to check patient
-    axios.get(`http://127.0.0.1:8000/api/medical/appointments/${appointment_id}/`, {
+    axios.get(`https://pearla.pythonanywhere.com/api/medical/appointments/${appointment_id}/`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => {
@@ -88,7 +88,7 @@ const PaymentPage = ({ onPaymentSuccess }) => {
   const createOrder = async (data, actions) => {
     try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/users/paypal/create-order/?appointment_id=${appointment_id}`,
+        `https://pearla.pythonanywhere.com/api/users/paypal/create-order/?appointment_id=${appointment_id}`,
         {},
         {
           headers: {
@@ -135,7 +135,7 @@ const PaymentPage = ({ onPaymentSuccess }) => {
                 // Send appointment_id in the body when capturing the order
                 try {
                   const captureResponse = await axios.post(
-                    `http://127.0.0.1:8000/api/users/paypal/capture-order/`,
+                    `https://pearla.pythonanywhere.com/api/users/paypal/capture-order/`,
                     { orderID: data.orderID, appointment_id },
                     {
                       headers: {

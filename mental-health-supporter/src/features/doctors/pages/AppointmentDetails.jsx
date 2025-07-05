@@ -56,7 +56,7 @@ export default function AppointmentDetails() {
         }
 
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/medical/appointments/doctor/`,
+          `https://pearla.pythonanywhere.com/api/medical/appointments/doctor/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -112,7 +112,7 @@ export default function AppointmentDetails() {
         }
         // Use the doctor-specific update endpoint
         await axios.patch(
-          `http://127.0.0.1:8000/api/medical/appointments/${id}/update/`,
+          `https://pearla.pythonanywhere.com/api/medical/appointments/${id}/update/`,
           { 
             status: status,
             notes: notes 
@@ -135,7 +135,7 @@ export default function AppointmentDetails() {
 
         // Refresh appointment data from doctor endpoint
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/medical/appointments/doctor/`,
+          `https://pearla.pythonanywhere.com/api/medical/appointments/doctor/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

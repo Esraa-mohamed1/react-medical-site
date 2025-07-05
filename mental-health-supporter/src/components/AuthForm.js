@@ -91,7 +91,7 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
     try {
       // Use the correct backend URL for Google OAuth - this initiates the OAuth flow
       // Adding prompt=select_account to force account selection
-      const googleAuthUrl = 'http://127.0.0.1:8000/social/login/google-oauth2/?prompt=select_account';
+      const googleAuthUrl = 'https://pearla.pythonanywhere.com/social/login/google-oauth2/?prompt=select_account';
       console.log('Attempting to redirect to:', googleAuthUrl);
 
       // Simple redirect without checking backend first

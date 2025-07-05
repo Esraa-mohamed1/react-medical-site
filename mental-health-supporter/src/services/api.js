@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = "http://127.0.0.1:8000/api/users/";
+const BASE_URL = "https://pearla.pythonanywhere.com/api/users/";
 
 export async function registerUser({ name, email, password, full_name, phone, address }) {
   const response = await fetch(BASE_URL + "register/user/", {
@@ -42,7 +42,7 @@ export async function loginUser(formData) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(loginData)
   };
-  const response = await fetch("http://127.0.0.1:8000/api/users/login/", options);
+  const response = await fetch("https://pearla.pythonanywhere.com/api/users/login/", options);
   if (!response.ok) {
     let errorData;
     try {
@@ -72,7 +72,7 @@ export async function registerDoctor(formData, isFormData = false) {
       body: JSON.stringify(formData)
     };
   }
-  const response = await fetch("http://127.0.0.1:8000/api/users/register/doctor/", options);
+  const response = await fetch("https://pearla.pythonanywhere.com/api/users/register/doctor/", options);
   if (!response.ok) {
     let errorData;
     try {
@@ -90,7 +90,7 @@ export async function registerDoctor(formData, isFormData = false) {
 
 export async function fetchDoctorById(doctorId) {
   const token = localStorage.getItem('access');
-  const response = await fetch(`http://127.0.0.1:8000/api/users/doctors/${doctorId}/`, {
+  const response = await fetch(`https://pearla.pythonanywhere.com/api/users/doctors/${doctorId}/`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -104,7 +104,7 @@ export async function fetchDoctorById(doctorId) {
   return response.json();
 }
 
-const GENERAL_BASE_URL = 'http://127.0.0.1:8000/api';
+const GENERAL_BASE_URL = 'https://pearla.pythonanywhere.com/api';
 
 // Create axios instance
 const api = axios.create({

@@ -9,7 +9,7 @@ import '../features/doctors/style/style.css';
 // import Footer from "./../features/homePage/components/Footer";
 
 
-const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:8000/api/chat';
+const API_BASE = process.env.REACT_APP_API_BASE || 'https://pearla.pythonanywhere.com/api/chat';
 
 export default function DoctorChatsPage() {
   const [rooms, setRooms] = useState([]);
