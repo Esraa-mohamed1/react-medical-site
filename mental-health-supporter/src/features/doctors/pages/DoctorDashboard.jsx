@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import DoctorSidebar from '../components/DoctorSidebar';
 import { useNavigate } from 'react-router-dom';
 import { FaUsers, FaCalendarAlt, FaComments, FaFileAlt, FaPills, FaChevronRight, FaBell } from 'react-icons/fa';
-import { getPaidPatients } from '../../../services/doctors/AppointmentService';
+import { getPaidPatients, getAppointmentRecords } from '../../../services/doctors/AppointmentService';
 import { getAvailableTimes } from '../../../services/doctors/AvailableTimeService';
+import axios from 'axios';
 import './DoctorDashboard.css';
 
 const DoctorDashboard = () => {
@@ -48,12 +49,17 @@ const DoctorDashboard = () => {
         setStats(prev => ({ ...prev, schedule: times.length }));
         // Clinic name (from user profile or doctor object)
         setClinicName(user?.clinic_name || user?.clinic || 'My Clinic');
-        // Mock data for other stats
+        
+        // Fetch real documents and messages counts
+        const [documentsCount, messagesCount] = await Promise.all([
+          fetchDocumentsCount(),
+          fetchMessagesCount()
+        ]);
+        
         setStats(prev => ({
           ...prev,
-          documents: 17,
-          messages: 5,
-       
+          documents: documentsCount,
+          messages: messagesCount,
         }));
       } catch (e) {
         console.error('Error fetching data:', e);
@@ -69,6 +75,51 @@ const DoctorDashboard = () => {
 
   const formatTime = (date) => {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
+  // Fetch documents count
+  const fetchDocumentsCount = async () => {
+    try {
+      const appointments = await getPaidPatients();
+      let totalDocuments = 0;
+      
+      for (const appt of appointments) {
+        const records = await getAppointmentRecords(appt.id);
+        // Count records that have documents
+        const documentsInAppointment = records.filter(record => record.document).length;
+        totalDocuments += documentsInAppointment;
+      }
+      
+      return totalDocuments;
+    } catch (error) {
+      console.error('Error fetching documents count:', error);
+      return 0;
+    }
+  };
+
+  // Fetch messages count (unread messages)
+  const fetchMessagesCount = async () => {
+    try {
+      const token = localStorage.getItem('access');
+      const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:8000/api/chat';
+      
+      const response = await axios.get(`${API_BASE}/rooms/`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      // Count total messages across all chat rooms
+      let totalMessages = 0;
+      response.data.forEach(room => {
+        if (room.messages && Array.isArray(room.messages)) {
+          totalMessages += room.messages.length;
+        }
+      });
+      
+      return totalMessages;
+    } catch (error) {
+      console.error('Error fetching messages count:', error);
+      return 0;
+    }
   };
 
   return (
@@ -106,7 +157,7 @@ const DoctorDashboard = () => {
                     <div className="card-icon">{item.icon}</div>
                     <div className="card-content">
                       <h3>{item.title}</h3>
-                      <p>{item.value} {item.title === 'Documents' ? 'Files' : item.title === 'Messages' ? 'Unread' : 'Total'}</p>
+                      <p>{item.value} {item.title === 'Documents' ? 'Files' : item.title === 'Messages' ? 'Messages' : 'Total'}</p>
                     </div>
                   </div>
                 ))}
