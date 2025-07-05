@@ -231,7 +231,7 @@ const PatientReviews = ({ reviews: initialReviews = [], doctorId: propDoctorId }
           {loadingReviews ? (
             <div className="text-center my-4">{t('patientReviews.loading') || 'Loading reviews...'}</div>
           ) : paginatedReviews.length === 0 ? (
-            <div className="text-center my-4 text-muted">{t('patientReviews.noReviews') || 'No reviews yet.'}</div>
+            <div className="text-center my-4 text-muted">{'No Reviews' || 'No reviews yet.'}</div>
           ) : (
             paginatedReviews.map((review, index) => (
               <motion.div
