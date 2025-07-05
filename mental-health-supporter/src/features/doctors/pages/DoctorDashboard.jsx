@@ -168,12 +168,7 @@ const DoctorDashboard = () => {
                         <div className="schedule-patient">{item.patient || 'Available'}</div>
                         <div className="schedule-purpose">{item.purpose || 'Available for booking'}</div>
                       </div>
-                      <button 
-                        className="begin-btn"
-                        onClick={() => navigate(`/doctor/consult/${item.id || 'new'}`)}
-                      >
-                        Begin
-                      </button>
+                    
                     </div>
                   ))
                 )}
