@@ -142,7 +142,7 @@ const CustomNavbar = () => {
             {/* Patient appointments link - only for patients */}
             {loggedUser?.role === 'patient' && (
               <Nav.Link as={Link} to="/patient/appointments" className="text-primary mx-2 fw-medium">
-                My Appointments
+                {t('navbar.myAppointments')}
               </Nav.Link>
             )}
           </Nav>

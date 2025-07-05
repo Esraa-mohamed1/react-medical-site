@@ -95,7 +95,7 @@ const DoctorDetailsPage = () => {
         />
       );
     }
-    return <span className="value">{doctor[field]}</span>;
+    return <span className="value">{doctor[field] || t(`doctorDetails.${label}NotAvailable`)}</span>;
   };
 
   const profileImageSrc = imagePreview
@@ -200,19 +200,19 @@ const DoctorDetailsPage = () => {
 
             <div>
               <div className="infoSection">
-                <h3 className="sectionTitle">{t('doctorDetails.clinicDetails')}</h3>
+                <h3 className="sectionTitle">{t('clinicDetails.title')}</h3>
                 <div className="infoGrid">
                   <div className="infoItem">
-                    <span className="label">{t('doctorDetails.clinicName')}:</span>
-                    {renderValue('clinic_name', 'clinicName')}
+                    <span className="label">{t('clinicDetails.addressTitle')}:</span>
+                    {renderValue('clinic_address', 'addressTitle')}
                   </div>
                   <div className="infoItem">
-                    <span className="label">{t('doctorDetails.city')}:</span>
-                    {renderValue('city', 'city')}
+                    <span className="label">{t('clinicDetails.consultationFee')}:</span>
+                    {doctor.consultation_fee ? doctor.consultation_fee : t('clinicDetails.notSpecified')}
                   </div>
                   <div className="infoItem">
-                    <span className="label">{t('doctorDetails.clinicAddress')}:</span>
-                    {renderValue('clinic_address', 'clinicAddress')}
+                    <span className="label">{t('clinicDetails.availableServices')}:</span>
+                    {doctor.available_services && doctor.available_services.length > 0 ? doctor.available_services.join(', ') : t('clinicDetails.noServicesListed')}
                   </div>
                 </div>
               </div>

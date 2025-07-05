@@ -40,7 +40,7 @@ const AppointmentBooking = ({ doctorId }) => {
   };
 
   const formatPrice = (price) => {
-    if (!price) return t('free');
+    if (!price) return t('bookingModal.free');
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
@@ -82,7 +82,7 @@ const AppointmentBooking = ({ doctorId }) => {
               fontSize: '1.6rem',
               letterSpacing: '0.5px'
             }}>
-              {t('bookingAppointments')}
+              {t('bookingModal.confirmAppointment')}
             </h4>
           </div>
 
@@ -122,7 +122,7 @@ const AppointmentBooking = ({ doctorId }) => {
                       fontSize: '14px',
                       background: '#6D5ACF'
                     }}>
-                      {isAvailable ? t('clickToBook') : t('unavailable')}
+                      {isAvailable ? t('bookingModal.clickToBook') : t('bookingModal.unavailable')}
                     </Tooltip>
                   }
                 >
