@@ -348,7 +348,7 @@ const AvailabilityPage = () => {
           <div className="d-flex justify-content-between align-items-center mb-4">
             <div>
               <h2 className="mb-1">
-                <FiCalendar className="me-2 text-primary" />Manage Your Time Slots
+                <FiCalendar className="me-2 text-primary" />Manage Your Schedule
               </h2>
               <p className="text-muted mb-0">Set your available dates and times for patient appointments</p>
             </div>
@@ -516,7 +516,7 @@ const AvailabilityPage = () => {
                         <th>Date</th>
                         <th>Time</th>
                         <th>Price</th>
-                        <th>Status</th>
+                       
                         <th>Actions</th>
                       </tr>
                     </thead>
@@ -533,9 +533,7 @@ const AvailabilityPage = () => {
                           <td>
                             {slot.price ? `$${parseFloat(slot.price).toFixed(2)}` : 'Not set'}
                           </td>
-                          <td>
-                            {getStatusBadge(slot.available)}
-                          </td>
+                        
                           <td>
                             <div className="d-flex gap-2">
                               <button 

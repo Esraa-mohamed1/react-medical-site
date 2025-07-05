@@ -21,6 +21,14 @@ export default function HeroSection() {
     }
   };
 
+  const handleReadArticleBtn = () => {
+    if (user){
+      navigate('/select-disorder');
+    } else {
+      navigate('/login');
+    }
+  }
+
   return (
     <section className={styles.hero}>
       <div className={styles.overlay}></div>
@@ -43,7 +51,7 @@ export default function HeroSection() {
 
               <button
                 className={styles.secondaryButton}
-                onClick={() => navigate('/select-disorder')}
+                onClick={handleReadArticleBtn}
               >
                 {t('heroSection.readArticles')}
               </button>

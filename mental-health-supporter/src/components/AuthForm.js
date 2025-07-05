@@ -48,14 +48,26 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
     onSubmit(submitData, (apiErrors = {}) => {
       // Map backend errors to user-friendly messages
       const mappedErrors = { ...apiErrors };
-      if (apiErrors.email && (apiErrors.email.toLowerCase().includes('exist') || apiErrors.email.toLowerCase().includes('already'))) {
+      // Email already exists
+      if (Array.isArray(apiErrors.email) && apiErrors.email.some(e => e.toLowerCase().includes('exist'))) {
         mappedErrors.email = 'This email is already registered. Please use another email.';
       }
-      if (apiErrors.name && (apiErrors.name.toLowerCase().includes('exist') || apiErrors.name.toLowerCase().includes('already'))) {
+      // Username already exists
+      if (Array.isArray(apiErrors.name) && apiErrors.name.some(e => e.toLowerCase().includes('exist'))) {
         mappedErrors.name = 'This username is already taken. Please use another username.';
       }
-      if (apiErrors.username && (apiErrors.username.toLowerCase().includes('exist') || apiErrors.username.toLowerCase().includes('already'))) {
+      if (Array.isArray(apiErrors.username) && apiErrors.username.some(e => e.toLowerCase().includes('exist'))) {
         mappedErrors.name = 'This username is already taken. Please use another username.';
+      }
+      // Backend returns both email and username in one error (e.g. non_field_errors)
+      if (apiErrors.non_field_errors && Array.isArray(apiErrors.non_field_errors)) {
+        const msg = apiErrors.non_field_errors.join(' ');
+        if (msg.toLowerCase().includes('email') && msg.toLowerCase().includes('exist')) {
+          mappedErrors.email = 'This email is already registered. Please use another email.';
+        }
+        if (msg.toLowerCase().includes('username') && msg.toLowerCase().includes('exist')) {
+          mappedErrors.name = 'This username is already taken. Please use another username.';
+        }
       }
       if (apiErrors.full_name && apiErrors.full_name.toLowerCase().includes('required')) {
         mappedErrors.full_name = 'Full name is required.';
@@ -211,7 +223,7 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
                 padding: '1rem',
                 borderTop: '1px solid rgba(255,255,255,0.1)'
               }}>
-                <button
+                {/* <button
                   type="button"
                   onClick={handleGoogleLogin}
                   style={{
@@ -254,7 +266,7 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
                 </button>
                 <span className="google-login-text">
                   Continue with Google
-                </span>
+                </span> */}
               </div>
             )}
             <p className="auth-switch text-center">

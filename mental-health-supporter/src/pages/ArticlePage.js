@@ -85,30 +85,32 @@ export default function ArticlePage() {
   return (
     <>
       <CustomNavbar />
-      <div className="article-container">
-        <header className="article-header">
-          <h2>{content.title}</h2>
-        </header>
+      <div className='article-wrapper'>
+        <div className="article-container">
+          <header className="article-header">
+            <h2>{content.title}</h2>
+          </header>
 
-        <main className="article-content">
-          <section className="disorder-detailed-intro">
-            <p className="detailed-paragraph">{content.intro}</p>
-            <div className="detailed-image">
-              <img src={content.image} alt={content.title} />
-            </div>
-            {content.details.map((paragraph, index) => (
-              <p className="detailed-paragraph" key={index}>{paragraph}</p>
-            ))}
-          </section>
+          <main className="article-content">
+            <section className="disorder-detailed-intro">
+              <p className="detailed-paragraph">{content.intro}</p>
+              <div className="detailed-image">
+                <img src={content.image} alt={content.title} />
+              </div>
+              {content.details.map((paragraph, index) => (
+                <p className="detailed-paragraph" key={index}>{paragraph}</p>
+              ))}
+            </section>
 
-          {['anger', 'anxiety', 'stress'].includes(disorderKey) && (
-            <BreathingExercise disorder={disorderKey} />
-          )}
+            {['anger', 'anxiety', 'stress'].includes(disorderKey) && (
+              <BreathingExercise disorder={disorderKey} />
+            )}
 
-          <CopingStrategies disorder={disorderKey} />
-          <ProfessionalHelp disorder={disorderKey} />
-        </main>
+            <CopingStrategies disorder={disorderKey} />
+            <ProfessionalHelp disorder={disorderKey} />
+          </main>
 
+        </div>
       </div>
         <Footer />
 
