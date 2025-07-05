@@ -1,5 +1,5 @@
 export async function registerUser(userData) {
-  const response = await fetch('https://pearla.pythonanywhere.com/api/users/register/user/', {
+  const response = await fetch('http://localhost:8000/api/users/register/user/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ export async function registerUser(userData) {
 }
 
 export async function loginUser({ username, password }) {
-  const response = await fetch('https://pearla.pythonanywhere.com/api/users/login/', {
+  const response = await fetch('http://localhost:8000/api/users/login/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

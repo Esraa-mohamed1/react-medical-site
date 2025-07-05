@@ -3,7 +3,7 @@ import { getData, postData, updateData } from '../api';
 
 export const createAppointment = async (appointmentData, accessToken) => {
   const response = await axios.post(
-    'https://pearla.pythonanywhere.com/api/medical/appointments/create/',
+    'http://localhost:8000/api/medical/appointments/create/',
     appointmentData,
     {
       headers: {
@@ -31,7 +31,7 @@ export const getAppointmentRecords = async (appointmentId) => {
   try {
     const token = localStorage.getItem('access');
     const response = await axios.get(
-      `https://pearla.pythonanywhere.com/api/medical/appointments/${appointmentId}/records/`,
+      `http://localhost:8000/api/medical/appointments/${appointmentId}/records/`,
       {
         headers: { Authorization: `Bearer ${token}` }
       }
@@ -47,7 +47,7 @@ export const createAppointmentRecord = async (appointmentId, formData, onUploadP
   try {
     const token = localStorage.getItem('access');
     const response = await axios.post(
-      `https://pearla.pythonanywhere.com/api/medical/appointments/${appointmentId}/records/`,
+      `http://localhost:8000/api/medical/appointments/${appointmentId}/records/`,
       formData,
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -65,7 +65,7 @@ export const updateAppointmentRecord = async (recordId, formData, onUploadProgre
   try {
     const token = localStorage.getItem('access');
     const response = await axios.put(
-      `https://pearla.pythonanywhere.com/api/medical/appointments/records/${recordId}/`,
+      `http://localhost:8000/api/medical/appointments/records/${recordId}/`,
       formData,
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -83,7 +83,7 @@ export const deleteAppointmentRecord = async (recordId) => {
   try {
     const token = localStorage.getItem('access');
     await axios.delete(
-      `https://pearla.pythonanywhere.com/api/medical/appointments/records/${recordId}/`,
+      `http://localhost:8000/api/medical/appointments/records/${recordId}/`,
       {
         headers: { Authorization: `Bearer ${token}` }
       }
@@ -99,7 +99,7 @@ export const getAppointmentRecord = async (recordId) => {
   try {
     const token = localStorage.getItem('access');
     const response = await axios.get(
-      `https://pearla.pythonanywhere.com/api/medical/appointments/records/${recordId}/`,
+      `http://localhost:8000/api/medical/appointments/records/${recordId}/`,
       {
         headers: { Authorization: `Bearer ${token}` }
       }

@@ -1,4 +1,4 @@
-const API_URL = 'https://pearla.pythonanywhere.com/api';
+const API_URL = 'http://localhost:8000/api';
 
 const handleApiError = async (response) => {
   if (!response.ok) {

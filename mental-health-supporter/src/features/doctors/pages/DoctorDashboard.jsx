@@ -101,7 +101,7 @@ const DoctorDashboard = () => {
   const fetchMessagesCount = async () => {
     try {
       const token = localStorage.getItem('access');
-      const API_BASE = process.env.REACT_APP_API_BASE || 'https://pearla.pythonanywhere.com/api/chat';
+      const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:8000/api/chat';
       
       const response = await axios.get(`${API_BASE}/rooms/`, {
         headers: { Authorization: `Bearer ${token}` }

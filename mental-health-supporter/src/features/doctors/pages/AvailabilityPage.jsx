@@ -44,7 +44,7 @@ const AvailabilityPage = () => {
   const fetchAvailableDates = async (token) => {
     try {
       setIsLoading(true);
-      const response = await axios.get('https://pearla.pythonanywhere.com/api/time_slots/available/my/', {
+      const response = await axios.get('http://localhost:8000/api/time_slots/available/my/', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setAvailableDates(response.data);
@@ -140,7 +140,7 @@ const AvailabilityPage = () => {
       };
 
       await axios.post(
-        'https://pearla.pythonanywhere.com/api/time_slots/available/create/',
+        'http://localhost:8000/api/time_slots/available/create/',
         payload,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -200,7 +200,7 @@ const AvailabilityPage = () => {
       };
 
       await axios.patch(
-        `https://pearla.pythonanywhere.com/api/time_slots/available/my/${editingId}/update/`,
+        `http://localhost:8000/api/time_slots/available/my/${editingId}/update/`,
         payload,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -245,7 +245,7 @@ const AvailabilityPage = () => {
     try {
       const token = localStorage.getItem('access');
       await axios.delete(
-        `https://pearla.pythonanywhere.com/api/time_slots/available/my/${id}/delete/`,
+        `http://localhost:8000/api/time_slots/available/my/${id}/delete/`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       Swal.fire({
@@ -272,7 +272,7 @@ const AvailabilityPage = () => {
       const newAvailableStatus = !currentAvailable;
       
       await axios.patch(
-        `https://pearla.pythonanywhere.com/api/time_slots/available/${id}/set-available/`,
+        `http://localhost:8000/api/time_slots/available/${id}/set-available/`,
         { available: newAvailableStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -24,7 +24,7 @@ const PatientAppointmentsPage = () => {
         setLoading(true);
         const token = localStorage.getItem('access');
         
-        const response = await axios.get('https://pearla.pythonanywhere.com/api/appointments/my-appointments/', {
+        const response = await axios.get('http://localhost:8000/api/appointments/my-appointments/', {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'

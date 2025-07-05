@@ -45,7 +45,7 @@ const PatientReviews = ({ reviews: initialReviews = [], doctorId: propDoctorId }
       }
     } catch (e) { token = null; }
     const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
-    fetch(`https://pearla.pythonanywhere.com/api/medical/doctors/${doctorId}/reviews/`, { headers })
+    fetch(`http://localhost:8000/api/medical/doctors/${doctorId}/reviews/`, { headers })
       .then(res => {
         if (!res.ok) throw new Error('Auth or fetch error');
         return res.json();
@@ -119,7 +119,7 @@ const PatientReviews = ({ reviews: initialReviews = [], doctorId: propDoctorId }
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}` // Change to 'Token' if your backend expects that
       };
-      const res = await fetch(`https://pearla.pythonanywhere.com/api/medical/doctors/${doctorId}/reviews/create/`, {
+      const res = await fetch(`http://localhost:8000/api/medical/doctors/${doctorId}/reviews/create/`, {
         method: 'POST',
         headers,
         body: JSON.stringify({

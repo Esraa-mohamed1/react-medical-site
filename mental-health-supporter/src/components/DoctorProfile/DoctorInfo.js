@@ -25,7 +25,7 @@ const DoctorInfo = ({ doctor }) => {
     const token = localStorage.getItem('access');
     if (!docId || !token) return;
     setLoadingStats(true);
-    fetch(`https://pearla.pythonanywhere.com/api/medical/doctors/${docId}/reviews/stats/`, {
+    fetch(`http://localhost:8000/api/medical/doctors/${docId}/reviews/stats/`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',

@@ -8,7 +8,7 @@ import Footer from "./../features/homePage/components/Footer";
 
 
 
-const API_BASE = process.env.REACT_APP_API_BASE || 'https://pearla.pythonanywhere.com/api/chat';
+const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:8000/api/chat';
 
 export default function ChatWithDoctor({ doctorId, patientId }) {
   const [room, setRoom] = useState(null);

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = 'https://pearla.pythonanywhere.com/api/medical/time-slots/available/create/';
+const API_URL = 'http://localhost:8000/api/medical/time-slots/available/create/';
 
 // Fetch
 export const fetchAvailability = createAsyncThunk('availability/fetch', async () => {
