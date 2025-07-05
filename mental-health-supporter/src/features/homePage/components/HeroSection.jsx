@@ -43,7 +43,7 @@ export default function HeroSection() {
 
               <button
                 className={styles.secondaryButton}
-                onClick={() => navigate('/artical')}
+                onClick={() => navigate('/select-disorder')}
               >
                 {t('heroSection.readArticles')}
               </button>
