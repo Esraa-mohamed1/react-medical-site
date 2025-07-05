@@ -552,13 +552,7 @@ const AvailabilityPage = () => {
                               >
                                 <FiTrash2 />
                               </button>
-                              <button
-                                onClick={() => toggleAvailability(slot.id, slot.available)}
-                                className={`btn btn-sm ${slot.available ? 'btn-outline-danger' : 'btn-outline-success'}`}
-                                title={slot.available ? 'Mark as unavailable' : 'Mark as available'}
-                              >
-                                {slot.available ? <FiX /> : <FiCheck />}
-                              </button>
+                         
                             </div>
                           </td>
                         </tr>
