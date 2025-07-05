@@ -79,8 +79,6 @@
   object-fit: cover;
   border: 3px solid white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  display: block;
-  background: #f8f9fa;
 }
 
 .avatar-placeholder {
@@ -174,15 +172,14 @@
 }
 
 .status-scheduled {
-  background: #dfad09;
-  color: #856404;
+  background: #856404;
+  color: #fff3cd;
   border: 1px solid #ffeaa7;
 }
 
 .status-completed {
-  background: #d4edda;
-  color: #155724;
-  text-align: center;
+  background: #155724;
+  color: #f6fff8;
   border: 1px solid #c3e6cb;
 }
 
