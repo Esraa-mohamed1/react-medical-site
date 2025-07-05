@@ -348,7 +348,7 @@ const AvailabilityPage = () => {
           <div className="d-flex justify-content-between align-items-center mb-4">
             <div>
               <h2 className="mb-1">
-                <FiCalendar className="me-2 text-primary" />Manage Your Time Slots
+                <FiCalendar className="me-2 text-primary" />Manage Your Schedule
               </h2>
               <p className="text-muted mb-0">Set your available dates and times for patient appointments</p>
             </div>
