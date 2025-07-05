@@ -55,17 +55,17 @@
   }
   
   .resource-button.therapist {
-    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    background: #5c6bc0;
     color: white;
   }
   
   .resource-button.chat {
-    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    background: #5c6bc0;
     color: white;
   }
   
   .resource-button.books {
-    background: linear-gradient(135deg, #48c6ef, #6f86d6);
+    background: #5c6bc0;
     color: white;
   }
   

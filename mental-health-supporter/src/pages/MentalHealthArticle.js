@@ -31,6 +31,7 @@ const MentalHealthArticle = ({ clientData = {} }) => {
   } = clientData;
 
   return (
+    <div className='Divv'>
     <div className='artical-page'>
     <div className="article-container">
       <header className="article-header">
@@ -75,6 +76,7 @@ const MentalHealthArticle = ({ clientData = {} }) => {
       </footer>
     </div>
     <Footer />
+    </div>
     </div>
   );
 };

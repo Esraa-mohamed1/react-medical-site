@@ -59,7 +59,7 @@ const DisorderSelection = () => {
   return (
     <>
       <CustomNavbar />
-
+<div className='divvv'>
     <div className="disorder-selection-container">
       <div className="banner">
         {/* BE KIND TO YOUR MIND <br />
@@ -80,6 +80,7 @@ const DisorderSelection = () => {
         </div>
       </div>
 
+    </div>
     </div>
      <Footer />
     

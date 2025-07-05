@@ -82,7 +82,7 @@
 }
 
 .try-button {
-  background-color: #16a085;
+  background-color: #5c6bc0;
   color: white;
   border: none;
   border-radius: 6px;
@@ -98,7 +98,7 @@
 
 
 .try-button:hover {
-  background-color: #13876c;
+  background-color: #5c6bc0;
 }
 
 .popup-overlay {
@@ -172,7 +172,7 @@
   width: 90%;
   text-align: left;
   box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2);
-  border-left: 8px solid #16a085; /* ✅ Highlight line */
+  border-left: 8px solid #5c6bc0; /* ✅ Highlight line */
   position: relative;
   animation: fadeIn 0.3s ease-in-out;
 }

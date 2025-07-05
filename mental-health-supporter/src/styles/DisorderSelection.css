@@ -1,7 +1,12 @@
 /* src/styles/DisorderSelection.css */
+.divvv {
+  background-color:#C0C9EE !important;
+}
 
 .disorder-selection-container {
-  background: #f4f8f8;
+  /* background: #f4f8f8 !important; */
+    background-color:#C0C9EE !important;
+
   padding-bottom: 3rem;
   font-family: 'Segoe UI', sans-serif;
 }
@@ -16,7 +21,7 @@
 }
 
 .banner span {
-  color: #9dd6e9;
+  color: #5c6bc0;
 }
 
 .blog-header {
@@ -59,7 +64,7 @@
 }
 
 .read-more-btn {
-  background-color: #00aaff;
+  background-color: #5c6bc0 !important;
   color: white;
   border: none;
   padding: 0.5rem 1.5rem;
@@ -122,7 +127,7 @@
   border-radius: 15px;
   cursor: pointer;
   font-size: 0.9rem;
-  background-color: rgb(49, 162, 199);
+  background-color: #5c6bc0;
 
 }
 

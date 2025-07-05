@@ -13,7 +13,7 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     color: var(--text);
-    background-color: #bb86fc !important;
+    background-color: #5c6bc0 !important;
   }
   .article-header {
   padding: 2rem;
@@ -48,7 +48,7 @@
   
   /* Enhanced Header */
   .article-header {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    background: #5c6bc0;
     color: white;
     /* padding: 2.5rem 2rem; */
     text-align: center;
@@ -427,7 +427,7 @@
   }
   
   .resource-button.therapist {
-    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    background: #5c6bc0;
     color: white;
   }
   
@@ -565,12 +565,12 @@
 
 /* Updated stop breathing button color */
 .stop-breathing {
-    background: #6e8efb;
+    background: #5c6bc0;
     color: white;
   }
   
   .stop-breathing:hover {
-    background: #5a7df4;
+    background: #5c6bc0;
   }
   
   /* Popup styles */
@@ -631,7 +631,7 @@
   }
   
   .popup-close {
-    background: #6e8efb;
+    background: #5c6bc0;
     color: white;
     border: none;
     padding: 0.8rem 1.5rem;
