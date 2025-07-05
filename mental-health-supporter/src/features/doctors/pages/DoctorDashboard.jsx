@@ -120,8 +120,7 @@ const DoctorDashboard = () => {
                 <div className="table-header">
                   <div>Visit No.</div>
                   <div>Patient Name</div>
-                  <div>Gender</div>
-                  <div>Reason</div>
+               
                   <div>Action</div>
                 </div>
                 <div className="table-body">
@@ -134,12 +133,10 @@ const DoctorDashboard = () => {
                       <div className="table-row" key={index}>
                         <div>#{appointment.id || appointment.appointment_id}</div>
                         <div>{appointment.patient_info?.full_name || appointment.name || '-'}</div>
-                        <div>{appointment.patient_info?.gender || appointment.gender || '-'}</div>
-                        <div>{appointment.reason || appointment.reason_for_visit || '-'}</div>
                         <div>
                           <button 
                             className="consult-btn"
-                            onClick={() => navigate(`/doctor/consult/${appointment.id || appointment.appointment_id}`)}
+                            onClick={() => navigate(`/doctor/patient-details/${appointment.id || appointment.appointment_id}`)}
                           >
                             Consult
                           </button>

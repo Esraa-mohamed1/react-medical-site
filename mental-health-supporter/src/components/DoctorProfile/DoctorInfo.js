@@ -9,6 +9,7 @@ const DoctorInfo = ({ doctor }) => {
 
   const name = doctor.name || doctor.full_name || doctor.username || '';
   const specialty = doctor.specialty || doctor.specialization || '';
+  const description = doctor.description || '';
   const profilePicture = doctor.profile_image || '/images/doctor.png';
   const experience = doctor.experience || 0;
   const rating = doctor.rating || 0;
@@ -58,13 +59,13 @@ const DoctorInfo = ({ doctor }) => {
               <div className="col-md-6 mb-3 text-start">
                 <h6 className="fw-bold d-flex align-items-center">
                   <FaGraduationCap className="me-2" style={{ color: 'var(--primary-teal)' }} />
-                  {t('doctorInfo.specialization')}
+                  {t('description') || 'Description'}
                 </h6>
                 <div className="ps-3 mb-2">
-                  {specialty ? (
-                    <span>{specialty}</span>
+                  {description ? (
+                    <span>{description}</span>
                   ) : (
-                    <span className="text-muted">{t('doctorInfo.noSpecialization')}</span>
+                    <span className="text-muted">{t('doctorInfo.noDescription') || 'No description available'}</span>
                   )}
                 </div>
                 {education.length > 0 && (

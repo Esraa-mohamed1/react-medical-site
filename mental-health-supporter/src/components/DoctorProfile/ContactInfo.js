@@ -15,6 +15,16 @@ import { useTranslation } from 'react-i18next';
 const ContactInfo = ({ contact }) => {
   const { t } = useTranslation();
 
+  // Fetch doctor info from localStorage if available
+  let doctor = {};
+  try {
+    const doctorRaw = localStorage.getItem('doctor');
+    if (doctorRaw) {
+      doctor = JSON.parse(doctorRaw);
+    }
+  } catch (e) { /* ignore */ }
+console.log(localStorage.getItem('doctor'))
+  const social = doctor.socialMedia || {};
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -32,16 +42,8 @@ const ContactInfo = ({ contact }) => {
                 <FaPhone size={20} style={{ color: 'var(--success-teal)' }} />
               </div>
               <div>
-                <h6 className="mb-1 fw-bold">{t('contactInfo.phone')}</h6>
-                <p className="mb-0 text-muted">{contact.phone}</p>
-                <Button
-                  variant="link"
-                  size="sm"
-                  className="p-0 text-decoration-none" style={{ color: '#2A5C5F' }}
-                  onClick={() => window.location.href = `tel:${contact.phone}`}
-                >
-                  {t('contactInfo.callNow')}
-                </Button>
+                <h6 className="mb-1 fw-bold">Phone Number</h6>
+                <p className="mb-0 text-primary fw-bold" style={{ color: '#2A5C5F', wordBreak: 'break-all' }}>{doctor.phone || '-'}</p>
               </div>
             </ListGroup.Item>
 
@@ -50,16 +52,8 @@ const ContactInfo = ({ contact }) => {
                 <FaEnvelope size={20} style={{ color: 'var(--success-teal)' }} />
               </div>
               <div>
-                <h6 className="mb-1 fw-bold">{t('contactInfo.email')}</h6>
-                <p className="mb-0 text-muted">{contact.email}</p>
-                <Button
-                  variant="link"
-                  size="sm"
-                  className="p-0 text-decoration-none" style={{ color: '#2A5C5F' }}
-                  onClick={() => window.location.href = `mailto:${contact.email}`}
-                >
-                  {t('contactInfo.sendMessage')}
-                </Button>
+                <h6 className="mb-1 fw-bold">Email Address</h6>
+                <p className="mb-0 text-primary fw-bold" style={{ color: '#2A5C5F', wordBreak: 'break-all' }}>{doctor.email || '-'}</p>
               </div>
             </ListGroup.Item>
 
@@ -68,16 +62,8 @@ const ContactInfo = ({ contact }) => {
                 <FaMapMarkerAlt size={20} style={{ color: 'var(--success-teal)' }} />
               </div>
               <div>
-                <h6 className="mb-1 fw-bold">{t('contactInfo.address')}</h6>
-                <p className="mb-0 text-muted">{contact.address}</p>
-                <Button
-                  variant="link"
-                  size="sm"
-                  className="p-0 text-decoration-none" style={{ color: '#2A5C5F' }}
-                  onClick={() => window.open(contact.mapLink, '_blank')}
-                >
-                  {t('contactInfo.viewMap')}
-                </Button>
+                <h6 className="mb-1 fw-bold">Clinic Address</h6>
+                <p className="mb-0 text-primary fw-bold" style={{ color: '#2A5C5F', wordBreak: 'break-all' }}>{doctor.clinic_address || '-'}</p>
               </div>
             </ListGroup.Item>
           </ListGroup>
@@ -89,29 +75,37 @@ const ContactInfo = ({ contact }) => {
             <div className="d-flex justify-content-start gap-3">
               <Button
                 variant="outline-success"
-                className="rounded-circle p-2 d-flex align-items-center justify-content-center" style={{ color: '#2A5C5F' }}
-                onClick={() => window.open(contact.socialMedia.facebook, '_blank')}
+                className="rounded-circle p-2 d-flex align-items-center justify-content-center"
+                style={{ color: '#2A5C5F' }}
+                onClick={() => social.facebook && window.open(social.facebook, '_blank')}
+                disabled={!social.facebook}
               >
                 <FaFacebook size={20} />
               </Button>
               <Button
                 variant="outline-success"
-                className="rounded-circle p-2 d-flex align-items-center justify-content-center" style={{ color: '#2A5C5F' }}
-                onClick={() => window.open(contact.socialMedia.twitter, '_blank')}
+                className="rounded-circle p-2 d-flex align-items-center justify-content-center"
+                style={{ color: '#2A5C5F' }}
+                onClick={() => social.twitter && window.open(social.twitter, '_blank')}
+                disabled={!social.twitter}
               >
                 <FaTwitter size={20} />
               </Button>
               <Button
                 variant="outline-success"
-                className="rounded-circle p-2 d-flex align-items-center justify-content-center" style={{ color: '#2A5C5F' }}
-                onClick={() => window.open(contact.socialMedia.instagram, '_blank')}
+                className="rounded-circle p-2 d-flex align-items-center justify-content-center"
+                style={{ color: '#2A5C5F' }}
+                onClick={() => social.instagram && window.open(social.instagram, '_blank')}
+                disabled={!social.instagram}
               >
                 <FaInstagram size={20} />
               </Button>
               <Button
                 variant="outline-success"
-                className="rounded-circle p-2 d-flex align-items-center justify-content-center" style={{ color: '#2A5C5F' }}
-                onClick={() => window.open(contact.socialMedia.whatsapp, '_blank')}
+                className="rounded-circle p-2 d-flex align-items-center justify-content-center"
+                style={{ color: '#2A5C5F' }}
+                onClick={() => social.whatsapp && window.open(social.whatsapp, '_blank')}
+                disabled={!social.whatsapp}
               >
                 <FaWhatsapp size={20} />
               </Button>

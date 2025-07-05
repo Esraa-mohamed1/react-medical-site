@@ -233,12 +233,9 @@
   "review": "Review",
   "rating": "Rating",
   "publish": "Publish Review",
-  "response": "Clinic Response"
+  "response": "Clinic Response",
+  "doctorIdMissing": "Doctor ID is missing. Please try again later."
 }
-
-
-
-
 }
 
 

@@ -1,19 +1,68 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { Card, Button, Pagination, Form } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { FaUserCircle, FaStar, FaComment } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 
-const PatientReviews = ({ reviews: initialReviews, doctorId }) => {
+const PatientReviews = ({ reviews: initialReviews = [], doctorId: propDoctorId }) => {
   const { t } = useTranslation();
-  const [reviews, setReviews] = useState(initialReviews);
+  const { doctorId: paramDoctorId } = useParams();
+  // Try to get doctorId from query string if not found in props or params
+  let queryDoctorId = null;
+  if (typeof window !== 'undefined') {
+    const params = new URLSearchParams(window.location.search);
+    queryDoctorId = params.get('doctorId');
+  }
+  const doctorId = propDoctorId || paramDoctorId || queryDoctorId;
+  const [reviews, setReviews] = useState([]);
+  const [loadingReviews, setLoadingReviews] = useState(true);
   const [activePage, setActivePage] = useState(1);
   const [showForm, setShowForm] = useState(false);
-  const [newReview, setNewReview] = useState({ patientName: '', comment: '', rating: 0 });
+  // Try to get full_name from localStorage (if available)
+  let localFullName = '';
+  try {
+    const loggedUserRaw = localStorage.getItem('loggedUser');
+    if (loggedUserRaw) {
+      const loggedUser = JSON.parse(loggedUserRaw);
+      localFullName = loggedUser?.full_name || loggedUser?.fullName || '';
+    }
+  } catch (e) { localFullName = ''; }
+  const [newReview, setNewReview] = useState({ patientName: localFullName, comment: '', rating: 0 });
+
+  // Fetch reviews from API when doctorId changes
+  useEffect(() => {
+    if (!doctorId) return;
+    setLoadingReviews(true);
+    // Get token from localStorage (same logic as in handleSubmit)
+    let token = null;
+    try {
+      token = localStorage.getItem('access');
+      if (!token) {
+        const loggedUserRaw = localStorage.getItem('loggedUser');
+        const loggedUser = JSON.parse(loggedUserRaw);
+        token = loggedUser?.access || loggedUser?.accessToken || loggedUser?.access_token || loggedUser?.token || null;
+      }
+    } catch (e) { token = null; }
+    const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+    fetch(`http://localhost:8000/api/medical/doctors/${doctorId}/reviews/`, { headers })
+      .then(res => {
+        if (!res.ok) throw new Error('Auth or fetch error');
+        return res.json();
+      })
+      .then(data => {
+        setReviews(Array.isArray(data) ? data : (data.results || []));
+        setLoadingReviews(false);
+      })
+      .catch(err => {
+        setReviews([]);
+        setLoadingReviews(false);
+        console.error('Failed to fetch reviews:', err);
+      });
+  }, [doctorId]);
 
   const itemsPerPage = 3;
   const totalPages = Math.ceil(reviews.length / itemsPerPage);
-
   const paginatedReviews = reviews.slice(
     (activePage - 1) * itemsPerPage,
     activePage * itemsPerPage
@@ -23,31 +72,70 @@ const PatientReviews = ({ reviews: initialReviews, doctorId }) => {
     setNewReview({ ...newReview, rating });
   };
 
+  const [submitting, setSubmitting] = useState(false);
   const handleSubmit = async () => {
-    if (!newReview.patientName || !newReview.comment || newReview.rating === 0) return;
-
+    // Always try to get full_name from localStorage before submit
+    let fullName = newReview.patientName;
     try {
-      if (!doctorId) {
-        alert('Doctor ID is missing.');
-        return;
+      const loggedUserRaw = localStorage.getItem('loggedUser');
+      if (loggedUserRaw) {
+        const loggedUser = JSON.parse(loggedUserRaw);
+        fullName = loggedUser?.full_name || loggedUser?.fullName || fullName;
       }
+    } catch (e) { /* ignore */ }
+    if (!fullName || !newReview.comment || newReview.rating === 0) {
+      alert(t('patientReviews.fillAllFields') || 'Please fill all fields and select a rating.');
+      return;
+    }
+
+    if (!doctorId) {
+      alert(t('patientReviews.doctorIdMissing') || 'Doctor ID is missing. Please try again later.');
+      return;
+    }
+
+    // Get token from localStorage (adjust the key if your app uses a different one)
+    let token = null;
+    try {
+      // Try to get access token directly from localStorage
+      token = localStorage.getItem('access');
+      if (!token) {
+        // Fallback: try to get from loggedUser object
+        const loggedUserRaw = localStorage.getItem('loggedUser');
+        const loggedUser = JSON.parse(loggedUserRaw);
+        token = loggedUser?.access || loggedUser?.accessToken || loggedUser?.access_token || loggedUser?.token || null;
+      }
+      console.log('Final extracted token:', token);
+    } catch (e) { token = null; }
+    if (!token) {
+      alert(t('patientReviews.notLoggedIn') || 'You must be logged in to submit a review.');
+      setSubmitting(false);
+      return;
+    }
+    setSubmitting(true);
+    try {
+      // Debug log
+      console.log('Submitting review for doctorId:', doctorId, newReview);
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` // Change to 'Token' if your backend expects that
+      };
       const res = await fetch(`http://localhost:8000/api/medical/doctors/${doctorId}/reviews/create/`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers,
         body: JSON.stringify({
-          patient_name: newReview.patientName,
+          patient_name: fullName,
           comment: newReview.comment,
           rating: newReview.rating
         })
       });
       if (!res.ok) {
-        alert('Failed to submit review.');
+        const errorText = await res.text();
+        console.error('Review submit failed:', errorText);
+        alert(t('patientReviews.submitFailed') || 'Failed to submit review.');
+        setSubmitting(false);
         return;
       }
       const data = await res.json();
-      // Add the new review to the list
       setReviews([
         { ...data, response: null },
         ...reviews
@@ -56,9 +144,33 @@ const PatientReviews = ({ reviews: initialReviews, doctorId }) => {
       setShowForm(false);
       setActivePage(1);
     } catch (err) {
-      alert('Error submitting review.');
+      console.error('Error submitting review:', err);
+      alert(t('patientReviews.submitError') || 'Error submitting review.');
+    } finally {
+      setSubmitting(false);
     }
   };
+
+
+  // Show a warning if doctorId is missing
+  if (!doctorId) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+        dir="rtl"
+      >
+        <Card className="border-0 shadow-sm mb-4 text-end">
+          <Card.Body className="p-4">
+            <div className="alert alert-warning text-end mb-3" role="alert">
+              {t('patientReviews.doctorIdMissing') || 'Doctor ID is missing. Please try again later.'}
+            </div>
+          </Card.Body>
+        </Card>
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div
@@ -83,15 +195,7 @@ const PatientReviews = ({ reviews: initialReviews, doctorId }) => {
 
           {showForm && (
             <div className="mb-4 p-3 border rounded bg-light">
-              <Form.Group className="mb-3">
-                <Form.Label>{t('patientReviews.fullName')}</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={newReview.patientName}
-                  onChange={e => setNewReview({ ...newReview, patientName: e.target.value })}
-                />
-              </Form.Group>
-
+              {/* Removed full name field */}
               <Form.Group className="mb-3">
                 <Form.Label>{t('patientReviews.review')}</Form.Label>
                 <Form.Control
@@ -118,46 +222,93 @@ const PatientReviews = ({ reviews: initialReviews, doctorId }) => {
                 </div>
               </Form.Group>
 
-              <Button onClick={handleSubmit} variant="primary">
-                {t('patientReviews.publish')}
+              <Button onClick={handleSubmit} variant="primary" disabled={submitting}>
+                {submitting ? (t('patientReviews.submitting') || 'Submitting...') : t('patientReviews.publish')}
               </Button>
             </div>
           )}
 
-          {paginatedReviews.map((review, index) => (
-            <motion.div
-              key={index}
-              className="review-card p-3 mb-3"
-              whileHover={{ scale: 1.01 }}
-              transition={{ duration: 0.2 }}
-            >
-              <div className="d-flex align-items-center mb-2 flex-row-reverse">
-                <div className="ms-3">
-                  <FaUserCircle size={32} style={{ color: 'var(--primary-purple)' }} />
+          {loadingReviews ? (
+            <div className="text-center my-4">{t('patientReviews.loading') || 'Loading reviews...'}</div>
+          ) : paginatedReviews.length === 0 ? (
+            <div className="text-center my-4 text-muted">{t('patientReviews.noReviews') || 'No reviews yet.'}</div>
+          ) : (
+            paginatedReviews.map((review, index) => (
+              <motion.div
+                key={index}
+                className="review-card enhanced-review-card p-4 mb-4"
+                whileHover={{ scale: 1.015, boxShadow: '0 6px 24px rgba(42,92,95,0.10)' }}
+                transition={{ duration: 0.18 }}
+                style={{
+                  borderRadius: '18px',
+                  boxShadow: '0 2px 12px rgba(42,92,95,0.08)',
+                  background: '#fff',
+                  border: '1px solid #f0f0f0',
+                  position: 'relative',
+                  overflow: 'hidden',
+                }}
+              >
+                {/* Review comment first */}
+                <div style={{
+                  background: '#f8f9fa',
+                  borderRadius: '8px',
+                  padding: '14px 16px',
+                  marginBottom: '10px',
+                  color: '#2A5C5F',
+                  fontSize: '1.05em',
+                  textAlign: 'end',
+                  minHeight: '48px',
+                  border: '1px solid #f0f0f0',
+                }}>
+                  {review.comment}
                 </div>
-                <div>
-                  <h6 className="mb-0">{review.patientName}</h6>
-                  <div className="d-flex align-items-center flex-row-reverse">
-                    {[...Array(5)].map((_, i) => (
-                      <FaStar
-                        key={i}
-                        className={i < review.rating ? 'text-warning ms-1' : 'text-muted ms-1'}
-                        size={14}
-                      />
-                    ))}
-                    <small className="text-muted me-2">{review.date}</small>
+                {/* Reviewer info and rating below */}
+                <div style={{
+                  background: 'linear-gradient(90deg, #e6f7f6 0%, #f7fafc 100%)',
+                  borderRadius: '12px',
+                  padding: '12px 18px',
+                  marginBottom: review.response ? '10px' : '0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexDirection: 'row-reverse',
+                  boxShadow: '0 1px 4px rgba(42,92,95,0.04)'
+                }}>
+                  <div className="ms-3">
+                    <FaUserCircle size={38} style={{ color: 'var(--primary-purple)' }} />
+                  </div>
+                  <div>
+                    <h6 className="mb-0 fw-bold" style={{ color: '#2A5C5F' }}>{review.full_name || review.patientName || review.patient_name || (review.patient && review.patient.full_name) || 'Anonymous'}</h6>
+                    <div className="d-flex align-items-center flex-row-reverse mt-1">
+                      {[...Array(5)].map((_, i) => (
+                        <FaStar
+                          key={i}
+                          className={i < (review.rating || 0) ? 'text-warning ms-1' : 'text-muted ms-1'}
+                          size={16}
+                        />
+                      ))}
+                      <small className="text-muted me-2" style={{ fontSize: '0.85em' }}>{review.date || review.created_at || ''}</small>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <p className="mb-2 text-end">{review.comment}</p>
-              {review.response && (
-                <div className="bg-light p-2 rounded mt-2 text-end">
-                  <small className="text-muted d-block mb-1">{t('patientReviews.response')}:</small>
-                  <p className="mb-0 small">{review.response}</p>
-                </div>
-              )}
-            </motion.div>
-          ))}
+                {review.response && (
+                  <div style={{
+                    background: '#e6f7f6',
+                    borderRadius: '8px',
+                    padding: '10px 14px',
+                    marginTop: '8px',
+                    textAlign: 'end',
+                    borderLeft: '4px solid #2A5C5F',
+                  }}>
+                    <small className="text-muted d-block mb-1" style={{ color: '#2A5C5F', fontWeight: 500 }}>{t('patientReviews.response')}:</small>
+                    <p className="mb-0 small" style={{ color: '#2A5C5F' }}>{review.response}</p>
+                  </div>
+                )}
+                {index < paginatedReviews.length - 1 && (
+                  <hr style={{ border: 'none', borderTop: '1px solid #e0e0e0', margin: '22px 0 0 0' }} />
+                )}
+              </motion.div>
+            ))
+          )}
 
           {totalPages > 1 && (
             <div className="d-flex justify-content-center mt-4">

@@ -182,6 +182,24 @@ const DoctorDetailsPage = () => {
               </div>
             </div>
             <div className="doctorContent">
+              {/* About the Doctor Section */}
+              <div className="infoSection enhanced-section-card">
+                <h3 className="sectionTitle">About the Doctor</h3>
+                {isEditing ? (
+                  <textarea
+                    className="form-control mb-2"
+                    rows={4}
+                    value={editedDoctor.description || ''}
+                    onChange={e => handleChange('description', e.target.value)}
+                    maxLength={1000}
+                    placeholder="Write something about yourself, your experience, and your specialties..."
+                  />
+                ) : (
+                  <div className="text-muted" style={{ whiteSpace: 'pre-line' }}>
+                    {doctor.description ? doctor.description : <span className="fst-italic">No description set yet.</span>}
+                  </div>
+                )}
+              </div>
               <div className="infoSection enhanced-section-card">
                 <h3 className="sectionTitle">{t('doctorDetails.contactInformation')}</h3>
                 <div className="infoGrid">
