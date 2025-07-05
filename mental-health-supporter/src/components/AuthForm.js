@@ -48,13 +48,13 @@ export default function AuthForm({ variant = 'login', onSubmit, serverError }) {
     onSubmit(submitData, (apiErrors = {}) => {
       // Map backend errors to user-friendly messages
       const mappedErrors = { ...apiErrors };
-      if (apiErrors.email && (apiErrors.email.toLowerCase().includes('exist') || apiErrors.email.toLowerCase().includes('already'))) {
+      if (Array.isArray(apiErrors.email) && apiErrors.email[0].toLowerCase().includes('exist')) {
         mappedErrors.email = 'This email is already registered. Please use another email.';
       }
-      if (apiErrors.name && (apiErrors.name.toLowerCase().includes('exist') || apiErrors.name.toLowerCase().includes('already'))) {
+      if (Array.isArray(apiErrors.name) && apiErrors.name[0].toLowerCase().includes('exist')) {
         mappedErrors.name = 'This username is already taken. Please use another username.';
       }
-      if (apiErrors.username && (apiErrors.username.toLowerCase().includes('exist') || apiErrors.username.toLowerCase().includes('already'))) {
+      if (Array.isArray(apiErrors.username) && apiErrors.username[0].toLowerCase().includes('exist')) {
         mappedErrors.name = 'This username is already taken. Please use another username.';
       }
       if (apiErrors.full_name && apiErrors.full_name.toLowerCase().includes('required')) {
