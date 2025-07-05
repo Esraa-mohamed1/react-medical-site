@@ -164,21 +164,22 @@ const PatientAppointmentsPage = () => {
               <div key={index} className="appointment-card">
                 {/* Doctor Information Section */}
                 <div className="doctor-section">
-                  <div className="doctor-avatar">
-                    {appointment.doctor_info?.profile_image ? (
-                      <img 
-                        src={appointment.doctor_info.profile_image} 
-                        alt={appointment.doctor_info.full_name || 'Doctor'}
-                        onError={(e) => {
-                          e.target.style.display = 'none';
-                          e.target.nextSibling.style.display = 'flex';
-                        }}
-                      />
-                    ) : null}
-                    <div className="avatar-placeholder">
-                      <FaUser />
-                    </div>
+                                  <div className="doctor-avatar">
+                  {appointment.doctor_info?.profile_image ? (
+                    <img 
+                      src={appointment.doctor_info.profile_image} 
+                      alt={appointment.doctor_info.full_name || 'Doctor'}
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'flex';
+                      }}
+                      style={{ display: 'block' }}
+                    />
+                  ) : null}
+                  <div className="avatar-placeholder" style={{ display: appointment.doctor_info?.profile_image ? 'none' : 'flex' }}>
+                    <FaUser />
                   </div>
+                </div>
                   
                   <div className="doctor-info">
                     <h3 className="doctor-name">

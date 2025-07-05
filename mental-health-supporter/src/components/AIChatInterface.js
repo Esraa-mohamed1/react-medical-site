@@ -187,6 +187,11 @@ const AIChatInterface = () => {
               placeholder="Share your thoughts, feelings, or ask for support..."
               disabled={isLoading}
               rows="1"
+              style={{
+                minHeight: '24px',
+                maxHeight: '120px',
+                overflowY: 'auto'
+              }}
             />
             <button 
               onClick={sendMessage}
@@ -200,7 +205,7 @@ const AIChatInterface = () => {
             </button>
           </div>
           <div className="input-hint">
-            Press Enter to send, Shift+Enter for new line • Your conversations are private and secure
+            💡 Tip: Press Enter to send, Shift+Enter for new line • Your conversations are private and secure
           </div>
         </div>
       </div>
