@@ -28,6 +28,7 @@ import DoctorPaidPatients from './features/doctors/pages/DoctorPaidPatients';
 import DocumentsPage from './features/doctors/pages/DocumentsPage.jsx';
 import DoctorDashboard from './features/doctors/pages/DoctorDashboard';
 import DoctorPatientDetailsPage from './features/doctors/pages/DoctorPatientDetailsPage';
+import PatientAppointmentsPage from './pages/PatientAppointmentsPage';
 
 import ErrorBoundary from './ErrorBoundary';
 
@@ -115,6 +116,13 @@ function App() {
           <Route path="/doctor/patient-details/:appointmentId" element={
             <PrivateRoute role="doctor">
               <DoctorPatientDetailsPage />
+            </PrivateRoute>
+          } />
+
+          {/* Patient Routes */}
+          <Route path="/patient/appointments" element={
+            <PrivateRoute role="patient">
+              <PatientAppointmentsPage />
             </PrivateRoute>
           } />
 

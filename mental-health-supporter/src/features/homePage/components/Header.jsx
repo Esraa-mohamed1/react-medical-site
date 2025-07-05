@@ -53,6 +53,11 @@ export default function Header() {
                 My Dashboard
               </a>
             )}
+            {userRole === 'patient' && (
+              <a href="/patient/appointments" className={styles.navLink}>
+                My Appointments
+              </a>
+            )}
           </nav>
 
           <div>
@@ -93,6 +98,11 @@ export default function Header() {
               {shouldShowDashboard() && (
                 <a href={getDashboardUrl()} className={styles.mobileNavLink}>
                   My Dashboard
+                </a>
+              )}
+              {userRole === 'patient' && (
+                <a href="/patient/appointments" className={styles.mobileNavLink}>
+                  My Appointments
                 </a>
               )}
               <button className={styles.mobileCta}>BOOK AN APPOINTMENT</button>

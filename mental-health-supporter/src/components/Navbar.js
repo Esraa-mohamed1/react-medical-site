@@ -139,6 +139,12 @@ const CustomNavbar = () => {
                 {t('navbar.myPatients') || 'My Patients'}
               </Nav.Link>
             )}
+            {/* Patient appointments link - only for patients */}
+            {loggedUser?.role === 'patient' && (
+              <Nav.Link as={Link} to="/patient/appointments" className="text-primary mx-2 fw-medium">
+                My Appointments
+              </Nav.Link>
+            )}
           </Nav>
 
           {/* Language Switcher */}
